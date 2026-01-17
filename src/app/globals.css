@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #330066;
+  --color-primary-light: #5e3a8c;
+  --color-primary-pale: #e0dbe8;
+  
+  --color-its-blue: #003366;
+  
+  --color-growth-green: #27AE60;
+  --color-active-yellow: #F2C94C;
+  
+  --color-background-light: #f7f5f8;
+  --color-background-dark: #190f23;
+  
+  --color-card-light: #ffffff;
+  --color-card-dark: #241a30;
+  
+  --color-border-light: #f2f0f5;
+  --color-border-dark: #342a40;
+  
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #251833;
+  
+  --color-neutral-dark: #141018;
+  --color-neutral-mid: #755e8d;
+
+  --font-display: var(--font-inter), sans-serif;
+  
+  --animate-fade-in: fadeIn 0.3s ease-in-out;
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+:root {
+  --background: #f7f5f8;
+  --foreground: #141018;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #190f23;
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-display);
+}
+
