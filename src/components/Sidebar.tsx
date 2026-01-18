@@ -39,7 +39,7 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
                             <span className="material-symbols-outlined text-lg">school</span>
                         </div>
                         <div className="flex flex-col">
-                            <h1 className="text-base font-bold leading-normal">PPSDM KMITS</h1>
+                            <h1 className="text-base font-bold leading-normal">PPSDM KMM</h1>
                             <p className="text-neutral-mid dark:text-gray-400 text-xs font-normal">{title}</p>
                         </div>
                     </Link>
@@ -54,8 +54,8 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${active
-                                        ? "bg-primary text-white shadow-md shadow-primary/30"
-                                        : "text-neutral-dark dark:text-gray-200 hover:bg-background-light dark:hover:bg-white/5"
+                                    ? "bg-primary text-white shadow-md shadow-primary/30"
+                                    : "text-neutral-dark dark:text-gray-200 hover:bg-background-light dark:hover:bg-white/5"
                                     }`}
                             >
                                 <span className={`material-symbols-outlined text-[24px] ${active ? "text-white" : "text-neutral-mid dark:text-gray-400"}`}>

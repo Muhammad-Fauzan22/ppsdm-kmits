@@ -1,55 +1,376 @@
+/* Google Fonts - must be first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+/* Tailwind CSS */
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #330066;
-  --color-primary-light: #5e3a8c;
-  --color-primary-pale: #e0dbe8;
-  
-  --color-its-blue: #003366;
-  
-  --color-growth-green: #27AE60;
-  --color-active-yellow: #F2C94C;
-  
-  --color-background-light: #f7f5f8;
-  --color-background-dark: #190f23;
-  
-  --color-card-light: #ffffff;
-  --color-card-dark: #241a30;
-  
-  --color-border-light: #f2f0f5;
-  --color-border-dark: #342a40;
-  
-  --color-surface-light: #ffffff;
-  --color-surface-dark: #251833;
-  
-  --color-neutral-dark: #141018;
-  --color-neutral-mid: #755e8d;
+  /* ========================================
+     HMM DIGITAL HUB - DESIGN SYSTEM
+     PPSDM KMM - Fitur dari HMM Digital Hub
+  ======================================== */
 
-  --font-display: var(--font-inter), sans-serif;
-  
+  /* PRIMARY COLORS - ITS Blue */
+  --color-primary: #003366;
+  --color-primary-light: #0066CC;
+  --color-primary-pale: #E6F0FF;
+  --color-accent-blue: #4A90E2;
+
+  /* SECONDARY COLORS - Engineering Red */
+  --color-secondary: #C62828;
+  --color-secondary-light: #EF5350;
+  --color-secondary-pale: #FFCDD2;
+
+  /* ITS BLUE SCALE */
+  --color-its-blue: #003366;
+  --color-its-blue-50: #E6F0FF;
+  --color-its-blue-100: #CCE0FF;
+  --color-its-blue-500: #0066CC;
+  --color-its-blue-600: #0052A3;
+  --color-its-blue-700: #003366;
+  --color-its-blue-900: #001A33;
+
+  /* ENGINEERING RED SCALE */
+  --color-engineering-red: #C62828;
+  --color-engineering-red-50: #FFEBEE;
+  --color-engineering-red-100: #FFCDD2;
+  --color-engineering-red-500: #EF5350;
+  --color-engineering-red-600: #E53935;
+  --color-engineering-red-700: #C62828;
+  --color-engineering-red-900: #B71C1C;
+
+  /* NEUTRAL COLORS */
+  --color-neutral-black: #1A1A1A;
+  --color-neutral-dark: #2D3748;
+  --color-neutral-gray: #718096;
+  --color-neutral-light: #EDF2F7;
+  --color-neutral-white: #FFFFFF;
+
+  /* STATUS COLORS */
+  --color-success: #38A169;
+  --color-warning: #D69E2E;
+  --color-error: #E53E3E;
+  --color-info: #3182CE;
+
+  /* BACKGROUND & SURFACE */
+  --color-background-light: #F7FAFC;
+  --color-background-dark: #1A1A1A;
+
+  --color-card-light: #FFFFFF;
+  --color-card-dark: #2D3748;
+
+  --color-border-light: #EDF2F7;
+  --color-border-dark: #4A5568;
+
+  --color-surface-light: #FFFFFF;
+  --color-surface-dark: #2D3748;
+
+  /* TYPOGRAPHY */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Poppins', 'Inter', sans-serif;
+  --font-mono: 'Roboto Mono', 'Courier New', monospace;
+
+  /* ANIMATIONS */
   --animate-fade-in: fadeIn 0.3s ease-in-out;
-  
+  --animate-slide-up: slideUp 0.4s ease-out;
+  --animate-slide-right: slideInRight 0.4s ease-out;
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* SHADOWS */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-blue: 0 4px 12px rgba(0, 102, 204, 0.2);
+  --shadow-red: 0 4px 12px rgba(198, 40, 40, 0.2);
+
+  /* BORDER RADIUS */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
 }
 
 :root {
-  --background: #f7f5f8;
-  --foreground: #141018;
+  --background: #F7FAFC;
+  --foreground: #1A1A1A;
+
+  /* CSS Custom Properties for easy access */
+  --its-blue: #003366;
+  --engineering-red: #C62828;
+  --accent-blue: #4A90E2;
+
+  /* SHADCN UI VARIABLES */
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  --primary: #003366;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E6F0FF;
+  --secondary-foreground: #003366;
+  --muted: #EDF2F7;
+  --muted-foreground: #718096;
+  --accent: #EDF2F7;
+  --accent-foreground: #1A1A1A;
+  --destructive: #EF5350;
+  --destructive-foreground: #FFFFFF;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #003366;
+  --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #190f23;
-    --foreground: #ffffff;
+    --background: #1A1A1A;
+    --foreground: #FFFFFF;
+    --card: #2D3748;
+    --card-foreground: #FFFFFF;
+    --popover: #2D3748;
+    --popover-foreground: #FFFFFF;
+    --primary: #4A90E2;
+    --primary-foreground: #FFFFFF;
+    --secondary: #2D3748;
+    --secondary-foreground: #FFFFFF;
+    --muted: #2D3748;
+    --muted-foreground: #A0AEC0;
+    --accent: #2D3748;
+    --accent-foreground: #FFFFFF;
+    --destructive: #C62828;
+    --destructive-foreground: #FFFFFF;
+    --border: #4A5568;
+    --input: #4A5568;
+    --ring: #4A90E2;
   }
 }
 
+/* BASE STYLES */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-display);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* TYPOGRAPHY UTILITIES */
+h1,
+h2,
+h3,
+.heading {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-its-blue {
+  color: #003366;
+}
+
+.text-engineering-red {
+  color: #C62828;
+}
+
+.text-accent-blue {
+  color: #4A90E2;
+}
+
+.bg-its-blue {
+  background-color: #003366;
+}
+
+.bg-engineering-red {
+  background-color: #C62828;
+}
+
+.bg-accent-blue {
+  background-color: #4A90E2;
+}
+
+/* GRADIENT UTILITIES */
+.gradient-primary {
+  background: linear-gradient(135deg, #003366 0%, #0066CC 100%);
+}
+
+.gradient-engineering {
+  background: linear-gradient(135deg, #C62828 0%, #EF5350 100%);
+}
+
+.gradient-dual {
+  background: linear-gradient(135deg, #003366 0%, #C62828 100%);
+}
+
+.gradient-subtle {
+  background: linear-gradient(135deg, #4A90E2 0%, #63B3ED 100%);
+}
+
+/* BUTTON STYLES */
+.btn-primary {
+  background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 51, 102, 0.1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 51, 102, 0.2);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #C62828 0%, #EF5350 100%);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #0066CC;
+  border: 2px solid #0066CC;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: #0066CC;
+  color: white;
+}
+
+/* CARD STYLES */
+.card-hmm {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #EDF2F7;
+  transition: all 0.3s ease;
+}
+
+.card-hmm:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  border-color: #4A90E2;
+}
+
+/* BADGE STYLES */
+.badge-primary {
+  background: rgba(0, 102, 204, 0.1);
+  color: #0066CC;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.badge-secondary {
+  background: rgba(198, 40, 40, 0.1);
+  color: #C62828;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+/* HOVER EFFECTS */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EDF2F7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #718096;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4A5568;
+}
+
+/* MATERIAL ICONS */
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}

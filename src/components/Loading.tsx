@@ -1,5 +1,7 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion";
+
 // Skeleton loader for cards
 export function SkeletonCard({ className = "" }: { className?: string }) {
     return (
@@ -117,30 +119,18 @@ export function SkeletonProfile({ className = "" }: { className?: string }) {
 // Full page loading spinner
 export function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
     const sizes = {
-        sm: "size-5",
-        md: "size-8",
-        lg: "size-12",
+        sm: "w-5 h-5",
+        md: "w-8 h-8",
+        lg: "w-12 h-12",
     };
 
     return (
-        <div className="flex items-center justify-center p-8">
-            <div className={`${sizes[size]} animate-spin`}>
-                <svg className="w-full h-full text-primary" viewBox="0 0 24 24" fill="none">
-                    <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                    />
-                    <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                </svg>
-            </div>
+        <div className="flex items-center justify-center p-4">
+            <motion.div
+                className={`${sizes[size]} border-4 border-primary/30 border-t-primary rounded-full`}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
         </div>
     );
 }
@@ -148,9 +138,23 @@ export function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
 // Full page loading overlay
 export function LoadingOverlay({ message = "Loading..." }: { message?: string }) {
     return (
-        <div className="fixed inset-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
-            <LoadingSpinner size="lg" />
-            <p className="mt-4 text-gray-600 dark:text-gray-400 font-medium">{message}</p>
-        </div>
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center"
+            >
+                <LoadingSpinner size="lg" />
+                <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-4 text-gray-600 dark:text-gray-400 font-medium"
+                >
+                    {message}
+                </motion.p>
+            </motion.div>
+        </AnimatePresence>
     );
 }

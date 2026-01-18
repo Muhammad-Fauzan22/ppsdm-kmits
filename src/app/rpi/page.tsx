@@ -13,7 +13,7 @@ export default function RPIManagementPage() {
                             <span className="material-symbols-outlined">school</span>
                         </div>
                         <h2 className="text-xl font-bold leading-tight tracking-tight">
-                            PPSDM KMITS
+                            PPSDM KMM
                         </h2>
                     </div>
                     <div className="hidden md:flex items-center gap-8 pl-8">
@@ -77,8 +77,8 @@ export default function RPIManagementPage() {
                                             <div
                                                 key={i}
                                                 className={`text-center font-semibold text-sm ${i === 4
-                                                        ? "text-primary dark:text-white font-bold bg-primary/5 dark:bg-white/10 rounded py-1"
-                                                        : "text-gray-700 dark:text-gray-300"
+                                                    ? "text-primary dark:text-white font-bold bg-primary/5 dark:bg-white/10 rounded py-1"
+                                                    : "text-gray-700 dark:text-gray-300"
                                                     }`}
                                             >
                                                 Sem {i + 1}

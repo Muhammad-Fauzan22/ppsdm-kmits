@@ -16,7 +16,7 @@ export default function NexusDashboard() {
                             </span>
                         </div>
                         <div>
-                            <h1 className="text-white text-lg font-bold tracking-wide leading-none">PPSDM KMITS</h1>
+                            <h1 className="text-white text-lg font-bold tracking-wide leading-none">PPSDM KMM</h1>
                             <p className="text-[#13ec5b] text-xs font-normal tracking-wider opacity-80">NEXUS v2.4</p>
                         </div>
                     </div>

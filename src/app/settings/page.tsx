@@ -149,8 +149,8 @@ export default function SettingsPage() {
 
                 {/* App Info */}
                 <div className="text-center text-sm text-gray-400 py-4">
-                    <p>PPSDM KMITS v1.0.0</p>
-                    <p className="text-xs mt-1">© 2024 KM ITS. All rights reserved.</p>
+                    <p>PPSDM KMM v1.0.0</p>
+                    <p className="text-xs mt-1">© 2024 KMM. All rights reserved.</p>
                 </div>
             </main>
         </div>

@@ -34,7 +34,7 @@ export default function OrchestratorPage() {
                                 ></div>
                                 <div className="flex flex-col">
                                     <h1 className="text-base font-bold leading-normal">BEM Orchestrator</h1>
-                                    <p className="text-[#616f89] dark:text-gray-400 text-xs font-normal">KM ITS Ecosystem</p>
+                                    <p className="text-[#616f89] dark:text-gray-400 text-xs font-normal">KMM Ecosystem</p>
                                 </div>
                             </Link>
                         </div>
@@ -64,7 +64,7 @@ export default function OrchestratorPage() {
                                     <span className="material-symbols-outlined text-[20px]">hub</span>
                                     <span className="text-xs font-bold uppercase tracking-wider opacity-80">Ecosystem</span>
                                 </div>
-                                <p className="text-sm font-medium mb-3">3 Connected Programs in KM ITS Network</p>
+                                <p className="text-sm font-medium mb-3">3 Connected Programs in KMM Network</p>
                                 <div className="flex -space-x-2">
                                     <div className="w-6 h-6 rounded-full border border-white bg-gray-200"></div>
                                     <div className="w-6 h-6 rounded-full border border-white bg-gray-300"></div>
@@ -111,8 +111,8 @@ export default function OrchestratorPage() {
                                             <p className="text-4xl font-bold tracking-tight">{stat.value}</p>
                                             <div
                                                 className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold mb-1 ${stat.positive
-                                                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                                                        : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                                                    ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                                                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
                                                     }`}
                                             >
                                                 {stat.positive && <span className="material-symbols-outlined text-[14px]">trending_up</span>}
@@ -161,8 +161,8 @@ export default function OrchestratorPage() {
                                                     <td className="py-4 px-6">
                                                         <span
                                                             className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${program.statusColor === "green"
-                                                                    ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800"
-                                                                    : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800"
+                                                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800"
+                                                                : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800"
                                                                 }`}
                                                         >
                                                             <span className={`w-1.5 h-1.5 rounded-full ${program.statusColor === "green" ? "bg-green-500" : "bg-yellow-500"}`}></span>

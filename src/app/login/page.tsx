@@ -28,7 +28,7 @@ export default function LoginPage() {
                     <div className="size-20 mx-auto bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-2xl mb-4">
                         <span className="material-symbols-outlined text-white text-5xl">school</span>
                     </div>
-                    <h1 className="text-3xl font-bold text-white">PPSDM KMITS</h1>
+                    <h1 className="text-3xl font-bold text-white">PPSDM KMM</h1>
                     <p className="text-white/70 mt-1">Platform Pengembangan Mahasiswa Holistik</p>
                 </div>
 

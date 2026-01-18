@@ -1,4 +1,4 @@
-// Database Schema Types for PPSDM KMITS
+// Database Schema Types for PPSDM KMM
 // These types represent the PostgreSQL tables that will be created in Supabase
 
 export interface User {

@@ -26,7 +26,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                     <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
                         <span className="material-symbols-outlined text-xl">school</span>
                     </div>
-                    <h2 className="text-xl font-bold tracking-tight">PPSDM KMITS</h2>
+                    <h2 className="text-xl font-bold tracking-tight">PPSDM KMM</h2>
                 </Link>
 
                 {/* Global Menu */}
@@ -37,8 +37,8 @@ export function Header({ variant = "light" }: HeaderProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={`text-sm font-medium transition-colors ${isActive(item.href)
-                                        ? "text-primary dark:text-white font-semibold border-b-2 border-primary pb-0.5"
-                                        : "text-neutral-mid dark:text-gray-400 hover:text-primary dark:hover:text-white"
+                                    ? "text-primary dark:text-white font-semibold border-b-2 border-primary pb-0.5"
+                                    : "text-neutral-mid dark:text-gray-400 hover:text-primary dark:hover:text-white"
                                     }`}
                             >
                                 {item.label}

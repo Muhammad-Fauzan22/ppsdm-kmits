@@ -1,4 +1,4 @@
--- PPSDM KMITS Database Schema
+-- PPSDM KMM Database Schema
 -- Run this SQL in your Supabase SQL Editor
 
 -- Enable UUID extension

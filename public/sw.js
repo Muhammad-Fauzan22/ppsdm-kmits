@@ -1,4 +1,4 @@
-const CACHE_NAME = "ppsdm-kmits-v1";
+const CACHE_NAME = "ppsdm-kmm-v1";
 const STATIC_ASSETS = [
     "/",
     "/manifest.json",
@@ -65,7 +65,7 @@ self.addEventListener("fetch", (event) => {
 // Push notification event
 self.addEventListener("push", (event) => {
     const data = event.data?.json() ?? {
-        title: "PPSDM KMITS",
+        title: "PPSDM KMM",
         body: "You have a new notification!",
         icon: "/icons/icon-192x192.png",
     };

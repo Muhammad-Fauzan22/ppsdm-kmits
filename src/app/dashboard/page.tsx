@@ -2,65 +2,89 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import {
+    LayoutDashboard,
+    Map,
+    FolderOpen,
+    Plus,
+    MoreHorizontal,
+    Menu,
+    Edit2,
+    Info,
+    CheckCircle2,
+    PlayCircle,
+    AlertTriangle,
+    Calendar,
+    Sparkles,
+    Zap,
+    Award
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { FadeIn, SlideUp, StaggerContainer, StaggerItem } from "@/components/Animations";
+import { PsychometricRadar } from "@/components/PsychometricRadar";
+import { Avatar } from "@/components/UI"; // Keeping existing avatar for now or replace later
+
+// Mock data for Radar
+const radarData = [
+    { subject: 'Cognitive', value: 90, fullMark: 100 },
+    { subject: 'Affective', value: 75, fullMark: 100 },
+    { subject: 'Psychomotor', value: 82, fullMark: 100 },
+    { subject: 'Social', value: 95, fullMark: 100 },
+    { subject: 'Spiritual', value: 88, fullMark: 100 },
+    { subject: 'Financial', value: 65, fullMark: 100 },
+];
 
 export default function DashboardPage() {
     return (
-        <div className="min-h-screen bg-background-light dark:bg-background-dark text-neutral-dark dark:text-white font-display">
+        <div className="min-h-screen bg-gray-50/50 dark:bg-background-dark text-foreground font-sans selection:bg-primary/20">
             {/* Top Navigation Bar */}
-            <header className="sticky top-0 z-50 w-full bg-white dark:bg-card-dark border-b border-border-light dark:border-border-dark px-4 lg:px-10 py-3 shadow-sm">
+            <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-card-dark/80 backdrop-blur-md border-b border-border px-4 lg:px-10 py-3 shadow-sm">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     {/* Logo & Title */}
-                    <div className="flex items-center gap-4 text-primary dark:text-white">
-                        <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
-                            <span className="material-symbols-outlined text-xl">school</span>
+                    <div className="flex items-center gap-4 text-primary">
+                        <div className="size-9 flex items-center justify-center bg-primary rounded-xl text-white shadow-lg shadow-primary/20">
+                            <Sparkles className="size-5" />
                         </div>
-                        <h2 className="text-xl font-bold tracking-tight text-primary dark:text-white">
-                            PPSDM KMITS
+                        <h2 className="text-xl font-bold tracking-tight text-foreground">
+                            PPSDM KMM
                         </h2>
                     </div>
                     {/* Global Menu & Actions */}
-                    <div className="hidden lg:flex flex-1 justify-end items-center gap-8">
-                        <nav className="flex items-center gap-8">
-                            <Link
-                                className="text-primary dark:text-white text-sm font-semibold border-b-2 border-primary pb-0.5"
-                                href="/dashboard"
-                            >
+                    <div className="hidden lg:flex flex-1 justify-end items-center gap-6">
+                        <nav className="flex items-center gap-6">
+                            <Link href="/dashboard" className="text-sm font-semibold text-primary transition-colors">
                                 Dashboard
                             </Link>
-                            <Link
-                                className="text-neutral-mid dark:text-gray-400 text-sm font-medium hover:text-primary dark:hover:text-white transition-colors"
-                                href="/rpi"
-                            >
+                            <Link href="/rpi" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                                 RPI Planning
                             </Link>
-                            <Link
-                                className="text-neutral-mid dark:text-gray-400 text-sm font-medium hover:text-primary dark:hover:text-white transition-colors"
-                                href="/portfolio"
-                            >
+                            <Link href="/portfolio" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                                 Portfolio
                             </Link>
                         </nav>
-                        <div className="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
-                        <div className="flex items-center gap-4">
-                            <button className="flex items-center gap-2 cursor-pointer bg-primary hover:bg-opacity-90 transition-colors text-white text-sm font-bold h-10 px-5 rounded-lg shadow-md hover:shadow-lg">
-                                <span className="material-symbols-outlined text-lg">add</span>
-                                <span>New Activity</span>
-                            </button>
+                        <div className="h-6 w-px bg-border"></div>
+                        <div className="flex items-center gap-3">
+                            <Button size="sm" className="gap-2 shadow-lg shadow-primary/20">
+                                <Plus className="size-4" />
+                                New Activity
+                            </Button>
                             <button className="relative group">
                                 <div
-                                    className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-gray-100 dark:ring-gray-700 dark:ring-offset-background-dark"
+                                    className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-background ring-offset-2 ring-offset-gray-200"
                                     style={{
                                         backgroundImage:
                                             'url("https://lh3.googleusercontent.com/aida-public/AB6AXuClE0EM96SkM6uD--shNf9TkN55hiP_7YwI6Awx7_v_BQbCKaoxruCniB2yKxNCP7SpnAaI3u7yt23f8pf_txws30mxyqlTcNuLlzyW-qxkUwu4CO108XqnfyA7tpTI4ZvjQoNubGzpxQlJFMGAyTaocUrvthrIGfSoIyBIqFtkJhahbWSuJBgL8PFAyW3tMh-CKAolYhjUlmmxV4TlgXEhIEAdVc7Sg0IBeS0Zz_DXz8wHYz3uFtX7Oz_n6smU3KFkMv6LEpbaWG0")',
                                     }}
                                 ></div>
-                                <span className="absolute bottom-0 right-0 size-3 bg-growth-green border-2 border-white dark:border-card-dark rounded-full"></span>
+                                <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-card-dark rounded-full"></span>
                             </button>
                         </div>
                     </div>
                     {/* Mobile Menu Toggle */}
-                    <button className="lg:hidden text-primary dark:text-white">
-                        <span className="material-symbols-outlined text-3xl">menu</span>
+                    <button className="lg:hidden text-foreground">
+                        <Menu className="size-6" />
                     </button>
                 </div>
             </header>
@@ -69,256 +93,172 @@ export default function DashboardPage() {
             <main className="flex-1 w-full max-w-[1400px] mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
                 {/* LEFT COLUMN: Profile & Stats (3 cols) */}
                 <aside className="lg:col-span-3 flex flex-col gap-6">
-                    {/* Profile Card */}
-                    <div className="bg-white dark:bg-card-dark rounded-xl p-6 border border-border-light dark:border-border-dark shadow-sm flex flex-col items-center text-center">
-                        <div className="relative mb-4">
-                            <div
-                                className="bg-center bg-no-repeat bg-cover rounded-full size-28 shadow-md"
-                                style={{
-                                    backgroundImage:
-                                        'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCoz-5CBTBA6Ayqk18_LahdcYj4owOJiXGJ6ohIG_MrvMA9HTriWJKW_FG-SWX3XuGjVbi1uWn50i-6tGM6XvQjNL5rnhEd8TtzYDaDOsvhBxi1iUbog-kVlZbuO4NNA9718DqXbQVXf7sm1z0A3W9Mc_-8hMn-WHb0OvmO32Jlq08uFhRuE9xb0-NueKCD7gwut6M8kCEewkFGZdi2UTQushlvUzn6GPSquQdolNiS6VzLT77DVfIHvOzoopFXf6hAaNTVbF_I9XI")',
-                                }}
-                            ></div>
-                            <div className="absolute bottom-1 right-1 bg-white dark:bg-card-dark p-1.5 rounded-full shadow-sm border border-border-light dark:border-border-dark">
-                                <span className="material-symbols-outlined text-primary text-sm font-bold">
-                                    edit
-                                </span>
+                    <FadeIn delay={0.1}>
+                        <Card className="overflow-hidden border-none shadow-lg">
+                            <div className="h-24 bg-gradient-to-r from-its-blue to-accent-blue relative">
+                                <Button size="icon" variant="ghost" className="absolute top-2 right-2 text-white hover:bg-white/20">
+                                    <Edit2 className="size-4" />
+                                </Button>
                             </div>
-                        </div>
-                        <h3 className="text-xl font-bold text-neutral-dark dark:text-white leading-tight">
-                            Rian Santoso
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Informatics Engineering
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 font-mono mt-0.5">
-                            ID: 5025201001
-                        </p>
-                        <div className="mt-4 px-3 py-1 bg-primary/10 dark:bg-primary/20 rounded-full text-primary dark:text-white text-xs font-semibold">
-                            Semester 5
-                        </div>
-                    </div>
-                    {/* Overall Stats Card */}
-                    <div className="bg-white dark:bg-card-dark rounded-xl p-6 border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-6">
-                        <div className="flex items-center justify-between">
-                            <h4 className="font-bold text-base dark:text-white">
-                                Development Score
-                            </h4>
-                            <span
-                                className="material-symbols-outlined text-gray-400 text-lg cursor-help"
-                                title="Based on weighted average of all dimensions"
-                            >
-                                info
-                            </span>
-                        </div>
-                        {/* Donut Chart Simulation */}
-                        <div className="flex justify-center">
-                            <div
-                                className="relative size-40 rounded-full flex items-center justify-center"
-                                style={{
-                                    background: "conic-gradient(#330066 85%, #f2f0f5 0)",
-                                }}
-                            >
-                                <div className="bg-white dark:bg-card-dark size-32 rounded-full flex flex-col items-center justify-center shadow-inner">
-                                    <span className="text-3xl font-extrabold text-primary dark:text-white tracking-tight">
-                                        85
-                                    </span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">
-                                        out of 100
-                                    </span>
+                            <div className="flex flex-col items-center -mt-12 px-6 pb-6">
+                                <div className="relative mb-3">
+                                    <div
+                                        className="bg-center bg-no-repeat bg-cover rounded-full size-24 border-4 border-white shadow-md bg-white"
+                                        style={{
+                                            backgroundImage:
+                                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCoz-5CBTBA6Ayqk18_LahdcYj4owOJiXGJ6ohIG_MrvMA9HTriWJKW_FG-SWX3XuGjVbi1uWn50i-6tGM6XvQjNL5rnhEd8TtzYDaDOsvhBxi1iUbog-kVlZbuO4NNA9718DqXbQVXf7sm1z0A3W9Mc_-8hMn-WHb0OvmO32Jlq08uFhRuE9xb0-NueKCD7gwut6M8kCEewkFGZdi2UTQushlvUzn6GPSquQdolNiS6VzLT77DVfIHvOzoopFXf6hAaNTVbF_I9XI")',
+                                        }}
+                                    ></div>
+                                </div>
+                                <h3 className="text-xl font-bold text-foreground text-center">Rian Santoso</h3>
+                                <p className="text-sm text-muted-foreground font-medium">Informatics Engineering</p>
+                                <p className="text-xs text-muted-foreground mt-1 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">ID: 5025201001</p>
+                                <div className="mt-4 flex gap-2">
+                                    <Badge variant="secondary" className="font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100">Semester 5</Badge>
+                                    <Badge variant="default" className="font-semibold bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-none">Active</Badge>
                                 </div>
                             </div>
+                        </Card>
+                    </FadeIn>
+
+                    <FadeIn delay={0.2}>
+                        {/* Radar Chart Widget */}
+                        <div className="h-[400px]">
+                            <PsychometricRadar
+                                data={radarData}
+                                title="Development Profile"
+                                description="Current semester snapshot"
+                            />
                         </div>
-                        {/* Dimensions */}
-                        <div className="flex flex-col gap-4 mt-2">
-                            {[
-                                { label: "Cognitive", score: 90, color: "bg-its-blue", text: "text-its-blue" },
-                                { label: "Affective", score: 75, color: "bg-primary", text: "text-primary" },
-                                { label: "Psychomotor", score: 82, color: "bg-its-blue", text: "text-its-blue" },
-                                { label: "Social-Spiritual", score: 95, color: "bg-growth-green", text: "text-growth-green" },
-                            ].map((item, idx) => (
-                                <div className="flex flex-col gap-1.5" key={idx}>
-                                    <div className="flex justify-between text-xs font-medium">
-                                        <span className="text-gray-600 dark:text-gray-300">{item.label}</span>
-                                        <span className={`${item.text} dark:text-white`}>{item.score}%</span>
-                                    </div>
-                                    <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full ${item.color} rounded-full`}
-                                            style={{ width: `${item.score}%` }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    </FadeIn>
                 </aside>
 
                 {/* MIDDLE COLUMN: Growth Timeline (6 cols) */}
-                <section className="lg:col-span-6 flex flex-col h-full">
-                    <div className="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 lg:p-8 h-full">
-                        <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-bold text-neutral-dark dark:text-white">
-                                Growth Timeline
-                            </h3>
-                            <div className="flex gap-2">
-                                <span className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    <span className="size-2 rounded-full bg-growth-green"></span>{" "}
-                                    Achieved
-                                </span>
-                                <span className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    <span className="size-2 rounded-full bg-active-yellow"></span>{" "}
-                                    Active
-                                </span>
-                            </div>
-                        </div>
-                        <div className="relative flex flex-col h-full">
-                            {/* Vertical Line */}
-                            <div className="absolute left-6 top-4 bottom-12 w-0.5 bg-gray-100 dark:bg-gray-800"></div>
+                <section className="lg:col-span-6 flex flex-col h-full gap-6">
+                    <FadeIn delay={0.3}>
+                        <Card className="h-full border-none shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <div>
+                                    <CardTitle className="text-xl">Growth Timeline</CardTitle>
+                                    <CardDescription>Your academic and professional milestones</CardDescription>
+                                </div>
+                                <div className="flex gap-2">
+                                    <Badge variant="outline" className="gap-1 border-green-200 text-green-700 bg-green-50"><div className="size-1.5 rounded-full bg-green-500"></div>Achieved</Badge>
+                                    <Badge variant="outline" className="gap-1 border-yellow-200 text-yellow-700 bg-yellow-50"><div className="size-1.5 rounded-full bg-yellow-500"></div>Active</Badge>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="pt-6">
+                                <div className="relative flex flex-col h-full pl-2">
+                                    {/* Vertical Line */}
+                                    <div className="absolute left-6 top-2 bottom-4 w-0.5 bg-gray-100 dark:bg-gray-800"></div>
 
-                            {/* Year 1: Achieved */}
-                            <div className="relative flex gap-6 pb-12 group">
-                                <div className="relative z-10 flex-none size-12 rounded-full bg-growth-green/10 text-growth-green flex items-center justify-center border-4 border-white dark:border-card-dark">
-                                    <span className="material-symbols-outlined font-bold">
-                                        check
-                                    </span>
-                                </div>
-                                <div className="flex-1 flex flex-col gap-3">
-                                    <div className="flex items-center justify-between">
-                                        <h4 className="text-lg font-bold text-gray-900 dark:text-white">
-                                            Year 1: Foundation
-                                        </h4>
-                                        <span className="text-xs font-semibold px-2 py-1 bg-growth-green/10 text-growth-green rounded">
-                                            Completed
-                                        </span>
-                                    </div>
-                                    <div className="bg-background-light dark:bg-background-dark p-4 rounded-lg border border-border-light dark:border-border-dark">
-                                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                                            Orientation &amp; Basic Competence
-                                        </p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                            Successfully completed campus orientation and joined the
-                                            Informatics Student Association basics.
-                                        </p>
-                                        <div className="flex gap-2 mt-3">
-                                            <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 border border-gray-200 dark:border-gray-700 px-2 py-0.5 rounded">
-                                                Social
-                                            </span>
-                                            <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 border border-gray-200 dark:border-gray-700 px-2 py-0.5 rounded">
-                                                Cognitive
-                                            </span>
+                                    {/* Year 1: Achieved */}
+                                    <div className="relative flex gap-6 pb-10 group">
+                                        <div className="relative z-10 flex-none size-12 rounded-full bg-white border-2 border-green-500 text-green-600 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                                            <CheckCircle2 className="size-6" />
                                         </div>
+                                        <Card className="flex-1 border-none bg-gray-50/50 hover:bg-white hover:shadow-md transition-all duration-300">
+                                            <CardContent className="p-4">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <h4 className="font-bold text-foreground">Year 1: Foundation</h4>
+                                                    <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200">Completed</Badge>
+                                                </div>
+                                                <p className="text-sm font-semibold text-gray-700">Orientation & Basic Competence</p>
+                                                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                                                    Successfully completed campus orientation and joined the Informatics Student Association basics.
+                                                </p>
+                                                <div className="flex gap-2 mt-3">
+                                                    <Badge variant="outline" className="text-[10px] text-gray-500 border-gray-200">Social</Badge>
+                                                    <Badge variant="outline" className="text-[10px] text-gray-500 border-gray-200">Cognitive</Badge>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
                                     </div>
-                                </div>
-                            </div>
 
-                            {/* Year 3: Active */}
-                            <div className="relative flex gap-6 pb-12 group">
-                                <div className="relative z-10 flex-none size-12 rounded-full bg-active-yellow/10 text-active-yellow flex items-center justify-center border-4 border-white dark:border-card-dark shadow-sm ring-2 ring-active-yellow/20">
-                                    <span className="material-symbols-outlined font-bold">
-                                        play_arrow
-                                    </span>
-                                </div>
-                                <div className="flex-1 flex flex-col gap-3">
-                                    <div className="flex items-center justify-between">
-                                        <h4 className="text-lg font-bold text-primary dark:text-white">
-                                            Year 3: Professional Dev
-                                        </h4>
-                                        <span className="text-xs font-semibold px-2 py-1 bg-active-yellow/20 text-yellow-700 dark:text-yellow-400 rounded animate-pulse">
-                                            In Progress
-                                        </span>
-                                    </div>
-                                    <div className="bg-white dark:bg-card-dark shadow-md p-5 rounded-lg border-l-4 border-active-yellow">
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <p className="text-sm font-bold text-gray-900 dark:text-white">
-                                                    Internship Preparation
-                                                </p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                    Focusing on portfolio building and technical
-                                                    interviews.
-                                                </p>
-                                            </div>
-                                            <div
-                                                className="bg-center bg-no-repeat bg-cover rounded size-10"
-                                                style={{
-                                                    backgroundImage:
-                                                        'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-KBIUMxMW6kRGNLStNSAgfqTFhQbMnUhtNyVoNtV611epk_Rxz0g1Y52qPfOTEwKSCthzpKd8-B6m9QkMEmzAw2ctkeuZWfPONsNxBy1sLr2rrTYv3MND5eyolxeBaGHGYhhg9krLjtOq-JaBUysOy6aM2kjQH2-Y0bLsnGsxlgpNeczk9o43f7L7T9PuDCDjJwpPW21orsVPEsS0W_3BzhXZqXU8KtXf-7lXCHt_xcWmCzX9jVGFVTp34PEQWwmfJzdD3nodds0")',
-                                                }}
-                                            ></div>
+                                    {/* Year 3: Active */}
+                                    <div className="relative flex gap-6 pb-2 group">
+                                        <div className="relative z-10 flex-none size-12 rounded-full bg-white border-2 border-yellow-500 text-yellow-600 flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.3)] animate-pulse">
+                                            <PlayCircle className="size-6" />
                                         </div>
-                                        <div className="mt-4">
-                                            <div className="flex justify-between text-xs mb-1">
-                                                <span className="font-medium text-gray-600 dark:text-gray-300">
-                                                    Milestone Progress
-                                                </span>
-                                                <span className="font-bold text-primary dark:text-white">
-                                                    65%
-                                                </span>
-                                            </div>
-                                            <div className="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full">
-                                                <div
-                                                    className="bg-primary h-1.5 rounded-full"
-                                                    style={{ width: "65%" }}
-                                                ></div>
-                                            </div>
-                                        </div>
+                                        <Card className="flex-1 border-l-4 border-l-yellow-500 shadow-md bg-white">
+                                            <CardContent className="p-5">
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div>
+                                                        <h4 className="font-bold text-primary text-lg">Year 3: Professional Dev</h4>
+                                                        <p className="text-sm font-medium text-muted-foreground mt-1">Internship Preparation</p>
+                                                    </div>
+                                                    <Badge variant="default" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-none animate-pulse">In Progress</Badge>
+                                                </div>
+
+                                                <div className="space-y-4">
+                                                    <p className="text-sm text-gray-600">Focusing on portfolio building and technical interviews preparation.</p>
+                                                    <div>
+                                                        <div className="flex justify-between text-xs mb-2">
+                                                            <span className="font-medium text-gray-500">Milestone Progress</span>
+                                                            <span className="font-bold text-primary">65%</span>
+                                                        </div>
+                                                        <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                                            <div className="bg-primary h-full rounded-full transition-all duration-1000 w-[65%]"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </CardContent>
+                        </Card>
+                    </FadeIn>
                 </section>
 
                 {/* RIGHT COLUMN: Smart Recommendations (3 cols) */}
                 <aside className="lg:col-span-3 flex flex-col gap-6">
-                    <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-gray-900 dark:text-white">
-                            Smart Recommendations
-                        </h3>
-                        <span className="material-symbols-outlined text-gray-400">
-                            auto_awesome
-                        </span>
-                    </div>
-                    {/* Card 1: Skill Gap Alert */}
-                    <div className="bg-white dark:bg-card-dark rounded-xl p-5 border border-red-100 dark:border-red-900/30 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-red-400"></div>
-                        <div className="flex gap-3 items-start">
-                            <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-500">
-                                <span className="material-symbols-outlined">warning</span>
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold text-red-500 uppercase tracking-wide">
-                                    Skill Gap Detected
-                                </p>
-                                <h4 className="text-sm font-bold text-gray-900 dark:text-white mt-1">
-                                    Public Speaking
-                                </h4>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                                    Your affective score is lower than peer average in
-                                    communication.
-                                </p>
-                            </div>
+                    <FadeIn delay={0.4}>
+                        <div className="flex items-center justify-between mb-2">
+                            <h3 className="font-bold text-foreground flex items-center gap-2"><Zap className="size-4 text-yellow-500 fill-current" /> Insight</h3>
                         </div>
-                    </div>
-                    {/* Card 3: Event Matching */}
-                    <div className="bg-gradient-to-br from-its-blue to-primary rounded-xl p-5 text-white shadow-md relative overflow-hidden">
-                        <div className="absolute -right-4 -top-4 size-24 bg-white/10 rounded-full blur-xl"></div>
-                        <div className="flex justify-between items-start relative z-10">
-                            <div>
-                                <span className="text-[10px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">
-                                    Social Goal
-                                </span>
-                                <h4 className="text-lg font-bold mt-2 leading-tight">
-                                    ITS Leadership Summit 2024
-                                </h4>
+
+                        {/* Card 1: Skill Gap Alert */}
+                        <Card className="border-l-4 border-l-red-500 shadow-sm hover:shadow-md transition-shadow">
+                            <CardContent className="p-4">
+                                <div className="flex gap-3 items-start">
+                                    <div className="p-2 bg-red-100 text-red-600 rounded-lg shrink-0">
+                                        <AlertTriangle className="size-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-red-600 uppercase tracking-wide mb-1">Attention Needed</p>
+                                        <h4 className="text-sm font-bold text-foreground">Public Speaking</h4>
+                                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                                            Affective score lower than peer average in communication.
+                                        </p>
+                                        <Button variant="link" size="sm" className="h-auto p-0 text-red-600 text-xs mt-2">
+                                            View Recommendations
+                                        </Button>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Card 2: Event Matching */}
+                        <Card className="mt-4 bg-gradient-to-br from-its-blue to-accent-blue text-white border-none shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform">
+                            <div className="absolute top-0 right-0 p-3 opacity-10">
+                                <Calendar className="size-24" />
                             </div>
-                            <div className="bg-white/10 rounded-lg p-2 text-center min-w-[50px] backdrop-blur-sm">
-                                <span className="block text-xs uppercase font-medium">Nov</span>
-                                <span className="block text-xl font-bold">14</span>
-                            </div>
-                        </div>
-                    </div>
+                            <CardContent className="p-5 relative z-10">
+                                <Badge className="bg-white/20 hover:bg-white/30 text-white border-none mb-3">Recommended Event</Badge>
+                                <h4 className="text-lg font-bold leading-tight mb-4">ITS Leadership Summit 2026</h4>
+                                <div className="flex items-center justify-between">
+                                    <div className="bg-white/10 rounded-lg p-2 text-center backdrop-blur-sm">
+                                        <span className="block text-xs uppercase font-medium opacity-80">Nov</span>
+                                        <span className="block text-xl font-bold">14</span>
+                                    </div>
+                                    <Button size="sm" variant="secondary" className="shadow-lg">
+                                        Register
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </FadeIn>
                 </aside>
             </main>
         </div>
