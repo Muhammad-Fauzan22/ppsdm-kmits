@@ -18,6 +18,12 @@ export function Header({ variant = "light" }: HeaderProps) {
 
     const isActive = (href: string) => pathname === href;
 
+    const getPageContext = () => {
+        if (pathname?.includes('/nexus')) return 'program pengembangan diri';
+        if (pathname?.includes('/mentorship')) return 'sesi mentoring';
+        return 'aktivitas';
+    };
+
     return (
         <header className="sticky top-0 z-50 w-full bg-white dark:bg-card-dark border-b border-border-light dark:border-border-dark px-4 lg:px-10 py-3 shadow-sm">
             <div className="max-w-[1400px] mx-auto flex items-center justify-between">
@@ -47,11 +53,14 @@ export function Header({ variant = "light" }: HeaderProps) {
                     </nav>
                     <div className="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
                     <div className="flex items-center gap-4">
-                        <button className="flex items-center gap-2 cursor-pointer bg-primary hover:bg-opacity-90 transition-colors text-white text-sm font-bold h-10 px-5 rounded-lg shadow-md hover:shadow-lg">
+                        <button
+                            aria-label={`Buat ${getPageContext()} baru`}
+                            className="flex items-center gap-2 cursor-pointer bg-primary hover:bg-opacity-90 transition-colors text-white text-sm font-bold h-10 px-5 rounded-lg shadow-md hover:shadow-lg"
+                        >
                             <span className="material-symbols-outlined text-lg">add</span>
                             <span>New Activity</span>
                         </button>
-                        <button className="relative group">
+                        <button aria-label="User Profile" className="relative group">
                             <div
                                 className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-gray-100 dark:ring-gray-700 dark:ring-offset-background-dark"
                                 style={{
@@ -65,7 +74,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                 </div>
 
                 {/* Mobile Menu Toggle */}
-                <button className="lg:hidden text-primary dark:text-white">
+                <button aria-label="Toggle Mobile Menu" className="lg:hidden text-primary dark:text-white">
                     <span className="material-symbols-outlined text-3xl">menu</span>
                 </button>
             </div>

@@ -18,6 +18,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.its.ac.id",
+        pathname: "/wp-content/themes/**",
+      },
     ],
   },
 

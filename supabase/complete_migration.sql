@@ -741,36 +741,29 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Calculate overall score
+-- Calculate overall score (Optimized Set-Based Approach)
 CREATE OR REPLACE FUNCTION calculate_overall_score(user_uuid UUID)
 RETURNS DECIMAL AS $$
 DECLARE
-    total_weighted_score DECIMAL;
-    total_weight DECIMAL;
-    dim_score RECORD;
+    final_score DECIMAL;
 BEGIN
-    total_weighted_score := 0;
-    total_weight := 0;
-    
-    FOR dim_score IN 
-        SELECT ds.score, d.weight 
+    -- Use CTE for readability and optimization (One Set Operation instead of Loop)
+    WITH latest_scores AS (
+        SELECT DISTINCT ON (ds.dimension_id) 
+            ds.score, 
+            d.weight
         FROM assessment_scores ds
         JOIN dimensions d ON ds.dimension_id = d.id
         WHERE ds.user_id = user_uuid
-        AND ds.created_at = (
-            SELECT MAX(created_at) 
-            FROM assessment_scores 
-            WHERE user_id = user_uuid AND dimension_id = ds.dimension_id
-        )
-    LOOP
-        total_weighted_score := total_weighted_score + (dim_score.score * dim_score.weight);
-        total_weight := total_weight + dim_score.weight;
-    END LOOP;
-    
-    IF total_weight > 0 THEN
-        RETURN ROUND(total_weighted_score / total_weight, 2);
-    ELSE
-        RETURN 0;
-    END IF;
+        ORDER BY ds.dimension_id, ds.created_at DESC
+    )
+    -- Calculate aggregate in one go
+    SELECT 
+        COALESCE(SUM(score * weight) / NULLIF(SUM(weight), 0), 0)
+    INTO final_score
+    FROM latest_scores;
+
+    RETURN final_score;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -910,6 +903,9 @@ INSERT INTO public.learning_resources (title, description, resource_type, url, d
 ('Financial Planning 101', 'Perencanaan keuangan dasar untuk mahasiswa', 'article', 'https://contoh.com/financial-planning', 'beginner', 'indonesia', 'Bank Indonesia', true),
 ('Public Speaking Techniques', 'Teknik public speaking yang efektif', 'workshop', 'https://contoh.com/public-speaking', 'intermediate', 'indonesia', 'Toastmasters', true)
 ON CONFLICT DO NOTHING;
+
+-- Performance Index (Critical for calculate_overall_score)
+CREATE INDEX IF NOT EXISTS idx_scores_user_dim_created ON assessment_scores (user_id, dimension_id, created_at DESC);
 
 -- =============================================
 -- SCHEMA COMPLETE!

@@ -142,6 +142,8 @@
 :root {
   --background: #F7FAFC;
   --foreground: #1A1A1A;
+  --header-text-color: #f8fafc;
+  /* Safe white for headers */
 
   /* CSS Custom Properties for easy access */
   --its-blue: #003366;
@@ -173,6 +175,8 @@
   :root {
     --background: #1A1A1A;
     --foreground: #FFFFFF;
+    --header-text-color: #e2e8f0;
+    /* Safe light gray for dark mode headers */
     --card: #2D3748;
     --card-foreground: #FFFFFF;
     --popover: #2D3748;

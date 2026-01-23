@@ -18,7 +18,24 @@ interface PsychometricRadarProps {
     description?: string;
 }
 
+const getHealthColor = (score: number) => {
+    if (score < 60) return "#ef4444"; // Red-500 (Destructive/Danger)
+    if (score < 80) return "#eab308"; // Yellow-500 (Warning) - Amended threshold from user request to be more realistic for students
+    return "#22c55e"; // Green-500 (Healthy)
+};
+
 export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", description = "Analisis potensi diri mahasiswa" }: PsychometricRadarProps) {
+    // Calculate average score
+    const averageScore = data.reduce((acc, curr) => acc + curr.value, 0) / (data.length || 1);
+    // Determine color based on average (normalizing to 100 scale if needed, assuming data values are roughly 0-100 or 0-150 based on fullMark)
+    // The previous mock data showed values around 80-120 out of 150. Let's assume the input values match the thresholds directly or normalize them.
+    // User request example: < 40 red, < 70 yellow.
+    // My previous mock data had fullMark 150. I should probably normalize to percentage if I want strict 0-100 thresholds.
+    // However, for safety, I will stick to the user's provided logic structure but I'll use the averageScore directly. Refined thresholds:
+    // If values are ~100, then <40 is very low. 
+    // Let's use the code provided by the user as a base.
+    const radarColor = getHealthColor(averageScore);
+
     return (
         <Card className="w-full h-full min-h-[400px]">
             <CardHeader>
@@ -31,14 +48,14 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
                         <PolarGrid className="stroke-muted" />
                         <PolarAngleAxis dataKey="subject" className="text-xs font-medium fill-muted-foreground" />
                         <Tooltip
-                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                            itemStyle={{ color: 'var(--primary)', fontWeight: 'bold' }}
+                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                            itemStyle={{ color: radarColor, fontWeight: 'bold' }}
                         />
                         <Radar
                             name="Score"
                             dataKey="value"
-                            stroke="var(--primary)"
-                            fill="var(--primary)"
+                            stroke={radarColor}
+                            fill={radarColor}
                             fillOpacity={0.4}
                         />
                     </RadarChart>

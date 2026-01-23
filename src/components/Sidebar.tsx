@@ -53,12 +53,14 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${active
-                                    ? "bg-primary text-white shadow-md shadow-primary/30"
-                                    : "text-neutral-dark dark:text-gray-200 hover:bg-background-light dark:hover:bg-white/5"
+                                aria-label={`Navigasi ke ${item.label}`}
+                                aria-current={active ? "page" : undefined}
+                                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active
+                                    ? "bg-primary/10 text-primary font-medium"
+                                    : "text-neutral-mid dark:text-gray-400 hover:bg-neutral-light dark:hover:bg-white/5"
                                     }`}
                             >
-                                <span className={`material-symbols-outlined text-[24px] ${active ? "text-white" : "text-neutral-mid dark:text-gray-400"}`}>
+                                <span className={`material-symbols-outlined text-[24px] ${active ? "text-primary" : "text-neutral-mid dark:text-gray-400"}`}>
                                     {item.icon}
                                 </span>
                                 <span className="text-sm font-medium leading-normal">{item.label}</span>
@@ -81,7 +83,7 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
                             View Docs
                         </button>
                     </div>
-                    <button className="mt-4 flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-dark dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors w-full">
+                    <button aria-label="Log Out" className="mt-4 flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-dark dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors w-full">
                         <span className="material-symbols-outlined">logout</span>
                         <p className="text-sm font-medium leading-normal">Log Out</p>
                     </button>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ITSLogo from "@/components/ITSLogo";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -119,8 +120,9 @@ export default function LoginPage() {
                     </div>
 
                     {/* SSO Button */}
+                    {/* SSO Button */}
                     <button className="w-full py-3 border border-gray-200 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-3">
-                        <img src="https://www.its.ac.id/wp-content/themes/flavor/images/favicon.ico" alt="ITS" className="size-5" />
+                        <ITSLogo width={20} height={20} className="size-5" priority />
                         Login dengan ITS SSO
                     </button>
                 </div>
