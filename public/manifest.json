@@ -1,135 +1,21 @@
 {
-  "name": "PPSDM KMM",
-  "short_name": "PPSDM",
-  "description": "Platform Pengembangan SDM Holistik Mahasiswa - 9 Dimensi Kecerdasan",
+  "name": "PPSDM Integrated System",
+  "short_name": "PPSDM OS",
+  "description": "Holistic Personal Development & Knowledge Stewardship Platform",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F7FAFC",
-  "theme_color": "#003366",
-  "orientation": "portrait-primary",
-  "scope": "/",
-  "lang": "id",
+  "background_color": "#020617",
+  "theme_color": "#06b6d4",
   "icons": [
-    {
-      "src": "/icons/icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
     {
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "type": "image/png"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "type": "image/png"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/dashboard.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Dashboard Overview"
-    },
-    {
-      "src": "/screenshots/assessment.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Assessment Page"
-    }
-  ],
-  "categories": [
-    "education",
-    "productivity",
-    "lifestyle"
-  ],
-  "shortcuts": [
-    {
-      "name": "AI Tutor",
-      "short_name": "AI Tutor",
-      "description": "Chat dengan AI Tutor",
-      "url": "/ai-tutor",
-      "icons": [
-        {
-          "src": "/icons/ai-tutor.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Assessments",
-      "short_name": "Assessments",
-      "description": "Mulai assessment baru",
-      "url": "/assessments",
-      "icons": [
-        {
-          "src": "/icons/assessment.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Learning Paths",
-      "short_name": "Learning",
-      "description": "Jalur pembelajaran",
-      "url": "/learning-paths",
-      "icons": [
-        {
-          "src": "/icons/learning.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Achievements",
-      "short_name": "Badges",
-      "description": "Lihat badge dan XP",
-      "url": "/achievements",
-      "icons": [
-        {
-          "src": "/icons/badges.png",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  ]
 }
