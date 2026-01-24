@@ -33,11 +33,11 @@ export interface SocialState {
     moodLogs: MoodLog[];
 
     // Communication
-    communicationLogs: CommunicationLog[];
+    speakingLogs: CommunicationLog[];
 
     // Leadership
     leadershipStyle: string | null;
-    leadershipProjects: LeadershipProject[];
+    projects: LeadershipProject[];
 
     // Actions
     logMood: (log: Omit<MoodLog, 'id'>) => void;
@@ -50,9 +50,9 @@ export const useSocialStore = create<SocialState>()(
     persist(
         (set, get) => ({
             moodLogs: [],
-            communicationLogs: [],
+            speakingLogs: [],
             leadershipStyle: null,
-            leadershipProjects: [],
+            projects: [],
 
             logMood: (log) => {
                 set((state) => ({
@@ -63,7 +63,7 @@ export const useSocialStore = create<SocialState>()(
 
             logCommunicationSession: (log) => {
                 set((state) => ({
-                    communicationLogs: [{ ...log, id: crypto.randomUUID() }, ...state.communicationLogs]
+                    speakingLogs: [{ ...log, id: crypto.randomUUID() }, ...state.speakingLogs]
                 }));
                 useGamificationStore.getState().addXP(25, 'Communication Practice');
             },
@@ -75,7 +75,7 @@ export const useSocialStore = create<SocialState>()(
 
             addLeadershipProject: (project) => {
                 set((state) => ({
-                    leadershipProjects: [{ ...project, id: crypto.randomUUID() }, ...state.leadershipProjects]
+                    projects: [{ ...project, id: crypto.randomUUID() }, ...state.projects]
                 }));
                 useGamificationStore.getState().addXP(20, 'New Project');
             }

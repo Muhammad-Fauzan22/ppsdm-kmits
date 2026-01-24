@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+// Removed uuid package import in favor of native crypto.randomUUID
 
 // --- Types ---
 
