@@ -7,8 +7,9 @@ if (!qstashToken) {
     console.warn("QSTASH_TOKEN is not defined in environment variables.");
 }
 
+// Lazy initialization or build-safe dummy
 export const qstash = new Client({
-    token: qstashToken || "",
+    token: qstashToken || "mock_token_for_build",
     baseUrl: qstashUrl,
 });
 
