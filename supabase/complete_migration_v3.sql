@@ -157,14 +157,53 @@ CREATE TABLE IF NOT EXISTS public.core_ecological_events (
 CREATE TABLE IF NOT EXISTS public.assessment_instruments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     dimension text NOT NULL, -- cognitive, etc.
+    module_number INTEGER DEFAULT 1, -- Added for UI navigation
     question_text TEXT NOT NULL,
     question_order INTEGER NOT NULL,
     level_indicator INTEGER DEFAULT 3,
     framework_reference TEXT,
+    estimated_seconds INTEGER DEFAULT 30, -- Added for time est
     weight DECIMAL(3,2) DEFAULT 1.00,
     is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- =============================================
+-- AUTOMATED LOGGING TRIGGERS (The "Track Everything" System)
+-- =============================================
+-- 1. Function to log events to core_ecological_events
+CREATE OR REPLACE FUNCTION log_ecological_event()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.core_ecological_events (
+    event_type, system_layer, source_table, source_id, student_id, event_data
+  ) VALUES (
+    TG_OP, 
+    'micro', -- Default layer, logic can be smarter
+    TG_TABLE_NAME, 
+    NEW.id, 
+    COALESCE((to_jsonb(NEW)->>'user_id')::uuid, (to_jsonb(NEW)->>'student_id')::uuid), -- Try to find user_id
+    to_jsonb(NEW)
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 2. Apply triggers to critical tables
+DROP TRIGGER IF EXISTS log_progress ON public.user_progress;
+CREATE TRIGGER log_progress
+  AFTER INSERT OR UPDATE ON public.user_progress
+  FOR EACH ROW EXECUTE FUNCTION log_ecological_event();
+
+DROP TRIGGER IF EXISTS log_assessment ON public.assessment_sessions;
+CREATE TRIGGER log_assessment
+  AFTER INSERT OR UPDATE ON public.assessment_sessions
+  FOR EACH ROW EXECUTE FUNCTION log_ecological_event();
+
+DROP TRIGGER IF EXISTS log_books ON public.books;
+CREATE TRIGGER log_books
+  AFTER INSERT OR UPDATE ON public.books
+  FOR EACH ROW EXECUTE FUNCTION log_ecological_event();
 
 -- Sessions
 CREATE TABLE IF NOT EXISTS public.assessment_sessions (
