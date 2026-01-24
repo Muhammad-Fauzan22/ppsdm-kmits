@@ -1,6 +1,6 @@
 -- =============================================
--- PPSDM KMM - MASTER MIGRATION V3 (THE FINAL INTEGRATION)
--- Includes: LMS, LogicFlow, Assessments, Ecological, & Admin
+-- PPSDM KMM - MASTER MIGRATION V3 (THE TRULY COMPLETE EDITION)
+-- Includes: LMS, LogicFlow, Assessments (Full), Ecological (Full), & Admin
 -- Run this AFTER running 'reset_database.sql'
 -- =============================================
 
@@ -95,152 +95,249 @@ create table if not exists public.admins (
 );
 
 -- =============================================
--- 4. ECOLOGICAL SYSTEMS (Condensed)
+-- 4. ECOLOGICAL SYSTEMS (FULL SCHEMA)
 -- =============================================
--- Stakeholders
-CREATE TABLE IF NOT EXISTS public.stakeholders (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  role VARCHAR(50) NOT NULL CHECK (role IN ('student', 'lecturer', 'advisor', 'counselor', 'org_leader', 'department_head', 'dean', 'vice_rector', 'rector', 'ministry', 'industry_partner', 'researcher', 'admin')),
-  system_layer VARCHAR(20) NOT NULL CHECK (system_layer IN ('micro', 'meso', 'exo', 'macro', 'chrono')),
-  organization VARCHAR(200),
-  department VARCHAR(200),
-  access_level INT DEFAULT 1,
-  dashboard_config JSONB DEFAULT '{}',
-  is_active BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+
+-- CORE: STAKEHOLDERS
+create table if not exists public.stakeholders (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  role varchar(50) not null check (role in ('student', 'lecturer', 'advisor', 'counselor', 'org_leader', 'department_head', 'dean', 'vice_rector', 'rector', 'ministry', 'industry_partner', 'researcher', 'admin')),
+  system_layer varchar(20) not null check (system_layer in ('micro', 'meso', 'exo', 'macro', 'chrono')),
+  organization varchar(200),
+  department varchar(200),
+  access_level int default 1,
+  dashboard_config jsonb default '{}',
+  is_active boolean default true,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
--- Micro: Academic & Personal
-CREATE TABLE IF NOT EXISTS public.micro_academic_activities (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  course_id VARCHAR(50) NOT NULL,
-  course_name VARCHAR(200) NOT NULL,
-  activity_type VARCHAR(50) NOT NULL,
-  activity_date DATE NOT NULL,
-  student_engagement JSONB DEFAULT '{}',
-  created_at TIMESTAMPTZ DEFAULT NOW()
+-- LAYER 1: CHRONOSYSTEM (Time & Evolution)
+create table if not exists public.chrono_trajectories (
+  id uuid primary key default gen_random_uuid(),
+  student_id uuid references auth.users(id) on delete cascade,
+  time_period varchar(50) not null,
+  academic_year varchar(20),
+  semester int,
+  ecological_context jsonb default '{}',
+  proximal_processes jsonb default '{}',
+  achievements text[] default '{}',
+  challenges text[] default '{}',
+  growth_indicators jsonb default '{}',
+  created_at timestamptz default now()
 );
 
-CREATE TABLE IF NOT EXISTS public.micro_personal_ecology_map (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  student_id UUID REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE,
-  microsystems JSONB DEFAULT '{}',
-  support_network JSONB DEFAULT '{}',
-  last_updated TIMESTAMPTZ DEFAULT NOW()
+create table if not exists public.chrono_system_changes (
+  id uuid primary key default gen_random_uuid(),
+  system_layer varchar(50) not null,
+  change_type varchar(100) not null,
+  title varchar(200) not null,
+  description text,
+  before_state jsonb default '{}',
+  after_state jsonb default '{}',
+  impact_metrics jsonb default '{}',
+  change_date timestamptz default now(),
+  status varchar(50) default 'pending'
 );
 
--- Meso: Projects
-CREATE TABLE IF NOT EXISTS public.meso_integrated_projects (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_name VARCHAR(200) NOT NULL,
-  involved_systems TEXT[] NOT NULL,
-  status VARCHAR(50) DEFAULT 'planning',
-  lead_coordinator UUID REFERENCES public.stakeholders(id),
-  created_at TIMESTAMPTZ DEFAULT NOW()
+-- LAYER 2: MACROSYSTEM (National/Global)
+create table if not exists public.macro_national_benchmarks (
+  id uuid primary key default gen_random_uuid(),
+  dimension varchar(50) not null,
+  metric_name varchar(100) not null,
+  national_average decimal(5,2),
+  year int not null,
+  source varchar(200),
+  created_at timestamptz default now()
 );
 
--- Core: Events
-CREATE TABLE IF NOT EXISTS public.core_ecological_events (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  event_type VARCHAR(100) NOT NULL,
-  system_layer VARCHAR(20) NOT NULL,
-  student_id UUID REFERENCES auth.users(id),
-  event_data JSONB NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+-- LAYER 3: EXOSYSTEM (Institutional)
+create table if not exists public.exo_institutional_policies (
+  id uuid primary key default gen_random_uuid(),
+  policy_code varchar(50) unique not null,
+  title varchar(200) not null,
+  description text,
+  category varchar(100) not null,
+  effective_date date not null,
+  compliance_requirements jsonb default '{}',
+  status varchar(50) default 'draft',
+  created_at timestamptz default now()
 );
 
--- =============================================
--- 5. ASSESSMENT SYSTEM (Refined)
--- =============================================
--- Instruments
-CREATE TABLE IF NOT EXISTS public.assessment_instruments (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    dimension text NOT NULL, -- cognitive, etc.
-    module_number INTEGER DEFAULT 1, -- Added for UI navigation
-    question_text TEXT NOT NULL,
-    question_order INTEGER NOT NULL,
-    level_indicator INTEGER DEFAULT 3,
-    framework_reference TEXT,
-    estimated_seconds INTEGER DEFAULT 30, -- Added for time est
-    weight DECIMAL(3,2) DEFAULT 1.00,
-    is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMPTZ DEFAULT NOW()
+create table if not exists public.exo_resource_allocations (
+  id uuid primary key default gen_random_uuid(),
+  resource_type varchar(50) not null,
+  amount decimal(15,2) not null,
+  allocated_to varchar(200) not null,
+  fiscal_year int not null,
+  created_at timestamptz default now()
 );
 
--- =============================================
--- AUTOMATED LOGGING TRIGGERS (The "Track Everything" System)
--- =============================================
--- 1. Function to log events to core_ecological_events
-CREATE OR REPLACE FUNCTION log_ecological_event()
-RETURNS TRIGGER AS $$
-BEGIN
-  INSERT INTO public.core_ecological_events (
-    event_type, system_layer, source_table, source_id, student_id, event_data
-  ) VALUES (
-    TG_OP, 
-    'micro', -- Default layer, logic can be smarter
-    TG_TABLE_NAME, 
-    NEW.id, 
-    COALESCE((to_jsonb(NEW)->>'user_id')::uuid, (to_jsonb(NEW)->>'student_id')::uuid), -- Try to find user_id
-    to_jsonb(NEW)
-  );
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- 2. Apply triggers to critical tables
-DROP TRIGGER IF EXISTS log_progress ON public.user_progress;
-CREATE TRIGGER log_progress
-  AFTER INSERT OR UPDATE ON public.user_progress
-  FOR EACH ROW EXECUTE FUNCTION log_ecological_event();
-
-DROP TRIGGER IF EXISTS log_assessment ON public.assessment_sessions;
-CREATE TRIGGER log_assessment
-  AFTER INSERT OR UPDATE ON public.assessment_sessions
-  FOR EACH ROW EXECUTE FUNCTION log_ecological_event();
-
-DROP TRIGGER IF EXISTS log_books ON public.books;
-CREATE TRIGGER log_books
-  AFTER INSERT OR UPDATE ON public.books
-  FOR EACH ROW EXECUTE FUNCTION log_ecological_event();
-
--- Sessions
-CREATE TABLE IF NOT EXISTS public.assessment_sessions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    session_type TEXT NOT NULL,
-    status TEXT DEFAULT 'in-progress',
-    started_at TIMESTAMPTZ DEFAULT NOW(),
-    completed_at TIMESTAMPTZ,
-    scores_snapshot JSONB DEFAULT '{}',
-    total_questions INTEGER DEFAULT 0,
-    answered_questions INTEGER DEFAULT 0
+-- LAYER 4: MESOSYSTEM (Interactions)
+create table if not exists public.meso_coordinations (
+  id uuid primary key default gen_random_uuid(),
+  from_system varchar(100) not null,
+  to_system varchar(100) not null,
+  coordination_type varchar(100) not null,
+  title varchar(200) not null,
+  meeting_frequency varchar(50),
+  created_at timestamptz default now()
 );
 
--- Responses
-CREATE TABLE IF NOT EXISTS public.assessment_responses (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    session_id UUID NOT NULL REFERENCES public.assessment_sessions(id) ON DELETE CASCADE,
-    instrument_id UUID NOT NULL REFERENCES public.assessment_instruments(id) ON DELETE CASCADE,
-    response INTEGER NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT NOW()
+create table if not exists public.meso_integrated_projects (
+  id uuid primary key default gen_random_uuid(),
+  project_name varchar(200) not null,
+  involved_systems text[] not null,
+  objectives jsonb not null,
+  status varchar(50) default 'planning',
+  lead_coordinator uuid references public.stakeholders(id),
+  created_at timestamptz default now()
 );
 
--- High-Level Summary Table (from V2, kept for compatibility)
-create table if not exists public.assessments (
-  id uuid default gen_random_uuid() primary key,
-  user_id uuid references auth.users(id) on delete cascade not null,
-  type text not null, 
-  score_data jsonb not null, 
-  result_summary text,
+-- LAYER 5: MICROSYSTEM (Direct Interaction)
+create table if not exists public.micro_academic_activities (
+  id uuid primary key default gen_random_uuid(),
+  course_id varchar(50) not null,
+  course_name varchar(200) not null,
+  activity_type varchar(50) not null,
+  activity_date date not null,
+  student_engagement jsonb default '{}',
+  created_at timestamptz default now()
+);
+
+create table if not exists public.micro_personal_ecology_map (
+  id uuid primary key default gen_random_uuid(),
+  student_id uuid references auth.users(id) on delete cascade unique,
+  microsystems jsonb default '{}',
+  mesosystem_connections jsonb default '{}',
+  exosystem_influences jsonb default '{}',
+  macrosystem_context jsonb default '{}',
+  chronosystem_events jsonb default '{}',
+  support_network jsonb default '{}',
+  last_updated timestamptz default now()
+);
+
+create table if not exists public.micro_proximal_processes (
+  id uuid primary key default gen_random_uuid(),
+  student_id uuid references auth.users(id) on delete cascade,
+  process_type varchar(100) not null,
+  interaction_quality int check (interaction_quality between 1 and 5),
+  reflection text,
+  occurred_at timestamptz default now()
+);
+
+-- CORE: UNIFIED ANALYTICS
+create table if not exists public.core_ecological_events (
+  id uuid primary key default gen_random_uuid(),
+  event_type varchar(100) not null,
+  system_layer varchar(20) not null,
+  source_table varchar(100) not null,
+  source_id uuid not null,
+  student_id uuid references auth.users(id),
+  event_data jsonb not null,
   created_at timestamptz default now()
 );
 
 -- =============================================
--- 6. SECURITY POLICIES (RLS)
+-- 5. ASSESSMENT SYSTEM (FULL SCHEMA)
 -- =============================================
+create table if not exists public.assessment_instruments (
+    id uuid primary key default gen_random_uuid(),
+    dimension text not null, 
+    module_number integer default 1,
+    question_text text not null,
+    question_order integer not null,
+    level_indicator integer default 3,
+    framework_reference text,
+    estimated_seconds integer default 30,
+    weight decimal(3,2) default 1.00,
+    is_active boolean default true,
+    created_at timestamptz default now()
+);
+
+create table if not exists public.assessment_sessions (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null references auth.users(id) on delete cascade,
+    session_type text not null,
+    status text default 'in-progress',
+    started_at timestamptz default now(),
+    completed_at timestamptz,
+    scores_snapshot jsonb default '{}',
+    total_questions integer default 0,
+    answered_questions integer default 0
+);
+
+create table if not exists public.assessment_responses (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null references auth.users(id) on delete cascade,
+    session_id uuid not null references public.assessment_sessions(id) on delete cascade,
+    instrument_id uuid not null references public.assessment_instruments(id) on delete cascade,
+    response integer not null,
+    created_at timestamptz default now()
+);
+
+create table if not exists public.gap_analysis_results (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null references auth.users(id) on delete cascade,
+    session_id uuid references public.assessment_sessions(id) on delete set null,
+    dimension text not null,
+    current_score integer default 0,
+    ideal_score integer default 100,
+    gap_score integer generated always as (ideal_score - current_score) stored,
+    recommendations jsonb default '[]',
+    created_at timestamptz default now(),
+    unique(session_id, dimension)
+);
+
+-- High-Level Summary Table (for Dashboard speed)
+create table if not exists public.dimension_scores (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid references auth.users(id) on delete cascade,
+    dimension text not null,
+    score int default 0,
+    previous_score int default 0,
+    updated_at timestamptz default now(),
+    unique(user_id, dimension)
+);
+
+-- =============================================
+-- 6. AUTOMATED LOGGING TRIGGERS
+-- =============================================
+create or replace function log_ecological_event()
+returns trigger as $$
+begin
+  insert into public.core_ecological_events (
+    event_type, system_layer, source_table, source_id, student_id, event_data
+  ) values (
+    TG_OP, 
+    'micro', 
+    TG_TABLE_NAME, 
+    NEW.id, 
+    coalesce((to_jsonb(NEW)->>'user_id')::uuid, (to_jsonb(NEW)->>'student_id')::uuid), 
+    to_jsonb(NEW)
+  );
+  return NEW;
+end;
+$$ language plpgsql;
+
+-- Apply triggers
+drop trigger if exists log_progress on public.user_progress;
+create trigger log_progress after insert or update on public.user_progress for each row execute function log_ecological_event();
+
+drop trigger if exists log_assessment on public.assessment_sessions;
+create trigger log_assessment after insert or update on public.assessment_sessions for each row execute function log_ecological_event();
+
+drop trigger if exists log_books on public.books;
+create trigger log_books after insert or update on public.books for each row execute function log_ecological_event();
+
+drop trigger if exists log_responses on public.assessment_responses;
+create trigger log_responses after insert on public.assessment_responses for each row execute function log_ecological_event();
+
+-- =============================================
+-- 7. SECURITY & ACCESS CONTROL
+-- =============================================
+-- Enable RLS
 alter table public.books enable row level security;
 alter table public.user_progress enable row level security;
 alter table public.xp_logs enable row level security;
@@ -248,10 +345,13 @@ alter table public.workflows enable row level security;
 alter table public.workflow_executions enable row level security;
 alter table public.admins enable row level security;
 alter table public.stakeholders enable row level security;
+alter table public.chrono_trajectories enable row level security;
 alter table public.micro_personal_ecology_map enable row level security;
 alter table public.assessment_sessions enable row level security;
 alter table public.assessment_responses enable row level security;
+alter table public.gap_analysis_results enable row level security;
 
+-- Policies (Idempotent)
 -- Public Read
 drop policy if exists "Public Read Books" on public.books;
 create policy "Public Read Books" on public.books for select using (true);
@@ -266,23 +366,29 @@ create policy "User Own XP" on public.xp_logs for select using (auth.uid() = use
 drop policy if exists "User Own Ecology" on public.micro_personal_ecology_map;
 create policy "User Own Ecology" on public.micro_personal_ecology_map for all using (auth.uid() = student_id);
 
+drop policy if exists "User Own Trajectories" on public.chrono_trajectories;
+create policy "User Own Trajectories" on public.chrono_trajectories for all using (auth.uid() = student_id);
+
 drop policy if exists "User Own Sessions" on public.assessment_sessions;
 create policy "User Own Sessions" on public.assessment_sessions for all using (auth.uid() = user_id);
 
 drop policy if exists "User Own Responses" on public.assessment_responses;
 create policy "User Own Responses" on public.assessment_responses for all using (auth.uid() = user_id);
 
+drop policy if exists "User Own Gaps" on public.gap_analysis_results;
+create policy "User Own Gaps" on public.gap_analysis_results for select using (auth.uid() = user_id);
+
 -- Admin Access
 drop policy if exists "Admins View All" on public.admins;
-create policy "Admins View All" on public.admins for select using (true); -- simplified
+create policy "Admins View All" on public.admins for select using (true);
 
 drop policy if exists "Admins Manage Workflows" on public.workflows;
 create policy "Admins Manage Workflows" on public.workflows for all using (exists (select 1 from public.admins where user_id = auth.uid()));
 
 -- =============================================
--- 7. SEED DATA & BOOTSTRAP
+-- 8. INITIAL DATA BOOTSTRAP
 -- =============================================
--- Admin Bootstrap
+-- Admins
 do $$
 declare
   u_id uuid;
@@ -298,9 +404,16 @@ begin
   end if;
 end $$;
 
--- Assessment Questions Seed (Snippet)
-INSERT INTO public.assessment_instruments (dimension, question_text, question_order, framework_reference, level_indicator) VALUES
-('cognitive', 'Saya mampu mengingat dan menjelaskan konsep-konsep penting.', 1, 'Bloom - Remember', 2),
-('cognitive', 'Saya dapat menerapkan teori untuk memecahkan masalah.', 2, 'Bloom - Apply', 3),
-('social', 'Saya mampu berkomunikasi secara efektif.', 1, 'Social - Comms', 2),
-('social', 'Saya efektif dalam bekerja sama dengan tim.', 2, 'Social - Collab', 3);
+-- Assessment Questions
+insert into public.assessment_instruments (dimension, module_number, question_text, question_order, level_indicator) values
+-- Module 1: Cognitive
+('cognitive', 1, 'Saya mampu mengingat dan menjelaskan konsep-konsep penting.', 1, 2),
+('cognitive', 1, 'Saya dapat menerapkan teori untuk memecahkan masalah praktis.', 2, 3),
+('cognitive', 1, 'Saya mampu menganalisis informasi kompleks.', 3, 4),
+-- Module 2: Emotional & Social
+('social', 2, 'Saya mampu berkomunikasi secara efektif.', 1, 2),
+('social', 2, 'Saya dapat bekerja sama dalam tim.', 2, 3),
+('affective', 2, 'Saya mampu mengelola emosi diri sendiri.', 3, 3),
+-- Module 5: Character
+('character', 5, 'Saya bertindak dengan integritas.', 1, 3),
+('character', 5, 'Saya bertanggung jawab atas keputusan saya.', 2, 3);
