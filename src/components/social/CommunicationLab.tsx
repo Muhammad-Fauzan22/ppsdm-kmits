@@ -6,7 +6,7 @@ import { Mic, Video, StopCircle, Play, MessageSquare, Award } from 'lucide-react
 import { motion } from 'framer-motion';
 
 export default function CommunicationLab() {
-    const { communicationLogs, logCommunicationSession } = useSocialStore();
+    const { speakingLogs, logCommunicationSession } = useSocialStore();
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isRecording, setIsRecording] = useState(false);
     const [timer, setTimer] = useState(0);
@@ -112,12 +112,12 @@ export default function CommunicationLab() {
                         <h3 className="font-bold text-purple-900 mb-3 flex items-center gap-2">
                             <Award className="w-4 h-4" /> Recent Feedback
                         </h3>
-                        {communicationLogs.length > 0 ? (
+                        {speakingLogs.length > 0 ? (
                             <div className="space-y-3">
-                                <div className="text-3xl font-bold text-purple-700">{communicationLogs[0].score}/100</div>
-                                <p className="text-sm text-gray-600 italic">"{communicationLogs[0].feedback}"</p>
+                                <div className="text-3xl font-bold text-purple-700">{speakingLogs[0].score}/100</div>
+                                <p className="text-sm text-gray-600 italic">"{speakingLogs[0].feedback}"</p>
                                 <div className="text-xs text-gray-400 mt-2">
-                                    Duration: {formatTime(communicationLogs[0].duration)} • {new Date(communicationLogs[0].date).toLocaleDateString()}
+                                    Duration: {formatTime(speakingLogs[0].duration)} • {new Date(speakingLogs[0].date).toLocaleDateString()}
                                 </div>
                             </div>
                         ) : (
@@ -128,7 +128,7 @@ export default function CommunicationLab() {
                     <div className="flex-1 bg-gray-50 rounded-xl p-5 border border-gray-100 overflow-y-auto">
                         <h3 className="font-bold text-gray-700 mb-3 text-sm">Session History</h3>
                         <div className="space-y-2">
-                            {communicationLogs.slice(0, 10).map(log => (
+                            {speakingLogs.slice(0, 10).map(log => (
                                 <div key={log.id} className="p-3 bg-white rounded-lg border text-sm flex justify-between items-center">
                                     <div className="flex items-center gap-2">
                                         <MessageSquare className="w-4 h-4 text-blue-400" />

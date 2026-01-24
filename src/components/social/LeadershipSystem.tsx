@@ -12,7 +12,7 @@ const LEADERSHIP_STYLES = [
 ];
 
 export default function LeadershipSystem() {
-    const { leadershipStyle, leadershipProjects, setLeadershipStyle, addLeadershipProject } = useSocialStore();
+    const { leadershipStyle, projects, setLeadershipStyle, addLeadershipProject } = useSocialStore();
     const [newProject, setNewProject] = useState('');
     const [showQuiz, setShowQuiz] = useState(false);
 
@@ -110,8 +110,8 @@ export default function LeadershipSystem() {
                     </div>
 
                     <div className="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-1">
-                        {leadershipProjects.length === 0 && <div className="text-center text-gray-400 py-10">No active projects. Lead something!</div>}
-                        {leadershipProjects.map(proj => (
+                        {projects.length === 0 && <div className="text-center text-gray-400 py-10">No active projects. Lead something!</div>}
+                        {projects.map(proj => (
                             <div key={proj.id} className="p-4 bg-white border border-gray-100 rounded-xl shadow-sm flex items-center justify-between">
                                 <div>
                                     <div className="font-bold text-gray-800">{proj.name}</div>
