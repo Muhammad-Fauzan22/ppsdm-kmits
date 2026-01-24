@@ -242,6 +242,12 @@ create table if not exists public.core_ecological_events (
 -- =============================================
 -- 5. ASSESSMENT SYSTEM (FULL SCHEMA)
 -- =============================================
+-- Force recreate to ensure new columns (module_number) exist
+drop table if exists public.assessment_responses cascade;
+drop table if exists public.gap_analysis_results cascade;
+drop table if exists public.assessment_sessions cascade;
+drop table if exists public.assessment_instruments cascade;
+
 create table if not exists public.assessment_instruments (
     id uuid primary key default gen_random_uuid(),
     dimension text not null, 
