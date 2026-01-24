@@ -410,16 +410,92 @@ begin
   end if;
 end $$;
 
--- Assessment Questions
-insert into public.assessment_instruments (dimension, module_number, question_text, question_order, level_indicator) values
+-- Assessment Questions Seed (Comprehensive 72 Questions)
+INSERT INTO public.assessment_instruments (dimension, module_number, question_text, question_order, level_indicator, weight) VALUES
 -- Module 1: Cognitive
-('cognitive', 1, 'Saya mampu mengingat dan menjelaskan konsep-konsep penting.', 1, 2),
-('cognitive', 1, 'Saya dapat menerapkan teori untuk memecahkan masalah praktis.', 2, 3),
-('cognitive', 1, 'Saya mampu menganalisis informasi kompleks.', 3, 4),
--- Module 2: Emotional & Social
-('social', 2, 'Saya mampu berkomunikasi secara efektif.', 1, 2),
-('social', 2, 'Saya dapat bekerja sama dalam tim.', 2, 3),
-('affective', 2, 'Saya mampu mengelola emosi diri sendiri.', 3, 3),
+('cognitive', 1, 'Saya adalah orang yang orisinal dan sering punya ide baru', 1, 3, 1),
+('cognitive', 1, 'Saya adalah orang yang ingin tahu banyak hal', 2, 3, 1),
+('cognitive', 1, 'Saya adalah orang yang imajinatif', 3, 3, 1),
+('cognitive', 1, 'Kecerdasan bisa dikembangkan dengan usaha', 4, 3, 1.5),
+('cognitive', 1, 'Saya senang mempelajari hal-hal baru', 5, 3, 1),
+('cognitive', 1, 'Saya bisa berpikir kritis dan analitis', 6, 3, 1),
+('cognitive', 1, 'Saya suka memecahkan masalah yang kompleks', 7, 4, 1),
+('cognitive', 1, 'Saya kurang tertarik pada seni dan kreativitas', 8, 3, 1),
+
+-- Module 2: Emotional & Social (Combined)
+('emotional', 2, 'Saya mudah bergaul dengan orang baru', 1, 3, 1),
+('emotional', 2, 'Saya bisa mengenali emosi diri sendiri', 2, 3, 1.5),
+('emotional', 2, 'Saya bisa mengelola emosi dengan baik', 3, 3, 1.5),
+('emotional', 2, 'Saya cenderung pendiam', 4, 3, 1),
+('emotional', 2, 'Saya penuh energi dan antusias', 5, 3, 1),
+('emotional', 2, 'Saya bisa berempati dengan perasaan orang lain', 6, 3, 1),
+('emotional', 2, 'Saya mudah gugup dan cemas', 7, 3, 1),
+('emotional', 2, 'Saya stabil secara emosional', 8, 3, 1),
+('social', 2, 'Saya suka menolong dan tidak egois', 9, 3, 1),
+('social', 2, 'Saya mudah memaafkan kesalahan orang lain', 10, 3, 1),
+('social', 2, 'Saya bisa bersikap dingin dan menjaga jarak', 11, 3, 1),
+('social', 2, 'Saya penuh perhatian dan baik hati', 12, 3, 1),
+('social', 2, 'Saya bisa bekerja efektif dalam tim', 13, 3, 1.5),
+('social', 2, 'Saya bisa berkomunikasi dengan jelas', 14, 3, 1),
+('social', 2, 'Saya punya jaringan pertemanan yang luas', 15, 3, 1),
+('social', 2, 'Saya bisa menyelesaikan konflik dengan baik', 16, 3, 1),
+
+-- Module 3: Physical
+('physical', 3, 'Saya berolahraga minimal 30 menit, 3x seminggu', 1, 3, 1.5),
+('physical', 3, 'Saya merasa kuat dan sehat secara fisik', 2, 3, 1),
+('physical', 3, 'Saya makan buah dan sayur setiap hari', 3, 3, 1),
+('physical', 3, 'Saya menjaga pola makan yang seimbang', 4, 3, 1),
+('physical', 3, 'Saya tidur 7-9 jam per malam', 5, 3, 1.5),
+('physical', 3, 'Saya bangun dengan segar dan berenergi', 6, 3, 1),
+('physical', 3, 'Saya menghindari rokok dan alkohol', 7, 3, 1),
+('physical', 3, 'Saya beristirahat saat duduk terlalu lama', 8, 3, 1),
+
+-- Module 4: Financial
+('financial', 4, 'Saya mencatat pengeluaran saya', 1, 3, 1),
+('financial', 4, 'Saya mempertimbangkan kemampuan sebelum membeli', 2, 3, 1),
+('financial', 4, 'Saya menyisihkan uang untuk tabungan', 3, 3, 1.5),
+('financial', 4, 'Saya punya dana darurat minimal 3 bulan', 4, 3, 1.5),
+('financial', 4, 'Saya memahami konsep bunga majemuk', 5, 3, 1),
+('financial', 4, 'Saya memahami risiko dan return investasi', 6, 3, 1),
+('financial', 4, 'Saya menghindari berhutang berlebihan', 7, 3, 1),
+('financial', 4, 'Saya punya rencana keuangan jangka panjang', 8, 3, 1),
+
 -- Module 5: Character
-('character', 5, 'Saya bertindak dengan integritas.', 1, 3),
-('character', 5, 'Saya bertanggung jawab atas keputusan saya.', 2, 3);
+('character', 5, 'Saya mengerjakan sesuatu dengan teliti', 1, 3, 1),
+('character', 5, 'Saya adalah pekerja yang dapat diandalkan', 2, 3, 1),
+('character', 5, 'Saya cenderung tidak teratur', 3, 3, 1),
+('character', 5, 'Saya tekun sampai tugas selesai', 4, 3, 1.5),
+('character', 5, 'Saya tidak mudah menyerah saat menghadapi kegagalan', 5, 3, 1.5),
+('character', 5, 'Saya adalah pekerja keras', 6, 3, 1),
+('character', 5, 'Saya menyelesaikan apapun yang saya mulai', 7, 3, 1),
+('character', 5, 'Saya berpegang teguh pada nilai dan prinsip', 8, 3, 1),
+
+-- Module 6: Spiritual
+('spiritual', 6, 'Saya memiliki tujuan hidup yang jelas', 1, 3, 1.5),
+('spiritual', 6, 'Saya merasa hidup saya bermakna', 2, 3, 1.5),
+('spiritual', 6, 'Saya rutin mengungkapkan rasa syukur', 3, 3, 1),
+('spiritual', 6, 'Saya menghargai hal-hal kecil dalam hidup', 4, 3, 1),
+('spiritual', 6, 'Membantu orang lain memberi saya kepuasan', 5, 3, 1),
+('spiritual', 6, 'Saya berkontribusi pada hal lebih besar dari diri', 6, 3, 1),
+('spiritual', 6, 'Saya melakukan praktik spiritual secara rutin', 7, 3, 1),
+('spiritual', 6, 'Saya merasa terhubung dengan sesuatu yang besar', 8, 3, 1),
+
+-- Module 7: Environmental
+('environmental', 7, 'Saya sadar akan isu lingkungan dan dampaknya', 1, 3, 1),
+('environmental', 7, 'Saya aktif mengurangi, reuse, dan recycle', 2, 3, 1.5),
+('environmental', 7, 'Saya meminimalkan plastik sekali pakai', 3, 3, 1),
+('environmental', 7, 'Saya pertimbangkan dampak lingkungan saat beli', 4, 3, 1),
+('environmental', 7, 'Saya menghemat energi dan air', 5, 3, 1),
+('environmental', 7, 'Saya mengajak orang lain hidup berkelanjutan', 6, 3, 1),
+('environmental', 7, 'Saya menjaga kebersihan lingkungan sekitar', 7, 3, 1),
+('environmental', 7, 'Saya menggunakan transportasi ramah lingkungan', 8, 3, 1),
+
+-- Module 8: Career
+('career', 8, 'Saya punya gambaran jelas tujuan karir', 1, 3, 1.5),
+('career', 8, 'Saya tahu skill yang perlu dikembangkan', 2, 3, 1),
+('career', 8, 'Saya punya kemampuan komunikasi yang baik', 3, 3, 1),
+('career', 8, 'Saya punya pengalaman magang/kerja relevan', 4, 3, 1.5),
+('career', 8, 'Saya punya koneksi profesional di bidang saya', 5, 3, 1),
+('career', 8, 'Saya punya resume/CV yang diperbarui', 6, 3, 1),
+('career', 8, 'Saya percaya diri menghadapi wawancara kerja', 7, 3, 1),
+('career', 8, 'Saya aktif mengembangkan personal branding', 8, 3, 1);
