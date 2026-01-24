@@ -214,17 +214,30 @@ alter table public.assessment_sessions enable row level security;
 alter table public.assessment_responses enable row level security;
 
 -- Public Read
+drop policy if exists "Public Read Books" on public.books;
 create policy "Public Read Books" on public.books for select using (true);
 
 -- User Own Data
+drop policy if exists "User Own Progress" on public.user_progress;
 create policy "User Own Progress" on public.user_progress for all using (auth.uid() = user_id);
+
+drop policy if exists "User Own XP" on public.xp_logs;
 create policy "User Own XP" on public.xp_logs for select using (auth.uid() = user_id);
+
+drop policy if exists "User Own Ecology" on public.micro_personal_ecology_map;
 create policy "User Own Ecology" on public.micro_personal_ecology_map for all using (auth.uid() = student_id);
+
+drop policy if exists "User Own Sessions" on public.assessment_sessions;
 create policy "User Own Sessions" on public.assessment_sessions for all using (auth.uid() = user_id);
+
+drop policy if exists "User Own Responses" on public.assessment_responses;
 create policy "User Own Responses" on public.assessment_responses for all using (auth.uid() = user_id);
 
 -- Admin Access
+drop policy if exists "Admins View All" on public.admins;
 create policy "Admins View All" on public.admins for select using (true); -- simplified
+
+drop policy if exists "Admins Manage Workflows" on public.workflows;
 create policy "Admins Manage Workflows" on public.workflows for all using (exists (select 1 from public.admins where user_id = auth.uid()));
 
 -- =============================================
