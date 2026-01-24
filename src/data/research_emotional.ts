@@ -1,99 +1,65 @@
-import { Slide } from '../components/education/ResearchSlideshow';
+import { ResearchSlide } from '../components/education/ResearchSlideshow';
 
-export const EMOTIONAL_RESEARCH_SLIDES: Slide[] = [
+export const EMOTIONAL_RESEARCH_SLIDES: ResearchSlide[] = [
     {
-        id: 1,
+        id: "1",
+        type: "cover",
         title: "Dimensi 5: Kecerdasan Emosional & Sosial",
         subtitle: "Validasi Psikometrik pada Mahasiswa Indonesia",
-        content: "Assessment ilmiah untuk mengukur kemampuan mengenali, memahami, dan mengelola emosi diri serta berinteraksi efektif dengan orang lain.",
-        icon: "Heart",
-        color: "bg-pink-500",
-        stats: [
-            { label: "Validasi", value: "N=2,147" },
-            { label: "Alpha", value: "0.91" },
-            { label: "Faktor", value: "4" }
-        ],
-        highlights: [
-            "Diadaptasi dari TEIQue & IRI",
-            "Konteks Budaya Kolektivis Indonesia",
-            "Prediktor Kepemimpinan (r=0.52)",
-            "Reliabilitas Konsisten (Test-Retest r=0.84)"
-        ]
+        content: {
+            definition: "Assessment ilmiah untuk mengukur kemampuan mengenali, memahami, dan mengelola emosi diri serta berinteraksi efektif dengan orang lain.",
+            stats: [
+                { label: "Validasi", value: "N=2,147" },
+                { label: "Alpha", value: "0.91" },
+                { label: "Faktor", value: "4" }
+            ]
+        },
+        note: "Diadaptasi dari TEIQue & IRI"
     },
     {
-        id: 2,
+        id: "2",
+        type: "concept",
         title: "Theoretical Framework",
-        subtitle: "Model Empat Dimensi",
-        content: "Konstruk kecerdasan emosional dibangun di atas empat pilar utama yang saling terintegrasi dalam membentuk kompetensi sosial.",
-        icon: "Brain",
-        color: "bg-purple-600",
-        stats: [
-            { label: "Self", value: "Awareness" },
-            { label: "Social", value: "Awareness" },
-            { label: "Self", value: "Management" }
-        ],
-        highlights: [
-            "Kesadaran Diri (Self-Awareness)",
-            "Manajemen Diri (Self-Management)",
-            "Kesadaran Sosial (Social Awareness)",
-            "Manajemen Hubungan (Relationship Mgmt)"
-        ]
+        content: {
+            definition: "Konstruk kecerdasan emosional dibangun di atas empat pilar utama yang saling terintegrasi dalam membentuk kompetensi sosial.",
+            framework: "Kesadaran Diri & Sosial",
+            validation: "Model Empat Dimensi"
+        }
     },
     {
-        id: 3,
+        id: "3",
+        type: "cover",
         title: "Validation Results",
         subtitle: "Bukti Empiris Kualitas Instrumen",
-        content: "Analisis Faktor Konfirmatori (CFA) menunjukkan model 4-faktor yang fit dengan data mahasiswa Indonesia (CFI=0.943).",
-        icon: "Target",
-        color: "bg-rose-500",
-        stats: [
-            { label: "CFI", value: "0.943" },
-            { label: "RMSEA", value: "0.042" },
-            { label: "SRMR", value: "0.037" }
-        ],
-        highlights: [
-            "Validitas Konvergen tinggi dengan TEIQue (r=0.78)",
-            "Korelasi signifikan dengan prestasi akademik (GPA)",
-            "Invariansi pengukuran antar gender terkonfirmasi",
-            "Norma spesifik untuk mahasiswa teknik"
-        ]
+        content: {
+            stats: [
+                { label: "CFI", value: "0.943" },
+                { label: "RMSEA", value: "0.042" },
+                { label: "SRMR", value: "0.037" }
+            ]
+        },
+        note: "Analisis Faktor Konfirmatori (CFA) fit dengan data mahasiswa Indonesia"
     },
     {
-        id: 4,
+        id: "4",
+        type: "concept",
         title: "Why It Matters?",
-        subtitle: "Dampak pada Kesuksesan Karir & Kehidupan",
-        content: "Kecerdasan emosional terbukti menjadi prediktor kuat untuk kesuksesan kepemimpinan dan kesejahteraan psikologis.",
-        icon: "Users",
-        color: "bg-indigo-600",
-        stats: [
-            { label: "Leadership", value: "High" },
-            { label: "Conflict", value: "Low" },
-            { label: "Wellbeing", value: "High" }
-        ],
-        highlights: [
-            "Kemampuan resolusi konflik yang lebih baik",
-            "Ketahanan stres (Resilience) yang lebih tinggi",
-            "Jaringan sosial yang lebih luas dan suportif",
-            "Adaptabilitas dalam lingkungan kerja dinamis"
-        ]
+        content: {
+            definition: "Kecerdasan emosional terbukti menjadi prediktor kuat untuk kesuksesan kepemimpinan dan kesejahteraan psikologis.",
+            impact: "Leadership & Wellbeing",
+            context: "Kesuksesan Karir"
+        }
     },
     {
-        id: 5,
+        id: "5",
+        type: "data",
         title: "Normative Interpretation",
         subtitle: "Posisi Anda di Antara Populasi",
-        content: "Skor Anda dibandingkan dengan norma populasi 2,147 mahasiswa untuk memberikan gambaran obyektif tentang perkembangan Anda.",
-        icon: "BarChart",
-        color: "bg-teal-500",
-        stats: [
-            { label: "Top 10%", value: ">83.6" },
-            { label: "Average", value: "68.5" },
-            { label: "Top 5%", value: ">87.1" }
+        table: [
+            { percentile: "Top 10%", score: ">83.6", label: "Very High" },
+            { percentile: "Average", score: "68.5", label: "Average" },
+            { percentile: "Top 5%", score: ">87.1", label: "Exceptional" }
         ],
-        highlights: [
-            "Kategori Sangat Unggul (>90th percentile)",
-            "Kategori Unggul (>75th percentile)",
-            "Rekomendasi pengembangan personalisasi",
-            "Tracking progress longitudinal"
-        ]
+        note: "Skor Anda dibandingkan dengan norma populasi 2,147 mahasiswa"
     }
 ];

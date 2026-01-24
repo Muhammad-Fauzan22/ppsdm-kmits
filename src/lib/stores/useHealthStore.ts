@@ -26,6 +26,11 @@ export interface MentalLog {
 }
 
 export interface HealthState {
+    metrics: {
+        steps: number;
+        sleep: number;
+        water: number;
+    };
     // Nutrition
     dailyCalorieGoal: number;
     waterIntake: number; // glasses
@@ -60,6 +65,11 @@ export interface HealthState {
 export const useHealthStore = create<HealthState>()(
     persist(
         (set, get) => ({
+            metrics: {
+                steps: 0,
+                sleep: 0,
+                water: 0
+            },
             dailyCalorieGoal: 2000,
             waterIntake: 0,
             nutritionLogs: [],

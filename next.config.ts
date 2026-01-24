@@ -1,9 +1,9 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-  register: true,
-  skipWaiting: true,
-});
+// const withPWA = require('next-pwa')({
+//   dest: 'public',
+//   disable: process.env.NODE_ENV === 'development',
+//   register: true,
+//   skipWaiting: true,
+// });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -30,6 +30,15 @@ const nextConfig = {
         hostname: "www.its.ac.id",
         pathname: "/wp-content/themes/**",
       },
+      // Added for Supabase Storage or external thumbnails if needed
+      {
+        protocol: "https",
+        hostname: "books.google.com",
+      },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+      }
     ],
   },
 
@@ -74,4 +83,4 @@ const nextConfig = {
   },
 };
 
-export default withPWA(nextConfig);
+export default nextConfig; // withPWA(nextConfig);

@@ -7,34 +7,37 @@ import {
     Map,
     FolderOpen,
     Plus,
-    MoreHorizontal,
     Menu,
     Edit2,
-    Info,
     CheckCircle2,
     PlayCircle,
     AlertTriangle,
     Calendar,
     Sparkles,
     Zap,
+    TrendingUp,
     Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { FadeIn, SlideUp, StaggerContainer, StaggerItem } from "@/components/Animations";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { FadeIn } from "@/components/Animations";
 import { PsychometricRadar } from "@/components/PsychometricRadar";
-import { Avatar } from "@/components/UI"; // Keeping existing avatar for now or replace later
+import { DimensionCard } from "@/components/DimensionCard";
 
-// Mock data for Radar
+// Mock data for Radar (Updated to 9 Dimensions)
 const radarData = [
-    { subject: 'Cognitive', value: 90, fullMark: 100 },
-    { subject: 'Affective', value: 75, fullMark: 100 },
-    { subject: 'Psychomotor', value: 82, fullMark: 100 },
-    { subject: 'Social', value: 95, fullMark: 100 },
-    { subject: 'Spiritual', value: 88, fullMark: 100 },
-    { subject: 'Financial', value: 65, fullMark: 100 },
+    { subject: 'Intellectual', value: 90, fullMark: 100 },
+    { subject: 'Self-Mgmt', value: 75, fullMark: 100 },
+    { subject: 'Financial', value: 60, fullMark: 100 },
+    { subject: 'Physical', value: 85, fullMark: 100 },
+    { subject: 'Mental', value: 88, fullMark: 100 },
+    { subject: 'Psychological', value: 92, fullMark: 100 },
+    { subject: 'Character', value: 95, fullMark: 100 },
+    { subject: 'Spiritual', value: 80, fullMark: 100 },
+    { subject: 'Environmental', value: 70, fullMark: 100 },
 ];
+
 
 export default function DashboardPage() {
     return (
@@ -91,8 +94,8 @@ export default function DashboardPage() {
 
             {/* Main Content Grid */}
             <main className="flex-1 w-full max-w-[1400px] mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-                {/* LEFT COLUMN: Profile & Stats (3 cols) */}
-                <aside className="lg:col-span-3 flex flex-col gap-6">
+                {/* LEFT COLUMN: Profile & Stats (4 cols) */}
+                <aside className="lg:col-span-4 flex flex-col gap-6">
                     <FadeIn delay={0.1}>
                         <Card className="overflow-hidden border-none shadow-lg">
                             <div className="h-24 bg-gradient-to-r from-its-blue to-accent-blue relative">
@@ -112,10 +115,16 @@ export default function DashboardPage() {
                                 </div>
                                 <h3 className="text-xl font-bold text-foreground text-center">Rian Santoso</h3>
                                 <p className="text-sm text-muted-foreground font-medium">Informatics Engineering</p>
-                                <p className="text-xs text-muted-foreground mt-1 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">ID: 5025201001</p>
-                                <div className="mt-4 flex gap-2">
-                                    <Badge variant="secondary" className="font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100">Semester 5</Badge>
-                                    <Badge variant="default" className="font-semibold bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-none">Active</Badge>
+
+                                <div className="w-full mt-6">
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span className="font-semibold text-gray-700">Holistic Score</span>
+                                        <span className="font-bold text-primary">82%</span>
+                                    </div>
+                                    <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                                        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full w-[82%]"></div>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground mt-2 text-center">You are in the top 15% of your cohort.</p>
                                 </div>
                             </div>
                         </Card>
@@ -123,144 +132,138 @@ export default function DashboardPage() {
 
                     <FadeIn delay={0.2}>
                         {/* Radar Chart Widget */}
-                        <div className="h-[400px]">
+                        <div className="h-[450px]">
                             <PsychometricRadar
-                                data={radarData}
-                                title="Development Profile"
-                                description="Current semester snapshot"
+                                data={[
+                                    { subject: 'Intellectual', value: 90, fullMark: 100 },
+                                    { subject: 'Self-Mgmt', value: 75, fullMark: 100 },
+                                    { subject: 'Financial', value: 60, fullMark: 100 },
+                                    { subject: 'Physical', value: 85, fullMark: 100 },
+                                    { subject: 'Mental', value: 88, fullMark: 100 },
+                                    { subject: 'Psycho-Well', value: 92, fullMark: 100 },
+                                    { subject: 'Character', value: 95, fullMark: 100 },
+                                    { subject: 'Spiritual', value: 80, fullMark: 100 },
+                                    { subject: 'Environment', value: 70, fullMark: 100 },
+                                ]}
+                                title="Holistic Radar"
+                                description="Your 9-Dimension Balance"
                             />
                         </div>
                     </FadeIn>
                 </aside>
 
-                {/* MIDDLE COLUMN: Growth Timeline (6 cols) */}
-                <section className="lg:col-span-6 flex flex-col h-full gap-6">
+                {/* RIGHT COLUMN: Dimension Grid (8 cols) */}
+                <section className="lg:col-span-8 space-y-8">
+                    {/* Welcome Banner */}
                     <FadeIn delay={0.3}>
-                        <Card className="h-full border-none shadow-lg">
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <div>
-                                    <CardTitle className="text-xl">Growth Timeline</CardTitle>
-                                    <CardDescription>Your academic and professional milestones</CardDescription>
-                                </div>
-                                <div className="flex gap-2">
-                                    <Badge variant="outline" className="gap-1 border-green-200 text-green-700 bg-green-50"><div className="size-1.5 rounded-full bg-green-500"></div>Achieved</Badge>
-                                    <Badge variant="outline" className="gap-1 border-yellow-200 text-yellow-700 bg-yellow-50"><div className="size-1.5 rounded-full bg-yellow-500"></div>Active</Badge>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="pt-6">
-                                <div className="relative flex flex-col h-full pl-2">
-                                    {/* Vertical Line */}
-                                    <div className="absolute left-6 top-2 bottom-4 w-0.5 bg-gray-100 dark:bg-gray-800"></div>
-
-                                    {/* Year 1: Achieved */}
-                                    <div className="relative flex gap-6 pb-10 group">
-                                        <div className="relative z-10 flex-none size-12 rounded-full bg-white border-2 border-green-500 text-green-600 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                            <CheckCircle2 className="size-6" />
-                                        </div>
-                                        <Card className="flex-1 border-none bg-gray-50/50 hover:bg-white hover:shadow-md transition-all duration-300">
-                                            <CardContent className="p-4">
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <h4 className="font-bold text-foreground">Year 1: Foundation</h4>
-                                                    <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200">Completed</Badge>
-                                                </div>
-                                                <p className="text-sm font-semibold text-gray-700">Orientation & Basic Competence</p>
-                                                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                                                    Successfully completed campus orientation and joined the Informatics Student Association basics.
-                                                </p>
-                                                <div className="flex gap-2 mt-3">
-                                                    <Badge variant="outline" className="text-[10px] text-gray-500 border-gray-200">Social</Badge>
-                                                    <Badge variant="outline" className="text-[10px] text-gray-500 border-gray-200">Cognitive</Badge>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </div>
-
-                                    {/* Year 3: Active */}
-                                    <div className="relative flex gap-6 pb-2 group">
-                                        <div className="relative z-10 flex-none size-12 rounded-full bg-white border-2 border-yellow-500 text-yellow-600 flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.3)] animate-pulse">
-                                            <PlayCircle className="size-6" />
-                                        </div>
-                                        <Card className="flex-1 border-l-4 border-l-yellow-500 shadow-md bg-white">
-                                            <CardContent className="p-5">
-                                                <div className="flex justify-between items-start mb-3">
-                                                    <div>
-                                                        <h4 className="font-bold text-primary text-lg">Year 3: Professional Dev</h4>
-                                                        <p className="text-sm font-medium text-muted-foreground mt-1">Internship Preparation</p>
-                                                    </div>
-                                                    <Badge variant="default" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-none animate-pulse">In Progress</Badge>
-                                                </div>
-
-                                                <div className="space-y-4">
-                                                    <p className="text-sm text-gray-600">Focusing on portfolio building and technical interviews preparation.</p>
-                                                    <div>
-                                                        <div className="flex justify-between text-xs mb-2">
-                                                            <span className="font-medium text-gray-500">Milestone Progress</span>
-                                                            <span className="font-bold text-primary">65%</span>
-                                                        </div>
-                                                        <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                                            <div className="bg-primary h-full rounded-full transition-all duration-1000 w-[65%]"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
+                            <div className="relative z-10">
+                                <h1 className="text-2xl font-bold mb-2">Welcome back to your Holistic Journey!</h1>
+                                <p className="text-indigo-100 max-w-xl">
+                                    Your profile indicates strong growth in Character and Intellectual domains.
+                                    Consider focusing on <span className="font-bold text-white underline decoration-yellow-400 decoration-2">Financial Intelligence</span> this week.
+                                </p>
+                            </div>
+                            <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4">
+                                <Sparkles className="size-64" />
+                            </div>
+                        </div>
                     </FadeIn>
-                </section>
 
-                {/* RIGHT COLUMN: Smart Recommendations (3 cols) */}
-                <aside className="lg:col-span-3 flex flex-col gap-6">
-                    <FadeIn delay={0.4}>
-                        <div className="flex items-center justify-between mb-2">
-                            <h3 className="font-bold text-foreground flex items-center gap-2"><Zap className="size-4 text-yellow-500 fill-current" /> Insight</h3>
+                    {/* 9-Grid Dimensions */}
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-bold text-foreground">The 9 Dimensions</h2>
+                            <Button variant="ghost" size="sm">View Matrix Analysis</Button>
                         </div>
 
-                        {/* Card 1: Skill Gap Alert */}
-                        <Card className="border-l-4 border-l-red-500 shadow-sm hover:shadow-md transition-shadow">
-                            <CardContent className="p-4">
-                                <div className="flex gap-3 items-start">
-                                    <div className="p-2 bg-red-100 text-red-600 rounded-lg shrink-0">
-                                        <AlertTriangle className="size-5" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-red-600 uppercase tracking-wide mb-1">Attention Needed</p>
-                                        <h4 className="text-sm font-bold text-foreground">Public Speaking</h4>
-                                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                                            Affective score lower than peer average in communication.
-                                        </p>
-                                        <Button variant="link" size="sm" className="h-auto p-0 text-red-600 text-xs mt-2">
-                                            View Recommendations
-                                        </Button>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Card 2: Event Matching */}
-                        <Card className="mt-4 bg-gradient-to-br from-its-blue to-accent-blue text-white border-none shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform">
-                            <div className="absolute top-0 right-0 p-3 opacity-10">
-                                <Calendar className="size-24" />
-                            </div>
-                            <CardContent className="p-5 relative z-10">
-                                <Badge className="bg-white/20 hover:bg-white/30 text-white border-none mb-3">Recommended Event</Badge>
-                                <h4 className="text-lg font-bold leading-tight mb-4">ITS Leadership Summit 2026</h4>
-                                <div className="flex items-center justify-between">
-                                    <div className="bg-white/10 rounded-lg p-2 text-center backdrop-blur-sm">
-                                        <span className="block text-xs uppercase font-medium opacity-80">Nov</span>
-                                        <span className="block text-xl font-bold">14</span>
-                                    </div>
-                                    <Button size="sm" variant="secondary" className="shadow-lg">
-                                        Register
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </FadeIn>
-                </aside>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <DimensionCard
+                                id="dim1"
+                                title="Intellectual"
+                                description="Cognitive capacity, creativity, and digital literacy."
+                                score={90}
+                                icon={<Zap className="size-6 text-blue-600" />}
+                                colorClass="bg-blue-500"
+                                href="/dashboard/intellectual"
+                            />
+                            <DimensionCard
+                                id="dim2"
+                                title="Self-Management"
+                                description="Productivity, habits, and time management."
+                                score={75}
+                                icon={<LayoutDashboard className="size-6 text-indigo-600" />}
+                                colorClass="bg-indigo-500"
+                                href="/dashboard/self-management"
+                            />
+                            <DimensionCard
+                                id="dim3"
+                                title="Financial"
+                                description="Budgeting, investment, and economic literacy."
+                                score={60}
+                                icon={<TrendingUp className="size-6 text-green-600" />}
+                                colorClass="bg-green-500"
+                                href="/dashboard/financial"
+                            />
+                            <DimensionCard
+                                id="dim4"
+                                title="Physical"
+                                description="Health, vitality, sleep, and nutrition."
+                                score={85}
+                                icon={<PlayCircle className="size-6 text-red-600" />}
+                                colorClass="bg-red-500"
+                                href="/dashboard/physical"
+                            />
+                            <DimensionCard
+                                id="dim5"
+                                title="Mental Stability"
+                                description="Emotional resilience and stress management."
+                                score={88}
+                                icon={<AlertTriangle className="size-6 text-orange-600" />}
+                                colorClass="bg-orange-500"
+                                href="/dashboard/mental"
+                            />
+                            <DimensionCard
+                                id="dim6"
+                                title="Psychological"
+                                description="Self-esteem, well-being, and mindset."
+                                score={92}
+                                icon={<Sparkles className="size-6 text-purple-600" />}
+                                colorClass="bg-purple-500"
+                                href="/dashboard/mental" // Assuming combined dashboard or separate
+                            />
+                            <DimensionCard
+                                id="dim7"
+                                title="Character"
+                                description="Ethics, integrity, and moral compass."
+                                score={95}
+                                icon={<CheckCircle2 className="size-6 text-emerald-600" />}
+                                colorClass="bg-emerald-500"
+                                href="/dashboard/character"
+                            />
+                            <DimensionCard
+                                id="dim8"
+                                title="Spiritual"
+                                description="Purpose, meaning, and connection."
+                                score={80}
+                                icon={<Award className="size-6 text-sky-600" />}
+                                colorClass="bg-sky-500"
+                                href="/dashboard/spiritual"
+                            />
+                            <DimensionCard
+                                id="dim9"
+                                title="Environmental"
+                                description="Sustainability and living environment."
+                                score={70}
+                                icon={<Map className="size-6 text-teal-600" />}
+                                colorClass="bg-teal-500"
+                                href="/dashboard/environmental"
+                            />
+                        </div>
+                    </div>
+                </section>
             </main>
+
         </div>
     );
 }

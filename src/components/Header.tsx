@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 interface HeaderProps {
     variant?: "light" | "dark";
@@ -9,9 +11,29 @@ interface HeaderProps {
 
 export function Header({ variant = "light" }: HeaderProps) {
     const pathname = usePathname();
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        // Get initial session
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUser(session?.user ?? null);
+        });
+
+        // Listen for changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+    };
 
     const navItems = [
         { label: "Dashboard", href: "/dashboard" },
+        { label: "Perpustakaan", href: "/perpustakaan" }, // Added Library link
         { label: "RPI Planning", href: "/rpi" },
         { label: "Portfolio", href: "/portfolio" },
     ];
@@ -52,24 +74,41 @@ export function Header({ variant = "light" }: HeaderProps) {
                         ))}
                     </nav>
                     <div className="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+
+                    {/* User Actions */}
                     <div className="flex items-center gap-4">
-                        <button
-                            aria-label={`Buat ${getPageContext()} baru`}
-                            className="flex items-center gap-2 cursor-pointer bg-primary hover:bg-opacity-90 transition-colors text-white text-sm font-bold h-10 px-5 rounded-lg shadow-md hover:shadow-lg"
-                        >
-                            <span className="material-symbols-outlined text-lg">add</span>
-                            <span>New Activity</span>
-                        </button>
-                        <button aria-label="User Profile" className="relative group">
-                            <div
-                                className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-gray-100 dark:ring-gray-700 dark:ring-offset-background-dark"
-                                style={{
-                                    backgroundImage:
-                                        'url("https://lh3.googleusercontent.com/aida-public/AB6AXuClE0EM96SkM6uD--shNf9TkN55hiP_7YwI6Awx7_v_BQbCKaoxruCniB2yKxNCP7SpnAaI3u7yt23f8pf_txws30mxyqlTcNuLlzyW-qxkUwu4CO108XqnfyA7tpTI4ZvjQoNubGzpxQlJFMGAyTaocUrvthrIGfSoIyBIqFtkJhahbWSuJBgL8PFAyW3tMh-CKAolYhjUlmmxV4TlgXEhIEAdVc7Sg0IBeS0Zz_DXz8wHYz3uFtX7Oz_n6smU3KFkMv6LEpbaWG0")',
-                                }}
-                            ></div>
-                            <span className="absolute bottom-0 right-0 size-3 bg-growth-green border-2 border-white dark:border-card-dark rounded-full"></span>
-                        </button>
+                        {user ? (
+                            <>
+                                <button aria-label="User Profile" className="relative group flex items-center gap-2">
+                                    <div
+                                        className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-gray-100 dark:ring-gray-700 dark:ring-offset-background-dark"
+                                        style={{
+                                            backgroundImage: user.user_metadata?.avatar_url
+                                                ? `url("${user.user_metadata.avatar_url}")`
+                                                : 'url("https://ui-avatars.com/api/?name=User&background=random")',
+                                        }}
+                                    ></div>
+                                    <div className="text-left hidden xl:block">
+                                        <p className="text-xs font-bold text-gray-700 dark:text-white line-clamp-1 max-w-[100px]">{user.email}</p>
+                                        <p className="text-[10px] text-green-600 font-bold">Online</p>
+                                    </div>
+
+                                    {/* Dropdown for Logout */}
+                                    <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-card-dark rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all">
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl"
+                                        >
+                                            Keluar
+                                        </button>
+                                    </div>
+                                </button>
+                            </>
+                        ) : (
+                            <Link href="/login" className="px-5 py-2 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-all text-sm shadow-md">
+                                Masuk
+                            </Link>
+                        )}
                     </div>
                 </div>
 

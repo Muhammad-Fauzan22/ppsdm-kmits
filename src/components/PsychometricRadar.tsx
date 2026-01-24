@@ -13,7 +13,7 @@ const data = [
 ];
 
 interface PsychometricRadarProps {
-    data: { subject: string; value: number }[];
+    data: { subject: string; value: number; fullMark?: number }[];
     title?: string;
     description?: string;
 }

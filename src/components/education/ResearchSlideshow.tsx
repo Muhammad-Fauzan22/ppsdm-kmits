@@ -8,7 +8,7 @@ export interface ResearchSlide {
     id: string;
     title: string;
     subtitle?: string;
-    type: 'cover' | 'concept' | 'process' | 'data';
+    type: 'cover' | 'concept' | 'process' | 'data' | string;
     content?: any;
     steps?: string[];
     table?: any[];
@@ -17,9 +17,10 @@ export interface ResearchSlide {
 
 interface ResearchSlideshowProps {
     slides: ResearchSlide[];
+    onComplete?: () => void;
 }
 
-export default function ResearchSlideshow({ slides }: ResearchSlideshowProps) {
+export default function ResearchSlideshow({ slides, onComplete }: ResearchSlideshowProps) {
     const [current, setCurrent] = useState(0);
 
     if (!slides || slides.length === 0) return null;
@@ -29,6 +30,14 @@ export default function ResearchSlideshow({ slides }: ResearchSlideshowProps) {
 
     const next = () => setCurrent(prev => Math.min(prev + 1, total - 1));
     const prev = () => setCurrent(prev => Math.max(prev - 1, 0));
+
+    const handleNext = () => {
+        if (current === total - 1) {
+            if (onComplete) onComplete();
+        } else {
+            next();
+        }
+    };
 
     // Calculate progress for progress bar
     const progress = ((current + 1) / total) * 100;
@@ -198,11 +207,11 @@ export default function ResearchSlideshow({ slides }: ResearchSlideshowProps) {
                 </div>
 
                 <button
-                    onClick={next}
-                    disabled={current === total - 1}
+                    onClick={handleNext}
+                    disabled={current === total - 1 && !onComplete}
                     className="flex items-center gap-2 text-white font-bold hover:text-cyan-400 disabled:opacity-30 transition-colors"
                 >
-                    Next <ChevronRight className="w-5 h-5" />
+                    {current === total - 1 ? (onComplete ? 'Start Assessment' : 'Finish') : 'Next'} <ChevronRight className="w-5 h-5" />
                 </button>
             </div>
         </div>

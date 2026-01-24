@@ -61,7 +61,7 @@ export default function KnowledgeGardenScene() {
             {/* Ground */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
                 <planeGeometry args={[20, 20]} />
-                <meshStandardMaterial color="#1e293b" roughnes={0.8} />
+                <meshStandardMaterial color="#1e293b" roughness={0.8} />
             </mesh>
 
             {/* Grid Helper for structure */}

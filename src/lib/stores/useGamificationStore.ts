@@ -18,7 +18,7 @@ interface GamificationState {
     achievements: Achievement[];
 
     // Actions
-    addXP: (amount: number) => void;
+    addXP: (amount: number, reason?: string) => void;
     unlockAchievement: (id: string) => void;
 }
 
@@ -48,7 +48,7 @@ export const useGamificationStore = create<GamificationState>()(
             rank: 'Novice',
             achievements: ACHIEVEMENTS_LIST,
 
-            addXP: (amount) => set((state) => {
+            addXP: (amount, reason) => set((state) => {
                 const newXP = state.xp + amount;
                 const newLevel = calculateLevel(newXP);
                 const newRank = getRank(newLevel);
@@ -57,6 +57,10 @@ export const useGamificationStore = create<GamificationState>()(
                 if (newLevel > state.level) {
                     // You could trigger a confetti event or toast here via a separate UI subscription
                     console.log(`Level Up! ${state.level} -> ${newLevel}`);
+                }
+
+                if (reason) {
+                    console.log(`[XP] +${amount} for ${reason}`);
                 }
 
                 return { xp: newXP, level: newLevel, rank: newRank };

@@ -35,6 +35,10 @@ interface KnowledgeState {
     notes: Note[];
     skills: Skill[];
     ideas: Idea[];
+    stats: {
+        booksRead: number;
+        coursesCompleted: number;
+    };
 
     // Note Actions
     addNote: (note: Omit<Note, 'id' | 'createdAt' | 'repetitionLevel'>) => void;
@@ -61,6 +65,10 @@ export const useKnowledgeStore = create<KnowledgeState>()(
                 { id: '3', name: 'Data Analysis', category: 'Tech', currentLevel: 1, targetLevel: 4 },
             ],
             ideas: [],
+            stats: {
+                booksRead: 0,
+                coursesCompleted: 0
+            },
 
             addNote: (note) => {
                 useGamificationStore.getState().addXP(10); // Small XP for note taking

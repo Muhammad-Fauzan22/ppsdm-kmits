@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useMentalStore } from '@/lib/stores/useMentalStore';
-import { Wind, Headphones, SmartphoneOff, Play, Pause } from 'lucide-react';
+import { Wind, Headphones, Smartphone, Play, Pause } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const MEDITATIONS = [

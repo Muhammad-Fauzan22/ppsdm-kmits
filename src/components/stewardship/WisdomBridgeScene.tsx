@@ -51,7 +51,7 @@ export default function WisdomBridgeScene() {
                     anchorX="center"
                     anchorY="middle"
                 >
-                    FRESHMAN  ->  ALUMNI
+                    FRESHMAN  {`->`}  ALUMNI
                 </Text>
             </Float>
 

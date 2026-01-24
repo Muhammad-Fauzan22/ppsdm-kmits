@@ -1,4 +1,6 @@
-export const COGNITIVE_RESEARCH_SLIDES = [
+import { ResearchSlide } from "@/components/education/ResearchSlideshow";
+
+export const COGNITIVE_RESEARCH_SLIDES: ResearchSlide[] = [
     {
         id: 'intro',
         title: 'Scientific Validation Report: Cognitive & Intellectual',

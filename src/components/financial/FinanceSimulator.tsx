@@ -128,7 +128,7 @@ export default function FinanceSimulator() {
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
                                     </Pie>
-                                    <RechartsTooltip formatter={(value: number) => formatIDR(value)} />
+                                    <RechartsTooltip formatter={(value: any) => formatIDR(Number(value) || 0)} />
                                     <Legend />
                                 </PieChart>
                             </ResponsiveContainer>
