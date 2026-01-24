@@ -19,6 +19,7 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
         { label: "Personal OS", href: "/dashboard/pos", icon: "check_circle" },
         { label: "NEXUS CORE", href: "/dashboard/holistic", icon: "hub" },
         { label: "System Blueprint", href: "/dashboard/blueprint", icon: "developer_board" }, // Added
+        { label: "Resource Engine", href: "/gre/discovery", icon: "travel_explore" }, // New GRE Module
         { label: "Intellectual", href: "/dashboard/intellectual", icon: "psychology" },
         { label: "Financial", href: "/dashboard/financial", icon: "attach_money" },
         { label: "Health", href: "/dashboard/health", icon: "heart_check" },

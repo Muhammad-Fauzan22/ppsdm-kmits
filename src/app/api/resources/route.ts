@@ -1,54 +1,65 @@
+
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
+import { GlobalResourceEngine } from "@/lib/resources/GlobalResourceEngine";
 
-// GET - Get free learning resources
+// GET - Get free learning resources via Global Resource Engine
 export async function GET(request: NextRequest) {
     try {
         const supabase = await createClient();
+        const gre = new GlobalResourceEngine();
 
         const { searchParams } = new URL(request.url);
-        const dimension = searchParams.get("dimension");
-        const type = searchParams.get("type");
-        const language = searchParams.get("language");
-        const limit = parseInt(searchParams.get("limit") || "20");
+        const dimension = searchParams.get("dimension") || undefined;
+        // Map 'all' to undefined so it fetches everything
+        const safeDimension = dimension === 'all' ? undefined : dimension;
 
-        let query = supabase
-            .from("free_resources")
-            .select("*")
-            .eq("is_active", true)
-            .order("rating", { ascending: false, nullsFirst: false })
-            .limit(limit);
+        const type = searchParams.get("type") || undefined;
+        const queryTerm = searchParams.get("q") || undefined; // Frontend might send 'q' or use filter logic
+        const limit = parseInt(searchParams.get("limit") || "50"); // Increase limit for better quantum filtering
 
-        if (dimension) {
-            query = query.contains("target_dimensions", [dimension]);
-        }
+        // Use the Quantum Engine to find resources
+        const quantumResources = await gre.findResources(supabase, {
+            query: queryTerm,
+            domain: safeDimension,
+            type: type,
+            limit: limit
+        });
 
-        if (type) {
-            query = query.eq("resource_type", type);
-        }
+        // Map back to frontend expected structure (FreeResource-like)
+        const resources = quantumResources.map((r: any) => ({
+            id: r.id,
+            title: r.title,
+            description: r.description,
+            url: r.url,
+            source: r.provider,
+            type: r.type,
+            language: r.languages[0] || 'en',
+            dimensions: r.tags || [],
+            skills: r.target_skills || [],
+            rating: (r.quality?.pedagogical || 0.7) * 5, // Convert 0-1 back to 5-star
+            duration_minutes: parseInt(r.estimated_time) || 30,
+            image_url: r.image_url,
+            is_quantum_recommended: true,
+            match_score: r.match_score,
+            reason: r.recommendation_reason
+        }));
 
-        if (language) {
-            query = query.eq("language", language);
-        }
-
-        const { data: resources, error } = await query;
-
-        if (error) throw error;
-
-        // Group by type
-        const byType = resources?.reduce((acc, r) => {
-            if (!acc[r.resource_type]) {
-                acc[r.resource_type] = [];
+        // Group by type for compatibility
+        const byType = resources.reduce((acc: any, r: any) => {
+            if (!acc[r.type]) {
+                acc[r.type] = [];
             }
-            acc[r.resource_type].push(r);
+            acc[r.type].push(r);
             return acc;
-        }, {} as Record<string, typeof resources>);
+        }, {});
 
         return NextResponse.json({
             success: true,
-            total: resources?.length || 0,
+            total: resources.length,
             resources,
             byType,
+            engine: "GRE v1.0 (Quantum-Enhanced)"
         });
     } catch (error) {
         console.error("Error fetching resources:", error);
@@ -59,7 +70,7 @@ export async function GET(request: NextRequest) {
     }
 }
 
-// POST - Track resource interaction
+// POST - Track resource interaction (Preserved)
 export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient();

@@ -148,3 +148,81 @@ export interface PortfolioSection {
     order: number;
     visible: boolean;
 }
+
+// --------------------------------------------------------
+// HOLISTIC PLATFORM ARCHITECTURE TYPES (New)
+// --------------------------------------------------------
+
+export interface Assessment {
+    id: string;
+    user_id: string;
+    domain: string; // 'cognitive', 'emotional', 'social', etc.
+    version: string;
+    completed_at: string;
+    scores: Record<string, any>; // JSONB: Detailed sub-scores
+    profile_analysis: Record<string, any>; // JSONB: Analysis text/data
+    recommendations: Record<string, any>; // JSONB: Usage suggestions
+    validity_checks: Record<string, any>; // JSONB: Reliability metrics
+    created_at: string;
+}
+
+export interface IDP {
+    id: string;
+    user_id: string;
+    vision_statement: string;
+    status: 'active' | 'completed' | 'archived';
+    timeframe: string; // '1_year', '3_year'
+    goals: IDPGoal[]; // JSONB
+    resources: IDPResource[]; // JSONB
+    timeline: any[]; // JSONB
+    progress: Record<string, any>; // JSONB
+    last_reviewed?: string;
+    next_review?: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface IDPGoal {
+    id: string;
+    title: string;
+    description: string;
+    metric: string;
+    target: number;
+    current: number;
+    deadline: string;
+    status: 'pending' | 'in_progress' | 'completed';
+}
+
+export interface IDPResource {
+    resource_id: string;
+    title: string;
+    type: string;
+    url?: string;
+}
+
+export interface Resource {
+    id: string;
+    title: string;
+    description?: string;
+    type: string; // 'course', 'book', 'mentor', etc.
+    source?: string;
+    url?: string;
+    metadata: Record<string, any>; // duration, cost, etc.
+    quality_score?: number;
+    tags?: string[];
+    skill_mappings: Record<string, any>;
+    created_at: string;
+}
+
+export interface ProgressLog {
+    id: string;
+    user_id: string;
+    idp_id?: string;
+    goal_id?: string;
+    activity_type: string;
+    activity_data: Record<string, any>;
+    progress_metric?: number;
+    notes?: string;
+    created_at: string;
+}
+

@@ -50,22 +50,25 @@ export async function GET(request: NextRequest) {
             ...(roadmaps.secondary_focus_dimensions || []),
         ];
 
-        let resources = null;
-        if (focusDimensions.length > 0) {
-            const { data: recommendedResources } = await supabase
-                .from("free_resources")
-                .select("*")
-                .overlaps("target_dimensions", focusDimensions)
-                .limit(10);
+        // Generate Dynamic Learning Pathway using GRE
+        const { DynamicLearningPathwayComposer } = await import("@/lib/resources/DynamicLearningPathway");
+        const composer = new DynamicLearningPathwayComposer();
+        const pathway = await composer.composePathway(supabase, roadmaps);
 
-            resources = recommendedResources;
-        }
+        // Flatten resources from the pathway for backward compatibility with the frontend
+        // The frontend expects "recommendedResources" as a simple list.
+        // We will provide resources from the first 2 active milestones (Week 1 & 2)
+        const resources = [
+            ...pathway.milestones[0].resources,
+            ...pathway.milestones[1].resources
+        ];
 
         return NextResponse.json({
             success: true,
             hasRoadmap: true,
             roadmap: roadmaps,
             recommendedResources: resources,
+            learningPathway: pathway // Expose full structured pathway
         });
     } catch (error) {
         console.error("Error fetching roadmap:", error);

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { curatedFreeResources, recommendResources, FreeResource } from "@/lib/freeResources";
+import { curatedFreeResources, FreeResource } from "@/lib/freeResources";
 
 const sourceColors: Record<string, string> = {
     khan_academy: 'bg-green-500',
@@ -27,29 +27,35 @@ export default function ResourcesPage() {
     const [filter, setFilter] = useState<string>('all');
     const [search, setSearch] = useState('');
     const [language, setLanguage] = useState<'both' | 'id' | 'en'>('both');
-    const [resources, setResources] = useState<FreeResource[]>(curatedFreeResources);
+    const [resources, setResources] = useState<FreeResource[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        let filtered = curatedFreeResources;
+        async function fetchResources() {
+            setLoading(true);
+            try {
+                // Construct query params
+                const params = new URLSearchParams();
+                if (filter !== 'all') params.append('dimension', filter);
+                if (language !== 'both') params.append('language', language);
+                if (search) params.append('q', search);
 
-        if (filter !== 'all') {
-            filtered = filtered.filter(r => r.dimensions.includes(filter));
+                const res = await fetch(`/api/resources?${params.toString()}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    setResources(data.resources);
+                }
+            } catch (error) {
+                console.error("Failed to fetch resources", error);
+                setResources(curatedFreeResources); // Fallback
+            } finally {
+                setLoading(false);
+            }
         }
 
-        if (language !== 'both') {
-            filtered = filtered.filter(r => r.language === language);
-        }
-
-        if (search) {
-            const q = search.toLowerCase();
-            filtered = filtered.filter(r =>
-                r.title.toLowerCase().includes(q) ||
-                r.description.toLowerCase().includes(q) ||
-                r.skills.some(s => s.toLowerCase().includes(q))
-            );
-        }
-
-        setResources(filtered);
+        const timeoutId = setTimeout(fetchResources, 300);
+        return () => clearTimeout(timeoutId);
     }, [filter, search, language]);
 
     const dimensions = [
@@ -74,7 +80,7 @@ export default function ResourcesPage() {
                         <div>
                             <h1 className="text-2xl font-bold">📚 Free Learning Resources</h1>
                             <p className="text-blue-100 mt-1">
-                                {resources.length} materi gratis dari sumber terpercaya
+                                {loading ? 'Memuat...' : `${resources.length} materi gratis dari sumber terpercaya`}
                             </p>
                         </div>
                         <Link href="/dashboard" className="px-4 py-2 bg-white/20 rounded-xl hover:bg-white/30 transition">
@@ -106,8 +112,8 @@ export default function ResourcesPage() {
                                 key={dim.id}
                                 onClick={() => setFilter(dim.id)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition ${filter === dim.id
-                                        ? 'bg-[var(--its-blue)] text-white'
-                                        : 'bg-gray-100 hover:bg-gray-200'
+                                    ? 'bg-[var(--its-blue)] text-white'
+                                    : 'bg-gray-100 hover:bg-gray-200'
                                     }`}
                             >
                                 {dim.icon} {dim.name}
@@ -134,82 +140,97 @@ export default function ResourcesPage() {
 
             {/* Resources Grid */}
             <main className="max-w-6xl mx-auto px-4">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {resources.map((resource, index) => (
-                        <motion.a
-                            key={resource.id}
-                            href={resource.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05 }}
-                            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition group"
-                        >
-                            {/* Thumbnail */}
-                            <div className={`h-32 ${sourceColors[resource.source] || 'bg-gray-400'} flex items-center justify-center`}>
-                                <span className="text-6xl opacity-50">{typeIcons[resource.type]}</span>
-                            </div>
-
-                            <div className="p-4">
-                                {/* Source & Type */}
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-xs font-medium text-gray-500 uppercase">
-                                        {resource.source.replace('_', ' ')}
-                                    </span>
-                                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                                        {resource.language === 'id' ? '🇮🇩' : '🇬🇧'} {resource.type}
-                                    </span>
-                                </div>
-
-                                {/* Title */}
-                                <h3 className="font-semibold text-gray-800 group-hover:text-[var(--its-blue)] transition line-clamp-2">
-                                    {resource.title}
-                                </h3>
-
-                                {/* Description */}
-                                <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                                    {resource.description}
-                                </p>
-
-                                {/* Meta */}
-                                <div className="flex items-center justify-between mt-4 text-sm">
-                                    <div className="flex items-center gap-1 text-gray-500">
-                                        <span>⏱️</span>
-                                        <span>{resource.duration_minutes} menit</span>
-                                    </div>
-                                    <div className="flex items-center gap-1 text-yellow-500">
-                                        <span>⭐</span>
-                                        <span>{resource.rating}</span>
-                                    </div>
-                                </div>
-
-                                {/* Skills */}
-                                <div className="flex flex-wrap gap-1 mt-3">
-                                    {resource.skills.slice(0, 3).map((skill) => (
-                                        <span key={skill} className="text-xs px-2 py-1 bg-gray-100 rounded-full">
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Free Badge */}
-                                <div className="mt-4 flex items-center gap-2">
-                                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                                        ✅ 100% Gratis
-                                    </span>
-                                </div>
-                            </div>
-                        </motion.a>
-                    ))}
-                </div>
-
-                {resources.length === 0 && (
-                    <div className="text-center py-16">
-                        <div className="text-6xl mb-4">🔍</div>
-                        <h3 className="text-xl font-semibold text-gray-700">Tidak ada hasil</h3>
-                        <p className="text-gray-500">Coba ubah filter atau kata kunci pencarian</p>
+                {loading ? (
+                    <div className="flex justify-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                     </div>
+                ) : (
+                    <>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {resources.map((resource, index) => (
+                                <motion.a
+                                    key={resource.id}
+                                    href={resource.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.05 }}
+                                    className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition group relative"
+                                >
+                                    {/* Thumbnail */}
+                                    <div className={`h-32 ${sourceColors[resource.source] || 'bg-gray-400'} flex items-center justify-center`}>
+                                        <span className="text-6xl opacity-50">{typeIcons[resource.type] || '📄'}</span>
+                                    </div>
+
+                                    {/* Quantum Badge */}
+                                    {(resource as any).is_quantum_recommended && (
+                                        <div className="absolute top-2 right-2 bg-purple-600 text-white text-[10px] px-2 py-1 rounded-full shadow-md flex items-center gap-1">
+                                            ✨ High Match {Math.round((resource as any).match_score * 100)}%
+                                        </div>
+                                    )}
+
+                                    <div className="p-4">
+                                        {/* Source & Type */}
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-xs font-medium text-gray-500 uppercase">
+                                                {resource.source.replace('_', ' ')}
+                                            </span>
+                                            <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                                                {resource.language === 'id' ? '🇮🇩' : '🇬🇧'} {resource.type}
+                                            </span>
+                                        </div>
+
+                                        {/* Title */}
+                                        <h3 className="font-semibold text-gray-800 group-hover:text-[var(--its-blue)] transition line-clamp-2">
+                                            {resource.title}
+                                        </h3>
+
+                                        {/* Description */}
+                                        <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                                            {resource.description}
+                                        </p>
+
+                                        {/* Meta */}
+                                        <div className="flex items-center justify-between mt-4 text-sm">
+                                            <div className="flex items-center gap-1 text-gray-500">
+                                                <span>⏱️</span>
+                                                <span>{resource.duration_minutes} menit</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 text-yellow-500">
+                                                <span>⭐</span>
+                                                <span>{resource.rating.toFixed(1)}</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Skills */}
+                                        <div className="flex flex-wrap gap-1 mt-3">
+                                            {resource.skills.slice(0, 3).map((skill) => (
+                                                <span key={skill} className="text-xs px-2 py-1 bg-gray-100 rounded-full">
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        {/* Free Badge */}
+                                        <div className="mt-4 flex items-center gap-2">
+                                            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                                                ✅ 100% Gratis
+                                            </span>
+                                        </div>
+                                    </div>
+                                </motion.a>
+                            ))}
+                        </div>
+
+                        {resources.length === 0 && (
+                            <div className="text-center py-16">
+                                <div className="text-6xl mb-4">🔍</div>
+                                <h3 className="text-xl font-semibold text-gray-700">Tidak ada hasil</h3>
+                                <p className="text-gray-500">Coba ubah filter atau kata kunci pencarian</p>
+                            </div>
+                        )}
+                    </>
                 )}
             </main>
 
