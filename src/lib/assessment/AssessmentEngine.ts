@@ -1,5 +1,5 @@
 
-import { supabase } from '../supabase/supabaseClient';
+import { supabase } from '../supabaseClient';
 
 // EXISTING SCORING MODULES (Verified export names)
 import { calculateCognitiveScores } from './cognitiveScoring';
@@ -27,6 +27,7 @@ export type AssessmentDomain =
     | 'creativity'
     | 'wellbeing'
     | 'physical'
+    | 'mental'
     | 'spiritual';
 
 export interface AssessmentContext {
@@ -92,13 +93,13 @@ export class AssessmentEngine {
                 case 'physical':
                     scores = calculatePhysicalScores(responses);
                     break;
+                case 'spiritual':
+                    const spirResult = calculateSpiritualScores(responses as any);
+                    scores = spirResult;
+                    break;
                 case 'mental':
                 case 'wellbeing':
-                    scores = calculateMentalScores(responses);
-                    break;
-                case 'spiritual':
-                    const spirResult = calculateSpiritualScores(responses);
-                    scores = spirResult;
+                    scores = calculateMentalScores(responses as any);
                     break;
                 default:
                     throw new Error(`Domain ${domain} not implemented yet`);

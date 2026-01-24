@@ -1,6 +1,13 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { AssessmentEngine } from '@/lib/assessment/AssessmentEngine';
+import { ASSESSMENT_QUESTIONS } from '@/lib/assessment/questions';
+
+export async function GET() {
+    return NextResponse.json({
+        success: true,
+        data: ASSESSMENT_QUESTIONS
+    });
+}
 
 export async function POST(req: NextRequest) {
     try {
