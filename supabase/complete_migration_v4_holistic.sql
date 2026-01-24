@@ -143,7 +143,7 @@ DROP TABLE IF EXISTS public.assessment_sessions CASCADE;
 
 -- Tabel 5: ASSESSMENT_SESSIONS
 CREATE TABLE IF NOT EXISTS public.assessment_sessions (
-    session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES public.users(user_id) ON DELETE CASCADE,
     domain_id UUID NOT NULL REFERENCES public.assessment_domains(domain_id),
     
@@ -159,7 +159,9 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     is_valid BOOLEAN DEFAULT TRUE,
     validity_issues JSONB,
     
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    PRIMARY KEY (session_id, created_at) -- Partition key must be part of PK
 ) PARTITION BY RANGE (created_at);
 
 -- Partitions for Sessions (Example for 2024-2026)
@@ -169,9 +171,8 @@ CREATE TABLE IF NOT EXISTS assessment_sessions_default PARTITION OF public.asses
 
 -- Tabel 6: USER_RESPONSES
 CREATE TABLE IF NOT EXISTS public.user_responses (
-    response_id UUID DEFAULT gen_random_uuid(), -- Removed PK constraint for strict partitioning usually, but UUID helps.
-    -- Better to make (session_id, item_id) PK in partitioning schemes or rely on composite
-    session_id UUID NOT NULL, -- FK constraints can be tricky on partitions, keeping logical link
+    response_id UUID DEFAULT gen_random_uuid(),
+    session_id UUID NOT NULL, -- Logical Link ONLY (FK constraint removed due to partitioning complexity)
     item_id UUID NOT NULL REFERENCES public.assessment_items(item_id),
     
     response_value JSONB NOT NULL,
@@ -180,7 +181,10 @@ CREATE TABLE IF NOT EXISTS public.user_responses (
     confidence_level INTEGER CHECK (confidence_level BETWEEN 1 AND 5),
     skipped BOOLEAN DEFAULT FALSE,
     
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- No PK or Unique Constraint enforced cross-partition for simplicity
+    -- Ideally: PRIMARY KEY (response_id, created_at)
 ) PARTITION BY RANGE (created_at);
 
 -- Partitions for Responses
@@ -191,7 +195,7 @@ CREATE TABLE IF NOT EXISTS user_responses_default PARTITION OF public.user_respo
 -- Tabel 7: ASSESSMENT_RESULTS
 CREATE TABLE IF NOT EXISTS public.assessment_results (
     result_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    session_id UUID NOT NULL, -- Logical link to partitioned session
+    session_id UUID NOT NULL, -- Logical link
     user_id UUID NOT NULL REFERENCES public.users(user_id),
     domain_id UUID NOT NULL REFERENCES public.assessment_domains(domain_id),
     
