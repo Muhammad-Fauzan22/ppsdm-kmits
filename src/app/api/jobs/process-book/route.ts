@@ -82,4 +82,7 @@ export const POST = verifySignatureAppRouter(async (request: Request) => {
             { status: 500 }
         );
     }
+}, {
+    currentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY || "mock_key",
+    nextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY || "mock_key",
 });
