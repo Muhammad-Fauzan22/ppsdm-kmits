@@ -24,6 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { FadeIn } from "@/components/Animations";
 import { PsychometricRadar } from "@/components/PsychometricRadar";
 import { DimensionCard } from "@/components/DimensionCard";
+import { LiveProcessingFeed } from "@/components/dashboard/LiveProcessingFeed";
 
 // Mock data for Radar (Updated to 9 Dimensions)
 const radarData = [
@@ -156,7 +157,7 @@ export default function DashboardPage() {
                 <section className="lg:col-span-8 space-y-8">
                     {/* Welcome Banner */}
                     <FadeIn delay={0.3}>
-                        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden mb-8">
                             <div className="relative z-10">
                                 <h1 className="text-2xl font-bold mb-2">Welcome back to your Holistic Journey!</h1>
                                 <p className="text-indigo-100 max-w-xl">
@@ -167,6 +168,13 @@ export default function DashboardPage() {
                             <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4">
                                 <Sparkles className="size-64" />
                             </div>
+                        </div>
+                    </FadeIn>
+
+                    {/* Live Processing Feed */}
+                    <FadeIn delay={0.4}>
+                        <div className="mb-8">
+                            <LiveProcessingFeed />
                         </div>
                     </FadeIn>
 
