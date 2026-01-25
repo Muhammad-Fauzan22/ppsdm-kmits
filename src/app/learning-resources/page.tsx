@@ -199,7 +199,7 @@ export default function ResourcesPage() {
                                             </div>
                                             <div className="flex items-center gap-1 text-yellow-500">
                                                 <span>⭐</span>
-                                                <span>{resource.rating.toFixed(1)}</span>
+                                                <span>{resource.rating?.toFixed(1) || 'N/A'}</span>
                                             </div>
                                         </div>
 

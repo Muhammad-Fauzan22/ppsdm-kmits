@@ -23,10 +23,18 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, data: idp });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('IDP Generation API Error:', error);
+
+        let errorMessage = 'Internal Server Error';
+        if (error instanceof Error) {
+            // Only expose message if safe or generic enough, otherwise default.
+            // For now we assume error.message is somewhat safe but in PROD better to sanitize.
+            errorMessage = error.message;
+        }
+
         return NextResponse.json(
-            { error: error.message || 'Internal Server Error' },
+            { error: process.env.NODE_ENV === 'development' ? errorMessage : 'Something went wrong processing your request.' },
             { status: 500 }
         );
     }

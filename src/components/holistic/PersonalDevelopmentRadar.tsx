@@ -6,11 +6,7 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { Loader } from 'lucide-react';
 
 export default function PersonalDevelopmentRadar() {
-    const { radarData, refreshData, loading } = useHolisticStore();
-
-    useEffect(() => {
-        refreshData();
-    }, [refreshData]);
+    const { radarData, loading } = useHolisticStore();
 
     if (loading && radarData.length === 0) {
         return <div className="h-64 flex items-center justify-center"><Loader className="animate-spin text-cyan-500" /></div>;
@@ -28,7 +24,7 @@ export default function PersonalDevelopmentRadar() {
                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                     <Radar
                         name="My Growth"
-                        dataKey="A"
+                        dataKey="value"
                         stroke="#06b6d4" // Cyan-500
                         strokeWidth={3}
                         fill="#06b6d4"

@@ -7,8 +7,11 @@ import DevelopmentCycle from '@/components/holistic/DevelopmentCycle';
 import EcosystemMap from '@/components/holistic/EcosystemMap';
 import DevelopmentTimeline from '@/components/holistic/DevelopmentTimeline';
 import { Grid, Cpu } from 'lucide-react';
+import { useHolisticSync } from '@/hooks/useHolisticSync';
 
 export default function HolisticDashboard() {
+    useHolisticSync();
+
     return (
         <div className="p-6 min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500/30">
             <motion.div

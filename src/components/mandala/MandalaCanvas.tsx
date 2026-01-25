@@ -43,7 +43,7 @@ export default function MandalaCanvas() {
             innerRadius: 40,
             outerRadius: 120,
             color: COLORS[i % COLORS.length],
-            opacity: 0.6 + (d.A / 100) * 0.4, // Opacity based on score
+            opacity: 0.6 + (d.value / 100) * 0.4, // Opacity based on score
         }));
     }, [radarData]);
 

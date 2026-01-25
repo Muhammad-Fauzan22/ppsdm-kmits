@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
+    // 1. Setup Response & Supabase Client
     let response = NextResponse.next({
         request: {
             headers: request.headers,
@@ -17,9 +18,7 @@ export async function middleware(request: NextRequest) {
                     return request.cookies.getAll();
                 },
                 setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) =>
-                        request.cookies.set(name, value)
-                    );
+                    cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
                     response = NextResponse.next({
                         request: {
                             headers: request.headers,
@@ -33,25 +32,28 @@ export async function middleware(request: NextRequest) {
         }
     );
 
+    // 2. Cek Session User
     const {
         data: { user },
     } = await supabase.auth.getUser();
 
-    // Route Protection Logic
-    const path = request.nextUrl.pathname;
+    const url = request.nextUrl.clone();
 
-    // 1. Protected Admin Routes
-    if (path.startsWith("/admin")) {
+    // 3. Security Logic: Proteksi Dashboard (Route Guard)
+    if (request.nextUrl.pathname.startsWith("/dashboard") || request.nextUrl.pathname.startsWith("/profile")) {
         if (!user) {
-            return NextResponse.redirect(new URL("/login", request.url));
+            // Jika belum login, tendang ke halaman login dengan callback URL
+            url.pathname = "/login";
+            url.searchParams.set("next", request.nextUrl.pathname);
+            return NextResponse.redirect(url);
         }
-        // Ideally, check for role here (e.g. user.user_metadata.role === 'admin')
     }
 
-    // 2. Protected Portal Routes
-    if (path.startsWith("/portal") || path.startsWith("/dashboard")) {
-        if (!user) {
-            return NextResponse.redirect(new URL("/login", request.url));
+    // 4. Security Logic: Cegah User Login masuk ke halaman Auth lagi
+    if (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/register")) {
+        if (user) {
+            url.pathname = "/dashboard";
+            return NextResponse.redirect(url);
         }
     }
 
@@ -59,15 +61,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         * - login (auth page)
-         * - api/auth (auth apis)
-         */
-        "/((?!_next/static|_next/image|favicon.ico|login|api/auth).*)",
-    ],
+    // Matcher agar middleware tidak membebani file statis/gambar
+    matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

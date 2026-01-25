@@ -1,6 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { GlobalResourceEngine } from '@/lib/resources/GlobalResourceEngine';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET(req: NextRequest) {
     try {
@@ -10,11 +11,10 @@ export async function GET(req: NextRequest) {
         const type = searchParams.get('type') || undefined;
 
         const engine = new GlobalResourceEngine();
-        const resources = await engine.findResources({
+        const resources = await engine.findResources(supabase, {
             query,
             domain,
-            type,
-            minQuality: 0.7 // Default filter
+            type
         });
 
         return NextResponse.json({ success: true, count: resources?.length, data: resources });

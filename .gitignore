@@ -48,3 +48,6 @@ coverage/
 *.log
 *.cache
 .turbo/
+
+.vercel
+.env*.local

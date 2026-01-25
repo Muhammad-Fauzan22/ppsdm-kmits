@@ -1,23 +1,27 @@
 import { create } from 'zustand';
-import { useKnowledgeStore } from './useKnowledgeStore';
-import { useHealthStore } from './useHealthStore';
-import { useMentalStore } from './useMentalStore';
-import { useSocialStore } from './useSocialStore';
-import { useSpiritualStore } from './useSpiritualStore';
-import { useCharacterStore } from './useCharacterStore';
-import { useFinancialStore } from './useFinancialStore';
-import { useLifestyleStore } from './useLifestyleStore';
 
 export interface RadarPoint {
     subject: string;
-    A: number; // Score 0-100
+    value: number; // Score 0-100 (Renamed from A for consistency)
     fullMark: number;
+}
+
+// ... (HolisticInputs interface remains same)
+export interface HolisticInputs {
+    knowledgeStats: { booksRead: number; coursesCompleted: number; } | null;
+    healthMetrics: { steps: number; sleep: number; water: number; } | null;
+    mentalCheckins: any[];
+    socialStats: { speakingLogs: any[]; projects: any[] };
+    spiritualStats: { reflections: any[]; volunteerLogs: any[] };
+    characterStrengths: any[];
+    financialTransactions: any[];
+    lifestyleStats: { carbonFootprint: { totalFootprint: number }; sustainabilityLogs: any[] };
 }
 
 export interface HolisticState {
     radarData: RadarPoint[];
     loading: boolean;
-    refreshData: () => void;
+    updateScore: (inputs: HolisticInputs) => void;
 }
 
 const calculateScore = (val: number, max: number) => Math.min(100, Math.round((val / max) * 100));
@@ -25,15 +29,26 @@ const calculateScore = (val: number, max: number) => Math.min(100, Math.round((v
 export const useHolisticStore = create<HolisticState>((set) => ({
     radarData: [],
     loading: false,
-    refreshData: () => {
+    updateScore: (inputs) => {
         set({ loading: true });
 
+        const {
+            knowledgeStats,
+            healthMetrics,
+            mentalCheckins,
+            socialStats,
+            spiritualStats,
+            characterStrengths,
+            financialTransactions,
+            lifestyleStats
+        } = inputs;
+
         // 1. Intellectual (Knowledge)
-        const knowledge = useKnowledgeStore.getState().stats || { booksRead: 0, coursesCompleted: 0 };
+        const knowledge = knowledgeStats || { booksRead: 0, coursesCompleted: 0 };
         const intellectualScore = calculateScore((knowledge.booksRead * 10) + (knowledge.coursesCompleted * 20), 100);
 
         // 2. Physical (Health)
-        const health = useHealthStore.getState().metrics || { steps: 0, sleep: 0, water: 0 };
+        const health = healthMetrics || { steps: 0, sleep: 0, water: 0 };
         // Rough estimate: 10k steps = 50pts, 8h sleep = 30pts, 2L water = 20pts
         let physicalScore = 0;
         physicalScore += Math.min(50, (health.steps / 10000) * 50);
@@ -41,46 +56,42 @@ export const useHolisticStore = create<HolisticState>((set) => ({
         physicalScore += Math.min(20, (health.water / 2000) * 20);
 
         // 3. Mental
-        const mental = useMentalStore.getState();
-        const mentalScore = mental.checkins.length > 0 ?
-            mental.checkins.slice(0, 5).reduce((acc, curr) => acc + (['Great', 'Good'].includes(curr.mood) ? 20 : 10), 0) / Math.min(5, mental.checkins.length) * 5
+        const mentalScore = mentalCheckins.length > 0 ?
+            mentalCheckins.slice(0, 5).reduce((acc: number, curr: any) => acc + (['Great', 'Good'].includes(curr.mood) ? 20 : 10), 0) / Math.min(5, mentalCheckins.length) * 5
             : 50; // Default
 
         // 4. Social
-        const social = useSocialStore.getState();
-        const socialScore = Math.min(100, (social.speakingLogs.length * 10) + (social.projects.length * 20) + 40);
+        const socialScore = Math.min(100, (socialStats.speakingLogs.length * 10) + (socialStats.projects.length * 20) + 40);
 
         // 5. Spiritual
-        const spiritual = useSpiritualStore.getState();
-        const spiritualScore = Math.min(100, (spiritual.reflections.length * 10) + (spiritual.volunteerLogs.reduce((a, b) => a + b.hours, 0) * 2));
+        const spiritualScore = Math.min(100, (spiritualStats.reflections.length * 10) + (spiritualStats.volunteerLogs.reduce((a: number, b: any) => a + b.hours, 0) * 2));
 
         // 6. Character
-        const character = useCharacterStore.getState();
-        const characterScore = character.strengths.reduce((acc, curr) => acc + curr.score, 0) / character.strengths.length;
+        const characterScore = characterStrengths.length > 0
+            ? characterStrengths.reduce((acc: number, curr: any) => acc + curr.score, 0) / characterStrengths.length
+            : 50; // Default if empty
 
         // 7. Financial
-        const financial = useFinancialStore.getState();
-        const financialScore = Math.min(100, (financial.transactions.length * 5) + 50); // Dummy logic
+        const financialScore = Math.min(100, (financialTransactions.length * 5) + 50); // Dummy logic
 
         // 8. Professional (Mock/Derived)
         const professionalScore = Math.min(100, intellectualScore * 0.5 + socialScore * 0.5);
 
         // 9. Lifestyle
-        const lifestyle = useLifestyleStore.getState();
-        const lifestyleScore = Math.min(100, 100 - (lifestyle.carbonFootprint.totalFootprint / 10) + (lifestyle.sustainabilityLogs.length * 5));
+        const lifestyleScore = Math.min(100, 100 - (lifestyleStats.carbonFootprint.totalFootprint / 10) + (lifestyleStats.sustainabilityLogs.length * 5));
 
         set({
             loading: false,
             radarData: [
-                { subject: 'Intellectual', A: intellectualScore, fullMark: 100 },
-                { subject: 'Physical', A: Math.round(physicalScore), fullMark: 100 },
-                { subject: 'Mental', A: Math.round(mentalScore), fullMark: 100 },
-                { subject: 'Social', A: Math.round(socialScore), fullMark: 100 },
-                { subject: 'Spiritual', A: Math.round(spiritualScore), fullMark: 100 },
-                { subject: 'Character', A: Math.round(characterScore), fullMark: 100 },
-                { subject: 'Financial', A: Math.round(financialScore), fullMark: 100 },
-                { subject: 'Professional', A: Math.round(professionalScore), fullMark: 100 },
-                { subject: 'Lifestyle', A: Math.round(lifestyleScore), fullMark: 100 },
+                { subject: 'Intellectual', value: intellectualScore, fullMark: 100 },
+                { subject: 'Physical', value: Math.round(physicalScore), fullMark: 100 },
+                { subject: 'Mental', value: Math.round(mentalScore), fullMark: 100 },
+                { subject: 'Social', value: Math.round(socialScore), fullMark: 100 },
+                { subject: 'Spiritual', value: Math.round(spiritualScore), fullMark: 100 },
+                { subject: 'Character', value: Math.round(characterScore), fullMark: 100 },
+                { subject: 'Financial', value: Math.round(financialScore), fullMark: 100 },
+                { subject: 'Professional', value: Math.round(professionalScore), fullMark: 100 },
+                { subject: 'Lifestyle', value: Math.round(lifestyleScore), fullMark: 100 },
             ]
         });
     }
