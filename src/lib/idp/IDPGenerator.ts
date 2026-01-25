@@ -1,5 +1,5 @@
 
-import { supabase } from '../supabase/supabaseClient';
+import { supabase } from '../supabaseClient';
 
 // --- Types for Holistic IDP ---
 

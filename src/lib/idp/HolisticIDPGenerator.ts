@@ -1,5 +1,5 @@
 
-import { supabase } from '../supabase/supabaseClient';
+import { supabase } from '../supabaseClient';
 import { GlobalResourceEngine } from '../resources/GlobalResourceEngine';
 
 // --- TYPES FOR 12-DIMENSIONAL IDP ---
@@ -194,7 +194,7 @@ export class HolisticIDPGenerator {
 
         for (const domain of activeDomains) {
             // Find Learning Resources
-            const learningRes = await resourceEngine.findResources({
+            const learningRes = await resourceEngine.findResources(supabase, {
                 domain: domain,
                 limit: 2,
                 type: 'course'

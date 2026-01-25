@@ -10,6 +10,29 @@ const GEN_AI_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 const SERPAPI_KEY = process.env.SERPAPI_API_KEY;
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+// --- HELPER: Fast Inference (Groq) ---
+// Optional: Use Groq for ultra-fast summarization if configured
+async function fastSummarize(text: string): Promise<string | null> {
+    if (!GROQ_API_KEY) return null;
+    try {
+        const { Groq } = await import("groq-sdk");
+        const groq = new Groq({ apiKey: GROQ_API_KEY });
+        const completion = await groq.chat.completions.create({
+            messages: [
+                { role: "system", content: "Summarize this text in 3 sentences." },
+                { role: "user", content: text.substring(0, 5000) } // Limit context
+            ],
+            model: "mixtral-8x7b-32768",
+        });
+        return completion.choices[0]?.message?.content || null;
+    } catch (e) {
+        console.error("Groq Error:", e);
+        return null;
+    }
+}
+
 
 // --- HELPER: Sheets Logging ---
 async function logToSheet(data: any[]) {
