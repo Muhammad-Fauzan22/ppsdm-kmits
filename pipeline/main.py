@@ -16,6 +16,7 @@ from layers.collaboration import collaboration_platform
 from layers.credentialing import upload_output_and_metadata, database_logging_and_status_update
 from layers.collaboration import project_based_learning_generator
 from layers.credentialing import blockchain_credential_system
+from layers.platform_export import platform_exporter
 
 # Configure Logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 def run_pipeline(pdf_url: str, metadata: dict):
-    logger.info("🚀 Starting 7-Layer Immersive Learning Pipeline")
+    logger.info("🚀 Starting 7-Layer Immersive Learning Pipeline (Enhanced)")
 
     try:
         # --- LAYER 1: Core Processing ---
@@ -89,8 +90,21 @@ def run_pipeline(pdf_url: str, metadata: dict):
         logger.info("--- LAYER 7: Credentialing & Output ---")
         credentials = blockchain_credential_system(pbl_assets)
         
+        # --- LAYER 8: Platform Export (NEW) ---
+        logger.info("--- LAYER 8: Platform Export (PWA/LMS) ---")
+        # Combining all assets for export
+        full_package = {
+            **output_files,
+            **immersive_assets,
+            **multimedia_content,
+            **gamification,
+            **pbl_assets,
+            **credentials
+        }
+        platform_exports = platform_exporter(full_package)
+        
         logger.info("Uploading Outputs & Logging...")
-        upload_result = upload_output_and_metadata(output_files, credentials)
+        upload_result = upload_output_and_metadata({**output_files, **platform_exports}, credentials)
         db_log = database_logging_and_status_update(upload_result)
 
         logger.info("✅ Pipeline Completed Successfully!")
