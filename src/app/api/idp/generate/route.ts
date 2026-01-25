@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         const generator = new IDPGenerator();
         const idp = await generator.generateIDP({
             userId,
-            vision,
+            visionStatement: vision,
             timeframe: timeframe || '1_year'
         });
 
