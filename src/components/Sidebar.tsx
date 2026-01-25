@@ -7,50 +7,12 @@ interface SidebarProps {
     variant?: "admin" | "mentor";
 }
 
+import { NAV_CONFIG } from "@/config/nav";
+
 export function Sidebar({ variant = "admin" }: SidebarProps) {
     const pathname = usePathname();
 
-    const adminNav = [
-        { label: "Dashboard", href: "/admin", icon: "dashboard" },
-        { label: "Programs", href: "/admin/programs", icon: "school" },
-        { label: "Users", href: "/admin/users", icon: "group" },
-        { label: "Reports", href: "/admin/reports", icon: "bar_chart" },
-        { label: "Settings", href: "/admin/settings", icon: "settings" },
-        { label: "Personal OS", href: "/dashboard/pos", icon: "check_circle" },
-        { label: "NEXUS CORE", href: "/dashboard/holistic", icon: "hub" },
-        { label: "System Blueprint", href: "/dashboard/blueprint", icon: "developer_board" }, // Added
-        { label: "Resource Engine", href: "/gre/discovery", icon: "travel_explore" },
-        { label: "Library Auto", href: "/library", icon: "local_library" }, // New Library Module
-        { label: "Intellectual", href: "/dashboard/intellectual", icon: "psychology" },
-        { label: "Financial", href: "/dashboard/financial", icon: "attach_money" },
-        { label: "Health", href: "/dashboard/health", icon: "heart_check" },
-        { label: "Social", href: "/dashboard/social", icon: "groups" },
-        { label: "Mental", href: "/dashboard/mental", icon: "spa" },
-        { label: "Character", href: "/dashboard/character", icon: "verified" },
-        { label: "Spiritual", href: "/dashboard/spiritual", icon: "auto_awesome" },
-        { label: "Lifestyle", href: "/dashboard/lifestyle", icon: "forest" },
-    ];
-
-    const mentorNav = [
-        { label: "Dashboard", href: "/mentorship", icon: "dashboard" },
-        { label: "My Mentees", href: "/mentorship/mentees", icon: "group" },
-        { label: "Reports", href: "/mentorship/reports", icon: "description" },
-        { label: "Schedule", href: "/mentorship/schedule", icon: "calendar_month" },
-        { label: "Settings", href: "/mentorship/settings", icon: "settings" },
-        { label: "Personal OS", href: "/dashboard/pos", icon: "check_circle" },
-        { label: "NEXUS CORE", href: "/dashboard/holistic", icon: "hub" },
-        { label: "System Blueprint", href: "/dashboard/blueprint", icon: "developer_board" }, // Added
-        { label: "Intellectual", href: "/dashboard/intellectual", icon: "psychology" },
-        { label: "Financial", href: "/dashboard/financial", icon: "attach_money" },
-        { label: "Health", href: "/dashboard/health", icon: "heart_check" },
-        { label: "Social", href: "/dashboard/social", icon: "groups" },
-        { label: "Mental", href: "/dashboard/mental", icon: "spa" },
-        { label: "Character", href: "/dashboard/character", icon: "verified" },
-        { label: "Spiritual", href: "/dashboard/spiritual", icon: "auto_awesome" },
-        { label: "Lifestyle", href: "/dashboard/lifestyle", icon: "forest" },
-    ];
-
-    const navItems = variant === "admin" ? adminNav : mentorNav;
+    const navItems = NAV_CONFIG[variant];
     const title = variant === "admin" ? "Admin Console" : "Lecturer Portal";
 
     return (

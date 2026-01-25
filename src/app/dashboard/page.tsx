@@ -74,15 +74,17 @@ export default function DashboardPage() {
                                 <Plus className="size-4" />
                                 New Activity
                             </Button>
-                            <button className="relative group">
-                                <div
-                                    className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-background ring-offset-2 ring-offset-gray-200"
-                                    style={{
-                                        backgroundImage:
-                                            'url("https://lh3.googleusercontent.com/aida-public/AB6AXuClE0EM96SkM6uD--shNf9TkN55hiP_7YwI6Awx7_v_BQbCKaoxruCniB2yKxNCP7SpnAaI3u7yt23f8pf_txws30mxyqlTcNuLlzyW-qxkUwu4CO108XqnfyA7tpTI4ZvjQoNubGzpxQlJFMGAyTaocUrvthrIGfSoIyBIqFtkJhahbWSuJBgL8PFAyW3tMh-CKAolYhjUlmmxV4TlgXEhIEAdVc7Sg0IBeS0Zz_DXz8wHYz3uFtX7Oz_n6smU3KFkMv6LEpbaWG0")',
-                                    }}
-                                ></div>
-                                <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-card-dark rounded-full"></span>
+                            <button className="relative group rounded-full overflow-hidden size-10 ring-2 ring-background ring-offset-2 ring-offset-gray-200" aria-label="User Menu">
+                                <span className="sr-only">User Menu</span>
+                                {/* Optimized Image */}
+                                <div className="absolute inset-0">
+                                    <img
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuClE0EM96SkM6uD--shNf9TkN55hiP_7YwI6Awx7_v_BQbCKaoxruCniB2yKxNCP7SpnAaI3u7yt23f8pf_txws30mxyqlTcNuLlzyW-qxkUwu4CO108XqnfyA7tpTI4ZvjQoNubGzpxQlJFMGAyTaocUrvthrIGfSoIyBIqFtkJhahbWSuJBgL8PFAyW3tMh-CKAolYhjUlmmxV4TlgXEhIEAdVc7Sg0IBeS0Zz_DXz8wHYz3uFtX7Oz_n6smU3KFkMv6LEpbaWG0"
+                                        alt="User Profile"
+                                        className="object-cover w-full h-full"
+                                    />
+                                </div>
+                                <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-card-dark rounded-full z-10"></span>
                             </button>
                         </div>
                     </div>
@@ -105,14 +107,12 @@ export default function DashboardPage() {
                                 </Button>
                             </div>
                             <div className="flex flex-col items-center -mt-12 px-6 pb-6">
-                                <div className="relative mb-3">
-                                    <div
-                                        className="bg-center bg-no-repeat bg-cover rounded-full size-24 border-4 border-white shadow-md bg-white"
-                                        style={{
-                                            backgroundImage:
-                                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCoz-5CBTBA6Ayqk18_LahdcYj4owOJiXGJ6ohIG_MrvMA9HTriWJKW_FG-SWX3XuGjVbi1uWn50i-6tGM6XvQjNL5rnhEd8TtzYDaDOsvhBxi1iUbog-kVlZbuO4NNA9718DqXbQVXf7sm1z0A3W9Mc_-8hMn-WHb0OvmO32Jlq08uFhRuE9xb0-NueKCD7gwut6M8kCEewkFGZdi2UTQushlvUzn6GPSquQdolNiS6VzLT77DVfIHvOzoopFXf6hAaNTVbF_I9XI")',
-                                        }}
-                                    ></div>
+                                <div className="relative mb-3 size-24 rounded-full border-4 border-white shadow-md bg-white overflow-hidden">
+                                    <img
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoz-5CBTBA6Ayqk18_LahdcYj4owOJiXGJ6ohIG_MrvMA9HTriWJKW_FG-SWX3XuGjVbi1uWn50i-6tGM6XvQjNL5rnhEd8TtzYDaDOsvhBxi1iUbog-kVlZbuO4NNA9718DqXbQVXf7sm1z0A3W9Mc_-8hMn-WHb0OvmO32Jlq08uFhRuE9xb0-NueKCD7gwut6M8kCEewkFGZdi2UTQushlvUzn6GPSquQdolNiS6VzLT77DVfIHvOzoopFXf6hAaNTVbF_I9XI"
+                                        alt="Rian Santoso"
+                                        className="object-cover w-full h-full"
+                                    />
                                 </div>
                                 <h3 className="text-xl font-bold text-foreground text-center">Rian Santoso</h3>
                                 <p className="text-sm text-muted-foreground font-medium">Informatics Engineering</p>
