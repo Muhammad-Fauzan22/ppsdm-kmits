@@ -1,7 +1,7 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function ProfileSettings() {
     const [emailAlerts, setEmailAlerts] = useState(true);
@@ -9,283 +9,268 @@ export default function ProfileSettings() {
     const [profileVisibility, setProfileVisibility] = useState(true);
     const [shareData, setShareData] = useState(false);
 
-    return (
-        <div className="bg-[#f6f6f8] dark:bg-[#101622] text-[#111318] dark:text-white font-[family-name:var(--font-lexend)] overflow-x-hidden min-h-screen flex flex-col">
-            {/* Top Navigation */}
-            <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e5e7eb] dark:border-[#282e39] bg-white dark:bg-[#111318] px-10 py-3">
-                <div className="flex items-center gap-4 text-[#111318] dark:text-white">
-                    <div className="size-8 text-[#135bec]">
-                        <svg className="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="4"></path>
-                        </svg>
-                    </div>
-                    <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
-                </div>
-                <div className="flex flex-1 justify-end gap-8">
-                    <div className="hidden md:flex items-center gap-9">
-                        <Link className="text-[#6b7280] dark:text-[#9da6b9] text-sm font-medium leading-normal hover:text-[#135bec] dark:hover:text-white transition-colors" href="/dashboard">Home</Link>
-                        <Link className="text-[#6b7280] dark:text-[#9da6b9] text-sm font-medium leading-normal hover:text-[#135bec] dark:hover:text-white transition-colors" href="/dashboard">Dashboard</Link>
-                        <Link className="text-[#6b7280] dark:text-[#9da6b9] text-sm font-medium leading-normal hover:text-[#135bec] dark:hover:text-white transition-colors" href="#">Schedule</Link>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <button className="text-[#6b7280] dark:text-[#9da6b9] hover:text-[#135bec]">
-                            <span className="material-symbols-outlined">notifications</span>
-                        </button>
-                        <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-transparent hover:border-[#135bec] cursor-pointer transition-all" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFQs_t993YGsfycjHlzjqPgm_qYjsxu6Q-wRiGEcqQav5sQkvbcwIKdK5bsQVJ2rwViZxNBlJoj2O55MRWAiWvE2q5b26dc-tBekuaxDR_aQUId2VK1NrI4Da1KyInsqi-mJAT3yIeSDGMszr5Xq6VbjAuUVBk7wS2iZa51isW1mG4vglDIPpLDvsJTMsKrsLpzTH1wOYsoTmvdekJhZ1byXHo7ArpcgfGPbgd9IfDrjuOqfuykpU41RjXnZU1vPH9ldf81237DR0')" }}>
-                        </div>
-                    </div>
-                </div>
-            </header>
+    // Toggle component for reuse
+    const Toggle = ({ checked, onChange }: { checked: boolean, onChange: (v: boolean) => void }) => (
+        <div
+            className={`w-12 h-6 rounded-full relative cursor-pointer transition-colors ${checked ? 'bg-blue-600' : 'bg-[#2D303E]'}`}
+            onClick={() => onChange(!checked)}
+        >
+            <div className={`absolute top-1 size-4 bg-white rounded-full shadow-sm transition-all ${checked ? 'left-7' : 'left-1'}`}></div>
+        </div>
+    );
 
-            {/* Main Content Layout */}
-            <div className="flex flex-1 w-full max-w-[1440px] mx-auto">
+    return (
+        <div className="min-h-screen bg-[#0E1015] text-white font-sans">
+
+            {/* Navbar */}
+            <nav className="border-b border-[#2D303E] px-8 py-4 bg-[#161920] flex justify-between items-center sticky top-0 z-50">
+                <div className="flex items-center gap-3">
+                    <div className="size-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <span className="material-symbols-outlined text-white text-lg">shield_person</span>
+                    </div>
+                    <span className="font-bold tracking-wide">PPSDM KMM</span>
+                </div>
+                <div className="flex gap-6 text-sm font-bold text-gray-400">
+                    <Link href="/dashboard" className="hover:text-white transition-colors">Home</Link>
+                    <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
+                    <Link href="#" className="hover:text-white transition-colors">Schedule</Link>
+                </div>
+                <div className="flex items-center gap-4">
+                    <button className="text-gray-400 hover:text-white"><span className="material-symbols-outlined">notifications</span></button>
+                    <div className="size-8 rounded-full bg-orange-100 border border-[#2D303E] overflow-hidden">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" className="w-full h-full" />
+                    </div>
+                </div>
+            </nav>
+
+            <main className="max-w-7xl mx-auto p-8 flex gap-8">
+
                 {/* Sidebar Navigation */}
-                <aside className="hidden lg:flex flex-col w-72 border-r border-[#e5e7eb] dark:border-[#282e39] bg-white dark:bg-[#111318] p-6 gap-6 sticky top-[73px] h-[calc(100vh-73px)] overflow-y-auto">
-                    {/* User Summary */}
-                    <div className="flex items-center gap-4 mb-2 pb-6 border-b border-[#e5e7eb] dark:border-[#282e39]">
-                        <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWoHOKsSB4aiYfhwOi5jAi33w_ZzghvXNOcHxpt6ZAutuzvWmwp4nqkDB07g_-TG1-cVq0387cCpKukdh09AX0tms5LNH25mZo2P1CdZNS7a0Xsq14k7YXx5_zH5f8eU44T15KV1XYaVd9mXqqYHluBcb2_Yuf6V-gHXjYSEzKI88iolsMjW6jjgaqimaX7AnI4dmbYAj0yEKZV9YxSQXqFzsjIGOfi7_38GOoJfDzNZR2NzmmjvIjG79YXUM9jsb8xsWJWpzi00A')" }}>
+                <aside className="w-64 hidden lg:block sticky top-24 h-fit">
+                    <div className="mb-8 flex items-center gap-3">
+                        <div className="size-12 rounded-full bg-yellow-100 border-2 border-[#2D303E] overflow-hidden">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" className="w-full h-full" />
                         </div>
-                        <div className="flex flex-col">
-                            <h1 className="text-[#111318] dark:text-white text-base font-semibold leading-tight">Budi Santoso</h1>
-                            <p className="text-[#6b7280] dark:text-[#9da6b9] text-xs font-normal">Student ID: 5025201042</p>
+                        <div>
+                            <h2 className="font-bold text-sm">Budi Santoso</h2>
+                            <p className="text-xs text-gray-500">Student ID: 5025201042</p>
                         </div>
                     </div>
-                    {/* Navigation Links */}
-                    <nav className="flex flex-col gap-2">
-                        <Link className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#135bec] text-white shadow-lg shadow-[#135bec]/20 transition-all" href="/settings">
-                            <span className="material-symbols-outlined filled">person</span>
-                            <span className="text-sm font-medium">Account</span>
+
+                    <nav className="space-y-1">
+                        <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-bold shadow-lg shadow-blue-900/40">
+                            <span className="material-symbols-outlined text-[20px]">person</span>
+                            Account
                         </Link>
-                        <Link className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#6b7280] dark:text-[#9da6b9] hover:bg-[#f6f6f8] dark:hover:bg-[#282e39] hover:text-[#111318] dark:hover:text-white transition-all" href="#">
-                            <span className="material-symbols-outlined">school</span>
-                            <span className="text-sm font-medium">Academic</span>
+                        <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#1C2028] hover:text-white transition-colors">
+                            <span className="material-symbols-outlined text-[20px]">school</span>
+                            Academic
                         </Link>
-                        <Link className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#6b7280] dark:text-[#9da6b9] hover:bg-[#f6f6f8] dark:hover:bg-[#282e39] hover:text-[#111318] dark:hover:text-white transition-all" href="#">
-                            <span className="material-symbols-outlined">shield</span>
-                            <span className="text-sm font-medium">Privacy</span>
+                        <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#1C2028] hover:text-white transition-colors">
+                            <span className="material-symbols-outlined text-[20px]">shield</span>
+                            Privacy
                         </Link>
-                        <Link className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#6b7280] dark:text-[#9da6b9] hover:bg-[#f6f6f8] dark:hover:bg-[#282e39] hover:text-[#111318] dark:hover:text-white transition-all" href="#">
-                            <span className="material-symbols-outlined">notifications</span>
-                            <span className="text-sm font-medium">Notifications</span>
+                        <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#1C2028] hover:text-white transition-colors">
+                            <span className="material-symbols-outlined text-[20px]">notifications</span>
+                            Notifications
                         </Link>
                     </nav>
-                    <div className="mt-auto">
-                        <Link className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-500/10 transition-all" href="/dashboard">
-                            <span className="material-symbols-outlined">logout</span>
-                            <span className="text-sm font-medium">Log Out</span>
+
+                    <div className="mt-8 pt-6 border-t border-[#2D303E]">
+                        <Link href="/auth/login" className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-900/10 transition-colors font-bold">
+                            <span className="material-symbols-outlined text-[20px]">logout</span>
+                            Log Out
                         </Link>
                     </div>
                 </aside>
-                {/* Main Content Area */}
-                <main className="flex-1 p-6 lg:p-10 flex flex-col gap-8 max-w-[1000px] mx-auto w-full">
-                    {/* Breadcrumbs */}
-                    <div className="flex items-center gap-2 text-sm">
-                        <Link className="text-[#6b7280] dark:text-[#9da6b9] hover:text-[#135bec] transition-colors" href="/dashboard">Home</Link>
-                        <span className="text-[#6b7280] dark:text-[#9da6b9]">/</span>
-                        <span className="text-[#111318] dark:text-white font-medium">Profile Settings</span>
+
+                {/* Main Settings Area */}
+                <div className="flex-1 max-w-4xl">
+
+                    <div className="mb-8">
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                            <span>Home</span>
+                            <span>/</span>
+                            <span className="text-white">Profile Settings</span>
+                        </div>
+                        <h1 className="text-3xl font-bold">Profile Settings</h1>
+                        <p className="text-gray-400 mt-1">Manage your personal information, academic details, and account preferences.</p>
                     </div>
-                    {/* Page Heading */}
-                    <div className="flex flex-col gap-2">
-                        <h1 className="text-[#111318] dark:text-white text-3xl font-bold leading-tight tracking-tight">Profile Settings</h1>
-                        <p className="text-[#6b7280] dark:text-[#9da6b9] text-base">Manage your personal information, academic details, and account preferences.</p>
-                    </div>
-                    {/* Content Cards Wrapper */}
-                    <div className="flex flex-col gap-8">
-                        {/* Account Section */}
-                        <section className="flex flex-col gap-6 bg-white dark:bg-[#1e2430] rounded-2xl p-6 lg:p-8 shadow-sm border border-[#e5e7eb] dark:border-[#282e39]">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-xl font-bold text-[#111318] dark:text-white">Personal Information</h3>
-                                <button className="text-[#135bec] text-sm font-medium hover:underline">Edit Details</button>
+
+                    <div className="space-y-8">
+
+                        {/* Personal Information */}
+                        <div className="bg-[#151921] border border-[#2D303E] rounded-2xl p-8">
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-xl font-bold flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-blue-500">assignment_ind</span>
+                                    Personal Information
+                                </h2>
+                                <button className="text-sm font-bold text-blue-500 hover:underline">Edit Details</button>
                             </div>
-                            <div className="flex flex-col md:flex-row gap-8 items-start">
-                                {/* Avatar Uploader */}
-                                <div className="relative group cursor-pointer flex-shrink-0 mx-auto md:mx-0">
-                                    <div className="w-32 h-32 rounded-full bg-cover bg-center border-4 border-white dark:border-[#282e39] shadow-lg" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAu_TSr5ogrvb9fjjW_ElpQpLOWJovZvNir40V7f2C0uqQj3Y0joQQJ9q2FS1zuSzm-2oIRRN8JOrSXF_qBhwch7lwlajZ2GCUTTZ706BqxwKrrUsU7Y9TTOvoHgDLXmoUJOWOQTLLwT0VfWF1bw1GObQ-xaj5xi6nu5DbVFfVPzhCxFkfwtC1vyN6S1tadLO8C96sZjZ_vo31D0PpU2tGxeXkamTdskdGqSttCqJjzO2SN82TFp3t9T8w7gswz8NwDkTjV3Bydkmk')" }}>
+
+                            <div className="flex flex-col md:flex-row gap-8">
+                                <div className="flex flex-col items-center gap-3">
+                                    <div className="size-32 rounded-full bg-[#1C2028] border-4 border-[#2D303E] overflow-hidden relative group cursor-pointer">
+                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" className="w-full h-full" />
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-white">photo_camera</span>
+                                        </div>
                                     </div>
-                                    {/* Overlay */}
-                                    <div className="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                        <span className="material-symbols-outlined text-white mb-1">photo_camera</span>
-                                        <span className="text-white text-xs font-medium">Upload</span>
+                                    <button className="bg-blue-600 rounded-full p-1.5 absolute ml-20 mt-24 border-4 border-[#151921]">
+                                        <span className="material-symbols-outlined text-white text-sm">edit</span>
+                                    </button>
+                                </div>
+
+                                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase">Full Name</label>
+                                        <div className="bg-[#0E1015] border border-[#2D303E] rounded-lg px-4 py-3 font-semibold text-gray-200">
+                                            Budi Santoso
+                                        </div>
                                     </div>
-                                    <div className="absolute bottom-1 right-1 bg-[#135bec] text-white p-1.5 rounded-full border-[3px] border-white dark:border-[#1e2430] flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-[16px]">edit</span>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase">Email Address</label>
+                                        <div className="bg-[#0E1015] border border-[#2D303E] rounded-lg px-4 py-3 font-semibold text-gray-200">
+                                            budi.santoso@student.university.ac.id
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase">Phone Number</label>
+                                        <div className="bg-[#0E1015] border border-[#2D303E] rounded-lg px-4 py-3 font-semibold text-gray-200">
+                                            +62 812 3456 7890
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase">Location</label>
+                                        <div className="bg-[#0E1015] border border-[#2D303E] rounded-lg px-4 py-3 font-semibold text-gray-200">
+                                            Surabaya, Indonesia
+                                        </div>
+                                    </div>
+                                    <div className="col-span-1 md:col-span-2 space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase">Bio</label>
+                                        <div className="bg-[#0E1015] border border-[#2D303E] rounded-lg px-4 py-3 font-semibold text-gray-200 min-h-[80px]">
+                                            Passionate Computer Science student with a focus on Artificial Intelligence and Mobile Development.
+                                        </div>
                                     </div>
                                 </div>
-                                {/* Form Fields */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#111318] dark:text-white">Full Name</label>
-                                        <input className="w-full h-11 px-4 rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318] text-[#111318] dark:text-white focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all placeholder-[#9da6b9]" type="text" defaultValue="Budi Santoso" />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#111318] dark:text-white">Email Address</label>
-                                        <input className="w-full h-11 px-4 rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318] text-[#111318] dark:text-white focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all placeholder-[#9da6b9]" type="email" defaultValue="budi.santoso@student.university.ac.id" />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#111318] dark:text-white">Phone Number</label>
-                                        <input className="w-full h-11 px-4 rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318] text-[#111318] dark:text-white focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all placeholder-[#9da6b9]" type="tel" defaultValue="+62 812 3456 7890" />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#111318] dark:text-white">Location</label>
-                                        <input className="w-full h-11 px-4 rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318] text-[#111318] dark:text-white focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all placeholder-[#9da6b9]" type="text" defaultValue="Surabaya, Indonesia" />
-                                    </div>
-                                    <div className="flex flex-col gap-2 md:col-span-2">
-                                        <label className="text-sm font-medium text-[#111318] dark:text-white">Bio</label>
-                                        <textarea className="w-full p-4 rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318] text-[#111318] dark:text-white focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all resize-none" placeholder="Write a short bio about yourself..." rows={3} defaultValue="Passionate Computer Science student with a focus on Artificial Intelligence and Mobile Development."></textarea>
-                                    </div>
-                                </div>
                             </div>
-                        </section>
-                        {/* Academic Info Section */}
-                        <section className="flex flex-col gap-6 bg-white dark:bg-[#1e2430] rounded-2xl p-6 lg:p-8 shadow-sm border border-[#e5e7eb] dark:border-[#282e39]">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-[#135bec]/10 p-2 rounded-lg text-[#135bec]">
-                                    <span className="material-symbols-outlined">school</span>
-                                </div>
-                                <h3 className="text-xl font-bold text-[#111318] dark:text-white">Academic Information</h3>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {/* Read Only Field: NRP */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-medium text-[#6b7280] dark:text-[#9da6b9] flex items-center gap-2">
-                                        NRP / Student ID
-                                        <span className="material-symbols-outlined text-xs" title="Read Only">lock</span>
+                        </div>
+
+                        {/* Academic Information */}
+                        <div className="bg-[#151921] border border-[#2D303E] rounded-2xl p-8">
+                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6">
+                                <span className="material-symbols-outlined text-blue-500">school</span>
+                                Academic Information
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-400 uppercase flex items-center gap-1">
+                                        NRP / Student ID <span className="material-symbols-outlined text-[12px]">lock</span>
                                     </label>
-                                    <div className="w-full h-11 px-4 flex items-center rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f3f4f6] dark:bg-[#111318]/50 text-[#6b7280] dark:text-[#9da6b9] cursor-not-allowed select-none font-mono">
+                                    <div className="bg-[#1C2028] border border-[#2D303E] rounded-lg px-4 py-3 font-mono text-gray-500 cursor-not-allowed">
                                         5025201042
                                     </div>
                                 </div>
-                                {/* Read Only Field: Department */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-medium text-[#6b7280] dark:text-[#9da6b9] flex items-center gap-2">
-                                        Department
-                                        <span className="material-symbols-outlined text-xs" title="Read Only">lock</span>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-400 uppercase flex items-center gap-1">
+                                        Department <span className="material-symbols-outlined text-[12px]">lock</span>
                                     </label>
-                                    <div className="w-full h-11 px-4 flex items-center rounded-lg border border-[#e5e7eb] dark:border-[#282e39] bg-[#f3f4f6] dark:bg-[#111318]/50 text-[#6b7280] dark:text-[#9da6b9] cursor-not-allowed select-none">
+                                    <div className="bg-[#1C2028] border border-[#2D303E] rounded-lg px-4 py-3 text-gray-500 cursor-not-allowed">
                                         Informatics Engineering
                                     </div>
                                 </div>
-                                {/* Read Only Field: GPA */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-medium text-[#6b7280] dark:text-[#9da6b9] flex items-center gap-2">
-                                        Current GPA
-                                        <span className="material-symbols-outlined text-xs" title="Read Only">lock</span>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-400 uppercase flex items-center gap-1">
+                                        Current GPA <span className="material-symbols-outlined text-[12px]">lock</span>
                                     </label>
-                                    <div className="w-full h-11 px-4 flex items-center justify-between rounded-lg border border-[#135bec]/30 bg-[#135bec]/5 text-[#111318] dark:text-white cursor-not-allowed select-none">
-                                        <span className="font-bold text-lg">3.85</span>
-                                        <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-500 font-medium">Excellent</span>
+                                    <div className="bg-[#1A2234] border border-blue-900/30 rounded-lg px-4 py-3 flex justify-between items-center cursor-not-allowed">
+                                        <span className="text-white font-bold text-lg">3.85</span>
+                                        <span className="bg-green-900/20 text-green-500 text-[10px] uppercase font-bold px-2 py-0.5 rounded">Excellent</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20 flex gap-3 items-start">
-                                <span className="material-symbols-outlined text-[#135bec] mt-0.5">info</span>
-                                <p className="text-sm text-[#111318] dark:text-white leading-relaxed">
+
+                            <div className="bg-blue-900/20 border border-blue-500/20 rounded-lg p-4 flex gap-3">
+                                <span className="material-symbols-outlined text-blue-500">info</span>
+                                <p className="text-sm text-gray-300">
                                     Academic data is synchronized directly from the central university database. If you notice any discrepancies, please contact the Academic Administration Bureau.
                                 </p>
                             </div>
-                        </section>
-                        {/* Preferences Section */}
-                        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {/* Privacy Settings */}
-                            <div className="flex flex-col gap-4 bg-white dark:bg-[#1e2430] rounded-2xl p-6 shadow-sm border border-[#e5e7eb] dark:border-[#282e39]">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="bg-[#135bec]/10 p-2 rounded-lg text-[#135bec]">
-                                        <span className="material-symbols-outlined">shield</span>
+                        </div>
+
+                        {/* Preferences Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Privacy */}
+                            <div className="bg-[#151921] border border-[#2D303E] rounded-2xl p-8">
+                                <h2 className="text-lg font-bold flex items-center gap-2 mb-6">
+                                    <span className="material-symbols-outlined text-blue-500">lock</span>
+                                    Privacy
+                                </h2>
+
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="font-bold text-sm">Profile Visibility</p>
+                                            <p className="text-xs text-gray-500 mt-1">Allow other students to view your basic profile information.</p>
+                                        </div>
+                                        <Toggle checked={profileVisibility} onChange={setProfileVisibility} />
                                     </div>
-                                    <h3 className="text-lg font-bold text-[#111318] dark:text-white">Privacy</h3>
-                                </div>
-                                <div className="flex items-center justify-between py-2">
-                                    <div className="flex flex-col gap-1 pr-4">
-                                        <p className="text-sm font-medium text-[#111318] dark:text-white">Profile Visibility</p>
-                                        <p className="text-xs text-[#6b7280] dark:text-[#9da6b9]">Allow other students to view your basic profile information.</p>
+
+                                    <div className="w-full h-px bg-[#2D303E]"></div>
+
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="font-bold text-sm">Share Data with Partners</p>
+                                            <p className="text-xs text-gray-500 mt-1">Allow sharing academic achievements for internship opportunities.</p>
+                                        </div>
+                                        <Toggle checked={shareData} onChange={setShareData} />
                                     </div>
-                                    <label className="flex items-center cursor-pointer relative">
-                                        <input checked={profileVisibility} onChange={(e) => setProfileVisibility(e.target.checked)} className="sr-only toggle-checkbox" type="checkbox" />
-                                        <div className={`w-11 h-6 rounded-full border toggle-label transition-colors ${profileVisibility ? 'bg-[#135bec] border-[#135bec]' : 'bg-[#e5e7eb] dark:bg-[#111318] border-[#d1d5db] dark:border-[#282e39]'}`}></div>
-                                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform toggle-dot ${profileVisibility ? 'translate-x-full' : 'translate-x-0'}`}></div>
-                                    </label>
-                                </div>
-                                <div className="w-full h-px bg-[#e5e7eb] dark:bg-[#282e39]"></div>
-                                <div className="flex items-center justify-between py-2">
-                                    <div className="flex flex-col gap-1 pr-4">
-                                        <p className="text-sm font-medium text-[#111318] dark:text-white">Share Data with Partners</p>
-                                        <p className="text-xs text-[#6b7280] dark:text-[#9da6b9]">Allow sharing academic achievements for internship opportunities.</p>
-                                    </div>
-                                    <label className="flex items-center cursor-pointer relative">
-                                        <input checked={shareData} onChange={(e) => setShareData(e.target.checked)} className="sr-only toggle-checkbox" type="checkbox" />
-                                        <div className={`w-11 h-6 rounded-full border toggle-label transition-colors ${shareData ? 'bg-[#135bec] border-[#135bec]' : 'bg-[#e5e7eb] dark:bg-[#111318] border-[#d1d5db] dark:border-[#282e39]'}`}></div>
-                                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform toggle-dot ${shareData ? 'translate-x-full' : 'translate-x-0'}`}></div>
-                                    </label>
                                 </div>
                             </div>
-                            {/* Notification Settings */}
-                            <div className="flex flex-col gap-4 bg-white dark:bg-[#1e2430] rounded-2xl p-6 shadow-sm border border-[#e5e7eb] dark:border-[#282e39]">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="bg-[#135bec]/10 p-2 rounded-lg text-[#135bec]">
-                                        <span className="material-symbols-outlined">notifications_active</span>
+
+                            {/* Notifications */}
+                            <div className="bg-[#151921] border border-[#2D303E] rounded-2xl p-8">
+                                <h2 className="text-lg font-bold flex items-center gap-2 mb-6">
+                                    <span className="material-symbols-outlined text-blue-500">notifications_active</span>
+                                    Notifications
+                                </h2>
+
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="font-bold text-sm">Email Alerts</p>
+                                            <p className="text-xs text-gray-500 mt-1">Receive daily summaries and important academic updates.</p>
+                                        </div>
+                                        <Toggle checked={emailAlerts} onChange={setEmailAlerts} />
                                     </div>
-                                    <h3 className="text-lg font-bold text-[#111318] dark:text-white">Notifications</h3>
-                                </div>
-                                <div className="flex items-center justify-between py-2">
-                                    <div className="flex flex-col gap-1 pr-4">
-                                        <p className="text-sm font-medium text-[#111318] dark:text-white">Email Alerts</p>
-                                        <p className="text-xs text-[#6b7280] dark:text-[#9da6b9]">Receive daily summaries and important academic updates.</p>
+
+                                    <div className="w-full h-px bg-[#2D303E]"></div>
+
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="font-bold text-sm">SMS Notifications</p>
+                                            <p className="text-xs text-gray-500 mt-1">Get instant alerts for urgent schedule changes.</p>
+                                        </div>
+                                        <Toggle checked={smsAlerts} onChange={setSmsAlerts} />
                                     </div>
-                                    <label className="flex items-center cursor-pointer relative">
-                                        <input checked={emailAlerts} onChange={(e) => setEmailAlerts(e.target.checked)} className="sr-only toggle-checkbox" type="checkbox" />
-                                        <div className={`w-11 h-6 rounded-full border toggle-label transition-colors ${emailAlerts ? 'bg-[#135bec] border-[#135bec]' : 'bg-[#e5e7eb] dark:bg-[#111318] border-[#d1d5db] dark:border-[#282e39]'}`}></div>
-                                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform toggle-dot ${emailAlerts ? 'translate-x-full' : 'translate-x-0'}`}></div>
-                                    </label>
-                                </div>
-                                <div className="w-full h-px bg-[#e5e7eb] dark:bg-[#282e39]"></div>
-                                <div className="flex items-center justify-between py-2">
-                                    <div className="flex flex-col gap-1 pr-4">
-                                        <p className="text-sm font-medium text-[#111318] dark:text-white">SMS Notifications</p>
-                                        <p className="text-xs text-[#6b7280] dark:text-[#9da6b9]">Get instant alerts for urgent schedule changes.</p>
-                                    </div>
-                                    <label className="flex items-center cursor-pointer relative">
-                                        <input checked={smsAlerts} onChange={(e) => setSmsAlerts(e.target.checked)} className="sr-only toggle-checkbox" type="checkbox" />
-                                        <div className={`w-11 h-6 rounded-full border toggle-label transition-colors ${smsAlerts ? 'bg-[#135bec] border-[#135bec]' : 'bg-[#e5e7eb] dark:bg-[#111318] border-[#d1d5db] dark:border-[#282e39]'}`}></div>
-                                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform toggle-dot ${smsAlerts ? 'translate-x-full' : 'translate-x-0'}`}></div>
-                                    </label>
                                 </div>
                             </div>
-                        </section>
-                        {/* Action Bar */}
-                        <div className="flex items-center justify-end gap-4 pt-4 border-t border-[#e5e7eb] dark:border-[#282e39]">
-                            <button className="px-6 py-2.5 rounded-lg text-[#111318] dark:text-white font-medium hover:bg-[#e5e7eb] dark:hover:bg-[#282e39] transition-colors">
-                                Cancel
-                            </button>
-                            <button className="px-6 py-2.5 rounded-lg bg-[#135bec] text-white font-bold hover:bg-[#135bec]/90 shadow-lg shadow-[#135bec]/25 transition-all flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[20px]">save</span>
+                        </div>
+
+                        {/* Save Button */}
+                        <div className="flex justify-end gap-4">
+                            <button className="px-6 py-3 rounded-lg font-bold text-gray-300 hover:text-white transition-colors">Cancel</button>
+                            <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-lg shadow-lg shadow-blue-900/40 flex items-center gap-2 transition-all">
+                                <span className="material-symbols-outlined">save</span>
                                 Save Changes
                             </button>
                         </div>
+
                     </div>
-                </main>
-            </div>
-            <style jsx global>{`
-                 /* Custom scrollbar for better look in dark mode */
-                ::-webkit-scrollbar {
-                    width: 8px;
-                }
-                ::-webkit-scrollbar-track {
-                    background: #111318;
-                }
-                ::-webkit-scrollbar-thumb {
-                    background: #282e39;
-                    border-radius: 4px;
-                }
-                ::-webkit-scrollbar-thumb:hover {
-                    background: #3b4250;
-                }
-                
-                /* Toggle Switch styling used logic in inline style */
-                /* The dot animation is handled by tailwind classes */
-                .dot {
-                     transition: transform 0.2s ease-in-out;
-                }
-            `}</style>
+                </div>
+            </main>
         </div>
     );
 }

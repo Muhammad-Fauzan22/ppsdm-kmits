@@ -10,7 +10,13 @@ const config: Config = {
         extend: {
             colors: {
                 // WARNA UTAMA BARU (Admin & Supervisor)
+                // WARNA UTAMA BARU (Admin & Supervisor)
                 primary: "#135bec",
+                "its-red": "#ef4444",
+                "background-light": "#f6f6f8",
+                "background-dark": "#101622",
+                "card-dark": "#1c1f27",
+                "border-dark": "#282e39",
 
                 // Student Portal Specific
                 "student-primary": "#003366",
@@ -66,8 +72,11 @@ const config: Config = {
             },
             fontFamily: {
                 // Tipografi Resmi
+                // Tipografi Resmi
                 sans: ['var(--font-work-sans)', 'sans-serif'], // Body Text
                 serif: ['var(--font-friz)', 'serif'],         // Headings (Friz Quadrata)
+                display: ['var(--font-lexend)', 'sans-serif'],
+                body: ['var(--font-noto-sans)', 'sans-serif'],
             },
             backgroundImage: {
                 // Pattern Resmi "Gerigi/Batik"
@@ -77,6 +86,12 @@ const config: Config = {
                 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
                 'glow': '0 0 15px rgba(1, 56, 128, 0.15)',
                 'nav': '0 -4px 20px -5px rgba(0, 0, 0, 0.1)',
+            },
+            animation: {
+                'fade-in': 'fadeIn 0.5s ease-in-out',
+                'slide-up': 'slideUp 0.5s ease-out',
+                'slide-right': 'slideInRight 0.5s ease-out',
+                marquee: 'marquee 25s linear infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -91,11 +106,10 @@ const config: Config = {
                     '0%': { opacity: '0', transform: 'translateX(20px)' },
                     '100%': { opacity: '1', transform: 'translateX(0)' },
                 },
-            },
-            animation: {
-                'fade-in': 'fadeIn 0.5s ease-in-out',
-                'slide-up': 'slideUp 0.5s ease-out',
-                'slide-right': 'slideInRight 0.5s ease-out',
+                marquee: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-100%)' },
+                },
             },
         },
     },
