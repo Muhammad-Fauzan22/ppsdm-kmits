@@ -18,9 +18,10 @@ const config: Config = {
                 "border-dark": "#282e39",
 
                 // New Design System Tokens (From Request)
+                "its-blue": "#013880",
                 "its-gold": "#FFD700",
                 "its-dark": "#0A0F1A",
-                "brand-blue": "#135bec",
+                "brand-blue": "#135bec", // Matches primary
                 "brand-accent": "#00d4ff",
 
                 // Student Portal Specific
@@ -62,7 +63,6 @@ const config: Config = {
                     50: "#F8FAFC",      // Background Halaman (Slate-50)
                     100: "#F1F5F9",     // Secondary Background
                     200: "#E2E8F0",
-                    card: "#FFFFFF",
                 },
                 // WARNA FAKULTAS (Untuk Kategori/Dimensi)
                 faculty: {
@@ -77,8 +77,8 @@ const config: Config = {
             },
             fontFamily: {
                 // Tipografi Resmi
-                sans: ['"Inter"', 'sans-serif'], // Updated to match design request
-                heading: ['"Poppins"', 'sans-serif'], // Added for headings
+                sans: ['var(--font-inter)', 'sans-serif'], // Updated to match design request
+                heading: ['var(--font-poppins)', 'sans-serif'], // Added for headings
                 serif: ['var(--font-friz)', 'serif'],         // Headings (Friz Quadrata)
                 display: ['"Lexend"', 'sans-serif'],
                 body: ['"Noto Sans"', 'sans-serif'],
@@ -100,7 +100,9 @@ const config: Config = {
                 'fade-in-up': 'fadeInUp 0.6s ease-out',
                 'slide-up': 'slideUp 0.5s ease-out',
                 'slide-right': 'slideInRight 0.5s ease-out',
+                'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite', // Ensure ping is available
                 marquee: 'marquee 25s linear infinite',
+                bounce: 'bounce 1s infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -130,6 +132,13 @@ const config: Config = {
                 marquee: {
                     '0%': { transform: 'translateX(0%)' },
                     '100%': { transform: 'translateX(-100%)' },
+                },
+                bounce: {
+                    '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8,0,1,1)' },
+                    '50%': { transform: 'none', animationTimingFunction: 'cubic-bezier(0,0,0.2,1)' },
+                },
+                ping: {
+                    '75%, 100%': { transform: 'scale(2)', opacity: '0' },
                 },
             },
         },
