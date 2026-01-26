@@ -7,70 +7,70 @@ import { Header } from '@/components/Header';
 import { DimensionRadarChart } from '@/components/Charts';
 
 export default function LandingPage() {
-    // 9 Dimensions Data
+    // 9 Dimensions Data (Light Theme Colors)
     const dimensions = [
         {
             title: "Leadership",
             icon: "groups",
             desc: "Cultivating the ability to guide, inspire, and influence others towards shared goals.",
-            color: "text-blue-500",
-            bg: "bg-blue-500/10"
+            color: "text-blue-600",
+            bg: "bg-blue-50"
         },
         {
             title: "Ethics",
             icon: "balance",
             desc: "Building moral character and integrity as the foundation of professional life.",
-            color: "text-red-500",
-            bg: "bg-red-500/10"
+            color: "text-red-600",
+            bg: "bg-red-50"
         },
         {
             title: "Technology",
-            icon: "memory", // or 'developer_mode'
+            icon: "memory",
             desc: "Mastering digital tools and maintaining fluency in emerging tech landscapes.",
-            color: "text-cyan-500",
-            bg: "bg-cyan-500/10"
+            color: "text-cyan-600",
+            bg: "bg-cyan-50"
         },
         {
             title: "Global Mindset",
             icon: "public",
             desc: "Understanding diverse cultures and operating effectively in international contexts.",
-            color: "text-green-500",
-            bg: "bg-green-500/10"
+            color: "text-green-600",
+            bg: "bg-green-50"
         },
         {
             title: "Critical Thinking",
             icon: "psychology",
             desc: "Analyzing information objectively to form reasoned judgments and solve problems.",
-            color: "text-purple-500",
-            bg: "bg-purple-500/10"
+            color: "text-purple-600",
+            bg: "bg-purple-50"
         },
         {
             title: "Creativity",
             icon: "lightbulb",
             desc: "Generating novel ideas and innovative solutions to complex challenges.",
-            color: "text-yellow-500",
-            bg: "bg-yellow-500/10"
+            color: "text-yellow-600",
+            bg: "bg-yellow-50"
         },
         {
             title: "Collaboration",
-            icon: "handshake", // or 'connect_without_contact'
+            icon: "handshake",
             desc: "Working synergistically within teams to achieve collective success.",
-            color: "text-orange-500",
-            bg: "bg-orange-500/10"
+            color: "text-orange-600",
+            bg: "bg-orange-50"
         },
         {
             title: "Communication",
             icon: "chat",
             desc: "Articulating thoughts clearly and listening effectively across various mediums.",
-            color: "text-teal-500",
-            bg: "bg-teal-500/10"
+            color: "text-teal-600",
+            bg: "bg-teal-50"
         },
         {
             title: "Adaptability",
             icon: "sync",
             desc: "Maintaining resilience and flexibility in the face of rapid change.",
-            color: "text-pink-500",
-            bg: "bg-pink-500/10"
+            color: "text-pink-600",
+            bg: "bg-pink-50"
         }
     ];
 
@@ -88,68 +88,74 @@ export default function LandingPage() {
     ];
 
     return (
-        <div className="bg-[#020617] text-white font-sans min-h-screen selection:bg-blue-500/30">
-            {/* 1. Header with Dark Variant */}
-            <Header variant="dark" />
+        <div className="bg-slate-50 text-slate-900 font-sans min-h-screen selection:bg-blue-100 selection:text-blue-900">
+            {/* 1. Header (Light Variant) */}
+            <Header variant="light" />
 
             {/* 2. Hero Section */}
-            <section className="relative pt-20 pb-20 lg:pt-32 lg:pb-32 overflow-hidden bg-gradient-to-b from-[#020617] via-[#0B1120] to-[#020617]">
-                {/* Background Glows */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
-                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] -z-10"></div>
+            <section className="relative pt-20 pb-20 lg:pt-32 lg:pb-40 overflow-hidden bg-white">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-70"></div>
 
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm shadow-lg hover:border-white/20 transition-colors cursor-pointer">
-                        <span className="flex size-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span className="text-xs font-medium tracking-wide text-gray-300 uppercase">Unveiling New Students 2024</span>
-                    </div>
+                    <p className="text-blue-600 font-bold uppercase tracking-wider text-sm mb-4">
+                        Original PPSDM ITS
+                    </p>
 
-                    <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl mb-6 leading-[1.1]">
+                    <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 sm:text-7xl mb-6 leading-tight">
                         Membangun Insan <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 animate-text-shimmer bg-[size:200%_auto]">
+                        <span className="text-blue-600">
                             ITS Seutuhnya
                         </span>
                     </h1>
 
-                    <p className="mt-6 text-lg leading-8 text-gray-400 max-w-2xl mx-auto font-light">
-                        Empowering students through holistic development and structured mentorship. Join a community dedicated to excellence in every dimension.
+                    <p className="mt-6 text-lg leading-8 text-slate-600 max-w-2xl mx-auto">
+                        Portal pengembangan diri terintegrasi untuk mahasiswa Institut Teknologi Sepuluh Nopember. Jelajahi potensi diri Anda melalui 9 dimensi pengembangan komprehensif.
                     </p>
 
                     <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
                             href="/auth/register"
-                            className="w-full sm:w-auto rounded-full bg-blue-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-500 hover:shadow-blue-600/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all hover:-translate-y-0.5"
+                            className="w-full sm:w-auto rounded-lg bg-blue-600 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700 transition-all hover:-translate-y-0.5"
                         >
                             Mulai Perjalanan Anda &rarr;
                         </Link>
                         <Link
                             href="#features"
-                            className="w-full sm:w-auto rounded-full bg-white/5 px-8 py-3.5 text-sm font-semibold text-white border border-white/10 hover:bg-white/10 transition-all hover:-translate-y-0.5 backdrop-blur-sm"
+                            className="w-full sm:w-auto rounded-lg bg-white px-8 py-3.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all hover:-translate-y-0.5 shadow-sm"
                         >
                             Pelajari Lebih Lanjut
                         </Link>
+                    </div>
+
+                    {/* Hero Image / Illustration Placeholder */}
+                    <div className="mt-16 relative mx-auto max-w-5xl rounded-2xl overflow-hidden shadow-2xl border border-slate-200 aspect-[16/9] bg-slate-100">
+                        {/* Setup for future hero image like standard student photo */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-slate-200 text-slate-400">
+                            <span className="material-symbols-outlined text-6xl">image</span>
+                            <span className="ml-2 font-medium">Hero Image Area</span>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* 3. 9 Dimensions Grid */}
-            <section id="features" className="py-24 bg-[#0B1120]">
+            <section id="features" className="py-24 bg-white">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">9 Dimensions of Development</h2>
-                        <p className="mt-4 text-lg text-gray-400 font-light">
-                            Explore the core competencies fostered through our comprehensive programs designed to shape future leaders.
+                        <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">9 Dimensi Pengembangan</h2>
+                        <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+                            Kerangka kerja holistik untuk membentuk karakter mahasiswa yang unggul, adaptif, dan siap menghadapi tantangan global.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {dimensions.map((dim, index) => (
-                            <div key={index} className="group relative bg-[#111827] p-6 rounded-xl border border-white/5 hover:border-white/10 transition-all hover:bg-[#162032]">
-                                <div className={`size-12 rounded-lg ${dim.bg} flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300`}>
+                            <div key={index} className="group relative bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+                                <div className={`size-12 rounded-xl ${dim.bg} flex items-center justify-center mb-6`}>
                                     <span className={`material-symbols-outlined text-2xl ${dim.color}`}>{dim.icon}</span>
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-2">{dim.title}</h3>
-                                <p className="text-sm text-gray-400 leading-relaxed font-light">{dim.desc}</p>
+                                <h3 className="text-lg font-bold text-slate-900 mb-3">{dim.title}</h3>
+                                <p className="text-sm text-slate-500 leading-relaxed">{dim.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -157,170 +163,153 @@ export default function LandingPage() {
             </section>
 
             {/* 4. Visualization & Radar Chart */}
-            <section className="py-24 bg-[#020617] relative overflow-hidden">
-                <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] -translate-y-1/2 pointer-events-none"></div>
+            <section className="py-24 bg-slate-50">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-slate-100 flex flex-col lg:flex-row gap-12 items-center">
 
-                <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
                         {/* Text Content */}
-                        <div>
-                            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-6">
-                                Visualize Your <br />
-                                <span className="text-blue-500">Growth Journey</span>
+                        <div className="flex-1">
+                            <div className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-wide mb-4">
+                                Keunggulan Integratif
+                            </div>
+                            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-6">
+                                Visualisasikan Potensi Anda
                             </h2>
-                            <p className="text-lg text-gray-400 mb-8 font-light">
-                                Track your progress across all 9 dimensions with our dynamic assessment tools. Identify strengths, uncover areas for improvement, and chart a personalized path to success.
+                            <p className="text-lg text-slate-600 mb-8">
+                                Lihat bagaimana keseimbangan 9 dimensi membentuk profil unik Anda. Platform kami membantu Anda mengidentifikasi area kekuatan dan peluang pengembangan.
                             </p>
 
                             <ul className="space-y-6">
                                 <li className="flex gap-4">
-                                    <div className="size-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-                                        <span className="material-symbols-outlined text-blue-500 text-sm">check</span>
+                                    <div className="size-10 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined text-blue-600">analytics</span>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-white">Real-time Analytics</h4>
-                                        <p className="text-sm text-gray-500 mt-1">Get instant feedback as your developments milestones.</p>
+                                        <h4 className="font-bold text-slate-900">Analisis Mendalam</h4>
+                                        <p className="text-sm text-slate-500 mt-1">Data real-time tentang perkembangan Anda.</p>
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
-                                    <div className="size-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-                                        <span className="material-symbols-outlined text-blue-500 text-sm">check</span>
+                                    <div className="size-10 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined text-blue-600">verified</span>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-white">Personalized Recommendations</h4>
-                                        <p className="text-sm text-gray-500 mt-1">Receive curated program suggestions based on your profile.</p>
+                                        <h4 className="font-bold text-slate-900">Rekomendasi Personal</h4>
+                                        <p className="text-sm text-slate-500 mt-1">Saran kegiatan sesuai kebutuhan Anda.</p>
                                     </div>
                                 </li>
                             </ul>
 
                             <div className="mt-10">
-                                <Link href="/auth/register" className="inline-flex items-center text-sm font-semibold text-white border border-white/20 rounded-lg px-5 py-2.5 hover:bg-white/5 transition-colors">
-                                    View Sample Report
+                                <Link href="/auth/register" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
+                                    Coba Simulasi Profil &rarr;
                                 </Link>
                             </div>
                         </div>
 
-                        {/* Chart Preview Card */}
-                        <div className="relative">
-                            <div className="bg-[#111827] rounded-3xl p-8 border border-white/5 shadow-2xl relative overflow-hidden">
-                                {/* Header */}
-                                <div className="flex justify-between items-start mb-8">
-                                    <div>
-                                        <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Student Profile</p>
-                                        <h3 className="text-2xl font-bold text-white mt-1">Mahasiswa ITS</h3>
-                                    </div>
-                                    <div className="size-10 rounded-full bg-white/5 flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-gray-400">person</span>
-                                    </div>
-                                </div>
-
-                                {/* Chart Component */}
-                                <div className="h-[320px] w-full flex items-center justify-center -ml-4">
-                                    <DimensionRadarChart data={radarData} color="#3B82F6" />
-                                </div>
-
-                                <div className="absolute bottom-6 right-6">
-                                    <span className="text-xs font-medium text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">Balanced Growth</span>
-                                </div>
+                        {/* Chart Preview */}
+                        <div className="flex-1 w-full flex justify-center">
+                            <div className="bg-slate-50 rounded-2xl p-6 w-full max-w-md border border-slate-200/60 shadow-inner">
+                                <DimensionRadarChart data={radarData} color="#2563EB" /> {/* Blue-600 */}
                             </div>
-
-                            {/* Decorative Elements */}
-                            <div className="absolute -top-10 -right-10 size-32 bg-blue-500/20 rounded-full blur-3xl -z-10"></div>
-                            <div className="absolute -bottom-10 -left-10 size-32 bg-purple-500/20 rounded-full blur-3xl -z-10"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* 5. Student Voices */}
-            <section className="py-24 bg-[#0B1120] border-t border-white/5">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold tracking-tight text-white">Student Voices</h2>
-                        <p className="mt-2 text-gray-400 font-light">None so deaf as those that will not hear. Hear from those who have transformed their potential.</p>
-                    </div>
+            {/* 5. Testimoni Mahasiswa (Light) */}
+            <section className="py-24 bg-white">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-12">Apa Kata Mahasiswa</h2>
+                    <p className="text-slate-600 max-w-2xl mx-auto -mt-8 mb-16">Mereka yang telah merasakan dampak positif pengembangan diri.</p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Testimonial 1 */}
-                        <div className="bg-[#111827] p-8 rounded-2xl border border-white/5 relative">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">IA</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-left">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="size-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">DL</div>
                                 <div>
-                                    <h4 className="font-bold text-white text-sm">Isti Aminah</h4>
-                                    <p className="text-xs text-gray-500">Arsitektur '20</p>
+                                    <h4 className="font-bold text-slate-900 text-sm">Devi Lestari</h4>
+                                    <p className="text-xs text-slate-500">Statistika '22</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-gray-300 italic">"PPSDM helped me balance my academic life with meaningful soft skill development."</p>
+                            <p className="text-sm text-slate-600 italic">"Saya menemukan passion public speaking lewat workshop komunikasi. Sangat membantu!"</p>
                         </div>
-                        {/* Testimonial 2 */}
-                        <div className="bg-[#111827] p-8 rounded-2xl border border-white/5 relative">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="size-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500 font-bold">RP</div>
+                        <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-left">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="size-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm">RP</div>
                                 <div>
-                                    <h4 className="font-bold text-white text-sm">Rizky Pratama</h4>
-                                    <p className="text-xs text-gray-500">Teknik Mesin '21</p>
+                                    <h4 className="font-bold text-slate-900 text-sm">Rudi Santoso</h4>
+                                    <p className="text-xs text-slate-500">Teknik Informatika '20</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-gray-300 italic">"The mentorship program connected me with alumni who guided my career path."</p>
-                        </div>
-                        {/* Testimonial 3 */}
-                        <div className="bg-[#111827] p-8 rounded-2xl border border-white/5 relative">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="size-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-500 font-bold">DL</div>
-                                <div>
-                                    <h4 className="font-bold text-white text-sm">Devi Lestari</h4>
-                                    <p className="text-xs text-gray-500">Statistika '22</p>
-                                </div>
-                            </div>
-                            <p className="text-sm text-gray-300 italic">"I discovered my passion for public speaking through the communication workshops."</p>
+                            <p className="text-sm text-slate-600 italic">"Program ini menguatkan soft skill saya. Sangat berharga untuk persiapan dunia kerja."</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="bg-[#0f172a] text-white py-12 border-t border-white/5">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Footer (Dark Accent) */}
+            <footer className="bg-[#0f172a] text-white py-16 border-t border-slate-800">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
                     <div className="col-span-1 md:col-span-2">
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="size-8 rounded bg-white flex items-center justify-center text-[#013880]">
-                                <span className="material-symbols-outlined">school</span>
+                        <div className="flex items-center gap-2 mb-6">
+                            <div className="size-8 rounded bg-blue-600 flex items-center justify-center text-white">
+                                <span className="material-symbols-outlined text-lg">school</span>
                             </div>
-                            <h3 className="text-xl font-bold">Institut Teknologi Sepuluh Nopember</h3>
+                            <h3 className="text-xl font-bold tracking-tight">PPSDM KMM</h3>
                         </div>
-                        <p className="text-sm text-gray-400 mb-2">Kampus ITS Sukolilo, Surabaya 60111</p>
-                        <p className="text-sm text-gray-400">Jawa Timur, Indonesia</p>
-                        <p className="text-sm text-gray-400">Phone: +62-31-5994251</p>
-                        <div className="mt-8 text-xs text-gray-500">
-                            &copy; 2024 PPSDM KM Institut Teknologi Sepuluh Nopember. All rights reserved.
+                        <p className="text-sm text-slate-400 mb-2 max-w-sm">Membangun karakter unggul mahasiswa ITS melalui pengembangan diri yang terintegrasi dan terukur.</p>
+
+                        <div className="mt-8 flex gap-4">
+                            <a href="#" className="size-8 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 transition-colors"><span className="material-symbols-outlined text-sm">share</span></a>
+                            <a href="#" className="size-8 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 transition-colors"><span className="material-symbols-outlined text-sm">play_arrow</span></a>
+                            <a href="#" className="size-8 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 transition-colors"><span className="material-symbols-outlined text-sm">mail</span></a>
                         </div>
                     </div>
+
                     <div>
-                        <h4 className="font-bold mb-4">Quick Links</h4>
-                        <ul className="space-y-2 text-sm text-gray-400">
-                            <li><Link href="/" className="hover:text-white transition-colors">Beranda</Link></li>
-                            <li><Link href="/about" className="hover:text-white transition-colors">Tentang PPSDM</Link></li>
-                            <li><Link href="/programs" className="hover:text-white transition-colors">Program Unggulan</Link></li>
-                            <li><Link href="/calendar" className="hover:text-white transition-colors">Kalender Kegiatan</Link></li>
+                        <h4 className="font-bold text-white mb-6">Tautan Cepat</h4>
+                        <ul className="space-y-3 text-sm text-slate-400">
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Beranda</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Tentang Kami</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">9 Dimensi</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Berita & Artikel</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">FAQ</a></li>
                         </ul>
                     </div>
+
                     <div>
-                        <h4 className="font-bold mb-4">Connect</h4>
-                        <div className="flex gap-4">
-                            <a href="#" className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">
-                                <span className="material-symbols-outlined text-sm">mail</span>
-                            </a>
-                            <a href="#" className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">
-                                <span className="material-symbols-outlined text-sm">public</span>
-                            </a>
-                            <a href="#" className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">
-                                <span className="material-symbols-outlined text-sm">rss_feed</span>
-                            </a>
+                        <h4 className="font-bold text-white mb-6">Hubungi Kami</h4>
+                        <ul className="space-y-4 text-sm text-slate-400">
+                            <li className="flex gap-3">
+                                <span className="material-symbols-outlined text-blue-500 shrink-0">location_on</span>
+                                <span>Gedung Rektorat Lt. 1, Kampus ITS Sukolilo, Surabaya 60111</span>
+                            </li>
+                            <li className="flex gap-3">
+                                <span className="material-symbols-outlined text-blue-500 shrink-0">call</span>
+                                <span>(031) 5994251</span>
+                            </li>
+                            <li className="flex gap-3">
+                                <span className="material-symbols-outlined text-blue-500 shrink-0">email</span>
+                                <span>ppsdm@its.ac.id</span>
+                            </li>
+                        </ul>
+
+                        <div className="mt-8">
+                            <h5 className="font-bold text-white text-xs mb-2">Dapatkan Informasi Terbaru</h5>
+                            <p className="text-xs text-slate-500 mb-3">Berlangganan newsletter kami untuk update kegiatan.</p>
+                            <div className="flex gap-2">
+                                <input type="email" placeholder="Email Anda" className="bg-white/5 border border-white/10 rounded px-3 py-2 text-xs w-full focus:outline-none focus:border-blue-500" />
+                                <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded font-bold transition-colors">Langganan</button>
+                            </div>
                         </div>
-                        <div className="mt-12 flex gap-4 text-xs text-gray-500">
-                            <Link href="/privacy" className="hover:text-gray-300">Privacy Policy</Link>
-                            <Link href="/terms" className="hover:text-gray-300">Terms of Service</Link>
-                        </div>
+                    </div>
+                </div>
+                <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+                    <p>&copy; 2024 PPSDM KMM - Institut Teknologi Sepuluh Nopember. All rights reserved.</p>
+                    <div className="flex gap-6">
+                        <a href="#" className="hover:text-slate-400">Kebijakan Privasi</a>
+                        <a href="#" className="hover:text-slate-400">Syarat & Ketentuan</a>
                     </div>
                 </div>
             </footer>

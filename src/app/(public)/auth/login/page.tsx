@@ -7,10 +7,11 @@ import { createBrowserClient } from '@supabase/ssr';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState(''); // NRP or Email
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,6 +24,9 @@ export default function LoginPage() {
         setError(null);
 
         try {
+            // Assume input is email for now, or handle NRP to Email mapping logic here
+            const email = identifier.includes('@') ? identifier : `${identifier}@student.its.ac.id`;
+
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
@@ -30,139 +34,135 @@ export default function LoginPage() {
 
             if (error) throw error;
 
-            // Check role for redirection
-            // Since user_metadata is on the user object
             const role = data.user.user_metadata?.role || "student";
-
             if (role === "admin") router.push('/admin');
             else if (role === "lecturer" || role === "supervisor") router.push('/supervisor');
             else router.push('/dashboard');
 
         } catch (err: any) {
-            setError(err.message || 'Failed to login');
+            setError(err.message || 'Login failed. Please check your credentials.');
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-            {/* Left Side: Branding / Visual */}
-            <div className="hidden md:flex flex-col justify-between bg-its-dark relative overflow-hidden p-12 text-white">
-                <div className="absolute inset-0 z-0 opacity-20 bg-[url('/patterns/its-key-graphic.svg')] bg-cover bg-center" />
-                <div className="absolute inset-0 z-0 bg-gradient-to-br from-its-light/50 to-its-dark/90" />
-
-                <div className="relative z-10">
-                    <div className="size-12 rounded-xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center mb-6">
-                        <span className="material-symbols-outlined text-3xl">school</span>
+        <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 font-sans">
+            {/* Left Side: Branding (Darkest Blue) */}
+            <div className="hidden md:flex flex-col justify-center items-center bg-[#020617] relative overflow-hidden p-12 text-white border-r border-white/5">
+                <div className="absolute top-8 left-8 flex items-center gap-3">
+                    <div className="size-8 rounded bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/30">
+                        <span className="material-symbols-outlined text-xl">school</span>
                     </div>
-                    <h1 className="text-4xl font-bold font-serif mb-4">PPSDM KMM</h1>
-                    <p className="text-white/80 max-w-md text-lg">Platform Pengembangan Sumber Daya Mahasiswa Institut Teknologi Sepuluh Nopember.</p>
+                    <span className="font-bold tracking-tight text-lg">PPSDM KMM Portal</span>
                 </div>
 
-                <div className="relative z-10 space-y-6">
-                    <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10">
-                        <div className="flex gap-1 mb-2">
-                            {[1, 2, 3, 4, 5].map(i => (
-                                <span key={i} className="material-symbols-outlined text-its-yellow text-sm">star</span>
-                            ))}
-                        </div>
-                        <p className="text-sm italic mb-4">"The structured development roadmap helped me secure my dream internship. The assessment tools are incredibly accurate."</p>
-                        <div className="flex items-center gap-3">
-                            <div className="size-8 rounded-full bg-white/20" />
-                            <div>
-                                <p className="font-bold text-sm">Sarah Safira</p>
-                                <p className="text-xs text-white/60">Informatics 2024</p>
-                            </div>
+                <div className="relative z-10 text-center">
+                    {/* 3D Avatar Placeholder */}
+                    <div className="size-64 mx-auto bg-[#0B1120] rounded-2xl flex items-center justify-center mb-10 shadow-2xl border border-white/5 relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-blue-600/20 blur-[80px] group-hover:bg-blue-600/30 transition-all duration-700"></div>
+                        <span className="material-symbols-outlined text-9xl text-blue-500 relative z-10 animate-float">person_3d_gen</span>
+
+                        {/* Mocking the 3D look from reference */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur px-4 py-1 rounded-full text-xs font-medium border border-white/10 text-blue-200">
+                            Student Identity
                         </div>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-white/40">
-                        <p>© 2024 KM ITS</p>
-                        <div className="flex gap-4">
-                            <Link href="/help" className="hover:text-white transition">Privacy</Link>
-                            <Link href="/help" className="hover:text-white transition">Terms</Link>
-                        </div>
-                    </div>
+
+                    <h1 className="text-3xl font-bold mb-4 text-white">Secure Access for <br /> ITS Students</h1>
+                    <p className="text-slate-400 max-w-sm mx-auto text-sm leading-relaxed">
+                        Access your academic resources, schedule, and administrative tools securely through the unified PPSDM KMM portal.
+                    </p>
+                </div>
+
+                <div className="absolute bottom-8 left-8 text-xs text-slate-600">
+                    &copy; 2024 Institut Teknologi Sepuluh Nopember.
                 </div>
             </div>
 
-            {/* Right Side: Login Form */}
-            <div className="bg-surface-50 dark:bg-background-dark flex flex-col justify-center items-center p-6 md:p-12">
-                <div className="w-full max-w-md space-y-8">
-                    <div className="text-center md:text-left">
-                        <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Welcome Back</h2>
-                        <p className="text-slate-500 dark:text-slate-400 mt-2">Sign in to access your personal development dashboard.</p>
+            {/* Right Side: Login Form (Dark Blue) */}
+            <div className="bg-[#050B1D] flex flex-col justify-center items-center p-6 sm:p-12 lg:p-24 relative">
+                <div className="w-full max-w-sm space-y-8">
+
+                    <div>
+                        <h2 className="text-3xl font-bold text-white mb-2">Sign in</h2>
+                        <p className="text-slate-400 text-sm">Enter your details below to access your account</p>
                     </div>
 
-                    {error && (
-                        <div className="p-4 rounded-lg bg-red-50 text-red-600 border border-red-200 text-sm flex items-center gap-2">
-                            <span className="material-symbols-outlined text-lg">error</span>
-                            {error}
-                        </div>
-                    )}
+                    {/* ITS SSO Button */}
+                    <button className="w-full bg-[#1E293B] hover:bg-[#28354D] text-white font-medium py-3 rounded-lg border border-white/5 transition-all flex items-center justify-center gap-3 shadow-lg">
+                        <span className="material-symbols-outlined text-blue-500">school</span>
+                        Sign in with ITS SSO
+                    </button>
+
+                    <div className="relative py-2">
+                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10"></div></div>
+                        <div className="relative flex justify-center text-xs uppercase tracking-wider"><span className="bg-[#050B1D] px-2 text-slate-500">or continue with</span></div>
+                    </div>
 
                     <form onSubmit={handleLogin} className="space-y-5">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">ITS Email / User ID</label>
+                        {error && (
+                            <div className="p-3 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
+                                <span className="material-symbols-outlined text-sm">error</span>
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-white uppercase tracking-wider">NRP / Email</label>
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">mail</span>
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 material-symbols-outlined text-[18px]">mail</span>
                                 <input
-                                    type="email"
+                                    type="text"
                                     required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-card-dark text-slate-900 dark:text-white focus:ring-2 focus:ring-its-light/20 focus:border-its-light transition-all"
-                                    placeholder="your.email@its.ac.id"
+                                    value={identifier}
+                                    onChange={(e) => setIdentifier(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-white/10 bg-[#0F172A] text-white placeholder-slate-600 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all text-sm outline-none"
+                                    placeholder="5025201xxx"
                                 />
                             </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
-                                <Link href="/auth/forgot-password" className="text-sm text-its-light hover:underline font-medium">Forgot Password?</Link>
+                                <label className="text-xs font-bold text-white uppercase tracking-wider">Password</label>
+                                <Link href="#" className="text-xs text-blue-500 hover:text-blue-400 font-bold">Forgot password?</Link>
                             </div>
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">lock</span>
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 material-symbols-outlined text-[18px]">lock</span>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-card-dark text-slate-900 dark:text-white focus:ring-2 focus:ring-its-light/20 focus:border-its-light transition-all"
+                                    className="w-full pl-10 pr-10 py-3 rounded-lg border border-white/10 bg-[#0F172A] text-white placeholder-slate-600 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all text-sm outline-none"
                                     placeholder="••••••••"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">{showPassword ? 'visibility_off' : 'visibility'}</span>
+                                </button>
                             </div>
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-its-light hover:bg-its text-white font-bold py-2.5 rounded-lg shadow-lg shadow-its-light/30 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-white hover:bg-slate-200 text-[#020617] font-bold py-3 rounded-lg shadow-lg shadow-white/5 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed mt-4"
                         >
-                            {loading ? (
-                                <span className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : (
-                                <>
-                                    <span>Sign In</span>
-                                    <span className="material-symbols-outlined text-lg">arrow_forward</span>
-                                </>
-                            )}
+                            {loading ? 'Signing in...' : 'Login'}
                         </button>
                     </form>
 
-                    <div className="relative py-2">
-                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200 dark:border-slate-700"></div></div>
-                        <div className="relative flex justify-center text-xs uppercase"><span className="bg-surface-50 dark:bg-background-dark px-2 text-slate-400">Or continue with</span></div>
+                    <div className="text-center pt-8">
+                        <p className="text-xs text-slate-500 mb-2">Having trouble signing in? <a href="#" className="underline hover:text-slate-400">Contact Help Desk</a></p>
+                        <div className="flex items-center justify-center gap-1.5 text-xs text-green-500">
+                            <span className="material-symbols-outlined text-[14px]">lock</span>
+                            Secure Connection 256-bit SSL
+                        </div>
                     </div>
-
-                    <button className="w-full bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white font-medium py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition flex items-center justify-center gap-3">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="Google" className="size-5" />
-                        Sign in with myITS SSO
-                    </button>
-
-                    <p className="text-center text-sm text-slate-500">
-                        Don't have an account? <Link href="/auth/register" className="text-its-light font-bold hover:underline">Register Now</Link>
-                    </p>
                 </div>
             </div>
         </div>
