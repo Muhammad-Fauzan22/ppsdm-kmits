@@ -10,7 +10,7 @@ import {
     Leaf,
     Compass,
     Zap,
-    HandHeart,
+    HeartHandshake,
     ChevronRight,
     Info
 } from 'lucide-react';
@@ -24,7 +24,7 @@ const QUESTIONS = [
     { id: 'SP1', text: "Saya merasa hidup saya memiliki tujuan dan makna yang jelas", dim: "Purpose", icon: Compass },
     { id: 'SP2', text: "Saya memiliki banyak hal dalam hidup yang harus disyukuri", dim: "Gratitude", icon: Heart },
     { id: 'SP3', text: "Saya merasa terhubung dengan sesuatu yang lebih besar dari diri saya sendiri", dim: "Connectedness", icon: Sparkles },
-    { id: 'SP4', text: "Saya merasa senang dapat membantu orang lain tanpa mengharapkan imbalan", dim: "Altruism", icon: HandHeart },
+    { id: 'SP4', text: "Saya merasa senang dapat membantu orang lain tanpa mengharapkan imbalan", dim: "Altruism", icon: HeartHandshake },
     { id: 'SP5', text: "Saya dapat menemukan makna dalam pengalaman sulit atau penderitaan", dim: "Meaning Making", icon: Sun },
     { id: 'SP6', text: "Saya menghargai keindahan dan keajaiban dalam kehidupan sehari-hari", dim: "Mindfulness", icon: Leaf },
     { id: 'SP7', text: "Saya dapat memaafkan diri sendiri dan orang lain atas kesalahan di masa lalu", dim: "Forgiveness", icon: Zap },

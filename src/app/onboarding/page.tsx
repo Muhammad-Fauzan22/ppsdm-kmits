@@ -1,488 +1,198 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
-
-// Layer components
-const LayerOne = ({ data, onChange }: { data: Record<string, unknown>; onChange: (data: Record<string, unknown>) => void }) => (
-    <div className="space-y-6">
-        <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-[var(--its-blue)] to-[var(--accent-blue)] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🎓</span>
-            </div>
-            <h2 className="text-2xl font-bold text-[var(--its-blue)]">Identitas Mahasiswa</h2>
-            <p className="text-gray-600 mt-2">Lengkapi data dasar Anda</p>
-        </div>
-
-        <div className="grid gap-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">NIM</label>
-                <input
-                    type="text"
-                    value={(data.nim as string) || ""}
-                    onChange={(e) => onChange({ ...data, nim: e.target.value })}
-                    placeholder="Contoh: 5024201001"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                <input
-                    type="text"
-                    value={(data.fullName as string) || ""}
-                    onChange={(e) => onChange({ ...data, fullName: e.target.value })}
-                    placeholder="Nama sesuai KTM"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Fakultas</label>
-                    <select
-                        value={(data.faculty as string) || ""}
-                        onChange={(e) => onChange({ ...data, faculty: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                    >
-                        <option value="">Pilih Fakultas</option>
-                        <option value="FTK">FTK - Teknologi Kelautan</option>
-                        <option value="FTEIC">FTEIC - Teknologi Elektro & Informatika Cerdas</option>
-                        <option value="FTIRS">FTIRS - Teknologi Industri & Rekayasa Sistem</option>
-                        <option value="FADP">FADP - Arsitektur, Desain, Perencanaan</option>
-                        <option value="FSAD">FSAD - Sains & Analitika Data</option>
-                        <option value="FVDP">FVDP - Vokasi & Program Diploma</option>
-                    </select>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Angkatan</label>
-                    <select
-                        value={(data.batchYear as string) || ""}
-                        onChange={(e) => onChange({ ...data, batchYear: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                    >
-                        <option value="">Pilih Angkatan</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Departemen / Program Studi</label>
-                <input
-                    type="text"
-                    value={(data.department as string) || ""}
-                    onChange={(e) => onChange({ ...data, department: e.target.value })}
-                    placeholder="Contoh: Teknik Mesin"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email ITS</label>
-                <input
-                    type="email"
-                    value={(data.email as string) || ""}
-                    onChange={(e) => onChange({ ...data, email: e.target.value })}
-                    placeholder="nama@its.ac.id"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                />
-            </div>
-        </div>
-    </div>
-);
-
-const LayerTwo = ({ data, onChange }: { data: Record<string, unknown>; onChange: (data: Record<string, unknown>) => void }) => (
-    <div className="space-y-6">
-        <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-[var(--engineering-red)] to-orange-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">📋</span>
-            </div>
-            <h2 className="text-2xl font-bold text-[var(--its-blue)]">Profil Akademik & Profesional</h2>
-            <p className="text-gray-600 mt-2">Ceritakan pengalaman dan aspirasi Anda</p>
-        </div>
-
-        <div className="space-y-6">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Kegiatan Ekstrakurikuler</label>
-                <textarea
-                    value={(data.extracurricular as string) || ""}
-                    onChange={(e) => onChange({ ...data, extracurricular: e.target.value })}
-                    placeholder="Contoh: Anggota UKM Robotika, Staf Himpunan Mahasiswa..."
-                    rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition resize-none"
-                />
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Keterampilan yang Dimiliki</label>
-                <textarea
-                    value={(data.skills as string) || ""}
-                    onChange={(e) => onChange({ ...data, skills: e.target.value })}
-                    placeholder="Contoh: Programming Python, CAD Design, Public Speaking..."
-                    rows={2}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition resize-none"
-                />
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Aspirasi Karir</label>
-                <select
-                    value={(data.careerAspiration as string) || ""}
-                    onChange={(e) => onChange({ ...data, careerAspiration: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                >
-                    <option value="">Pilih Aspirasi Karir</option>
-                    <option value="engineer">Engineer / Praktisi Teknis</option>
-                    <option value="researcher">Peneliti / Akademisi</option>
-                    <option value="entrepreneur">Entrepreneur / Startup Founder</option>
-                    <option value="corporate">Corporate Professional</option>
-                    <option value="consultant">Konsultan</option>
-                    <option value="government">ASN / Pemerintahan</option>
-                    <option value="undecided">Belum Memutuskan</option>
-                </select>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Industri yang Diminati</label>
-                <div className="flex flex-wrap gap-2">
-                    {["Tech/IT", "Manufaktur", "Energi", "Konstruksi", "Konsultan", "Startup", "Pendidikan", "Riset"].map((industry) => (
-                        <button
-                            key={industry}
-                            onClick={() => {
-                                const industries = (data.industries as string[]) || [];
-                                if (industries.includes(industry)) {
-                                    onChange({ ...data, industries: industries.filter((i) => i !== industry) });
-                                } else {
-                                    onChange({ ...data, industries: [...industries, industry] });
-                                }
-                            }}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition ${((data.industries as string[]) || []).includes(industry)
-                                    ? "bg-[var(--its-blue)] text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                        >
-                            {industry}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Pengalaman Magang/Kerja (jika ada)</label>
-                <textarea
-                    value={(data.workExperience as string) || ""}
-                    onChange={(e) => onChange({ ...data, workExperience: e.target.value })}
-                    placeholder="Ceritakan pengalaman magang atau kerja part-time Anda..."
-                    rows={2}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition resize-none"
-                />
-            </div>
-        </div>
-    </div>
-);
-
-const LayerThree = ({ onStartAssessment }: { onStartAssessment: () => void }) => (
-    <div className="space-y-6">
-        <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">📊</span>
-            </div>
-            <h2 className="text-2xl font-bold text-[var(--its-blue)]">Assessment 9 Dimensi</h2>
-            <p className="text-gray-600 mt-2">Kenali diri Anda melalui 8 modul assessment saintifik</p>
-        </div>
-
-        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6">
-            <h3 className="font-semibold text-lg mb-4">📋 Apa yang akan dinilai?</h3>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-                {[
-                    { icon: "🧠", name: "Kognitif & Intelektual", time: "15 menit" },
-                    { icon: "💚", name: "Emosional & Sosial", time: "10 menit" },
-                    { icon: "💪", name: "Kesehatan Fisik", time: "8 menit" },
-                    { icon: "💰", name: "Literasi Finansial", time: "7 menit" },
-                    { icon: "⭐", name: "Karakter & Nilai", time: "10 menit" },
-                    { icon: "🕊️", name: "Spiritual & Makna", time: "8 menit" },
-                    { icon: "🌿", name: "Lingkungan", time: "7 menit" },
-                    { icon: "💼", name: "Karir & Profesional", time: "10 menit" },
-                ].map((module) => (
-                    <div key={module.name} className="flex items-center gap-2 p-2 bg-white rounded-lg">
-                        <span>{module.icon}</span>
-                        <div>
-                            <div className="font-medium">{module.name}</div>
-                            <div className="text-gray-500 text-xs">{module.time}</div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-            <div className="flex items-start gap-3">
-                <span className="text-2xl">⏱️</span>
-                <div>
-                    <h4 className="font-semibold text-yellow-800">Estimasi Waktu: 60-90 Menit</h4>
-                    <p className="text-sm text-yellow-700 mt-1">
-                        Anda dapat menyimpan dan melanjutkan kapan saja. Jawablah dengan jujur untuk hasil yang akurat.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <button
-            onClick={onStartAssessment}
-            className="w-full py-4 bg-gradient-to-r from-[var(--its-blue)] to-[var(--accent-blue)] text-white rounded-xl font-semibold text-lg hover:shadow-lg transition transform hover:scale-[1.02]"
-        >
-            🚀 Mulai Assessment
-        </button>
-    </div>
-);
-
-const LayerFour = ({ data, onChange }: { data: Record<string, unknown>; onChange: (data: Record<string, unknown>) => void }) => (
-    <div className="space-y-6">
-        <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🎯</span>
-            </div>
-            <h2 className="text-2xl font-bold text-[var(--its-blue)]">Goal Setting & Prioritas</h2>
-            <p className="text-gray-600 mt-2">Tentukan fokus pengembangan Anda</p>
-        </div>
-
-        <div className="space-y-6">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Prioritas Pengembangan (pilih 3)</label>
-                <div className="grid grid-cols-3 gap-3">
-                    {[
-                        { code: "SELF_MGMT", name: "Produktivitas", icon: "⏰" },
-                        { code: "INTELLECT", name: "Kecerdasan", icon: "🧠" },
-                        { code: "FINANCE", name: "Finansial", icon: "💰" },
-                        { code: "PHYSICAL", name: "Kesehatan", icon: "💪" },
-                        { code: "EMOTIONAL", name: "Emosional", icon: "💚" },
-                        { code: "MENTAL", name: "Mental", icon: "🧘" },
-                        { code: "CHARACTER", name: "Karakter", icon: "⭐" },
-                        { code: "SPIRITUAL", name: "Spiritual", icon: "🕊️" },
-                        { code: "ENVIRONMENT", name: "Lingkungan", icon: "🌿" },
-                    ].map((dim) => (
-                        <button
-                            key={dim.code}
-                            onClick={() => {
-                                const priorities = (data.priorities as string[]) || [];
-                                if (priorities.includes(dim.code)) {
-                                    onChange({ ...data, priorities: priorities.filter((p) => p !== dim.code) });
-                                } else if (priorities.length < 3) {
-                                    onChange({ ...data, priorities: [...priorities, dim.code] });
-                                }
-                            }}
-                            className={`p-4 rounded-xl text-center transition ${((data.priorities as string[]) || []).includes(dim.code)
-                                    ? "bg-[var(--its-blue)] text-white shadow-lg"
-                                    : "bg-gray-100 hover:bg-gray-200"
-                                }`}
-                        >
-                            <span className="text-2xl block mb-1">{dim.icon}</span>
-                            <span className="text-sm font-medium">{dim.name}</span>
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Timeline Pengembangan</label>
-                <select
-                    value={(data.timeline as string) || ""}
-                    onChange={(e) => onChange({ ...data, timeline: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition"
-                >
-                    <option value="">Pilih Timeline</option>
-                    <option value="1_month">1 Bulan (Intensif)</option>
-                    <option value="3_months">3 Bulan (Semester)</option>
-                    <option value="6_months">6 Bulan</option>
-                    <option value="1_year">1 Tahun</option>
-                </select>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Komitmen Waktu per Minggu</label>
-                <div className="flex gap-3">
-                    {["5 jam", "10 jam", "15 jam", "20+ jam"].map((time) => (
-                        <button
-                            key={time}
-                            onClick={() => onChange({ ...data, weeklyCommitment: time })}
-                            className={`flex-1 py-3 rounded-xl text-sm font-medium transition ${data.weeklyCommitment === time
-                                    ? "bg-[var(--its-blue)] text-white"
-                                    : "bg-gray-100 hover:bg-gray-200"
-                                }`}
-                        >
-                            {time}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Motivasi Utama</label>
-                <textarea
-                    value={(data.motivation as string) || ""}
-                    onChange={(e) => onChange({ ...data, motivation: e.target.value })}
-                    placeholder="Apa yang memotivasi Anda untuk berkembang?"
-                    rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[var(--its-blue)] focus:border-transparent transition resize-none"
-                />
-            </div>
-        </div>
-    </div>
-);
+import Link from "next/link";
 
 export default function OnboardingPage() {
-    const router = useRouter();
-    const [currentLayer, setCurrentLayer] = useState(1);
-    const [layerData, setLayerData] = useState<Record<number, Record<string, unknown>>>({
-        1: {},
-        2: {},
-        3: {},
-        4: {},
-    });
-    const [isLoading, setIsLoading] = useState(false);
-
-    const layers = [
-        { number: 1, title: "Identitas", icon: "🎓" },
-        { number: 2, title: "Profil", icon: "📋" },
-        { number: 3, title: "Assessment", icon: "📊" },
-        { number: 4, title: "Goals", icon: "🎯" },
-    ];
-
-    const handleLayerChange = (layer: number, data: Record<string, unknown>) => {
-        setLayerData((prev) => ({ ...prev, [layer]: data }));
-    };
-
-    const handleNext = async () => {
-        if (currentLayer < 4) {
-            setCurrentLayer(currentLayer + 1);
-        } else {
-            // Complete onboarding
-            setIsLoading(true);
-            try {
-                // Save all data
-                await fetch("/api/registration", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        layer: "4",
-                        data: layerData,
-                        completed: true,
-                    }),
-                });
-                router.push("/dashboard");
-            } catch (error) {
-                console.error("Error completing onboarding:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-    };
-
-    const handleStartAssessment = () => {
-        router.push("/comprehensive-assessment");
-    };
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-            {/* Header */}
-            <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
-                <div className="max-w-2xl mx-auto px-4 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-[var(--its-blue)] to-[var(--accent-blue)] rounded-xl flex items-center justify-center">
-                                <span className="text-white font-bold">KMM</span>
-                            </div>
-                            <div>
-                                <h1 className="font-bold text-[var(--its-blue)]">PPSDM KMM</h1>
-                                <p className="text-xs text-gray-500">Holistic Development</p>
-                            </div>
+        <div className="bg-[#f6f6f8] dark:bg-[#101622] font-[family-name:var(--font-lexend)] text-slate-900 dark:text-white antialiased selection:bg-[#135bec] selection:text-white overflow-x-hidden min-h-screen flex flex-col">
+            {/* Top Navigation Bar */}
+            <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282e39] bg-[#101622]/80 backdrop-blur-md px-6 py-4 lg:px-10">
+                <div className="flex items-center gap-4 text-white">
+                    <div className="flex items-center justify-center size-10 rounded-xl bg-[#135bec]/10 text-[#135bec]">
+                        <span className="material-symbols-outlined text-2xl">school</span>
+                    </div>
+                    <div>
+                        <h2 className="text-white text-lg font-bold leading-tight tracking-tight">PPSDM KMM</h2>
+                        <p className="text-[#9da6b9] text-xs font-medium">Student Portal</p>
+                    </div>
+                </div>
+                <div className="flex flex-1 justify-end gap-6 items-center">
+                    <div className="hidden md:flex items-center gap-6">
+                        <Link className="text-[#9da6b9] hover:text-white text-sm font-medium transition-colors" href="#">Help Center</Link>
+                        <Link className="text-[#9da6b9] hover:text-white text-sm font-medium transition-colors" href="#">Contact Admin</Link>
+                    </div>
+                    <div className="h-6 w-px bg-[#282e39] hidden md:block"></div>
+                    <div className="flex items-center gap-3">
+                        <div className="text-right hidden sm:block">
+                            <p className="text-sm font-bold text-white">Guest User</p>
+                            <p className="text-xs text-[#9da6b9]">Registering...</p>
                         </div>
-                        <div className="text-sm text-gray-500">
-                            Layer {currentLayer} of 4
-                        </div>
+                        <div className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-[#282e39]" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_9w6_-frOzKrjsgaY_J7IdvPXuWzByl3ILewAcrVkOJ846oT0nubqgWm0XHRnAQJk_LBaBnrvBhGt5kOVTHj8rcC0eZFdMb8a2zU2Vya3mKnn1ICzWzIdndI-PN7muH9M3cTysaUxtzb3rcV8M2wYTlA-bDq3MhOtb50wQx62afcm4q_Q3kO3vpRnQfJWGVj4K78TzverYQ_kZy5ma8_MGlUtpcVzaspAaxj3h0gtjrJ-iWzIotYmzz5J16Y60FbTTtDU_Ok0kTg')" }}></div>
                     </div>
                 </div>
             </header>
 
-            {/* Progress Steps */}
-            <div className="max-w-2xl mx-auto px-4 py-6">
-                <div className="flex justify-between items-center">
-                    {layers.map((layer, index) => (
-                        <React.Fragment key={layer.number}>
-                            <div className="flex flex-col items-center">
-                                <div
-                                    className={`w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all ${layer.number === currentLayer
-                                            ? "bg-[var(--its-blue)] text-white scale-110 shadow-lg"
-                                            : layer.number < currentLayer
-                                                ? "bg-green-500 text-white"
-                                                : "bg-gray-200 text-gray-500"
-                                        }`}
-                                >
-                                    {layer.number < currentLayer ? "✓" : layer.icon}
-                                </div>
-                                <span className={`text-xs mt-2 ${layer.number === currentLayer ? "font-semibold text-[var(--its-blue)]" : "text-gray-500"}`}>
-                                    {layer.title}
-                                </span>
-                            </div>
-                            {index < layers.length - 1 && (
-                                <div className={`flex-1 h-1 mx-2 rounded ${layer.number < currentLayer ? "bg-green-500" : "bg-gray-200"}`} />
-                            )}
-                        </React.Fragment>
-                    ))}
-                </div>
-            </div>
+            {/* Main Content Layout */}
+            <main className="flex-grow flex flex-col items-center justify-start pt-8 pb-12 px-4 md:px-6">
+                {/* Width Constraint */}
+                <div className="w-full max-w-4xl flex flex-col gap-8">
+                    {/* Header Section */}
+                    <div className="flex flex-col gap-2 text-center md:text-left">
+                        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+                            Let's get you <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-[#135bec]">started</span>
+                        </h1>
+                        <p className="text-[#9da6b9] text-base max-w-2xl">
+                            Complete your registration to access the PPSDM KMM dashboard. We just need a few details to verify your student identity.
+                        </p>
+                    </div>
 
-            {/* Content */}
-            <main className="max-w-2xl mx-auto px-4 pb-32">
-                <div className="bg-white rounded-3xl shadow-xl p-8">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentLayer}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            {currentLayer === 1 && (
-                                <LayerOne data={layerData[1]} onChange={(data) => handleLayerChange(1, data)} />
-                            )}
-                            {currentLayer === 2 && (
-                                <LayerTwo data={layerData[2]} onChange={(data) => handleLayerChange(2, data)} />
-                            )}
-                            {currentLayer === 3 && (
-                                <LayerThree onStartAssessment={handleStartAssessment} />
-                            )}
-                            {currentLayer === 4 && (
-                                <LayerFour data={layerData[4]} onChange={(data) => handleLayerChange(4, data)} />
-                            )}
-                        </motion.div>
-                    </AnimatePresence>
+                    {/* Stepper Component */}
+                    <div className="w-full bg-[#1c1f27] border border-[#282e39] rounded-xl p-6 shadow-sm">
+                        <div className="relative flex items-center justify-between w-full">
+                            {/* Progress Line Background */}
+                            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-[#282e39] -z-0 rounded-full"></div>
+                            {/* Active Progress Line */}
+                            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-[33%] h-1 bg-[#135bec] -z-0 rounded-full transition-all duration-500"></div>
+
+                            {/* Step 1 */}
+                            <div className="flex flex-col items-center gap-2 z-10">
+                                <div className="size-10 rounded-full bg-[#135bec] flex items-center justify-center ring-4 ring-[#1c1f27] transition-all duration-300 shadow-[0_0_15px_rgba(19,91,236,0.5)]">
+                                    <span className="material-symbols-outlined text-white text-xl">person</span>
+                                </div>
+                                <span className="text-sm font-bold text-white mt-1">Account</span>
+                            </div>
+                            {/* Step 2 */}
+                            <div className="flex flex-col items-center gap-2 z-10">
+                                <div className="size-10 rounded-full bg-[#1c1f27] border-2 border-[#282e39] flex items-center justify-center ring-4 ring-[#1c1f27] transition-all duration-300">
+                                    <span className="text-[#9da6b9] text-sm font-bold">2</span>
+                                </div>
+                                <span className="text-xs font-medium text-[#9da6b9] mt-1">Academic</span>
+                            </div>
+                            {/* Step 3 */}
+                            <div className="flex flex-col items-center gap-2 z-10">
+                                <div className="size-10 rounded-full bg-[#1c1f27] border-2 border-[#282e39] flex items-center justify-center ring-4 ring-[#1c1f27] transition-all duration-300">
+                                    <span className="text-[#9da6b9] text-sm font-bold">3</span>
+                                </div>
+                                <span className="text-xs font-medium text-[#9da6b9] mt-1">Preferences</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Form Card */}
+                    <div className="bg-[#1c1f27] border border-[#282e39] rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row">
+                        {/* Side Decorative Panel (Desktop Only) */}
+                        <div className="hidden md:flex md:w-1/3 bg-[#101622] relative flex-col justify-between p-8 border-r border-[#282e39]">
+                            <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7VIy06yNZUqGmI-4NPEDqN7OtA_kEcC9Gq9hIOvgOiTXmqLbXd4ZEDFvn3gjpDy1fNhPOjZweFgKStbojgmBLQvhVrylB6WSqSM2WLJNp2NyEdU3e_Lj6dvdGgEOoF7UYZxuI5d8wc3gw_IycKMdOtD5v1ndGHaHavevsCjjUNxQfveWhY3QAECU4YZclt4IOISeEMJIF-DavSv1TYtJ3VVviUzUwEzmIHxvpwL0LD4jXh4PXT7F8Ham1ulEo_9qwAqBMV_72h8s')" }}></div>
+                            <div className="relative z-10">
+                                <div className="bg-[#135bec]/20 w-fit p-2 rounded-lg mb-4">
+                                    <span className="material-symbols-outlined text-[#135bec]">info</span>
+                                </div>
+                                <h3 className="text-white font-bold text-lg mb-2">Did you know?</h3>
+                                <p className="text-[#9da6b9] text-sm leading-relaxed">
+                                    Your NRP is your unique identifier across all campus facilities. Please ensure it matches your physical ID card.
+                                </p>
+                            </div>
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-2 text-[#9da6b9] text-xs">
+                                    <span className="material-symbols-outlined text-sm">security</span>
+                                    <span>256-bit Encrypted</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Form Content */}
+                        <div className="flex-1 p-6 md:p-8 lg:p-10">
+                            <div className="flex items-center justify-between mb-8">
+                                <div>
+                                    <h2 className="text-xl md:text-2xl font-bold text-white font-[family-name:var(--font-lexend)]">Student Identity</h2>
+                                    <p className="text-[#9da6b9] text-sm mt-1">Step 1 of 3</p>
+                                </div>
+                                <div className="radial-progress text-[#135bec] text-xs font-bold" style={{ "--value": "33", "--size": "3rem" } as React.CSSProperties}>33%</div>
+                            </div>
+                            <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+                                {/* NRP Input */}
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-white text-sm font-medium leading-normal flex justify-between">
+                                        <span>Student Identification Number (NRP)</span>
+                                        <span className="text-xs text-[#135bec] cursor-pointer hover:underline">Forgot NRP?</span>
+                                    </label>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9da6b9]">badge</span>
+                                        <input className="w-full rounded-lg bg-[#101622] border border-[#282e39] text-white placeholder-[#9da6b9] focus:border-[#135bec] focus:ring-1 focus:ring-[#135bec] pl-12 pr-4 py-3.5 transition-all outline-none" placeholder="e.g. 50252010..." type="text" />
+                                    </div>
+                                    <p className="text-xs text-[#9da6b9]">Must be a valid 10-digit numeric ID.</p>
+                                </div>
+                                {/* Name Input */}
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-white text-sm font-medium leading-normal">
+                                        Full Legal Name
+                                    </label>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9da6b9]">person</span>
+                                        <input className="w-full rounded-lg bg-[#101622] border border-[#282e39] text-white placeholder-[#9da6b9] focus:border-[#135bec] focus:ring-1 focus:ring-[#135bec] pl-12 pr-4 py-3.5 transition-all outline-none" placeholder="Enter your full name as shown on ID" type="text" />
+                                    </div>
+                                </div>
+                                {/* Department Select */}
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-white text-sm font-medium leading-normal">
+                                        Department
+                                    </label>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9da6b9]">domain</span>
+                                        <select className="w-full appearance-none rounded-lg bg-[#101622] border border-[#282e39] text-white placeholder-[#9da6b9] focus:border-[#135bec] focus:ring-1 focus:ring-[#135bec] pl-12 pr-10 py-3.5 transition-all outline-none cursor-pointer" defaultValue="">
+                                            <option disabled value="">Select your department</option>
+                                            <option value="cs">Computer Science</option>
+                                            <option value="is">Information Systems</option>
+                                            <option value="it">Information Technology</option>
+                                            <option value="ds">Data Science</option>
+                                            <option value="ce">Computer Engineering</option>
+                                        </select>
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#9da6b9] pointer-events-none">expand_more</span>
+                                    </div>
+                                </div>
+                                {/* Action Buttons */}
+                                <div className="flex items-center justify-between mt-6 pt-6 border-t border-[#282e39] gap-4">
+                                    <button className="px-6 py-2.5 rounded-lg text-sm font-medium text-[#9da6b9] hover:text-white hover:bg-white/5 transition-colors" type="button">
+                                        Cancel
+                                    </button>
+                                    <Link href="/dashboard" className="flex items-center justify-center gap-2 px-8 py-2.5 rounded-lg bg-[#135bec] hover:bg-[#1d6bf5] text-white text-sm font-bold shadow-lg shadow-[#135bec]/25 transition-all transform active:scale-95 group">
+                                        <span>Next Step</span>
+                                        <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </Link>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {/* Footer Links */}
+                    <div className="flex justify-center gap-6 text-xs text-[#9da6b9]">
+                        <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
+                        <span className="w-1 h-1 rounded-full bg-[#282e39] self-center"></span>
+                        <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>
+                        <span className="w-1 h-1 rounded-full bg-[#282e39] self-center"></span>
+                        <span>© 2023 PPSDM KMM</span>
+                    </div>
                 </div>
             </main>
 
-            {/* Navigation Footer */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4">
-                <div className="max-w-2xl mx-auto flex gap-4">
-                    {currentLayer > 1 && (
-                        <button
-                            onClick={() => setCurrentLayer(currentLayer - 1)}
-                            className="px-6 py-3 border border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition"
-                        >
-                            ← Kembali
-                        </button>
-                    )}
-                    {currentLayer !== 3 && (
-                        <button
-                            onClick={handleNext}
-                            disabled={isLoading}
-                            className="flex-1 py-3 bg-gradient-to-r from-[var(--its-blue)] to-[var(--accent-blue)] text-white rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
-                        >
-                            {isLoading ? "Menyimpan..." : currentLayer === 4 ? "Selesai 🎉" : "Lanjut →"}
-                        </button>
-                    )}
+            {/* Toast Notification (Simulated state: Visible) */}
+            <div className="fixed bottom-6 right-6 z-50 animate-[bounce-in_0.5s_ease-out]">
+                <div className="bg-[#1c1f27] border border-[#282e39] text-white px-4 py-3 rounded-lg shadow-xl shadow-black/50 flex items-start gap-3 max-w-sm">
+                    <div className="bg-green-500/20 text-green-400 p-1.5 rounded-md mt-0.5">
+                        <span className="material-symbols-outlined text-lg">check_circle</span>
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-bold">Welcome aboard!</h4>
+                        <p className="text-xs text-[#9da6b9] mt-1">Start by filling in your student identity details.</p>
+                    </div>
+                    <button className="text-[#9da6b9] hover:text-white ml-2">
+                        <span className="material-symbols-outlined text-sm">close</span>
+                    </button>
                 </div>
+            </div>
+            {/* Background Decoration */}
+            <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+                <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#135bec]/10 rounded-full blur-[120px]"></div>
+                <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[150px]"></div>
             </div>
         </div>
     );

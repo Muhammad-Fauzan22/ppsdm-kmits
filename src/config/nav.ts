@@ -1,40 +1,28 @@
 export const NAV_CONFIG = {
     admin: [
         { label: "Dashboard", href: "/admin", icon: "dashboard" },
+        { label: "Analytics", href: "/admin/analytics", icon: "analytics" }, // NEW
+        { label: "Configuration", href: "/admin/configuration", icon: "tune" }, // NEW
         { label: "Programs", href: "/admin/programs", icon: "school" },
         { label: "Users", href: "/admin/users", icon: "group" },
         { label: "Reports", href: "/admin/reports", icon: "bar_chart" },
         { label: "Settings", href: "/admin/settings", icon: "settings" },
-        { label: "Personal OS", href: "/dashboard/pos", icon: "check_circle" },
-        { label: "NEXUS CORE", href: "/dashboard/holistic", icon: "hub" },
-        { label: "System Blueprint", href: "/dashboard/blueprint", icon: "developer_board" },
-        { label: "Resource Engine", href: "/gre/discovery", icon: "travel_explore" },
-        { label: "Library Auto", href: "/library", icon: "local_library" },
-        { label: "Intellectual", href: "/dashboard/intellectual", icon: "psychology" },
-        { label: "Financial", href: "/dashboard/financial", icon: "attach_money" },
-        { label: "Health", href: "/dashboard/health", icon: "heart_check" },
-        { label: "Social", href: "/dashboard/social", icon: "groups" },
-        { label: "Mental", href: "/dashboard/mental", icon: "spa" },
-        { label: "Character", href: "/dashboard/character", icon: "verified" },
-        { label: "Spiritual", href: "/dashboard/spiritual", icon: "auto_awesome" },
-        { label: "Lifestyle", href: "/dashboard/lifestyle", icon: "forest" },
     ],
     mentor: [
-        { label: "Dashboard", href: "/mentorship", icon: "dashboard" },
-        { label: "My Mentees", href: "/mentorship/mentees", icon: "group" },
-        { label: "Reports", href: "/mentorship/reports", icon: "description" },
-        { label: "Schedule", href: "/mentorship/schedule", icon: "calendar_month" },
-        { label: "Settings", href: "/mentorship/settings", icon: "settings" },
-        { label: "Personal OS", href: "/dashboard/pos", icon: "check_circle" },
-        { label: "NEXUS CORE", href: "/dashboard/holistic", icon: "hub" },
-        { label: "System Blueprint", href: "/dashboard/blueprint", icon: "developer_board" },
-        { label: "Intellectual", href: "/dashboard/intellectual", icon: "psychology" },
-        { label: "Financial", href: "/dashboard/financial", icon: "attach_money" },
-        { label: "Health", href: "/dashboard/health", icon: "heart_check" },
-        { label: "Social", href: "/dashboard/social", icon: "groups" },
-        { label: "Mental", href: "/dashboard/mental", icon: "spa" },
-        { label: "Character", href: "/dashboard/character", icon: "verified" },
-        { label: "Spiritual", href: "/dashboard/spiritual", icon: "auto_awesome" },
-        { label: "Lifestyle", href: "/dashboard/lifestyle", icon: "forest" },
+        { label: "Dashboard", href: "/supervisor", icon: "dashboard" }, // Updated path
+        { label: "My Mentees", href: "/supervisor/mentees", icon: "group" }, // Updated path
+        { label: "Reports", href: "/supervisor/reports", icon: "description" }, // Updated path
+        { label: "Schedule", href: "/supervisor/schedule", icon: "calendar_month" }, // Updated path
+        { label: "Approvals", href: "/supervisor/approvals", icon: "check_circle" }, // NEW
+        { label: "Settings", href: "/supervisor/settings", icon: "settings" },
+    ],
+    student: [
+        { label: "Dashboard", href: "/dashboard", icon: "dashboard" },
+        { label: "My Roadmap", href: "/roadmap", icon: "map" },
+        { label: "Personal OS", href: "/pos", icon: "check_circle" }, // Simplified path
+        { label: "Assessment Hub", href: "/assessment", icon: "quiz" },
+        { label: "Library & AI", href: "/library", icon: "auto_stories" },
+        { label: "Achievements", href: "/portfolio", icon: "emoji_events" }, // Changed to portfolio
+        { label: "Community", href: "/community", icon: "forum" },
     ]
 };

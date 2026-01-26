@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface SidebarProps {
-    variant?: "admin" | "mentor";
+    variant?: "admin" | "mentor" | "student";
 }
 
 import { NAV_CONFIG } from "@/config/nav";
@@ -13,7 +13,8 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
     const pathname = usePathname();
 
     const navItems = NAV_CONFIG[variant];
-    const title = variant === "admin" ? "Admin Console" : "Lecturer Portal";
+    const title = variant === "admin" ? "Admin Console" :
+        variant === "mentor" ? "Lecturer Portal" : "Student Hub";
 
     return (
         <aside className="w-64 flex-shrink-0 bg-white dark:bg-card-dark border-r border-border-light dark:border-border-dark flex flex-col h-full">

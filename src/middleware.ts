@@ -39,25 +39,70 @@ export async function middleware(request: NextRequest) {
 
     const url = request.nextUrl.clone();
 
-    // 3. Security Logic: Proteksi Dashboard (Route Guard)
-    if (request.nextUrl.pathname.startsWith("/dashboard") || request.nextUrl.pathname.startsWith("/profile")) {
-        if (!user) {
-            // Jika belum login, tendang ke halaman login dengan callback URL
-            url.pathname = "/login";
-            url.searchParams.set("next", request.nextUrl.pathname);
+    // 3. Security Logic: Proteksi Dashboard & Role Based Access Control
+    const path = request.nextUrl.pathname;
+
+    // Public routes that don't need auth
+    const isPublicRoute =
+        path === "/" ||
+        path.startsWith("/auth") ||
+        path.startsWith("/help") ||
+        path.startsWith("/research") ||
+        path.startsWith("/api/public");
+
+    if (isPublicRoute) {
+        // Jika user sudah login tapi buka halaman login/register, redirect ke dashboard masing-masing
+        if (user && (path.startsWith("/auth/login") || path.startsWith("/auth/register"))) {
+            const role = user.user_metadata?.role || "student";
+
+            if (role === "admin") url.pathname = "/admin";
+            else if (role === "lecturer" || role === "supervisor") url.pathname = "/supervisor";
+            else url.pathname = "/dashboard";
+
+            return NextResponse.redirect(url);
+        }
+        return response;
+    }
+
+    // Jika belum login, redirect ke login
+    if (!user) {
+        url.pathname = "/auth/login";
+        url.searchParams.set("next", path);
+        return NextResponse.redirect(url);
+    }
+
+    // Role Based Access Control (RBAC)
+    const userRole = user.user_metadata?.role || "student";
+
+    // 1. Admin Zone Protection
+    if (path.startsWith("/admin")) {
+        if (userRole !== "admin" && userRole !== "superadmin") {
+            // Unauthorized for Admin
+            url.pathname = "/dashboard"; // Fallback to student dashboard
             return NextResponse.redirect(url);
         }
     }
 
-    // 4. Security Logic: Cegah User Login masuk ke halaman Auth lagi
-    if (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/register")) {
-        if (user) {
+    // 2. Supervisor Zone Protection
+    if (path.startsWith("/supervisor") || path.startsWith("/mentorship")) {
+        if (userRole !== "lecturer" && userRole !== "supervisor" && userRole !== "admin") {
+            // Unauthorized for Supervisor
             url.pathname = "/dashboard";
             return NextResponse.redirect(url);
         }
     }
 
-    return response;
+    // 3. Student Zone Protection (Optional: Prevent Admin/Supervisor logic if needed, or keep open)
+    // Generally Admins/Supervisors might want to see student views, so we might not block them.
+    // But if strict separation is needed:
+    /*
+    if (path.startsWith("/dashboard") || path.startsWith("/pos")) {
+        if (userRole === "admin") {
+             url.pathname = "/admin";
+             return NextResponse.redirect(url);
+        }
+    }
+    */
 }
 
 export const config = {

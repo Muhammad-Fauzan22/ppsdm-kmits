@@ -1,386 +1,303 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-interface Question {
-    id: string;
-    dimension: string;
-    question_text: string;
-    question_order: number;
-    framework_reference: string;
-}
-
-interface AssessmentData {
-    [dimension: string]: Question[];
-}
-
-const dimensionLabels: Record<string, { name: string; icon: string; color: string }> = {
-    cognitive: { name: "Kognitif", icon: "psychology", color: "bg-blue-500" },
-    affective: { name: "Afektif", icon: "favorite", color: "bg-pink-500" },
-    psychomotor: { name: "Psikomotorik", icon: "directions_run", color: "bg-orange-500" },
-    spiritual: { name: "Spiritual", icon: "self_improvement", color: "bg-purple-500" },
-    social: { name: "Sosial", icon: "groups", color: "bg-cyan-500" },
-    financial: { name: "Finansial", icon: "payments", color: "bg-green-500" },
-    health: { name: "Kesehatan", icon: "fitness_center", color: "bg-red-500" },
-    character: { name: "Karakter", icon: "verified_user", color: "bg-indigo-500" },
-    environmental: { name: "Lingkungan", icon: "eco", color: "bg-teal-500" },
-};
-
-const dimensionOrder = [
-    "cognitive", "affective", "psychomotor", "spiritual",
-    "social", "financial", "health", "character", "environmental"
-];
-
-const likertOptions = [
-    { value: 1, label: "Sangat Tidak Setuju", emoji: "😟" },
-    { value: 2, label: "Tidak Setuju", emoji: "😕" },
-    { value: 3, label: "Netral", emoji: "😐" },
-    { value: 4, label: "Setuju", emoji: "🙂" },
-    { value: 5, label: "Sangat Setuju", emoji: "😊" },
-];
-
-export default function AssessmentPage() {
-    const router = useRouter();
-    const [step, setStep] = useState<"intro" | "assessment" | "submitting" | "complete">("intro");
-    const [questions, setQuestions] = useState<AssessmentData>({});
-    const [responses, setResponses] = useState<Record<string, number>>({});
-    const [currentDimensionIndex, setCurrentDimensionIndex] = useState(0);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [sessionId, setSessionId] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [scores, setScores] = useState<Record<string, number> | null>(null);
-
-    const currentDimension = dimensionOrder[currentDimensionIndex];
-    const currentQuestions = questions[currentDimension] || [];
-    const currentQuestion = currentQuestions[currentQuestionIndex];
-
-    const totalQuestions = Object.values(questions).reduce((acc, qs) => acc + qs.length, 0);
-    const answeredQuestions = Object.keys(responses).length;
-    const progress = totalQuestions > 0 ? Math.round((answeredQuestions / totalQuestions) * 100) : 0;
-
-    // Fetch questions on mount
-    useEffect(() => {
-        fetchQuestions();
-    }, []);
-
-    const fetchQuestions = async () => {
-        try {
-            const res = await fetch("/api/assessment");
-            const data = await res.json();
-            if (data.success) {
-                setQuestions(data.data);
-            }
-        } catch (error) {
-            console.error("Error fetching questions:", error);
-        }
-    };
-
-    const startAssessment = async () => {
-        setIsLoading(true);
-        try {
-            const res = await fetch("/api/assessment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_type: "initial" }),
-            });
-            const data = await res.json();
-            if (data.success) {
-                setSessionId(data.session.id);
-                setStep("assessment");
-            }
-        } catch (error) {
-            console.error("Error starting assessment:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleResponse = (value: number) => {
-        if (!currentQuestion) return;
-
-        setResponses(prev => ({
-            ...prev,
-            [currentQuestion.id]: value,
-        }));
-
-        // Auto advance to next question
-        setTimeout(() => {
-            if (currentQuestionIndex < currentQuestions.length - 1) {
-                setCurrentQuestionIndex(prev => prev + 1);
-            } else if (currentDimensionIndex < dimensionOrder.length - 1) {
-                setCurrentDimensionIndex(prev => prev + 1);
-                setCurrentQuestionIndex(0);
-            } else {
-                // All questions answered, submit
-                submitAssessment();
-            }
-        }, 300);
-    };
-
-    const submitAssessment = async () => {
-        setStep("submitting");
-        try {
-            // Submit all responses
-            const formattedResponses = Object.entries(responses).map(([instrument_id, response]) => ({
-                instrument_id,
-                response,
-            }));
-
-            await fetch("/api/assessment/responses", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    session_id: sessionId,
-                    responses: formattedResponses,
-                }),
-            });
-
-            // Complete assessment and get scores
-            const completeRes = await fetch("/api/assessment/complete", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_id: sessionId }),
-            });
-            const completeData = await completeRes.json();
-
-            if (completeData.success) {
-                setScores(completeData.scores);
-                setStep("complete");
-            }
-        } catch (error) {
-            console.error("Error submitting assessment:", error);
-        }
-    };
-
-    const goBack = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(prev => prev - 1);
-        } else if (currentDimensionIndex > 0) {
-            setCurrentDimensionIndex(prev => prev - 1);
-            const prevDimension = dimensionOrder[currentDimensionIndex - 1];
-            setCurrentQuestionIndex((questions[prevDimension]?.length || 1) - 1);
-        }
-    };
-
-    // Intro Screen
-    if (step === "intro") {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-primary to-its-blue text-white font-display flex flex-col">
-                <header className="p-6">
-                    <Link href="/" className="flex items-center gap-2 text-white/90">
-                        <span className="material-symbols-outlined">arrow_back</span>
-                        Kembali
-                    </Link>
-                </header>
-
-                <main className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-                    <div className="size-24 bg-white/20 rounded-full flex items-center justify-center mb-6">
-                        <span className="material-symbols-outlined text-5xl">assignment</span>
-                    </div>
-
-                    <h1 className="text-3xl font-bold mb-4">Assessment Awal</h1>
-                    <p className="text-white/80 max-w-md mb-8">
-                        Jawab 48 pertanyaan untuk mengukur kondisi awal Anda di 9 dimensi pengembangan.
-                        Assessment ini berbasis framework ilmiah dan akan membantu membuat rencana pengembangan yang personal.
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-3 mb-8 max-w-sm">
-                        {dimensionOrder.map((dim) => (
-                            <div key={dim} className="flex flex-col items-center gap-1 p-2">
-                                <div className={`size-10 ${dimensionLabels[dim].color} rounded-lg flex items-center justify-center`}>
-                                    <span className="material-symbols-outlined text-xl text-white">{dimensionLabels[dim].icon}</span>
-                                </div>
-                                <span className="text-xs text-white/70">{dimensionLabels[dim].name}</span>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="flex items-center gap-2 text-white/60 text-sm mb-8">
-                        <span className="material-symbols-outlined text-[18px]">schedule</span>
-                        Estimasi waktu: 15-20 menit
-                    </div>
-
-                    <button
-                        onClick={startAssessment}
-                        disabled={isLoading}
-                        className="px-8 py-4 bg-white text-primary rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-                    >
-                        {isLoading ? "Loading..." : "Mulai Assessment"}
-                    </button>
-                </main>
-            </div>
-        );
-    }
-
-    // Submitting Screen
-    if (step === "submitting") {
-        return (
-            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
-                <div className="text-center">
-                    <div className="size-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Memproses Assessment...</h2>
-                    <p className="text-gray-500">Menghitung skor dan melakukan gap analysis</p>
-                </div>
-            </div>
-        );
-    }
-
-    // Complete Screen
-    if (step === "complete" && scores) {
-        const avgScore = Math.round(Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length);
-
-        return (
-            <div className="min-h-screen bg-background-light dark:bg-background-dark text-neutral-dark dark:text-white font-display">
-                <header className="bg-gradient-to-r from-primary to-its-blue text-white py-12 px-6 text-center">
-                    <div className="size-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="material-symbols-outlined text-4xl">celebration</span>
-                    </div>
-                    <h1 className="text-2xl font-bold mb-2">Assessment Selesai!</h1>
-                    <p className="text-white/80">Skor Rata-rata: <span className="font-bold text-3xl">{avgScore}</span>/100</p>
-                </header>
-
-                <main className="max-w-2xl mx-auto p-6 space-y-6">
-                    <h2 className="text-lg font-bold">Skor Per Dimensi</h2>
-
-                    <div className="space-y-3">
-                        {dimensionOrder.map((dim) => {
-                            const score = scores[dim] || 0;
-                            const gap = 100 - score;
-                            const priority = gap > 60 ? "critical" : gap > 40 ? "high" : gap > 20 ? "moderate" : "minimal";
-
-                            return (
-                                <div key={dim} className="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark p-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`size-10 ${dimensionLabels[dim].color} rounded-lg flex items-center justify-center`}>
-                                                <span className="material-symbols-outlined text-white">{dimensionLabels[dim].icon}</span>
-                                            </div>
-                                            <span className="font-medium">{dimensionLabels[dim].name}</span>
-                                        </div>
-                                        <span className="text-xl font-bold">{score}</span>
-                                    </div>
-                                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full ${dimensionLabels[dim].color} transition-all`}
-                                            style={{ width: `${score}%` }}
-                                        />
-                                    </div>
-                                    <div className="flex justify-between mt-2 text-xs text-gray-500">
-                                        <span>Gap: {gap}</span>
-                                        <span className={`font-medium ${priority === "critical" ? "text-red-500" :
-                                                priority === "high" ? "text-orange-500" :
-                                                    priority === "moderate" ? "text-yellow-500" :
-                                                        "text-green-500"
-                                            }`}>
-                                            {priority === "critical" ? "Kritis" :
-                                                priority === "high" ? "Prioritas Tinggi" :
-                                                    priority === "moderate" ? "Sedang" : "Minimal"}
-                                        </span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    <div className="flex gap-4">
-                        <Link
-                            href="/dashboard"
-                            className="flex-1 py-3 bg-primary text-white rounded-xl font-bold text-center hover:bg-primary-light transition-colors"
-                        >
-                            Lihat Dashboard
-                        </Link>
-                        <Link
-                            href="/rpi"
-                            className="flex-1 py-3 border border-primary text-primary rounded-xl font-bold text-center hover:bg-primary/5 transition-colors"
-                        >
-                            Buat Rencana Pengembangan
-                        </Link>
-                    </div>
-                </main>
-            </div>
-        );
-    }
-
-    // Assessment Screen
+export default function AssessmentHub() {
     return (
-        <div className="min-h-screen bg-background-light dark:bg-background-dark text-neutral-dark dark:text-white font-display flex flex-col">
-            {/* Header */}
-            <header className="bg-white dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4">
-                <div className="flex items-center justify-between mb-3">
-                    <button onClick={goBack} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                        <span className="material-symbols-outlined">arrow_back</span>
-                    </button>
-                    <div className={`flex items-center gap-2 px-3 py-1 ${dimensionLabels[currentDimension]?.color} text-white rounded-full`}>
-                        <span className="material-symbols-outlined text-[18px]">{dimensionLabels[currentDimension]?.icon}</span>
-                        <span className="text-sm font-medium">{dimensionLabels[currentDimension]?.name}</span>
+        <div className="bg-[#f6f6f8] dark:bg-[#101622] text-[#111318] dark:text-white font-[family-name:var(--font-lexend)] overflow-x-hidden transition-colors duration-200 min-h-screen flex flex-col group/design-root">
+            {/* Top Navigation */}
+            <header className="border-b border-solid border-[#e5e7eb] dark:border-[#282e39] bg-white dark:bg-[#111318]">
+                <div className="flex items-center justify-between whitespace-nowrap px-4 py-3 lg:px-10">
+                    <div className="flex items-center gap-4">
+                        <div className="size-8 text-[#135bec]">
+                            <svg className="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 4L6 14V34L24 44L42 34V14L24 4Z" fill="currentColor" stroke="currentColor" strokeLinejoin="round" strokeWidth="4"></path>
+                                <path d="M24 14L34 20M24 14L14 20M24 14V26" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4"></path>
+                            </svg>
+                        </div>
+                        <h2 className="text-[#111318] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
                     </div>
-                    <span className="text-sm text-gray-500">{answeredQuestions}/{totalQuestions}</span>
-                </div>
-
-                {/* Progress bar */}
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div
-                        className="h-full bg-primary transition-all duration-300"
-                        style={{ width: `${progress}%` }}
-                    />
+                    <div className="flex flex-1 justify-end gap-8">
+                        <div className="hidden md:flex items-center gap-9">
+                            <Link className="text-[#111318] dark:text-white text-sm font-medium leading-normal hover:text-[#135bec] transition-colors" href="/dashboard">Home</Link>
+                            <Link className="text-[#135bec] text-sm font-bold leading-normal" href="/assessment">Assessment</Link>
+                            <Link className="text-[#111318] dark:text-white text-sm font-medium leading-normal hover:text-[#135bec] transition-colors" href="#">Progress</Link>
+                            <Link className="text-[#111318] dark:text-white text-sm font-medium leading-normal hover:text-[#135bec] transition-colors" href="#">Profile</Link>
+                        </div>
+                        <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-[#135bec]/20" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBYckk_XKSvoUY0OybpiNpRWvN9DYmc4n06wq4ih82ekyJqtP_y_XEd0oRwdo9D1s-dlZpmwe3S9VFcTCnAZiSB-GsY_PyZkpfwDChmhUvmUUbow6F1BRUgwR2KivvbTu8WDoRo909N5AaxxPKaqN4RePAw0sxmKhdiCTemCuwv6iah-wsepOi14kWyLtN50EC1gwF9qcS07UgEdiQmBm7qHvvXNldxaPTHohmA6CbBxBuBmISkoFAHspYCAs80UxUGQUJ86iN2uhk')" }}></div>
+                    </div>
                 </div>
             </header>
 
-            {/* Question */}
-            <main className="flex-1 flex flex-col items-center justify-center p-6">
-                {currentQuestion && (
-                    <div className="w-full max-w-lg">
-                        <p className="text-xs text-gray-500 mb-4 text-center">
-                            {currentQuestion.framework_reference}
-                        </p>
+            <div className="layout-container flex h-full grow flex-col">
+                <div className="px-4 md:px-12 lg:px-20 xl:px-40 flex flex-1 justify-center py-5">
+                    <div className="layout-content-container flex flex-col max-w-[1200px] flex-1">
+                        {/* Breadcrumbs */}
+                        <div className="flex flex-wrap gap-2 p-4">
+                            <Link className="text-[#64748b] dark:text-[#9da6b9] text-sm font-medium leading-normal hover:underline" href="/dashboard">Home</Link>
+                            <span className="text-[#64748b] dark:text-[#9da6b9] text-sm font-medium leading-normal">/</span>
+                            <span className="text-[#111318] dark:text-white text-sm font-medium leading-normal">Assessment</span>
+                        </div>
 
-                        <h2 className="text-xl font-medium text-center mb-8 leading-relaxed">
-                            {currentQuestion.question_text}
-                        </h2>
+                        {/* Page Heading & Overall Stats */}
+                        <div className="flex flex-col lg:flex-row gap-8 p-4 mb-8">
+                            {/* Left: Titles */}
+                            <div className="flex flex-col gap-3 flex-1">
+                                <h1 className="text-[#111318] dark:text-white text-4xl lg:text-5xl font-black leading-tight tracking-[-0.033em]">
+                                    Assessment <span className="text-[#135bec]">Mission Control</span>
+                                </h1>
+                                <p className="text-[#64748b] dark:text-[#9da6b9] text-lg font-normal leading-normal max-w-xl">
+                                    Track your developmental progress across 9 dimensions. Complete missions to level up your profile.
+                                </p>
+                                <div className="mt-6 flex gap-4">
+                                    <div className="px-4 py-2 bg-[#135bec]/10 dark:bg-[#135bec]/20 rounded-lg border border-[#135bec]/20">
+                                        <span className="text-[#135bec] font-bold text-sm uppercase tracking-wider">Status: Active</span>
+                                    </div>
+                                    <div className="px-4 py-2 bg-[#f1f5f9] dark:bg-[#1e293b] rounded-lg border border-transparent dark:border-[#334155]">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9] font-medium text-sm">Next Review: 2 Days</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Right: Overall Gauge */}
+                            <div className="bg-white dark:bg-[#1c1f27] rounded-xl p-6 shadow-sm border border-[#e5e7eb] dark:border-[#282e39] flex flex-col items-center justify-center min-w-[300px]">
+                                <div className="relative size-40">
+                                    <svg className="size-full" viewBox="0 0 36 36">
+                                        {/* Background Circle */}
+                                        <path className="text-gray-200 dark:text-[#282e39]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3"></path>
+                                        {/* Progress Circle */}
+                                        <path className="text-[#135bec]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray="40, 100" strokeLinecap="round" strokeWidth="3"></path>
+                                    </svg>
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span className="text-4xl font-black text-[#111318] dark:text-white">40%</span>
+                                    </div>
+                                </div>
+                                <p className="text-[#64748b] dark:text-[#9da6b9] text-sm font-medium mt-2">Overall Completion</p>
+                            </div>
+                        </div>
 
-                        <div className="space-y-3">
-                            {likertOptions.map((option) => {
-                                const isSelected = responses[currentQuestion.id] === option.value;
-                                return (
-                                    <button
-                                        key={option.value}
-                                        onClick={() => handleResponse(option.value)}
-                                        className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${isSelected
-                                                ? "border-primary bg-primary/10"
-                                                : "border-border-light dark:border-border-dark hover:border-primary/50"
-                                            }`}
-                                    >
-                                        <span className="text-2xl">{option.emoji}</span>
-                                        <span className="font-medium">{option.label}</span>
-                                        {isSelected && (
-                                            <span className="ml-auto text-primary">
-                                                <span className="material-symbols-outlined">check_circle</span>
-                                            </span>
-                                        )}
-                                    </button>
-                                );
-                            })}
+                        {/* 3x3 Grid of Dimensions */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                            {/* Card 1: Spiritual (Completed) */}
+                            <Link href="/assessment/run?type=spiritual" className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                                        <span className="material-symbols-outlined text-3xl">self_improvement</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-xs font-bold uppercase tracking-wide flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-sm">check_circle</span>
+                                        Complete
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Spiritual</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Inner peace & values alignment.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-green-600 dark:text-green-400">100%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-green-500 rounded-full" style={{ width: "100%" }}></div>
+                                    </div>
+                                </div>
+                            </Link>
+                            {/* Card 2: Financial (In Progress) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                                        <span className="material-symbols-outlined text-3xl">monitoring</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">
+                                        Active
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Financial</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Budgeting & investment basics.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#135bec]">40%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "40%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 3: Social (Low Progress) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                                        <span className="material-symbols-outlined text-3xl">groups</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">
+                                        Active
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Social</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Communication & networking.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#135bec]">20%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "20%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 4: Intellectual (Not Started) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden opacity-80 hover:opacity-100">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                                        <span className="material-symbols-outlined text-3xl">psychology</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wide">
+                                        Not Started
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Intellectual</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Critical thinking & knowledge.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">0%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "0%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 5: Physical (In Progress) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400">
+                                        <span className="material-symbols-outlined text-3xl">favorite</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">
+                                        Active
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Physical</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Health, nutrition & exercise.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#135bec]">65%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "65%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 6: Occupational (Low Progress) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400">
+                                        <span className="material-symbols-outlined text-3xl">work</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">
+                                        Active
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Occupational</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Career path & skill building.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#135bec]">10%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "10%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 7: Emotional (Halfway) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 dark:text-yellow-400">
+                                        <span className="material-symbols-outlined text-3xl">sentiment_satisfied</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">
+                                        Active
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Emotional</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Awareness & resilience.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#135bec]">50%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "50%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 8: Environmental (Locked/Not Started) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden opacity-80 hover:opacity-100">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400">
+                                        <span className="material-symbols-outlined text-3xl">eco</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wide">
+                                        Locked
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors flex gap-2 items-center">Environmental <span className="material-symbols-outlined text-sm">lock</span></h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Harmony with surroundings.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">0%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "0%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 9: Creative (High Progress) */}
+                            <div className="group relative flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c1f27] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_0_4px_rgba(0,0,0,0.2)] border border-[#e5e7eb] dark:border-[#282e39] hover:border-[#135bec]/50 hover:dark:border-[#135bec] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center text-pink-600 dark:text-pink-400">
+                                        <span className="material-symbols-outlined text-3xl">palette</span>
+                                    </div>
+                                    <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">
+                                        Active
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-1 group-hover:text-[#135bec] transition-colors">Creative</h3>
+                                    <p className="text-sm text-[#64748b] dark:text-[#9da6b9]">Innovation & expression.</p>
+                                </div>
+                                <div className="mt-auto pt-4">
+                                    <div className="flex justify-between text-xs font-medium mb-2">
+                                        <span className="text-[#64748b] dark:text-[#9da6b9]">Progress</span>
+                                        <span className="text-[#135bec]">80%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-[#f1f5f9] dark:bg-[#282e39] rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#135bec] rounded-full" style={{ width: "80%" }}></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                )}
-            </main>
-
-            {/* Dimension indicators */}
-            <footer className="bg-white dark:bg-card-dark border-t border-border-light dark:border-border-dark p-4">
-                <div className="flex justify-center gap-2">
-                    {dimensionOrder.map((dim, i) => (
-                        <div
-                            key={dim}
-                            className={`size-3 rounded-full ${i < currentDimensionIndex ? dimensionLabels[dim].color :
-                                    i === currentDimensionIndex ? "ring-2 ring-primary ring-offset-2 " + dimensionLabels[dim].color :
-                                        "bg-gray-200 dark:bg-gray-700"
-                                }`}
-                        />
-                    ))}
                 </div>
-            </footer>
+            </div>
         </div>
     );
 }

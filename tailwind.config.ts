@@ -9,6 +9,32 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
+                // WARNA UTAMA BARU (Admin & Supervisor)
+                primary: "#135bec",
+
+                // Student Portal Specific
+                "student-primary": "#003366",
+                "student-bg": "#f5f7f8", // background-light
+                "student-dark": "#0f1923", // background-dark
+                "accent-green": "#078838",
+                "text-dark": "#101418",
+                "text-light": "#5e758d",
+                "card-dark": "#1A1F2B", // Updated to Admin View dark card
+
+                // Mobile & Admin Specific
+                "sidebar-dark": "#0B0E14",
+                "primary-highlight": "#4DA3FF",
+                "primary-100": "#dbeafe", // Added for mobile header
+                "surface-dark": "#1b2128",
+                "nav-glass": "rgba(15, 25, 35, 0.85)",
+                "engineering-red": "#C62828",
+                "primary-dark": "#1e3a8a",
+
+                // Student OS Specific
+                "card-border": "#27303a",
+                "text-subtle": "#9aabbc",
+                "student-primary-light": "#004080",
+
                 // WARNA PRIMER ITS
                 its: {
                     DEFAULT: "#013880",    // Biru Tua (Official Primary)
@@ -48,9 +74,29 @@ const config: Config = {
                 'its-pattern': "url('/patterns/its-key-graphic.svg')",
             },
             boxShadow: {
-                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)', // Shadow halus "mahal"
-                'glow': '0 0 15px rgba(1, 56, 128, 0.15)',     // Efek glow biru tipis
-            }
+                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                'glow': '0 0 15px rgba(1, 56, 128, 0.15)',
+                'nav': '0 -4px 20px -5px rgba(0, 0, 0, 0.1)',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                slideUp: {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                slideInRight: {
+                    '0%': { opacity: '0', transform: 'translateX(20px)' },
+                    '100%': { opacity: '1', transform: 'translateX(0)' },
+                },
+            },
+            animation: {
+                'fade-in': 'fadeIn 0.5s ease-in-out',
+                'slide-up': 'slideUp 0.5s ease-out',
+                'slide-right': 'slideInRight 0.5s ease-out',
+            },
         },
     },
     plugins: [],
