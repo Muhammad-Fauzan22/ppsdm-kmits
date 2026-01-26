@@ -24,7 +24,7 @@ export default function LandingPage() {
                             <Link className="text-sm font-medium hover:text-primary transition-colors" href="#">Kontak</Link>
                         </div>
                         <Link href="/auth/login" className="flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-bold text-white hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
-                            Login
+                            Masuk
                         </Link>
                     </nav>
                     <button className="md:hidden p-2 text-slate-500 dark:text-slate-400">
