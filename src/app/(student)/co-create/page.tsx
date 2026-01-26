@@ -1,264 +1,227 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useRef } from "react";
+import Link from "next/link";
 
 export default function CoCreatePage() {
+    const [nodes, setNodes] = useState([
+        { id: 1, type: "main", text: "Renewable Energy", x: 400, y: 300, color: "bg-[#1E1E2E]" },
+        { id: 2, type: "sub", text: "Solar Infrastructure", x: 150, y: 200, color: "bg-[#1E1E2E]" },
+        { id: 3, type: "sub", text: "Wind Farm Policy", x: 650, y: 400, color: "bg-[#1E1E2E]" },
+    ]);
+
+    const [activeNode, setActiveNode] = useState<number | null>(null);
+
+    // Fake AI Chat
+    const [messages, setMessages] = useState([
+        { role: "ai", text: "Hello! I'm ready to help you brainstorm on Renewable Energy. Would you like to generate a mind map or draft an outline first?" },
+    ]);
+
     return (
-        <div className="bg-[#f6f6f8] dark:bg-[#111118] font-[family-name:var(--font-manrope)] text-slate-900 dark:text-white h-screen flex flex-col overflow-hidden selection:bg-[#1313ec]/30">
-            {/* Top Navigation */}
-            <header className="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-[#282839] bg-[#111118] px-6 py-3 z-30">
-                <div className="flex items-center gap-4 text-white">
-                    <div className="size-8 flex items-center justify-center rounded bg-[#1313ec]/20 text-[#1313ec]">
-                        <span className="material-symbols-outlined">hub</span>
+        <div className="flex h-screen bg-[#050505] text-white font-sans overflow-hidden">
+
+            {/* 1. Header */}
+            <header className="fixed top-0 left-0 right-0 h-14 bg-[#0A0A0A] border-b border-[#222] flex items-center justify-between px-4 z-50">
+                <div className="flex items-center gap-3">
+                    <div className="size-8 rounded bg-blue-700 flex items-center justify-center text-white">
+                        <span className="material-symbols-outlined text-sm">hub</span>
                     </div>
                     <div>
-                        <h2 className="text-white text-base font-bold leading-tight tracking-[-0.015em]">PPSDM KMM | Co-Create</h2>
-                        <div className="flex items-center gap-2 mt-0.5">
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span className="text-xs text-slate-400 font-medium">Seno AI Online</span>
+                        <h1 className="text-sm font-bold">PPSDM KMM | Co-Create</h1>
+                        <div className="flex items-center gap-1.5">
+                            <span className="size-1.5 rounded-full bg-green-500"></span>
+                            <span className="text-[10px] text-gray-400">Seno AI Online</span>
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-1 justify-end gap-6 items-center">
-                    <div className="hidden md:flex items-center gap-6">
-                        <a className="text-slate-300 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">File</a>
-                        <a className="text-slate-300 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">View</a>
-                        <a className="text-slate-300 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Export</a>
-                    </div>
-                    <div className="h-6 w-px bg-[#282839] hidden md:block"></div>
-                    <div className="flex items-center gap-3">
-                        <button className="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-[#1313ec] hover:bg-blue-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                            <span className="mr-2 material-symbols-outlined text-[18px]">ios_share</span>
-                            <span className="truncate">Share</span>
-                        </button>
-                        <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 ring-2 ring-[#282839]" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcbNN-oqLzByd4ppdMfAYchm8YR5PtfDoPCXWwFyfa3EpLNpTO3tH7ziFmLt9aZFw3S_OG58Zlc8aENabSZzqZ6VjBXCKSpL2__XKSn757p3dqbrCQxnE-Z57qGCaX4Q7aUskoXLIkuNiP2zkf-jpNjd79e5RGaEYg-N_ePbJ9d0rvkBYfBd5pmvNHeQ3NdHVdv8bQrROeePytoXEYK_VzTHm4ZG3ktx82EglUkvnXdne3DfsB67jVRiZrZf1Fn9EEm60eEfxnAwE")' }}></div>
-                    </div>
+
+                <div className="flex items-center gap-4">
+                    <button className="text-xs text-gray-400 hover:text-white">File</button>
+                    <button className="text-xs text-gray-400 hover:text-white">View</button>
+                    <button className="text-xs text-gray-400 hover:text-white">Export</button>
+                    <div className="h-4 w-px bg-[#333]"></div>
+                    <button className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded text-xs font-bold flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[14px]">share</span> Share
+                    </button>
+                    <div className="size-8 rounded-full bg-gray-700 border border-gray-600"></div>
                 </div>
             </header>
 
-            {/* Main Workspace */}
-            <main className="flex flex-1 overflow-hidden relative">
-                {/* Infinite Canvas Area */}
-                <section className="flex-1 relative bg-grid-pattern overflow-hidden cursor-grab active:cursor-grabbing group/canvas">
-                    {/* Floating Toolbar (Bottom Center) */}
-                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
-                        <div className="flex justify-between gap-1 p-1.5 bg-[#1c1c26]/90 backdrop-blur-md border border-[#282839] rounded-xl shadow-2xl">
-                            <button className="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
-                                <span className="material-symbols-outlined">arrow_selector_tool</span>
-                                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Select</span>
-                            </button>
-                            <button className="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
-                                <span className="material-symbols-outlined">title</span>
-                                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Text</span>
-                            </button>
-                            <button className="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
-                                <span className="material-symbols-outlined">sticky_note_2</span>
-                                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Sticky</span>
-                            </button>
-                            <button className="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
-                                <span className="material-symbols-outlined">shapes</span>
-                                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Shape</span>
-                            </button>
-                            <div className="w-px h-6 my-auto bg-white/10 mx-1"></div>
-                            <button className="p-2.5 rounded-lg text-[#1313ec] hover:text-blue-400 hover:bg-[#1313ec]/10 transition-colors group relative">
-                                <span className="material-symbols-outlined">auto_awesome</span>
-                                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">AI Generate</span>
-                            </button>
+            {/* 2. Main Canvas (Infinite Grid) */}
+            <main className="flex-1 relative pt-14 overflow-hidden cursor-grab active:cursor-grabbing bg-[#050505]">
+                {/* Dot Grid Background */}
+                <div className="absolute inset-0 opacity-20"
+                    style={{
+                        backgroundImage: 'radial-gradient(circle, #333 1px, transparent 1px)',
+                        backgroundSize: '24px 24px'
+                    }}
+                />
+
+                {/* Nodes Layer */}
+                <div className="relative w-full h-full">
+
+                    {/* Connection Lines (SVGs or simplified divs) */}
+                    <svg className="absolute inset-0 pointer-events-none w-full h-full z-0 overflow-visible">
+                        <line x1="400" y1="300" x2="150" y2="200" stroke="#333" strokeWidth="2" strokeDasharray="5,5" />
+                        <line x1="400" y1="300" x2="650" y2="400" stroke="#333" strokeWidth="2" strokeDasharray="5,5" />
+                    </svg>
+
+                    {nodes.map((node) => (
+                        <div
+                            key={node.id}
+                            className={`absolute p-4 rounded-xl border ${node.id === 1
+                                    ? 'border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.2)]'
+                                    : 'border-[#333] hover:border-gray-500'
+                                } ${node.color} w-64 cursor-grab z-10 transition-all`}
+                            style={{ left: node.x, top: node.y }}
+                            onClick={() => setActiveNode(node.id)}
+                        >
+                            {/* Generative Label for Subs */}
+                            {node.type === 'sub' && (
+                                <div className="flex items-center gap-1 mb-2">
+                                    <span className="material-symbols-outlined text-yellow-500 text-[14px]">sparkle</span>
+                                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">GENERATED</span>
+                                </div>
+                            )}
+
+                            {/* Icon for Main */}
+                            {node.type === 'main' && (
+                                <div className="size-10 rounded-lg bg-blue-600 flex items-center justify-center mb-3">
+                                    <span className="material-symbols-outlined text-white">eco</span>
+                                </div>
+                            )}
+
+                            <h3 className="text-sm font-bold text-white mb-1">{node.text}</h3>
+                            <p className="text-[10px] text-gray-400 leading-relaxed">
+                                {node.type === 'main'
+                                    ? 'Main Focus: Sustainable implementation in developing regions.'
+                                    : 'Regulatory frameworks and compliance details for this sector.'}
+                            </p>
+
+                            {/* Active State Actions */}
+                            {node.id === 1 && (
+                                <div className="flex gap-2 mt-4 pt-3 border-t border-white/5">
+                                    <button className="flex-1 bg-blue-600/20 text-blue-400 text-[10px] py-1 rounded hover:bg-blue-600/30 font-bold">Expand</button>
+                                    <button className="flex-1 bg-white/5 text-gray-300 text-[10px] py-1 rounded hover:bg-white/10">Edit</button>
+                                </div>
+                            )}
                         </div>
+                    ))}
+
+                    {/* Sticker / Note */}
+                    <div className="absolute top-[500px] left-[350px] bg-[#FFF9C4] text-black w-48 p-3 rounded-lg shadow-xl -rotate-2 font-handwriting text-xs leading-5">
+                        Don't forget to include the recent case study from East Java!
                     </div>
 
-                    {/* Canvas Content Simulation */}
-                    <div className="w-full h-full flex items-center justify-center relative scale-90 md:scale-100 origin-center transition-transform duration-500">
-                        {/* SVG Connections Background */}
-                        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ overflow: 'visible' }}>
-                            {/* Line from Center to Left */}
-                            <path d="M 50% 50% C 40% 50%, 35% 35%, 28% 30%" fill="none" stroke="#282839" strokeWidth="2"></path>
-                            {/* Line from Center to Right */}
-                            <path d="M 50% 50% C 60% 50%, 65% 65%, 72% 70%" fill="none" stroke="#282839" strokeWidth="2"></path>
-                            {/* Line from Center to Bottom */}
-                            <path d="M 50% 50% L 50% 75%" fill="none" stroke="#282839" strokeDasharray="6,4" strokeWidth="2"></path>
-                        </svg>
-                        {/* Central Node */}
-                        <div className="absolute z-10 p-6 bg-[#1c1c26] border-2 border-[#1313ec]/50 rounded-2xl shadow-[0_0_30px_rgba(19,19,236,0.15)] w-80 flex flex-col items-center text-center gap-3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <div className="w-12 h-12 bg-gradient-to-br from-[#1313ec] to-purple-600 rounded-lg flex items-center justify-center text-white mb-2 shadow-lg">
-                                <span className="material-symbols-outlined text-2xl">eco</span>
-                            </div>
-                            <h3 className="text-xl font-bold text-white leading-tight">Project Outline: Renewable Energy</h3>
-                            <p className="text-xs text-slate-400">Main Focus: Sustainable implementation in developing regions.</p>
-                            <div className="flex gap-2 mt-2">
-                                <button className="text-xs px-3 py-1.5 bg-[#1313ec]/10 text-[#1313ec] hover:bg-[#1313ec]/20 rounded font-bold transition-colors">Expand</button>
-                                <button className="text-xs px-3 py-1.5 bg-white/5 text-slate-300 hover:bg-white/10 rounded font-bold transition-colors">Edit</button>
-                            </div>
-                            {/* User Cursor Simulation */}
-                            <div className="absolute -bottom-6 -right-6 flex items-center gap-2 pointer-events-none">
-                                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19177L11.7841 12.3673H5.65376Z" fill="#1313EC" stroke="white"></path>
-                                </svg>
-                                <span className="px-2 py-0.5 bg-[#1313ec] text-[10px] font-bold text-white rounded shadow">You</span>
-                            </div>
-                        </div>
-                        {/* Generated Node: Solar (Top Left) */}
-                        <div className="absolute top-[30%] left-[28%] -translate-x-1/2 -translate-y-1/2 p-4 bg-[#1c1c26] border border-[#282839] hover:border-slate-500 transition-colors rounded-xl shadow-lg w-56 cursor-pointer">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-amber-500 material-symbols-outlined">wb_sunny</span>
-                                <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Generated</span>
-                            </div>
-                            <h4 className="text-white font-bold mb-1">Solar Infrastructure</h4>
-                            <p className="text-[11px] text-slate-400 leading-relaxed">Cost-benefit analysis of photovoltaic cells in tropical climates.</p>
-                        </div>
-                        {/* Generated Node: Wind (Bottom Right) */}
-                        <div className="absolute top-[70%] left-[72%] -translate-x-1/2 -translate-y-1/2 p-4 bg-[#1c1c26] border border-[#282839] hover:border-slate-500 transition-colors rounded-xl shadow-lg w-56 cursor-pointer">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-cyan-400 material-symbols-outlined">air</span>
-                                <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Generated</span>
-                            </div>
-                            <h4 className="text-white font-bold mb-1">Wind Farm Policy</h4>
-                            <p className="text-[11px] text-slate-400 leading-relaxed">Regulatory frameworks for offshore wind turbines.</p>
-                        </div>
-                        {/* Note (Bottom Center) */}
-                        <div className="absolute top-[75%] left-[50%] -translate-x-1/2 p-4 bg-[#fff9c4] text-slate-900 -rotate-2 rounded shadow-md w-48 shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
-                            <p className="font-handwriting text-sm font-medium leading-snug">Don't forget to include the recent case study from East Java!</p>
-                        </div>
-                    </div>
+                </div>
 
-                    {/* Zoom Controls (Bottom Right) */}
-                    <div className="absolute bottom-8 right-8 flex flex-col bg-[#1c1c26] border border-[#282839] rounded-lg overflow-hidden shadow-xl z-20">
-                        <button className="p-2 text-slate-400 hover:text-white hover:bg-white/5"><span className="material-symbols-outlined text-[20px]">add</span></button>
-                        <div className="h-px w-full bg-[#282839]"></div>
-                        <button className="p-2 text-slate-400 hover:text-white hover:bg-white/5"><span className="material-symbols-outlined text-[20px]">remove</span></button>
-                    </div>
-                </section>
+                {/* Floating Toolbar */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-[#1A1A1A] p-1.5 rounded-xl border border-[#333] flex items-center gap-1 shadow-2xl">
+                    {['arrow_selector_tool', 'text_fields', 'sticky_note_2', 'chat_bubble', 'auto_awesome'].map((icon, i) => (
+                        <button key={i} className={`size-9 rounded-lg flex items-center justify-center hover:bg-[#333] transition-colors ${i === 0 ? 'bg-white/10 text-white' : 'text-gray-400'}`}>
+                            <span className="material-symbols-outlined text-[20px]">{icon}</span>
+                        </button>
+                    ))}
+                </div>
 
-                {/* Sidebar: Seno AI */}
-                <aside className="w-96 shrink-0 bg-[#111118] border-l border-[#282839] flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.2)] z-30">
-                    {/* Sidebar Header */}
-                    <div className="p-4 border-b border-[#282839] bg-[#111118]/50 backdrop-blur-sm z-10">
-                        <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-white font-bold flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[#1313ec]">smart_toy</span>
-                                Seno AI Companion
-                            </h3>
-                            <button className="text-slate-400 hover:text-white transition-colors">
-                                <span className="material-symbols-outlined">more_horiz</span>
-                            </button>
-                        </div>
-                        <div className="flex gap-2">
-                            <button className="flex-1 bg-[#1c1c26] border border-[#282839] hover:bg-white/5 text-xs font-medium text-slate-300 py-1.5 px-2 rounded transition-colors text-center">Chat</button>
-                            <button className="flex-1 bg-[#1313ec]/10 border border-[#1313ec]/20 text-xs font-bold text-[#1313ec] py-1.5 px-2 rounded transition-colors text-center">Co-Create</button>
-                        </div>
-                    </div>
-                    {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-6 no-scrollbar">
-                        {/* Welcome Message */}
-                        <div className="flex gap-3">
-                            <div className="size-8 shrink-0 rounded-full bg-[#1313ec] flex items-center justify-center text-white shadow-lg shadow-[#1313ec]/20">
-                                <span className="material-symbols-outlined text-sm">smart_toy</span>
-                            </div>
-                            <div className="flex flex-col gap-1 max-w-[85%]">
-                                <div className="bg-[#1c1c26] border border-[#282839] p-3 rounded-2xl rounded-tl-none">
-                                    <p className="text-sm text-slate-200 leading-relaxed">
-                                        Hello! I'm ready to help you brainstorm on <span className="text-white font-bold">Renewable Energy</span>. Would you like to generate a mind map or draft an outline first?
-                                    </p>
-                                </div>
-                                <span className="text-[10px] text-slate-500 ml-1">10:42 AM</span>
-                            </div>
-                        </div>
-                        {/* Live Suggestion Block (Contextual) */}
-                        <div className="relative group">
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#1313ec] to-purple-600 rounded-xl opacity-30 blur group-hover:opacity-60 transition duration-500"></div>
-                            <div className="relative bg-[#1a1a24] rounded-lg p-4 border border-[#1313ec]/30">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="flex items-center gap-2 text-[#1313ec]">
-                                        <span className="material-symbols-outlined text-lg animate-pulse">lightbulb</span>
-                                        <span className="text-xs font-bold uppercase tracking-wider">Live Insight</span>
-                                    </div>
-                                    <button className="text-slate-500 hover:text-white"><span className="material-symbols-outlined text-sm">close</span></button>
-                                </div>
-                                <p className="text-sm text-white mb-3 leading-relaxed">
-                                    Since you added "Wind Energy", consider including a section on <strong>noise pollution impact</strong> and mitigation strategies.
-                                </p>
-                                <div className="flex gap-2">
-                                    <button className="flex-1 bg-[#1313ec] hover:bg-blue-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition-colors flex items-center justify-center gap-1">
-                                        <span className="material-symbols-outlined text-sm">add_circle</span>
-                                        Add Node
-                                    </button>
-                                    <button className="px-3 py-2 bg-white/5 hover:bg-white/10 text-slate-300 rounded-lg transition-colors">
-                                        <span className="material-symbols-outlined text-sm">refresh</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        {/* User Message */}
-                        <div className="flex gap-3 flex-row-reverse">
-                            <div className="size-8 shrink-0 rounded-full bg-slate-700 bg-center bg-cover" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBIQCrYEPDAGuefUrLbGAXs1fHGJQPGetiJF1LC6w5s823WOFVo3FAb-qC3Dyj4eIa0dHRNyrqm1LqvyrgFr_dJDvuOYs6ZzYlzWzpFV--N8rMdgmkk6WjF6ltXVD3EqX_DRS5VBD28zq6MCCHPvvj3muAjbSI32BUOFMu6oiY5JQgph2U8NGZKGkrHINMBUlSuB8bTVlqFQXo3ZXv1o5ITOOLvY5D7qsKCaDe6u0J1JaHnTZvocLZz7GA0uW18OiIW4f5z7Et_Z9o")' }}></div>
-                            <div className="flex flex-col gap-1 items-end max-w-[85%]">
-                                <div className="bg-[#1313ec] p-3 rounded-2xl rounded-tr-none text-white shadow-lg shadow-[#1313ec]/10">
-                                    <p className="text-sm leading-relaxed">
-                                        Create a sub-branch for "Micro-Hydro" systems in rural Indonesia.
-                                    </p>
-                                </div>
-                                <span className="text-[10px] text-slate-500 mr-1">10:45 AM</span>
-                            </div>
-                        </div>
-                        {/* AI Response (Processing) */}
-                        <div className="flex gap-3">
-                            <div className="size-8 shrink-0 rounded-full bg-[#1313ec] flex items-center justify-center text-white">
-                                <span className="material-symbols-outlined text-sm">smart_toy</span>
-                            </div>
-                            <div className="flex flex-col gap-1 max-w-[85%]">
-                                <div className="bg-[#1c1c26] border border-[#282839] p-3 rounded-2xl rounded-tl-none flex items-center gap-3">
-                                    <div className="flex gap-1">
-                                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-                                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
-                                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
-                                    </div>
-                                    <p className="text-xs text-slate-400">Generating nodes...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Input Area */}
-                    <div className="p-4 bg-[#111118] border-t border-[#282839] relative">
-                        {/* Quick Prompts Pill List */}
-                        <div className="flex gap-2 mb-3 overflow-x-auto no-scrollbar">
-                            <button className="whitespace-nowrap px-3 py-1 bg-[#1c1c26] hover:bg-white/10 border border-[#282839] rounded-full text-[11px] font-medium text-slate-300 transition-colors">Summarize Canvas</button>
-                            <button className="whitespace-nowrap px-3 py-1 bg-[#1c1c26] hover:bg-white/10 border border-[#282839] rounded-full text-[11px] font-medium text-slate-300 transition-colors">Find Sources</button>
-                            <button className="whitespace-nowrap px-3 py-1 bg-[#1c1c26] hover:bg-white/10 border border-[#282839] rounded-full text-[11px] font-medium text-slate-300 transition-colors">Suggest Layout</button>
-                        </div>
-                        <div className="relative bg-[#1c1c26] rounded-xl border border-[#282839] focus-within:border-[#1313ec] focus-within:ring-1 focus-within:ring-[#1313ec]/50 transition-all shadow-sm">
-                            <textarea className="w-full bg-transparent text-sm text-white p-3 pr-10 min-h-[50px] max-h-32 resize-none outline-none placeholder:text-slate-500" placeholder="Ask Seno to create, refine, or explain..."></textarea>
-                            <div className="flex items-center justify-between px-2 pb-2">
-                                <button className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors">
-                                    <span className="material-symbols-outlined justify-center text-[20px]">add_photo_alternate</span>
-                                </button>
-                                <button className="p-2 bg-[#1313ec] hover:bg-blue-600 text-white rounded-lg transition-colors shadow-lg shadow-[#1313ec]/20">
-                                    <span className="material-symbols-outlined text-[18px] block">send</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
+                {/* Zoom Controls */}
+                <div className="absolute bottom-8 right-8 flex flex-col gap-1 bg-[#1A1A1A] rounded-lg border border-[#333] p-1">
+                    <button className="size-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#333] rounded"><span className="material-symbols-outlined text-sm">add</span></button>
+                    <div className="h-px bg-[#333] w-full"></div>
+                    <button className="size-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#333] rounded"><span className="material-symbols-outlined text-sm">remove</span></button>
+                </div>
             </main>
 
-            <style jsx global>{`
-        /* Custom Dot Pattern Background for Canvas */
-        .bg-grid-pattern {
-            background-color: #111118;
-            background-image: radial-gradient(#282839 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-        }
-        /* Hide scrollbar for clean UI */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-      `}</style>
+            {/* 3. Right Sidebar (Seno AI) */}
+            <aside className="w-80 bg-[#0A0A0A] border-l border-[#222] flex flex-col">
+                <div className="p-4 border-b border-[#222] flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-blue-500">smart_toy</span>
+                        <span className="font-bold text-sm">Seno AI Companion</span>
+                    </div>
+                    <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined text-sm">more_horiz</span></button>
+                </div>
+
+                <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                    {/* AI Message */}
+                    <div className="flex gap-3">
+                        <div className="size-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-white text-xs">smart_toy</span>
+                        </div>
+                        <div className="bg-[#1A1A1A] p-3 rounded-2xl rounded-tl-none border border-[#333]">
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                                Hello! I'm ready to help you brainstorm on <span className="text-white font-bold">Renewable Energy</span>. Would you like to generate a mind map or draft an outline first?
+                            </p>
+                            <p className="text-[10px] text-gray-600 mt-2">10:42 AM</p>
+                        </div>
+                    </div>
+
+                    {/* Insight Card */}
+                    <div className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 border border-blue-500/30 p-3 rounded-xl relative overflow-hidden">
+                        <div className="flex justify-between items-start mb-2">
+                            <div className="flex items-center gap-1.5 text-blue-400">
+                                <span className="material-symbols-outlined text-xs">lightbulb</span>
+                                <span className="text-[10px] font-bold uppercase">Live Insight</span>
+                            </div>
+                            <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined text-xs">close</span></button>
+                        </div>
+                        <p className="text-xs text-gray-300 mb-3">
+                            Since you added "Wind Energy", consider including a section on <span className="text-white font-bold">noise pollution impact</span> and mitigation strategies.
+                        </p>
+                        <button className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-sm">add_circle</span> Add Node
+                        </button>
+                    </div>
+
+                    {/* User Message */}
+                    <div className="flex gap-3 flex-row-reverse">
+                        <div className="size-8 rounded-full bg-gray-700 flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-white text-xs">person</span>
+                        </div>
+                        <div className="bg-blue-600 p-3 rounded-2xl rounded-tr-none text-white">
+                            <p className="text-xs leading-relaxed">
+                                Create a sub-branch for "Micro-Hydro" systems in rural Indonesia.
+                            </p>
+                            <p className="text-[10px] text-blue-200 mt-2">10:45 AM</p>
+                        </div>
+                    </div>
+
+                    {/* Loading State */}
+                    <div className="flex gap-3">
+                        <div className="size-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-white text-xs">smart_toy</span>
+                        </div>
+                        <div className="bg-[#1A1A1A] px-4 py-3 rounded-full border border-[#333] flex items-center gap-2">
+                            <div className="flex gap-1">
+                                <span className="size-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+                                <span className="size-1.5 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+                                <span className="size-1.5 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+                            </div>
+                            <span className="text-xs text-gray-500">Generating nodes...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="p-4 border-t border-[#222]">
+                    <div className="flex gap-2 mb-3">
+                        {['Summarize Canvas', 'Find Sources', 'Suggest Layout'].map(tag => (
+                            <button key={tag} className="px-3 py-1 bg-[#1A1A1A] border border-[#333] rounded-full text-[10px] text-gray-400 hover:text-white hover:border-gray-500 transition-colors whitespace-nowrap">
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="bg-[#1A1A1A] border border-[#333] rounded-xl p-2">
+                        <textarea
+                            className="w-full bg-transparent text-xs text-white placeholder-gray-600 resize-none outline-none p-2 h-16"
+                            placeholder="Ask Seno to create, refine, or explain..."
+                        ></textarea>
+                        <div className="flex justify-between items-center px-1 pb-1">
+                            <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined text-sm">image</span></button>
+                            <button className="size-8 bg-blue-600 hover:bg-blue-500 rounded-lg flex items-center justify-center text-white"><span className="material-symbols-outlined text-sm">send</span></button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
     );
 }
