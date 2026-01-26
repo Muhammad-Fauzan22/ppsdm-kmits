@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GlobalResourceEngine } from '@/lib/resources/GlobalResourceEngine';
 import { supabase } from '@/lib/supabaseClient';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);

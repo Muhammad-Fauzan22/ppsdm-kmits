@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { GlobalResourceEngine } from "@/lib/resources/GlobalResourceEngine";
 
+export const dynamic = "force-dynamic";
+
 // GET - Get free learning resources via Global Resource Engine
 export async function GET(request: NextRequest) {
     try {

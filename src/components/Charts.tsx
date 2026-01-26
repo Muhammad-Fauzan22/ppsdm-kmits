@@ -9,7 +9,7 @@ interface GrowthChartProps {
 
 export function GrowthLineChart({ data, color = "#330066" }: GrowthChartProps) {
     return (
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={200} minWidth={0} minHeight={0}>
             <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                     <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
@@ -47,7 +47,7 @@ interface DimensionRadarProps {
 
 export function DimensionRadarChart({ data }: DimensionRadarProps) {
     return (
-        <ResponsiveContainer width="100%" height={280}>
+        <ResponsiveContainer width="100%" height={280} minWidth={0} minHeight={0}>
             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
                 <PolarGrid stroke="#e5e7eb" />
                 <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#6b7280" }} />
