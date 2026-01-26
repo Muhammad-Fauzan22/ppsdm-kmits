@@ -64,7 +64,7 @@ Saya melihat perkembangan Personal Development kamu. Ada yang ingin didiskusikan
                 <div className="relative size-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-white">
                     {/* Fallback avatar if asset fails (though assets.ts handles placeholders) */}
                     <Image
-                        src={ASSETS.mascot.seno || "/images/placeholder.png"}
+                        src={ASSETS.maskot.seno_studio || "/images/placeholder.png"}
                         alt="Seno"
                         fill
                         className="object-cover"
