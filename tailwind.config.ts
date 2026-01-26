@@ -73,8 +73,9 @@ const config: Config = {
                 // Tipografi Resmi
                 sans: ['var(--font-work-sans)', 'sans-serif'], // Body Text
                 serif: ['var(--font-friz)', 'serif'],         // Headings (Friz Quadrata)
-                display: ['var(--font-lexend)', 'sans-serif'],
-                body: ['var(--font-noto-sans)', 'sans-serif'],
+                display: ['"Lexend"', 'sans-serif'],
+                body: ['"Noto Sans"', 'sans-serif'],
+                grotesk: ['"Space Grotesk"', 'sans-serif'],
             },
             backgroundImage: {
                 // Pattern Resmi "Gerigi/Batik"
