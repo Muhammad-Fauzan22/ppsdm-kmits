@@ -11,3 +11,30 @@
     @apply antialiased;
   }
 }
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0, 0, 0, 0.37)];
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-accent;
+  }
+
+  .its-gradient {
+    background: radial-gradient(circle at 0% 0%, #013880 0%, #000 70%);
+  }
+
+  .timeline-line {
+    background: linear-gradient(90deg, transparent 0%, #135bec 50%, transparent 100%);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-hover:hover .progress-fill {
+    width: 100% !important;
+    transition: width 1s ease-in-out;
+  }
+}

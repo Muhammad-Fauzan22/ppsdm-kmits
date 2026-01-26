@@ -17,6 +17,12 @@ const config: Config = {
                 "card-dark": "#1c1f27",
                 "border-dark": "#282e39",
 
+                // New Design System Tokens (From Request)
+                "its-gold": "#FFD700",
+                "its-dark": "#0A0F1A",
+                "brand-blue": "#135bec",
+                "brand-accent": "#00d4ff",
+
                 // Student Portal Specific
                 "student-primary": "#003366",
                 "student-bg": "#f5f7f8", // background-light
@@ -71,7 +77,8 @@ const config: Config = {
             },
             fontFamily: {
                 // Tipografi Resmi
-                sans: ['var(--font-work-sans)', 'sans-serif'], // Body Text
+                sans: ['"Inter"', 'sans-serif'], // Updated to match design request
+                heading: ['"Poppins"', 'sans-serif'], // Added for headings
                 serif: ['var(--font-friz)', 'serif'],         // Headings (Friz Quadrata)
                 display: ['"Lexend"', 'sans-serif'],
                 body: ['"Noto Sans"', 'sans-serif'],
@@ -88,6 +95,9 @@ const config: Config = {
             },
             animation: {
                 'fade-in': 'fadeIn 0.5s ease-in-out',
+                'fade-out': 'fadeOut 0.5s ease-in-out',
+                'scale-up': 'scaleUp 0.5s ease-out',
+                'fade-in-up': 'fadeInUp 0.6s ease-out',
                 'slide-up': 'slideUp 0.5s ease-out',
                 'slide-right': 'slideInRight 0.5s ease-out',
                 marquee: 'marquee 25s linear infinite',
@@ -96,6 +106,18 @@ const config: Config = {
                 fadeIn: {
                     '0%': { opacity: '0' },
                     '100%': { opacity: '1' },
+                },
+                fadeOut: {
+                    '0%': { opacity: '1' },
+                    '100%': { opacity: '0' },
+                },
+                scaleUp: {
+                    '0%': { transform: 'scale(0.8)', opacity: '0' },
+                    '100%': { transform: 'scale(1)', opacity: '1' },
+                },
+                fadeInUp: {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
                 slideUp: {
                     '0%': { opacity: '0', transform: 'translateY(20px)' },
