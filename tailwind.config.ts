@@ -10,7 +10,6 @@ const config: Config = {
         extend: {
             colors: {
                 // WARNA UTAMA BARU (Admin & Supervisor)
-                // WARNA UTAMA BARU (Admin & Supervisor)
                 primary: "#135bec",
                 "its-red": "#ef4444",
                 "background-light": "#f6f6f8",
@@ -25,7 +24,7 @@ const config: Config = {
                 "accent-green": "#078838",
                 "text-dark": "#101418",
                 "text-light": "#5e758d",
-                "card-dark": "#1A1F2B", // Updated to Admin View dark card
+                // "card-dark": "#1A1F2B", // REMOVED DUPLICATE - Using #1c1f27
 
                 // Mobile & Admin Specific
                 "sidebar-dark": "#0B0E14",
@@ -71,7 +70,6 @@ const config: Config = {
                 },
             },
             fontFamily: {
-                // Tipografi Resmi
                 // Tipografi Resmi
                 sans: ['var(--font-work-sans)', 'sans-serif'], // Body Text
                 serif: ['var(--font-friz)', 'serif'],         // Headings (Friz Quadrata)
