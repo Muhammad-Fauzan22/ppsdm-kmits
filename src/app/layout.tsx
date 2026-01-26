@@ -66,10 +66,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://ppsdm.its.ac.id"),
   title: {
-    default: "PPSDM KM ITS - Portal Pengembangan SDM",
-    template: "%s | PPSDM KM ITS", // Contoh: "Dashboard | PPSDM KM ITS"
+    default: "PPSDM KMM | Ultimate Human Capital Platform",
+    template: "%s | PPSDM KMM",
   },
-  description: "Platform terintegrasi untuk manajemen SDM, kaderisasi, dan pengembangan potensi mahasiswa Institut Teknologi Sepuluh Nopember.",
+  description: "Platform pengembangan terpadu berbasis data untuk mahasiswa ITS. Bangun portofolio kompetensi melalui asesmen presisi, roadmap terukur.",
   keywords: ["ITS", "PPSDM", "Mahasiswa", "Kaderisasi", "Surabaya", "KM ITS", "Pengembangan Diri"],
   authors: [{ name: "Tim IT PPSDM KM ITS" }],
 
