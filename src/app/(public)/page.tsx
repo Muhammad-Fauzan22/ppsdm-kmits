@@ -3,175 +3,324 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Header } from '@/components/Header';
+import { DimensionRadarChart } from '@/components/Charts';
 
 export default function LandingPage() {
-    return (
-        <div className="bg-white dark:bg-background-dark text-slate-900 dark:text-white font-sans overflow-x-hidden">
-            {/* Navbar */}
-            <nav className="fixed w-full z-50 top-0 start-0 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
-                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                        <div className="size-8 rounded bg-its-blue flex items-center justify-center text-white">
-                            <span className="material-symbols-outlined">school</span>
-                        </div>
-                        <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white font-serif">PPSDM KM ITS</span>
-                    </Link>
-                    <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                        <Link href="/auth/login" className="text-slate-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-4 py-2 text-center mr-2 transition-colors">
-                            Sign In
-                        </Link>
-                        <Link href="/auth/register" className="text-white bg-its-blue hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-its-blue dark:hover:bg-blue-700 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/30 transition-all hover:scale-105">
-                            Get Started
-                        </Link>
-                    </div>
-                </div>
-            </nav>
+    // 9 Dimensions Data
+    const dimensions = [
+        {
+            title: "Leadership",
+            icon: "groups",
+            desc: "Cultivating the ability to guide, inspire, and influence others towards shared goals.",
+            color: "text-blue-500",
+            bg: "bg-blue-500/10"
+        },
+        {
+            title: "Ethics",
+            icon: "balance",
+            desc: "Building moral character and integrity as the foundation of professional life.",
+            color: "text-red-500",
+            bg: "bg-red-500/10"
+        },
+        {
+            title: "Technology",
+            icon: "memory", // or 'developer_mode'
+            desc: "Mastering digital tools and maintaining fluency in emerging tech landscapes.",
+            color: "text-cyan-500",
+            bg: "bg-cyan-500/10"
+        },
+        {
+            title: "Global Mindset",
+            icon: "public",
+            desc: "Understanding diverse cultures and operating effectively in international contexts.",
+            color: "text-green-500",
+            bg: "bg-green-500/10"
+        },
+        {
+            title: "Critical Thinking",
+            icon: "psychology",
+            desc: "Analyzing information objectively to form reasoned judgments and solve problems.",
+            color: "text-purple-500",
+            bg: "bg-purple-500/10"
+        },
+        {
+            title: "Creativity",
+            icon: "lightbulb",
+            desc: "Generating novel ideas and innovative solutions to complex challenges.",
+            color: "text-yellow-500",
+            bg: "bg-yellow-500/10"
+        },
+        {
+            title: "Collaboration",
+            icon: "handshake", // or 'connect_without_contact'
+            desc: "Working synergistically within teams to achieve collective success.",
+            color: "text-orange-500",
+            bg: "bg-orange-500/10"
+        },
+        {
+            title: "Communication",
+            icon: "chat",
+            desc: "Articulating thoughts clearly and listening effectively across various mediums.",
+            color: "text-teal-500",
+            bg: "bg-teal-500/10"
+        },
+        {
+            title: "Adaptability",
+            icon: "sync",
+            desc: "Maintaining resilience and flexibility in the face of rapid change.",
+            color: "text-pink-500",
+            bg: "bg-pink-500/10"
+        }
+    ];
 
-            {/* Hero Section */}
-            <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden">
-                <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-                    <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
-                </div>
+    // Radar Chart Data
+    const radarData = [
+        { dimension: 'Leadership', score: 85, fullMark: 100 },
+        { dimension: 'Ethics', score: 90, fullMark: 100 },
+        { dimension: 'Technology', score: 75, fullMark: 100 },
+        { dimension: 'Global', score: 60, fullMark: 100 },
+        { dimension: 'Critical', score: 80, fullMark: 100 },
+        { dimension: 'Creativity', score: 70, fullMark: 100 },
+        { dimension: 'Collab', score: 85, fullMark: 100 },
+        { dimension: 'Comm.', score: 75, fullMark: 100 },
+        { dimension: 'Adapt.', score: 80, fullMark: 100 },
+    ];
+
+    return (
+        <div className="bg-[#020617] text-white font-sans min-h-screen selection:bg-blue-500/30">
+            {/* 1. Header with Dark Variant */}
+            <Header variant="dark" />
+
+            {/* 2. Hero Section */}
+            <section className="relative pt-20 pb-20 lg:pt-32 lg:pb-32 overflow-hidden bg-gradient-to-b from-[#020617] via-[#0B1120] to-[#020617]">
+                {/* Background Glows */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
+                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] -z-10"></div>
 
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center relative z-10">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <span className="flex size-2 rounded-full bg-blue-600"></span>
-                        <span className="text-sm font-medium">New: AI-Powered Career Roadmap</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm shadow-lg hover:border-white/20 transition-colors cursor-pointer">
+                        <span className="flex size-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span className="text-xs font-medium tracking-wide text-gray-300 uppercase">Unveiling New Students 2024</span>
                     </div>
 
-                    <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-6xl font-display mb-6 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-                        Maximize Your Potential with <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Holistic Development</span>
+                    <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl mb-6 leading-[1.1]">
+                        Membangun Insan <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 animate-text-shimmer bg-[size:200%_auto]">
+                            ITS Seutuhnya
+                        </span>
                     </h1>
 
-                    <p className="mt-6 text-lg leading-8 text-slate-600 dark:text-slate-300 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-                        PPSDM KM ITS is the ultimate platform for student growth. Track your 9-dimensional progress, access curated learning resources, and prepare for a global career.
+                    <p className="mt-6 text-lg leading-8 text-gray-400 max-w-2xl mx-auto font-light">
+                        Empowering students through holistic development and structured mentorship. Join a community dedicated to excellence in every dimension.
                     </p>
 
-                    <div className="mt-10 flex items-center justify-center gap-x-6 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
-                        <Link href="/auth/register" className="rounded-lg bg-its-blue px-6 py-3.5 text-sm font-semibold text-white shadow-xl hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all hover:scale-105 flex items-center gap-2">
-                            Check Your Score
-                            <span className="material-symbols-outlined text-lg">arrow_forward</span>
+                    <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <Link
+                            href="/auth/register"
+                            className="w-full sm:w-auto rounded-full bg-blue-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-500 hover:shadow-blue-600/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all hover:-translate-y-0.5"
+                        >
+                            Mulai Perjalanan Anda &rarr;
                         </Link>
-                        <Link href="#features" className="text-sm font-semibold leading-6 text-slate-900 dark:text-white hover:text-its-blue transition-colors flex items-center gap-1">
-                            Explore Features <span aria-hidden="true">→</span>
+                        <Link
+                            href="#features"
+                            className="w-full sm:w-auto rounded-full bg-white/5 px-8 py-3.5 text-sm font-semibold text-white border border-white/10 hover:bg-white/10 transition-all hover:-translate-y-0.5 backdrop-blur-sm"
+                        >
+                            Pelajari Lebih Lanjut
                         </Link>
                     </div>
+                </div>
+            </section>
 
-                    {/* Dashboard Preview */}
-                    <div className="mt-16 flow-root sm:mt-24 animate-in fade-in zoom-in duration-1000 delay-500">
-                        <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4 dark:bg-white/5 dark:ring-white/10">
-                            <div className="relative rounded-lg bg-slate-900 shadow-2xl overflow-hidden aspect-[16/9] border border-slate-800">
-                                {/* Mockup content would go here - simplified for code */}
-                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 to-black">
-                                    <div className="text-center">
-                                        <div className="size-20 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-4 animate-pulse">
-                                            <span className="material-symbols-outlined text-5xl text-blue-500">analytics</span>
-                                        </div>
-                                        <p className="text-slate-400 font-mono text-sm">Interactive Dashboard Preview</p>
+            {/* 3. 9 Dimensions Grid */}
+            <section id="features" className="py-24 bg-[#0B1120]">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">9 Dimensions of Development</h2>
+                        <p className="mt-4 text-lg text-gray-400 font-light">
+                            Explore the core competencies fostered through our comprehensive programs designed to shape future leaders.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {dimensions.map((dim, index) => (
+                            <div key={index} className="group relative bg-[#111827] p-6 rounded-xl border border-white/5 hover:border-white/10 transition-all hover:bg-[#162032]">
+                                <div className={`size-12 rounded-lg ${dim.bg} flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300`}>
+                                    <span className={`material-symbols-outlined text-2xl ${dim.color}`}>{dim.icon}</span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">{dim.title}</h3>
+                                <p className="text-sm text-gray-400 leading-relaxed font-light">{dim.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 4. Visualization & Radar Chart */}
+            <section className="py-24 bg-[#020617] relative overflow-hidden">
+                <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] -translate-y-1/2 pointer-events-none"></div>
+
+                <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        {/* Text Content */}
+                        <div>
+                            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-6">
+                                Visualize Your <br />
+                                <span className="text-blue-500">Growth Journey</span>
+                            </h2>
+                            <p className="text-lg text-gray-400 mb-8 font-light">
+                                Track your progress across all 9 dimensions with our dynamic assessment tools. Identify strengths, uncover areas for improvement, and chart a personalized path to success.
+                            </p>
+
+                            <ul className="space-y-6">
+                                <li className="flex gap-4">
+                                    <div className="size-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined text-blue-500 text-sm">check</span>
                                     </div>
-                                    {/* Abstract UI Elements */}
-                                    <div className="absolute top-10 left-10 w-64 h-32 bg-slate-800 rounded-lg opacity-50"></div>
-                                    <div className="absolute top-10 right-10 w-64 h-64 bg-slate-800 rounded-full opacity-30"></div>
-                                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-96 h-12 bg-slate-800 rounded-full opacity-60"></div>
+                                    <div>
+                                        <h4 className="font-bold text-white">Real-time Analytics</h4>
+                                        <p className="text-sm text-gray-500 mt-1">Get instant feedback as your developments milestones.</p>
+                                    </div>
+                                </li>
+                                <li className="flex gap-4">
+                                    <div className="size-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined text-blue-500 text-sm">check</span>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-white">Personalized Recommendations</h4>
+                                        <p className="text-sm text-gray-500 mt-1">Receive curated program suggestions based on your profile.</p>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div className="mt-10">
+                                <Link href="/auth/register" className="inline-flex items-center text-sm font-semibold text-white border border-white/20 rounded-lg px-5 py-2.5 hover:bg-white/5 transition-colors">
+                                    View Sample Report
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* Chart Preview Card */}
+                        <div className="relative">
+                            <div className="bg-[#111827] rounded-3xl p-8 border border-white/5 shadow-2xl relative overflow-hidden">
+                                {/* Header */}
+                                <div className="flex justify-between items-start mb-8">
+                                    <div>
+                                        <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Student Profile</p>
+                                        <h3 className="text-2xl font-bold text-white mt-1">Mahasiswa ITS</h3>
+                                    </div>
+                                    <div className="size-10 rounded-full bg-white/5 flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-gray-400">person</span>
+                                    </div>
+                                </div>
+
+                                {/* Chart Component */}
+                                <div className="h-[320px] w-full flex items-center justify-center -ml-4">
+                                    <DimensionRadarChart data={radarData} color="#3B82F6" />
+                                </div>
+
+                                <div className="absolute bottom-6 right-6">
+                                    <span className="text-xs font-medium text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">Balanced Growth</span>
                                 </div>
                             </div>
+
+                            {/* Decorative Elements */}
+                            <div className="absolute -top-10 -right-10 size-32 bg-blue-500/20 rounded-full blur-3xl -z-10"></div>
+                            <div className="absolute -bottom-10 -left-10 size-32 bg-purple-500/20 rounded-full blur-3xl -z-10"></div>
                         </div>
                     </div>
                 </div>
-
-                <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-                    <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
-                </div>
             </section>
 
-            {/* Features Grid */}
-            <section id="features" className="py-24 sm:py-32 bg-slate-50 dark:bg-[#0B1120]">
+            {/* 5. Student Voices */}
+            <section className="py-24 bg-[#0B1120] border-t border-white/5">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="mx-auto max-w-2xl lg:text-center">
-                        <h2 className="text-base font-semibold leading-7 text-its-blue">Everything you need</h2>
-                        <p className="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-                            Comprehensive Student Development
-                        </p>
-                        <p className="mt-6 text-lg leading-8 text-slate-600 dark:text-slate-400">
-                            Our platform covers 9 dimensions of holistic growth, providing tools for self-assessment, planning, and execution.
-                        </p>
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold tracking-tight text-white">Student Voices</h2>
+                        <p className="mt-2 text-gray-400 font-light">None so deaf as those that will not hear. Hear from those who have transformed their potential.</p>
                     </div>
-                    <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-                        <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-                            <div className="flex flex-col bg-white dark:bg-card-dark p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-its-blue/50 transition-all group">
-                                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-slate-900 dark:text-white mb-4">
-                                    <div className="size-10 flex items-center justify-center rounded-lg bg-its-blue/10 group-hover:bg-its-blue group-hover:text-white transition-all text-its-blue">
-                                        <span className="material-symbols-outlined">radar</span>
-                                    </div>
-                                    Holistic Assessment
-                                </dt>
-                                <dd className="flex flex-auto flex-col text-base leading-7 text-slate-600 dark:text-slate-400">
-                                    <p className="flex-auto">Measure your skills across logic, ethics, leadership, and more with our scientific radar charts.</p>
-                                </dd>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Testimonial 1 */}
+                        <div className="bg-[#111827] p-8 rounded-2xl border border-white/5 relative">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">IA</div>
+                                <div>
+                                    <h4 className="font-bold text-white text-sm">Isti Aminah</h4>
+                                    <p className="text-xs text-gray-500">Arsitektur '20</p>
+                                </div>
                             </div>
-                            <div className="flex flex-col bg-white dark:bg-card-dark p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-its-blue/50 transition-all group">
-                                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-slate-900 dark:text-white mb-4">
-                                    <div className="size-10 flex items-center justify-center rounded-lg bg-purple-500/10 group-hover:bg-purple-600 group-hover:text-white transition-all text-purple-600">
-                                        <span className="material-symbols-outlined">auto_stories</span>
-                                    </div>
-                                    Smart Library
-                                </dt>
-                                <dd className="flex flex-auto flex-col text-base leading-7 text-slate-600 dark:text-slate-400">
-                                    <p className="flex-auto">Access thousands of curated learning resources tailored to your specific development needs.</p>
-                                </dd>
+                            <p className="text-sm text-gray-300 italic">"PPSDM helped me balance my academic life with meaningful soft skill development."</p>
+                        </div>
+                        {/* Testimonial 2 */}
+                        <div className="bg-[#111827] p-8 rounded-2xl border border-white/5 relative">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="size-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500 font-bold">RP</div>
+                                <div>
+                                    <h4 className="font-bold text-white text-sm">Rizky Pratama</h4>
+                                    <p className="text-xs text-gray-500">Teknik Mesin '21</p>
+                                </div>
                             </div>
-                            <div className="flex flex-col bg-white dark:bg-card-dark p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-its-blue/50 transition-all group">
-                                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-slate-900 dark:text-white mb-4">
-                                    <div className="size-10 flex items-center justify-center rounded-lg bg-green-500/10 group-hover:bg-green-600 group-hover:text-white transition-all text-green-600">
-                                        <span className="material-symbols-outlined">emoji_events</span>
-                                    </div>
-                                    Gamified Portfolio
-                                </dt>
-                                <dd className="flex flex-auto flex-col text-base leading-7 text-slate-600 dark:text-slate-400">
-                                    <p className="flex-auto">Earn badges, track achievements, and build a verified portfolio to showcase to future employers.</p>
-                                </dd>
+                            <p className="text-sm text-gray-300 italic">"The mentorship program connected me with alumni who guided my career path."</p>
+                        </div>
+                        {/* Testimonial 3 */}
+                        <div className="bg-[#111827] p-8 rounded-2xl border border-white/5 relative">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="size-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-500 font-bold">DL</div>
+                                <div>
+                                    <h4 className="font-bold text-white text-sm">Devi Lestari</h4>
+                                    <p className="text-xs text-gray-500">Statistika '22</p>
+                                </div>
                             </div>
-                        </dl>
+                            <p className="text-sm text-gray-300 italic">"I discovered my passion for public speaking through the communication workshops."</p>
+                        </div>
                     </div>
                 </div>
             </section>
-
-            {/* Stats Section */}
-            <div className="bg-its-dark py-24 sm:py-32 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10 bg-[url('/patterns/its-key-graphic.svg')] bg-cover bg-center" />
-                <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-                    <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
-                        <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                            <dt className="text-base leading-7 text-white/80">Active Students</dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-white sm:text-5xl">15,000+</dd>
-                        </div>
-                        <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                            <dt className="text-base leading-7 text-white/80">Resources Accessed</dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-white sm:text-5xl">1.2M</dd>
-                        </div>
-                        <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                            <dt className="text-base leading-7 text-white/80">Career Goals Reached</dt>
-                            <dd className="order-first text-3xl font-semibold tracking-tight text-white sm:text-5xl">94%</dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
 
             {/* Footer */}
-            <footer className="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800">
-                <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
-                    <div className="flex justify-center space-x-6 md:order-2">
-                        {/* Social Icons would go here */}
-                        <a href="#" className="text-gray-400 hover:text-gray-500">
-                            <span className="sr-only">Instagram</span>
-                            <div className="size-6 bg-current rounded" />
-                        </a>
+            <footer className="bg-[#0f172a] text-white py-12 border-t border-white/5">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div className="col-span-1 md:col-span-2">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="size-8 rounded bg-white flex items-center justify-center text-[#013880]">
+                                <span className="material-symbols-outlined">school</span>
+                            </div>
+                            <h3 className="text-xl font-bold">Institut Teknologi Sepuluh Nopember</h3>
+                        </div>
+                        <p className="text-sm text-gray-400 mb-2">Kampus ITS Sukolilo, Surabaya 60111</p>
+                        <p className="text-sm text-gray-400">Jawa Timur, Indonesia</p>
+                        <p className="text-sm text-gray-400">Phone: +62-31-5994251</p>
+                        <div className="mt-8 text-xs text-gray-500">
+                            &copy; 2024 PPSDM KM Institut Teknologi Sepuluh Nopember. All rights reserved.
+                        </div>
                     </div>
-                    <div className="mt-8 md:order-1 md:mt-0">
-                        <p className="text-center text-xs leading-5 text-gray-500 dark:text-gray-400">
-                            &copy; 2024 PPSDM KM ITS. All rights reserved. Developed by ITS Students for ITS Students.
-                        </p>
+                    <div>
+                        <h4 className="font-bold mb-4">Quick Links</h4>
+                        <ul className="space-y-2 text-sm text-gray-400">
+                            <li><Link href="/" className="hover:text-white transition-colors">Beranda</Link></li>
+                            <li><Link href="/about" className="hover:text-white transition-colors">Tentang PPSDM</Link></li>
+                            <li><Link href="/programs" className="hover:text-white transition-colors">Program Unggulan</Link></li>
+                            <li><Link href="/calendar" className="hover:text-white transition-colors">Kalender Kegiatan</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="font-bold mb-4">Connect</h4>
+                        <div className="flex gap-4">
+                            <a href="#" className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                <span className="material-symbols-outlined text-sm">mail</span>
+                            </a>
+                            <a href="#" className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                <span className="material-symbols-outlined text-sm">public</span>
+                            </a>
+                            <a href="#" className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                <span className="material-symbols-outlined text-sm">rss_feed</span>
+                            </a>
+                        </div>
+                        <div className="mt-12 flex gap-4 text-xs text-gray-500">
+                            <Link href="/privacy" className="hover:text-gray-300">Privacy Policy</Link>
+                            <Link href="/terms" className="hover:text-gray-300">Terms of Service</Link>
+                        </div>
                     </div>
                 </div>
             </footer>

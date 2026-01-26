@@ -43,16 +43,17 @@ interface RadarChartData {
 
 interface DimensionRadarProps {
     data: RadarChartData[];
+    color?: string;
 }
 
-export function DimensionRadarChart({ data }: DimensionRadarProps) {
+export function DimensionRadarChart({ data, color = "#3B82F6" }: DimensionRadarProps) {
     return (
         <ResponsiveContainer width="100%" height={280} minWidth={0} minHeight={0}>
             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
-                <PolarGrid stroke="#e5e7eb" />
-                <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#6b7280" }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 10, fill: "#9ca3af" }} />
-                <Radar name="Score" dataKey="score" stroke="#330066" fill="#330066" fillOpacity={0.4} strokeWidth={2} />
+                <PolarGrid stroke="#e5e7eb" strokeOpacity={0.2} />
+                <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#94a3b8" }} />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                <Radar name="Score" dataKey="score" stroke={color} fill={color} fillOpacity={0.3} strokeWidth={2} />
             </RadarChart>
         </ResponsiveContainer>
     );
