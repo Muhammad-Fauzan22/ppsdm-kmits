@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function TranscriptPage() {
     const transcriptData = [
@@ -14,11 +15,16 @@ export default function TranscriptPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#F3F4F6] font-sans p-8 flex justify-center">
-            <div className="bg-white shadow-2xl w-full max-w-[800px] min-h-[1100px] p-12 relative flex flex-col">
+        <div className="min-h-screen bg-background-dark font-sans p-8 flex justify-center overflow-x-hidden">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white shadow-2xl w-full max-w-[800px] min-h-[1100px] p-12 relative flex flex-col items-center"
+            >
 
                 {/* Header */}
-                <div className="text-center mb-12">
+                <div className="text-center mb-12 w-full">
                     <div className="size-20 bg-[#002D56] text-white rounded-full flex items-center justify-center font-serif text-2xl font-bold mx-auto mb-4 border-4 border-double border-white shadow-lg">
                         ITS
                     </div>
@@ -29,7 +35,7 @@ export default function TranscriptPage() {
                 </div>
 
                 {/* Student Info */}
-                <div className="grid grid-cols-2 gap-y-6 gap-x-12 mb-12 text-sm">
+                <div className="grid grid-cols-2 gap-y-6 gap-x-12 mb-12 text-sm w-full">
                     <div>
                         <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Nama Lengkap</p>
                         <p className="font-bold text-gray-900 text-lg">BUDI SANTOSO</p>
@@ -53,7 +59,7 @@ export default function TranscriptPage() {
                 </div>
 
                 {/* Table */}
-                <div className="border border-gray-300 rounded mb-8">
+                <div className="border border-gray-300 rounded mb-8 w-full">
                     <div className="grid grid-cols-[80px_1fr_180px_100px] bg-gray-50 border-b border-gray-300 font-bold text-[10px] uppercase text-gray-600 p-3 items-center">
                         <div>Tahun</div>
                         <div>Nama Kegiatan</div>
@@ -77,7 +83,7 @@ export default function TranscriptPage() {
                 </div>
 
                 {/* Footer / Signature */}
-                <div className="mt-auto flex justify-end">
+                <div className="mt-auto flex justify-end w-full">
                     <div className="text-center w-64">
                         <p className="text-xs font-bold text-gray-600 mb-4">Surabaya, 24 Mei 2024</p>
 
@@ -97,7 +103,7 @@ export default function TranscriptPage() {
                 </div>
 
                 {/* Disclaimer */}
-                <div className="mt-8 flex justify-between items-end text-[8px] text-gray-400 font-mono border-t border-gray-200 pt-4">
+                <div className="mt-8 flex justify-between items-end text-[8px] text-gray-400 font-mono border-t border-gray-200 pt-4 w-full">
                     <div className="max-w-xs italic">
                         Dokumen ini diterbitkan secara elektronik oleh Sistem PPSDM KM ITS dan merupakan bukti sah pencapaian pengembangan diri mahasiswa.
                     </div>
@@ -110,17 +116,17 @@ export default function TranscriptPage() {
 
                 {/* Floating Actions (Outside the paper) */}
                 <div className="absolute top-0 -right-20 flex flex-col gap-4">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg shadow-blue-600/30 tooltip group relative">
+                    <button className="bg-brand-blue hover:bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-brand-blue/30 tooltip group relative transition-all hover:scale-110">
                         <span className="material-symbols-outlined">download</span>
                         <span className="absolute right-full mr-2 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">Download PDF</span>
                     </button>
-                    <button className="bg-white hover:bg-gray-50 text-gray-700 p-3 rounded-full shadow-lg border border-gray-200 group relative">
+                    <button className="bg-white hover:bg-gray-50 text-gray-700 p-3 rounded-full shadow-lg border border-gray-200 group relative transition-all hover:scale-110">
                         <span className="material-symbols-outlined">print</span>
                         <span className="absolute right-full mr-2 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">Print</span>
                     </button>
                 </div>
 
-            </div>
+            </motion.div>
         </div>
     );
 }

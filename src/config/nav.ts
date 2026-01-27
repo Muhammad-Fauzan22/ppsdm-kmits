@@ -22,6 +22,7 @@ export const NAV_CONFIG = {
         { label: "Personal OS", href: "/pos", icon: "check_circle" }, // Simplified path
         { label: "Assessment Hub", href: "/assessment", icon: "quiz" },
         { label: "Library & AI", href: "/library", icon: "auto_stories" },
+        { label: "Mentorship", href: "/mentorship", icon: "school" }, // Added Mentorship
         { label: "Achievements", href: "/portfolio", icon: "emoji_events" }, // Changed to portfolio
         { label: "Community", href: "/community", icon: "forum" },
     ]

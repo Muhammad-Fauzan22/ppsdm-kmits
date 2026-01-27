@@ -62,7 +62,7 @@ export const TranscriptDocument = ({ student, activities }: TranscriptProps) => 
             {/* Note: React-PDF supports remote URLs. */}
             {/* We use specific CORS proxy or direct link if permitted. drive.google.com/uc is usually fine. */}
             <View style={styles.header}>
-                <Image src={ASSETS.logos.its.lambang} style={styles.logo} />
+                <Image src={ASSETS.its.lambang} style={styles.logo} />
                 <View style={styles.institutionContainer}>
                     <Text style={styles.institutionName}>Institut Teknologi</Text>
                     <Text style={styles.institutionName}>Sepuluh Nopember</Text>
