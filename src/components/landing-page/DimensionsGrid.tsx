@@ -5,60 +5,15 @@ import { motion } from 'framer-motion';
 
 export default function DimensionsGrid() {
     const dimensions = [
-        {
-            title: "Leadership",
-            desc: "Cultivating the ability to guide, inspire, and influence others towards shared goals.",
-            icon: "groups",
-            colorClass: "bg-blue-500/20 text-blue-400"
-        },
-        {
-            title: "Ethics",
-            desc: "Building moral character and integrity as the foundation of professional life.",
-            icon: "balance",
-            colorClass: "bg-red-500/20 text-red-400"
-        },
-        {
-            title: "Technology",
-            desc: "Mastering digital tools and maintaining fluency in emerging tech landscapes.",
-            icon: "memory",
-            colorClass: "bg-cyan-500/20 text-cyan-400"
-        },
-        {
-            title: "Global Mindset",
-            desc: "Understanding diverse cultures and operating effectively in international contexts.",
-            icon: "public",
-            colorClass: "bg-green-500/20 text-green-400"
-        },
-        {
-            title: "Critical Thinking",
-            desc: "Analyzing information objectively to form reasoned judgments and solve problems.",
-            icon: "psychology",
-            colorClass: "bg-purple-500/20 text-purple-400"
-        },
-        {
-            title: "Creativity",
-            desc: "Generating novel ideas and innovative solutions to complex challenges.",
-            icon: "lightbulb",
-            colorClass: "bg-yellow-500/20 text-yellow-400"
-        },
-        {
-            title: "Collaboration",
-            desc: "Working synergistically within teams to achieve collective success.",
-            icon: "handshake",
-            colorClass: "bg-orange-500/20 text-orange-400"
-        },
-        {
-            title: "Communication",
-            desc: "Articulating thoughts clearly and listening effectively across various mediums.",
-            icon: "chat",
-            colorClass: "bg-teal-500/20 text-teal-400"
-        },
-        {
-            title: "Adaptability",
-            desc: "Maintaining resilience and flexibility in the face of rapid change.",
-            icon: "autorenew",
-            colorClass: "bg-pink-500/20 text-pink-400"
-        }
+        { title: "Leadership", desc: "Cultivating the ability to guide, inspire, and influence others.", icon: "groups", color: "text-blue-400", bg: "bg-blue-500/20" },
+        { title: "Ethics", desc: "Building moral character and integrity as the foundation.", icon: "balance", color: "text-red-400", bg: "bg-red-500/20" },
+        { title: "Technology", desc: "Mastering digital tools and emerging tech landscapes.", icon: "memory", color: "text-cyan-400", bg: "bg-cyan-500/20" },
+        { title: "Global Mindset", desc: "Understanding diverse cultures and operating internationally.", icon: "public", color: "text-green-400", bg: "bg-green-500/20" },
+        { title: "Critical Thinking", desc: "Analyzing information objectively to solve problems.", icon: "psychology", color: "text-purple-400", bg: "bg-purple-500/20" },
+        { title: "Creativity", desc: "Generating novel ideas and innovative solutions.", icon: "lightbulb", color: "text-yellow-400", bg: "bg-yellow-500/20" },
+        { title: "Collaboration", desc: "Working synergistically within teams.", icon: "handshake", color: "text-orange-400", bg: "bg-orange-500/20" },
+        { title: "Communication", desc: "Articulating thoughts clearly across various mediums.", icon: "chat", color: "text-teal-400", bg: "bg-teal-500/20" },
+        { title: "Adaptability", desc: "Maintaining resilience in the face of rapid change.", icon: "autorenew", color: "text-pink-400", bg: "bg-pink-500/20" }
     ];
 
     return (
@@ -68,7 +23,7 @@ export default function DimensionsGrid() {
                     9 Dimensions of Development
                 </h2>
                 <p className="text-slate-500 dark:text-slate-400 max-w-2xl text-lg font-body">
-                    Explore the core competencies fostered through our comprehensive programs designed to shape future leaders.
+                    Explore the core competencies fostered through our comprehensive programs.
                 </p>
             </div>
 
@@ -84,7 +39,7 @@ export default function DimensionsGrid() {
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="relative z-10 flex flex-col gap-4">
-                            <div className={`size-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${dim.colorClass}`}>
+                            <div className={`size-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${dim.bg} ${dim.color}`}>
                                 <span className="material-symbols-outlined text-3xl">{dim.icon}</span>
                             </div>
                             <div>

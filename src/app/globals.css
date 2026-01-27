@@ -1,194 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* LMS Pipeline Automation - Dark Professional Theme */
-
 @layer base {
-  :root {
-    /* Core Colors - Dark Slate Theme */
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 10%;
-    --popover-foreground: 210 40% 98%;
-
-    /* Primary - Cyan/Teal for tech feel */
-    --primary: 187 85% 53%;
-    --primary-foreground: 222 47% 6%;
-
-    /* Secondary - Muted slate */
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 85%;
-
-    /* Muted for backgrounds */
-    --muted: 217 33% 12%;
-    --muted-foreground: 215 20% 55%;
-
-    /* Accent - Electric blue */
-    --accent: 217 91% 60%;
-    --accent-foreground: 210 40% 98%;
-
-    /* Status Colors */
-    --success: 142 76% 45%;
-    --success-foreground: 142 76% 95%;
-
-    --warning: 38 92% 50%;
-    --warning-foreground: 38 92% 10%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    /* UI Elements */
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 187 85% 53%;
-
-    --radius: 0.75rem;
-
-    /* Sidebar */
-    --sidebar-background: 222 47% 7%;
-    --sidebar-foreground: 210 40% 85%;
-    --sidebar-primary: 187 85% 53%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 217 33% 14%;
-    --sidebar-accent-foreground: 210 40% 90%;
-    --sidebar-border: 217 33% 15%;
-    --sidebar-ring: 187 85% 53%;
-
-    /* Custom Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(187 85% 53%), hsl(217 91% 60%));
-    --gradient-card: linear-gradient(180deg, hsl(222 47% 10%), hsl(222 47% 8%));
-    --gradient-glow: radial-gradient(ellipse at center, hsl(187 85% 53% / 0.15), transparent 70%);
-
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(222 47% 3% / 0.5);
-    --shadow-md: 0 4px 6px -1px hsl(222 47% 3% / 0.5), 0 2px 4px -2px hsl(222 47% 3% / 0.5);
-    --shadow-lg: 0 10px 15px -3px hsl(222 47% 3% / 0.5), 0 4px 6px -4px hsl(222 47% 3% / 0.5);
-    --shadow-glow: 0 0 20px hsl(187 85% 53% / 0.3);
-  }
-
-  .dark {
-    /* Same as root - dark by default */
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-semibold tracking-tight;
-  }
-
-  code,
-  pre,
-  .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    @apply antialiased;
   }
 }
 
-@layer components {
+@layer utilities {
+  .mesh-gradient {
+    background-color: #111318;
+    background-image:
+      radial-gradient(at 0% 0%, hsla(220, 85%, 50%, 0.4) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(350, 80%, 60%, 0.3) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(220, 85%, 50%, 0.4) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(350, 80%, 60%, 0.3) 0px, transparent 50%);
+  }
 
-  /* Glass effect for cards */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50;
+    @apply relative bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0, 0, 0, 0.37)] overflow-hidden;
   }
 
-  /* Glow effect */
-  .glow-primary {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.05;
+    pointer-events: none;
   }
 
-  /* Status badge styles */
-  .status-pending {
-    @apply bg-warning/20 text-warning border-warning/30;
-  }
-
-  .status-processing {
-    @apply bg-accent/20 text-accent border-accent/30;
-  }
-
-  .status-completed {
-    @apply bg-success/20 text-success border-success/30;
-  }
-
-  .status-failed {
-    @apply bg-destructive/20 text-destructive border-destructive/30;
-  }
-
-  /* Animated gradient text */
   .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-accent;
   }
 
-  /* Pipeline connector line */
-  .pipeline-connector {
-    @apply absolute left-1/2 w-0.5 bg-gradient-to-b from-primary/50 to-transparent;
+  .its-gradient {
+    background: radial-gradient(circle at 0% 0%, #013880 0%, #000 70%);
   }
 
-  /* Pulse animation for processing status */
-  .pulse-processing {
-    animation: pulse-glow 2s ease-in-out infinite;
+  .timeline-line {
+    background: linear-gradient(90deg, transparent 0%, #135bec 50%, transparent 100%);
   }
 
-  @keyframes pulse-glow {
-
-    0%,
-    100% {
-      box-shadow: 0 0 5px hsl(var(--accent) / 0.5);
-    }
-
-    50% {
-      box-shadow: 0 0 20px hsl(var(--accent) / 0.8);
-    }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
-  /* Fade in animation */
-  .fade-in {
-    animation: fadeIn 0.3s ease-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Scroll area styling */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-muted/30 rounded-full;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/30 rounded-full hover:bg-muted-foreground/50;
+  .card-hover:hover .progress-fill {
+    width: 100% !important;
+    transition: width 1s ease-in-out;
   }
 }
