@@ -1,15 +1,141 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
+// --- MOCK DATA ---
+const FLASHCARDS = [
+    { question: "What is a Pod?", answer: "The smallest deployable unit in Kubernetes." },
+    { question: "What is a Node?", answer: "A worker machine in Kubernetes." },
+    { question: "What is a Service?", answer: "An abstract way to expose an application running on a set of Pods." },
+];
+
+const QUIZ_QUESTIONS = [
+    {
+        question: "Which component is responsible for maintaining the desired state of the cluster?",
+        options: ['Kubelet', 'Kube-Controller-Manager', 'Etcd', 'Kube-Proxy'],
+        correct: 1
+    },
+    {
+        question: "What does Etcd store?",
+        options: ['Log data', 'Cluster configuration and state', 'Container images', 'User metrics'],
+        correct: 1
+    },
+    {
+        question: "Which command lists all pods?",
+        options: ['kubectl get pods', 'kubectl list pods', 'kubectl show pods', 'kubectl run pods'],
+        correct: 0
+    }
+];
+
+// --- TOAST COMPONENT (INTERNAL) ---
+const Toast = ({ message, onClose }: { message: string, onClose: () => void }) => {
+    useEffect(() => {
+        const timer = setTimeout(onClose, 3000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
+            className="fixed bottom-24 left-1/2 z-[100] bg-[#135bec] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 font-medium"
+        >
+            <span className="material-symbols-outlined">check_circle</span>
+            {message}
+        </motion.div>
+    );
+};
+
 export default function ResourceDetailPage({ params }: { params: { id: string } }) {
+    // --- STATE ---
     const [activeTab, setActiveTab] = useState("microlearning");
+
+    // Actions
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+    // Flashcards
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
+
+    // Quiz
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedOption, setSelectedOption] = useState<number | null>(null);
+    const [quizScore, setQuizScore] = useState(0);
+    const [quizCompleted, setQuizCompleted] = useState(false);
+
+    // Podcast
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    // Chat
+    const [isChatOpen, setIsChatOpen] = useState(false);
+
+    // --- HANDLERS ---
+    const showToast = (msg: string) => {
+        setToastMessage(msg);
+    };
+
+    const handleBookmark = () => {
+        setIsBookmarked(!isBookmarked);
+        showToast(isBookmarked ? "Removed from bookmarks" : "Bookmarked successfully");
+    };
+
+    const handleDownload = () => {
+        showToast("Download started...");
+    };
+
+    const handleShare = () => {
+        navigator.clipboard.writeText(window.location.href);
+        showToast("Link copied to clipboard");
+    };
+
+    const handleAddToPlaylist = () => {
+        showToast("Added to 'My Learning' playlist");
+    };
+
+    const handleFlashcardNav = (direction: 'next' | 'prev') => {
+        setIsFlipped(false);
+        setTimeout(() => {
+            if (direction === 'next') {
+                setCurrentCardIndex((prev) => (prev + 1) % FLASHCARDS.length);
+            } else {
+                setCurrentCardIndex((prev) => (prev - 1 + FLASHCARDS.length) % FLASHCARDS.length);
+            }
+        }, 200);
+    };
+
+    const handleQuizOptionSelect = (index: number) => {
+        if (selectedOption !== null) return; // Prevent changing after selection
+        setSelectedOption(index);
+    };
+
+    const handleQuizNext = () => {
+        if (selectedOption === QUIZ_QUESTIONS[currentQuestionIndex].correct) {
+            setQuizScore(prev => prev + 1);
+        }
+
+        if (currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
+            setCurrentQuestionIndex(prev => prev + 1);
+            setSelectedOption(null);
+        } else {
+            setQuizCompleted(true);
+        }
+    };
+
+    const handleScrollToContent = () => {
+        document.getElementById('content-tabs')?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     return (
         <div className="min-h-screen bg-[#0f1823] text-white font-sans selection:bg-[#135bec] selection:text-white pb-24">
+
+            {/* TOAST NOTIFICATION */}
+            <AnimatePresence>
+                {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage(null)} />}
+            </AnimatePresence>
 
             <div className="flex justify-center py-6 px-4 md:px-8 xl:px-0">
                 <div className="flex flex-col max-w-[1200px] w-full gap-8">
@@ -18,7 +144,7 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                     <nav className="flex flex-wrap gap-2 text-sm font-medium">
                         <Link href="/library" className="text-slate-400 hover:text-white transition-colors">Library</Link>
                         <span className="text-slate-600">/</span>
-                        <Link href="/library/category/cloud" className="text-slate-400 hover:text-white transition-colors">Cloud Computing</Link>
+                        <Link href="/library" className="text-slate-400 hover:text-white transition-colors">Cloud Computing</Link>
                         <span className="text-slate-600">/</span>
                         <span className="text-white">Enterprise Cloud Architecture v2</span>
                     </nav>
@@ -80,13 +206,24 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                 </div>
 
                                 <div className="flex flex-wrap gap-3 mt-auto">
-                                    <button className="flex items-center justify-center rounded-xl h-12 px-8 bg-white text-[#135bec] hover:bg-slate-100 transition-all text-base font-bold tracking-wide shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                                    <button
+                                        onClick={handleScrollToContent}
+                                        className="flex items-center justify-center rounded-xl h-12 px-8 bg-white text-[#135bec] hover:bg-slate-100 transition-all text-base font-bold tracking-wide shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                    >
                                         <span className="material-symbols-outlined mr-2 text-xl">play_arrow</span>
                                         Start Learning
                                     </button>
-                                    <button className="flex items-center justify-center rounded-xl h-12 px-6 bg-[#1a2332]/80 hover:bg-[#1a2332] border border-white/10 text-white transition-all text-base font-bold tracking-wide">
-                                        <span className="material-symbols-outlined mr-2 text-xl">bookmark_border</span>
-                                        Bookmark
+                                    <button
+                                        onClick={handleBookmark}
+                                        className={`flex items-center justify-center rounded-xl h-12 px-6 border transition-all text-base font-bold tracking-wide ${isBookmarked
+                                                ? 'bg-[#135bec] border-[#135bec] text-white'
+                                                : 'bg-[#1a2332]/80 hover:bg-[#1a2332] border-white/10 text-white'
+                                            }`}
+                                    >
+                                        <span className={`material-symbols-outlined mr-2 text-xl ${isBookmarked ? 'filled' : ''}`}>
+                                            {isBookmarked ? 'bookmark' : 'bookmark_border'}
+                                        </span>
+                                        {isBookmarked ? 'Saved' : 'Bookmark'}
                                     </button>
                                 </div>
                             </div>
@@ -96,19 +233,28 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                     {/* Actions Bar */}
                     <div className="flex flex-wrap gap-4 py-4 border-b border-white/10 items-center">
                         <div className="flex gap-2">
-                            <button className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group">
+                            <button
+                                onClick={handleDownload}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
+                            >
                                 <div className="flex items-center justify-center size-8 rounded-full bg-white/10 group-hover:bg-[#135bec]/20 text-slate-300 group-hover:text-[#135bec] transition-colors">
                                     <span className="material-symbols-outlined text-lg">download</span>
                                 </div>
                                 <span className="text-slate-300 text-sm font-medium group-hover:text-white">Download</span>
                             </button>
-                            <button className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group">
+                            <button
+                                onClick={handleShare}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
+                            >
                                 <div className="flex items-center justify-center size-8 rounded-full bg-white/10 group-hover:bg-[#135bec]/20 text-slate-300 group-hover:text-[#135bec] transition-colors">
                                     <span className="material-symbols-outlined text-lg">share</span>
                                 </div>
                                 <span className="text-slate-300 text-sm font-medium group-hover:text-white">Share</span>
                             </button>
-                            <button className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group">
+                            <button
+                                onClick={handleAddToPlaylist}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
+                            >
                                 <div className="flex items-center justify-center size-8 rounded-full bg-white/10 group-hover:bg-[#135bec]/20 text-slate-300 group-hover:text-[#135bec] transition-colors">
                                     <span className="material-symbols-outlined text-lg">playlist_add</span>
                                 </div>
@@ -123,7 +269,7 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                     </div>
 
                     {/* Tabs System */}
-                    <div className="flex flex-col gap-8">
+                    <div id="content-tabs" className="flex flex-col gap-8 scroll-mt-24">
                         <div className="overflow-x-auto pb-1 no-scrollbar">
                             <div className="flex border-b border-white/10 min-w-max">
                                 {['Overview', 'Microlearning', 'Mind Map', 'Gamification', 'Podcast', 'Slides'].map((tab) => {
@@ -172,9 +318,12 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                         <div className="flex items-center justify-between">
                                             <h3 className="text-xl font-bold text-white font-grotesk">Chapter 1: K8s Fundamentals</h3>
                                             <div className="flex items-center gap-3">
-                                                <span className="text-sm font-medium text-slate-400">Card 5 of 20</span>
+                                                <span className="text-sm font-medium text-slate-400">Card {currentCardIndex + 1} of {FLASHCARDS.length}</span>
                                                 <div className="w-32 h-2 bg-[#272f3a] rounded-full overflow-hidden">
-                                                    <div className="bg-[#135bec] h-full w-[25%] rounded-full"></div>
+                                                    <div
+                                                        className="bg-[#135bec] h-full rounded-full transition-all duration-300"
+                                                        style={{ width: `${((currentCardIndex + 1) / FLASHCARDS.length) * 100}%` }}
+                                                    ></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,7 +344,7 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                                     <div className="mb-6 size-16 rounded-full bg-[#135bec]/20 flex items-center justify-center text-[#135bec]">
                                                         <span className="material-symbols-outlined text-4xl">help_center</span>
                                                     </div>
-                                                    <h4 className="text-2xl md:text-3xl font-bold text-white mb-4">What is a Pod?</h4>
+                                                    <h4 className="text-2xl md:text-3xl font-bold text-white mb-4">{FLASHCARDS[currentCardIndex].question}</h4>
                                                     <p className="text-slate-500 text-sm uppercase tracking-widest font-bold">Tap to flip</p>
                                                 </div>
 
@@ -208,10 +357,7 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                                         <span className="material-symbols-outlined text-4xl">check_circle</span>
                                                     </div>
                                                     <p className="text-xl md:text-2xl text-slate-200 leading-relaxed font-medium">
-                                                        "The smallest deployable unit in Kubernetes."
-                                                    </p>
-                                                    <p className="mt-6 text-slate-400 text-base max-w-lg">
-                                                        A Pod encapsulates one or more containers, storage resources, a unique network IP, and options that govern how the container(s) should run.
+                                                        "{FLASHCARDS[currentCardIndex].answer}"
                                                     </p>
                                                 </div>
                                             </motion.div>
@@ -219,7 +365,10 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
 
                                         {/* Controls */}
                                         <div className="flex items-center justify-center gap-4">
-                                            <button className="size-12 rounded-full bg-[#1a2332] border border-white/10 text-slate-400 hover:text-white hover:bg-[#272f3a] flex items-center justify-center transition-colors">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); handleFlashcardNav('prev'); }}
+                                                className="size-12 rounded-full bg-[#1a2332] border border-white/10 text-slate-400 hover:text-white hover:bg-[#272f3a] flex items-center justify-center transition-colors"
+                                            >
                                                 <span className="material-symbols-outlined">arrow_back</span>
                                             </button>
                                             <button className="px-8 h-12 rounded-full bg-[#272f3a] text-white font-bold text-sm hover:bg-[#394556] transition-colors border border-white/5">
@@ -228,7 +377,10 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                             <button className="px-8 h-12 rounded-full bg-[#135bec] text-white font-bold text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-900/20">
                                                 Study Again
                                             </button>
-                                            <button className="size-12 rounded-full bg-[#1a2332] border border-white/10 text-slate-400 hover:text-white hover:bg-[#272f3a] flex items-center justify-center transition-colors">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); handleFlashcardNav('next'); }}
+                                                className="size-12 rounded-full bg-[#1a2332] border border-white/10 text-slate-400 hover:text-white hover:bg-[#272f3a] flex items-center justify-center transition-colors"
+                                            >
                                                 <span className="material-symbols-outlined">arrow_forward</span>
                                             </button>
                                         </div>
@@ -236,7 +388,6 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
 
                                     {/* Side Panel: Stats & Context */}
                                     <div className="flex flex-col gap-6">
-                                        {/* Mastery Card */}
                                         <div className="bg-[#1a2332] rounded-2xl p-6 border border-white/5 flex flex-col gap-4 shadow-lg">
                                             <div className="flex items-center justify-between">
                                                 <h4 className="text-white font-bold">Session Mastery</h4>
@@ -252,13 +403,12 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                                     <span className="text-xs text-slate-400">To Review</span>
                                                 </div>
                                             </div>
-                                            <button className="w-full py-3 rounded-xl border border-[#135bec]/30 text-[#135bec] font-bold text-sm hover:bg-[#135bec]/10 transition-colors">
+                                            <button onClick={() => showToast("Showing full stats...")} className="w-full py-3 rounded-xl border border-[#135bec]/30 text-[#135bec] font-bold text-sm hover:bg-[#135bec]/10 transition-colors">
                                                 View Detailed Stats
                                             </button>
                                         </div>
 
-                                        {/* Next Up Hint */}
-                                        <div className="bg-gradient-to-br from-[#1a2332] to-[#0f1823] rounded-2xl p-6 border border-white/5 relative overflow-hidden group cursor-pointer hover:border-[#135bec]/30 transition-all">
+                                        <div onClick={() => setActiveTab('podcast')} className="bg-gradient-to-br from-[#1a2332] to-[#0f1823] rounded-2xl p-6 border border-white/5 relative overflow-hidden group cursor-pointer hover:border-[#135bec]/30 transition-all">
                                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                                 <span className="material-symbols-outlined text-[80px] text-white">headphones</span>
                                             </div>
@@ -282,35 +432,63 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                     exit={{ opacity: 0, y: -10 }}
                                     className="max-w-3xl mx-auto"
                                 >
-                                    <div className="bg-[#1a2332] rounded-2xl border border-white/5 overflow-hidden">
-                                        <div className="p-8 border-b border-white/5">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-[#135bec] font-bold text-sm uppercase tracking-wider">Module Quiz</span>
-                                                <span className="text-slate-400 text-sm">Question 1 of 10</span>
-                                            </div>
-                                            <h3 className="text-2xl font-bold text-white mb-6">Which component is responsible for maintaining the desired state of the cluster?</h3>
+                                    {!quizCompleted ? (
+                                        <div className="bg-[#1a2332] rounded-2xl border border-white/5 overflow-hidden">
+                                            <div className="p-8 border-b border-white/5">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-[#135bec] font-bold text-sm uppercase tracking-wider">Module Quiz</span>
+                                                    <span className="text-slate-400 text-sm">Question {currentQuestionIndex + 1} of {QUIZ_QUESTIONS.length}</span>
+                                                </div>
+                                                <h3 className="text-2xl font-bold text-white mb-6">{QUIZ_QUESTIONS[currentQuestionIndex].question}</h3>
 
-                                            <div className="space-y-3">
-                                                {['Kubelet', 'Kube-Controller-Manager', 'Etcd', 'Kube-Proxy'].map((option, idx) => (
-                                                    <button key={idx} className="w-full p-4 rounded-xl border border-white/10 bg-[#0f1823] hover:bg-[#135bec]/10 hover:border-[#135bec]/30 transition-all flex items-center group text-left">
-                                                        <div className="size-6 rounded-full border border-slate-500 group-hover:border-[#135bec] mr-4 flex items-center justify-center">
-                                                            <div className="size-3 rounded-full bg-[#135bec] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                                        </div>
-                                                        <span className="text-slate-300 group-hover:text-white font-medium">{option}</span>
-                                                    </button>
-                                                ))}
+                                                <div className="space-y-3">
+                                                    {QUIZ_QUESTIONS[currentQuestionIndex].options.map((option, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            onClick={() => handleQuizOptionSelect(idx)}
+                                                            className={`w-full p-4 rounded-xl border transition-all flex items-center group text-left ${selectedOption === idx
+                                                                    ? 'bg-[#135bec]/20 border-[#135bec] text-white'
+                                                                    : 'border-white/10 bg-[#0f1823] hover:bg-[#135bec]/10 hover:border-[#135bec]/30 text-slate-300'
+                                                                }`}
+                                                        >
+                                                            <div className={`size-6 rounded-full border mr-4 flex items-center justify-center ${selectedOption === idx ? 'border-[#135bec]' : 'border-slate-500 group-hover:border-[#135bec]'
+                                                                }`}>
+                                                                {selectedOption === idx && <div className="size-3 rounded-full bg-[#135bec]"></div>}
+                                                            </div>
+                                                            <span className="font-medium">{option}</span>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="p-6 bg-[#0f1823] flex justify-between items-center">
+                                                <div className="flex items-center gap-2 text-slate-400">
+                                                    <span className="material-symbols-outlined">timer</span>
+                                                    <span className="text-sm font-mono">09:45 remaining</span>
+                                                </div>
+                                                <button
+                                                    disabled={selectedOption === null}
+                                                    onClick={handleQuizNext}
+                                                    className={`px-6 py-2.5 font-bold rounded-lg transition-colors ${selectedOption !== null
+                                                            ? 'bg-[#135bec] text-white hover:bg-blue-600'
+                                                            : 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                                                        }`}
+                                                >
+                                                    {currentQuestionIndex < QUIZ_QUESTIONS.length - 1 ? 'Next Question' : 'Finish Quiz'}
+                                                </button>
                                             </div>
                                         </div>
-                                        <div className="p-6 bg-[#0f1823] flex justify-between items-center">
-                                            <div className="flex items-center gap-2 text-slate-400">
-                                                <span className="material-symbols-outlined">timer</span>
-                                                <span className="text-sm font-mono">09:45 remaining</span>
+                                    ) : (
+                                        <div className="bg-[#1a2332] rounded-2xl border border-white/5 p-8 text-center">
+                                            <div className="size-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+                                                <span className="material-symbols-outlined text-5xl">emoji_events</span>
                                             </div>
-                                            <button className="px-6 py-2.5 bg-[#135bec] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">
-                                                Next Question
+                                            <h3 className="text-3xl font-bold text-white mb-2">Quiz Completed!</h3>
+                                            <p className="text-slate-400 mb-8">You scored {quizScore} out of {QUIZ_QUESTIONS.length}</p>
+                                            <button onClick={() => { setQuizCompleted(false); setCurrentQuestionIndex(0); setQuizScore(0); setSelectedOption(null); }} className="px-8 py-3 bg-[#135bec] text-white font-bold rounded-xl hover:bg-blue-600 transition-colors">
+                                                Retake Quiz
                                             </button>
                                         </div>
-                                    </div>
+                                    )}
                                 </motion.div>
                             )}
 
@@ -327,7 +505,20 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
 
                                         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
                                             <div className="size-48 md:size-64 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-2xl flex items-center justify-center shrink-0">
-                                                <span className="material-symbols-outlined text-white text-[80px]">headphones</span>
+                                                {isPlaying ? (
+                                                    <div className="flex items-center gap-1">
+                                                        {[...Array(5)].map((_, i) => (
+                                                            <motion.div
+                                                                key={i}
+                                                                animate={{ height: [20, 60, 20] }}
+                                                                transition={{ repeat: Infinity, duration: 1, delay: i * 0.1 }}
+                                                                className="w-3 bg-white rounded-full"
+                                                            ></motion.div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="material-symbols-outlined text-white text-[80px]">headphones</span>
+                                                )}
                                             </div>
 
                                             <div className="flex-1 w-full text-center md:text-left">
@@ -338,14 +529,17 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                                 {/* Waveform Visualization Placeholder */}
                                                 <div className="flex items-center justify-center md:justify-start gap-1 h-12 mb-8">
                                                     {[...Array(30)].map((_, i) => (
-                                                        <div key={i} className="w-1 bg-[#135bec]" style={{ height: `${Math.random() * 100}%`, opacity: Math.random() * 0.5 + 0.5 }}></div>
+                                                        <div key={i} className={`w-1 rounded-full transition-all duration-300 ${isPlaying ? 'bg-[#135bec] animate-pulse' : 'bg-slate-700'}`} style={{ height: `${Math.random() * 100}%`, opacity: Math.random() * 0.5 + 0.5 }}></div>
                                                     ))}
                                                 </div>
 
                                                 <div className="flex items-center justify-center md:justify-start gap-6">
                                                     <button className="text-slate-400 hover:text-white transition-colors"><span className="material-symbols-outlined text-3xl">skip_previous</span></button>
-                                                    <button className="size-16 rounded-full bg-white text-[#0f1823] flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-white/10">
-                                                        <span className="material-symbols-outlined text-4xl ml-1">play_arrow</span>
+                                                    <button
+                                                        onClick={() => setIsPlaying(!isPlaying)}
+                                                        className="size-16 rounded-full bg-white text-[#0f1823] flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-white/10"
+                                                    >
+                                                        <span className="material-symbols-outlined text-4xl ml-1">{isPlaying ? 'pause' : 'play_arrow'}</span>
                                                     </button>
                                                     <button className="text-slate-400 hover:text-white transition-colors"><span className="material-symbols-outlined text-3xl">skip_next</span></button>
                                                 </div>
@@ -369,7 +563,7 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                         </div>
                                         <h3 className="text-2xl font-bold text-white mb-2">Interactive Knowledge Graph</h3>
                                         <p className="text-slate-400 max-w-md mx-auto mb-8">Visualizing the relationships between Pods, Nodes, and Services in this module.</p>
-                                        <button className="px-6 py-3 bg-[#135bec] text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-lg">
+                                        <button onClick={() => showToast("Loading diagram...")} className="px-6 py-3 bg-[#135bec] text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-lg">
                                             Load Diagram
                                         </button>
                                     </div>
@@ -449,14 +643,41 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
             </div>
 
             {/* Floating Action Button: Chat with Book */}
+            {/* Added functionality to toggle Chat (mock) */}
             <div className="fixed bottom-8 right-8 z-50">
-                <button className="group flex items-center gap-3 pl-4 pr-2 py-2 bg-[#135bec] hover:bg-blue-600 text-white rounded-full shadow-2xl shadow-blue-900/50 transition-all hover:scale-105 active:scale-95">
+                <AnimatePresence>
+                    {isChatOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                            className="absolute bottom-16 right-0 w-80 h-96 bg-[#1a2332] rounded-2xl shadow-2xl border border-white/10 flex flex-col overflow-hidden mb-4"
+                        >
+                            <div className="p-4 bg-[#135bec] flex items-center justify-between">
+                                <span className="font-bold text-white">AI Assistant</span>
+                                <button onClick={() => setIsChatOpen(false)} className="text-white hover:text-white/80"><span className="material-symbols-outlined text-sm">close</span></button>
+                            </div>
+                            <div className="flex-1 p-4 overflow-y-auto">
+                                <div className="bg-[#0f1823] p-3 rounded-xl rounded-tl-none mb-3 max-w-[85%] text-sm text-slate-300">
+                                    Hello! I'm your AI tutor for this book. Ask me anything about Cloud Architecture.
+                                </div>
+                            </div>
+                            <div className="p-3 border-t border-white/5">
+                                <input type="text" placeholder="Type a message..." className="w-full bg-[#0f1823] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#135bec]" />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+                <button
+                    onClick={() => setIsChatOpen(!isChatOpen)}
+                    className="group flex items-center gap-3 pl-4 pr-2 py-2 bg-[#135bec] hover:bg-blue-600 text-white rounded-full shadow-2xl shadow-blue-900/50 transition-all hover:scale-105 active:scale-95"
+                >
                     <div className="flex flex-col items-start mr-1">
                         <span className="font-bold text-sm leading-none mb-0.5">Chat with Book</span>
                         <span className="text-[10px] text-blue-200 leading-none">AI Persona Active</span>
                     </div>
                     <div className="size-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30">
-                        <span className="material-symbols-outlined text-2xl">smart_toy</span>
+                        <span className="material-symbols-outlined text-2xl">{isChatOpen ? 'close' : 'smart_toy'}</span>
                     </div>
                 </button>
             </div>
