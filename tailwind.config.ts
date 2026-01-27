@@ -1,152 +1,93 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
+    darkMode: ["class"],
     content: [
-        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+        './pages/**/*.{ts,tsx}',
+        './components/**/*.{ts,tsx}',
+        './app/**/*.{ts,tsx}',
+        './src/**/*.{ts,tsx}',
     ],
+    prefix: "",
     theme: {
+        container: {
+            center: true,
+            padding: "2rem",
+            screens: {
+                "2xl": "1400px",
+            },
+        },
         extend: {
-            borderRadius: {
-                "xl": "1rem",
-                "2xl": "1.5rem",
-            },
             colors: {
-                // WARNA UTAMA BARU (Admin & Supervisor)
-                primary: "#135bec",
-                "its-red": "#ef4444",
-                "background-light": "#f6f6f8",
-                "background-dark": "#101622",
-                "card-dark": "#1c1f27",
-                "border-dark": "#282e39",
-
-                // New Design System Tokens (From Request)
+                // --- ITS BRANDING PALETTE ---
                 "its-blue": "#013880",
-                "its-gold": "#FFD700",
-                "its-dark": "#0A0F1A",
-                "brand-blue": "#135bec", // Matches primary
-                "brand-accent": "#00d4ff",
+                "its-dark": "#001f4d",
+                "its-gold": "#FFBD07",
+                "its-gold-light": "#ffce47",
 
-                // Student Portal Specific
-                "student-primary": "#003366",
-                "student-bg": "#f5f7f8", // background-light
-                "student-dark": "#0f1923", // background-dark
-                "accent-green": "#078838",
-                "text-dark": "#101418",
-                "text-light": "#5e758d",
-                // "card-dark": "#1A1F2B", // REMOVED DUPLICATE - Using #1c1f27
-
-                // Mobile & Admin Specific
-                "sidebar-dark": "#0B0E14",
-                "primary-highlight": "#4DA3FF",
-                "primary-100": "#dbeafe", // Added for mobile header
-                "surface-dark": "#1b2128",
-                "nav-glass": "rgba(15, 25, 35, 0.85)",
-                "engineering-red": "#C62828",
-                "primary-dark": "#1e3a8a",
-
-                // Student OS Specific
-                "card-border": "#27303a",
-                "text-subtle": "#9aabbc",
-                "student-primary-light": "#004080",
-
-                // WARNA PRIMER ITS
-                its: {
-                    DEFAULT: "#013880",    // Biru Tua (Official Primary)
-                    light: "#007BC0",      // Biru Tua Lambang (Brighter)
-                    sky: "#75BEDE",        // Biru Muda Lambang
-                    yellow: "#FFBD07",     // Kuning Tua (Accent)
-                    gold: "#FFD700",       // Kuning Emas (Seal/Rating)
-                    white: "#FFFFFF",
-                    black: "#000000",
-                    dark: "#0B1120",       // Hitam Kebiruan untuk Teks Utama
+                // --- SHADCN STANDARD ---
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
                 },
-                // Surface colors untuk nuansa "Clean"
-                surface: {
-                    50: "#F8FAFC",      // Background Halaman (Slate-50)
-                    100: "#F1F5F9",     // Secondary Background
-                    200: "#E2E8F0",
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
                 },
-                // WARNA FAKULTAS (Untuk Kategori/Dimensi)
-                faculty: {
-                    scientics: "#0F8140",  // Hijau (Scientics)
-                    indsys: "#B31E23",     // Merah (Indsys)
-                    civplan: "#231F20",    // Hitam (Civplan)
-                    martech: "#26AEE4",    // Biru Laut (Martech)
-                    electics: "#FFD700",   // Kuning Emas (Electics)
-                    creabiz: "#480082",    // Ungu (Creabiz)
-                    vocations: "#F47D52",  // Oranye (Vocations)
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                },
+                popover: {
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
+                },
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
                 },
             },
-            fontFamily: {
-                // Tipografi Resmi
-                sans: ['var(--font-inter)', 'sans-serif'], // Updated to match design request
-                heading: ['var(--font-poppins)', 'sans-serif'], // Added for headings
-                serif: ['var(--font-friz)', 'serif'],         // Headings (Friz Quadrata)
-                display: ['"Lexend"', 'sans-serif'],
-                body: ['"Noto Sans"', 'sans-serif'],
-                grotesk: ['"Space Grotesk"', 'sans-serif'],
-            },
-            backgroundImage: {
-                // Pattern Resmi "Gerigi/Batik"
-                'its-pattern': "url('/patterns/its-key-graphic.svg')",
-            },
-            boxShadow: {
-                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-                'glow': '0 0 15px rgba(1, 56, 128, 0.15)',
-                'nav': '0 -4px 20px -5px rgba(0, 0, 0, 0.1)',
-            },
-            animation: {
-                'fade-in': 'fadeIn 0.5s ease-in-out',
-                'fade-out': 'fadeOut 0.5s ease-in-out',
-                'scale-up': 'scaleUp 0.5s ease-out',
-                'fade-in-up': 'fadeInUp 0.6s ease-out',
-                'slide-up': 'slideUp 0.5s ease-out',
-                'slide-right': 'slideInRight 0.5s ease-out',
-                'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite', // Ensure ping is available
-                marquee: 'marquee 25s linear infinite',
-                bounce: 'bounce 1s infinite',
+            borderRadius: {
+                lg: "var(--radius)",
+                md: "calc(var(--radius) - 2px)",
+                sm: "calc(var(--radius) - 4px)",
             },
             keyframes: {
-                fadeIn: {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' },
+                "accordion-down": {
+                    from: { height: "0" },
+                    to: { height: "var(--radix-accordion-content-height)" },
                 },
-                fadeOut: {
-                    '0%': { opacity: '1' },
-                    '100%': { opacity: '0' },
+                "accordion-up": {
+                    from: { height: "var(--radix-accordion-content-height)" },
+                    to: { height: "0" },
                 },
-                scaleUp: {
-                    '0%': { transform: 'scale(0.8)', opacity: '0' },
-                    '100%': { transform: 'scale(1)', opacity: '1' },
-                },
-                fadeInUp: {
-                    '0%': { opacity: '0', transform: 'translateY(20px)' },
-                    '100%': { opacity: '1', transform: 'translateY(0)' },
-                },
-                slideUp: {
-                    '0%': { opacity: '0', transform: 'translateY(20px)' },
-                    '100%': { opacity: '1', transform: 'translateY(0)' },
-                },
-                slideInRight: {
-                    '0%': { opacity: '0', transform: 'translateX(20px)' },
-                    '100%': { opacity: '1', transform: 'translateX(0)' },
-                },
-                marquee: {
-                    '0%': { transform: 'translateX(0%)' },
-                    '100%': { transform: 'translateX(-100%)' },
-                },
-                bounce: {
-                    '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8,0,1,1)' },
-                    '50%': { transform: 'none', animationTimingFunction: 'cubic-bezier(0,0,0.2,1)' },
-                },
-                ping: {
-                    '75%, 100%': { transform: 'scale(2)', opacity: '0' },
-                },
+                // Custom Animation for Upload Page
+                "bounce-slow": {
+                    "0%, 100%": { transform: "translateY(-5%)", animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)" },
+                    "50%": { transform: "translateY(0)", animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)" },
+                }
+            },
+            animation: {
+                "accordion-down": "accordion-down 0.2s ease-out",
+                "accordion-up": "accordion-up 0.2s ease-out",
+                "bounce-slow": "bounce-slow 3s infinite",
             },
         },
     },
-    plugins: [],
-};
-export default config;
+    plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config
