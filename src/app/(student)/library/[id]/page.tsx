@@ -1,334 +1,229 @@
 "use client";
 
+import React, { useState } from "react";
+import Image from "next/image";
+import {
+    ArrowLeft,
+    MessageSquare,
+    Share2,
+    Download,
+    Play,
+    Pause,
+    SkipForward,
+    SkipBack,
+    Brain,
+    ListTodo,
+    Mic,
+    Presentation
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { ASSETS } from "@/config/assets";
 import Link from "next/link";
-import { useState } from "react";
 
-export default function ResourceDetailPage({ params }: { params: { id: string } }) {
+// --- MOCK COMPONENT: FLIP CARD ---
+const Flashcard = ({ front, back }: { front: string; back: string }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
     return (
-        <div className="bg-[#f8fafc] dark:bg-[#101622] font-[family-name:var(--font-lexend)] text-slate-900 min-h-screen flex flex-col">
-            {/* Top Navigation Bar */}
-            <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-200">
-                <div className="px-6 md:px-10 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-8">
-                        {/* Logo Area */}
-                        <div className="flex items-center gap-3 text-[#0b1e42]">
-                            <div className="size-8 bg-[#135bec]/10 rounded flex items-center justify-center text-[#135bec]">
-                                <span className="material-symbols-outlined">school</span>
+        <div
+            className="group perspective-1000 w-full h-80 cursor-pointer"
+            onClick={() => setIsFlipped(!isFlipped)}
+        >
+            <div className={`relative w-full h-full transition-all duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+                {/* FRONT */}
+                <div className="absolute w-full h-full backface-hidden bg-white border-2 border-slate-100 rounded-2xl shadow-sm p-8 flex flex-col items-center justify-center text-center hover:border-blue-200 transition-colors">
+                    <Badge className="mb-4 bg-blue-50 text-blue-700 hover:bg-blue-100">Pertanyaan</Badge>
+                    <h3 className="text-xl font-medium text-slate-800">{front}</h3>
+                    <p className="mt-8 text-sm text-slate-400 animate-pulse">Klik untuk melihat jawaban</p>
+                </div>
+
+                {/* BACK */}
+                <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-[#013880] rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center text-center text-white">
+                    <Badge className="mb-4 bg-white/20 text-white hover:bg-white/30 border-none">Jawaban</Badge>
+                    <p className="text-lg leading-relaxed">{back}</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default function AlchemyViewer({ params }: { params: { id: string } }) {
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    return (
+        <div className="min-h-screen bg-slate-50 pb-20">
+
+            {/* HERO SECTION */}
+            <div className="relative bg-gradient-to-r from-[#013880] to-slate-900 text-white pt-24 pb-12 px-6 md:px-12 overflow-hidden">
+                {/* Watermark */}
+                <div className="absolute top-0 right-0 opacity-10 pointer-events-none w-96 h-96">
+                    <Image
+                        src={ASSETS.its.logo_putih}
+                        alt="Watermark"
+                        fill
+                        className="object-contain"
+                    />
+                </div>
+
+                <div className="relative z-10 max-w-5xl mx-auto">
+                    <Link href="/library" className="inline-flex items-center text-blue-200 hover:text-white mb-6 transition-colors">
+                        <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Library
+                    </Link>
+
+                    <div className="flex flex-col md:flex-row gap-8 items-end">
+                        <div className="flex-1">
+                            <Badge className="bg-[#FFBD07] text-slate-900 hover:bg-yellow-500 mb-4 font-bold border-none">
+                                AI GENERATED CONTENT
+                            </Badge>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-2 leading-tight">Mekanika Fluida Dasar</h1>
+                            <p className="text-xl text-blue-100 mb-6">Prof. Dr. Ir. Sutrisno • S1 Teknik Mesin</p>
+
+                            <div className="flex gap-3">
+                                <Button className="bg-white text-[#013880] hover:bg-blue-50">
+                                    <MessageSquare className="w-4 h-4 mr-2" /> Chat dengan Buku
+                                </Button>
+                                <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10">
+                                    <Download className="w-4 h-4 mr-2" /> Original PDF
+                                </Button>
+                                <Button variant="icon" className="bg-transparent text-white hover:bg-white/10">
+                                    <Share2 className="w-5 h-5" />
+                                </Button>
                             </div>
-                            <h2 className="text-[#0b1e42] text-lg font-bold tracking-tight">PPSDM KM ITS</h2>
                         </div>
-                        {/* Desktop Links */}
-                        <div className="hidden md:flex items-center gap-6">
-                            <Link href="/dashboard" className="text-slate-600 hover:text-[#135bec] text-sm font-medium transition-colors">Dashboard</Link>
-                            <Link href="/library" className="text-[#135bec] text-sm font-medium transition-colors">Library</Link>
-                            <Link href="#" className="text-slate-600 hover:text-[#135bec] text-sm font-medium transition-colors">My Progress</Link>
-                            <Link href="#" className="text-slate-600 hover:text-[#135bec] text-sm font-medium transition-colors">Community</Link>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <div className="hidden md:flex relative group">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-[20px]">search</span>
-                            <input className="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-[#135bec]/20 text-slate-700 placeholder:text-slate-400" placeholder="Search resources..." type="text" />
-                        </div>
-                        <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
-                            <div className="flex flex-col items-end hidden sm:flex">
-                                <span className="text-sm font-bold text-slate-900 leading-none">Budi Santoso</span>
-                                <span className="text-xs text-slate-500">Mahasiswa S1</span>
+
+                        {/* Completion Status */}
+                        <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 w-full md:w-64">
+                            <p className="text-sm text-blue-200 mb-2">Progress Belajar</p>
+                            <div className="flex justify-between items-end mb-2">
+                                <span className="text-3xl font-bold">24%</span>
+                                <span className="text-xs text-blue-200">12/50 Modul</span>
                             </div>
-                            <div className="size-10 rounded-full bg-slate-200 bg-cover bg-center border-2 border-white shadow-sm" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRH7GhuR4eccR6YaAEHdGzwjVvECChy3C6_6O8Jg8TWmZWcI_dYO8VeHZgDqQ9MCfR23UoyskrjK1bLLm4ESG2mUSvGsn3WXQd6_EOYFyUKPUdxmZaOj5xNdYAWarOmTmg5D5HI1lAWjhirnWyIBfENhPh1PEq7kSc91Ruv4EHc7CST6jF2gwzheclmV8uZcso-Xbcqb4uAHwrxAu2HS8zC-d8HRvJlwUA-MP2OaB3qvF27CWgORou2FgskmFSGyYGscFnf_JANqE')" }}></div>
+                            <div className="h-2 bg-black/20 rounded-full overflow-hidden">
+                                <div className="h-full bg-[#FFBD07] w-[24%]" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </nav>
+            </div>
 
-            {/* Main Content Wrapper */}
-            <main className="flex-1 flex flex-col">
-                {/* Hero Section */}
-                <section className="relative w-full bg-gradient-to-br from-[#0b1e42] via-[#0f3575] to-[#135bec] text-white overflow-hidden">
-                    {/* Watermark / Abstract Pattern */}
-                    <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.03] pointer-events-none translate-x-1/3 -translate-y-1/4">
-                        <svg className="w-full h-full fill-white" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M42.7,-62.9C50.9,-52.8,50.1,-34.4,51.7,-19.2C53.4,-4,57.4,8,54.5,18.7C51.6,29.4,41.8,38.8,31.4,48.3C21,57.9,10,67.5,-2.5,70.9C-15,74.4,-29,71.6,-41.6,63.1C-54.2,54.6,-65.4,40.3,-70.5,23.6C-75.6,6.9,-74.7,-12.3,-65.5,-26.8C-56.3,-41.3,-38.8,-51.1,-24.3,-58.1C-9.8,-65.1,1.7,-69.3,14.3,-68.8C26.9,-68.4,40.6,-63.3,42.7,-62.9Z" transform="translate(100 100)"></path>
-                        </svg>
-                    </div>
-                    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 relative z-10">
-                        <div className="flex flex-col md:flex-row gap-10 items-start">
-                            {/* Book Cover */}
-                            <div className="shrink-0 relative group perspective-1000">
-                                <div className="w-48 h-72 md:w-56 md:h-80 bg-white rounded-lg shadow-2xl overflow-hidden transform transition-transform duration-500 hover:rotate-y-12">
-                                    <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBFUyyJDDSKJxD2JoGf5XxOdwZyOIQZW0jnSae8qh0TJpE0lb_P8ZdwQ4r2H5xMvvKiUITLrlcb9OASZyoDr_gF4qSVhRanzQWANL4IJHe2k_Y6L7JW5m8wcfdwG_iKEYfZlOzQhESAntt0wFR4eXsBTKu1yleFHjca_MLCTUXwdmP4-QUvTuYho5u0FJoqHwM1gOOE2U_xUPaxF_FYUb6YcW7i-y3eMo1Xx7Uq8Uqco4mN0iD10mHg_oBA1Hp8oIC2VjmoYNzuTyY')" }}></div>
-                                    {/* Shine effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                                </div>
-                            </div>
-                            {/* Book Metadata */}
-                            <div className="flex-1 flex flex-col justify-center h-full pt-2">
-                                <div className="inline-flex items-center gap-2 mb-3">
-                                    <span className="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-100 text-xs font-semibold backdrop-blur-sm">
-                                        Computer Science
-                                    </span>
-                                    <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-100 text-xs font-semibold backdrop-blur-sm flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[14px]">verified</span> Verified Resource
-                                    </span>
-                                </div>
-                                <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-2 tracking-tight">
-                                    Dasar-Dasar Kecerdasan Buatan
-                                </h1>
-                                <p className="text-blue-100 text-lg md:text-xl font-light mb-6">
-                                    Prof. Dr. Eng. Agus Zainal <span className="mx-2 opacity-50">•</span> 2024 Edition
-                                </p>
-                                <p className="text-blue-50/80 max-w-2xl leading-relaxed mb-8">
-                                    Explore the fundamentals of Artificial Intelligence through our Quantum Alchemy Engine. Transform this static PDF into interactive mind maps, quizzes, and audio lessons instantly.
-                                </p>
-                                <div className="flex flex-wrap gap-4">
-                                    <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#135bec] font-bold rounded-lg hover:bg-blue-50 transition-all shadow-lg shadow-blue-900/20 active:scale-95">
-                                        <span className="material-symbols-outlined">picture_as_pdf</span>
-                                        Baca PDF Asli
-                                    </button>
-                                    <button className="flex items-center gap-2 px-6 py-3 bg-transparent border border-white/30 text-white font-bold rounded-lg hover:bg-white/10 transition-all backdrop-blur-sm active:scale-95">
-                                        <span className="material-symbols-outlined">auto_awesome</span>
-                                        Chat dengan Buku
-                                    </button>
-                                </div>
-                            </div>
+            {/* CONTENT TABS */}
+            <div className="max-w-5xl mx-auto px-6 -mt-8 relative z-20">
+                <Tabs defaultValue="microlearning" className="space-y-8">
+                    <TabsList className="bg-white p-1 rounded-xl shadow-lg border border-slate-100 w-full md:w-auto inline-flex h-auto grid grid-cols-2 md:grid-cols-5">
+                        <TabsTrigger value="microlearning" className="py-3 rounded-lg data-[state=active]:bg-[#013880] data-[state=active]:text-white">
+                            <Brain className="w-4 h-4 mr-2" /> Micro
+                        </TabsTrigger>
+                        <TabsTrigger value="mindmap" className="py-3 rounded-lg data-[state=active]:bg-[#013880] data-[state=active]:text-white">
+                            <Share2 className="w-4 h-4 mr-2" /> Mindmap
+                        </TabsTrigger>
+                        <TabsTrigger value="quiz" className="py-3 rounded-lg data-[state=active]:bg-[#013880] data-[state=active]:text-white">
+                            <ListTodo className="w-4 h-4 mr-2" /> Kuis
+                        </TabsTrigger>
+                        <TabsTrigger value="podcast" className="py-3 rounded-lg data-[state=active]:bg-[#013880] data-[state=active]:text-white">
+                            <Mic className="w-4 h-4 mr-2" /> Podcast
+                        </TabsTrigger>
+                        <TabsTrigger value="slides" className="py-3 rounded-lg data-[state=active]:bg-[#013880] data-[state=active]:text-white">
+                            <Presentation className="w-4 h-4 mr-2" /> Slide
+                        </TabsTrigger>
+                    </TabsList>
+
+                    {/* 1. MICROLEARNING TAB */}
+                    <TabsContent value="microlearning" className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <Flashcard
+                                front="Apa Hukum Bernoulli?"
+                                back="Hukum Bernoulli menyatakan bahwa kenaikan kecepatan aliran fluida akan menyebabkan penurunan tekanan fluida secara bersamaan."
+                            />
+                            <Flashcard
+                                front="Sebutkan 3 sifat utama fluida ideal!"
+                                back="1. Tidak kompresibel (incompressible) \n 2. Tidak ada viskositas (non-viscous) \n 3. Aliran tunak (steady flow)"
+                            />
                         </div>
-                    </div>
-                </section>
+                    </TabsContent>
 
-                {/* Navigation Tabs */}
-                <div className="sticky top-[73px] z-40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-slate-200">
-                    <div className="max-w-7xl mx-auto px-6 md:px-10">
-                        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
-                            {/* Tab Items */}
-                            <a className="flex items-center gap-2 px-4 py-4 border-b-[3px] border-[#135bec] text-[#135bec] group min-w-max" href="#">
-                                <span className="material-symbols-outlined fill-current">flash_on</span>
-                                <span className="font-bold text-sm">Microlearning</span>
-                            </a>
-                            <a className="flex items-center gap-2 px-4 py-4 border-b-[3px] border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all group min-w-max" href="#">
-                                <span className="material-symbols-outlined">hub</span>
-                                <span className="font-medium text-sm">Mind Map</span>
-                            </a>
-                            <a className="flex items-center gap-2 px-4 py-4 border-b-[3px] border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all group min-w-max" href="#">
-                                <span className="material-symbols-outlined">trophy</span>
-                                <span className="font-medium text-sm">Gamification</span>
-                            </a>
-                            <a className="flex items-center gap-2 px-4 py-4 border-b-[3px] border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all group min-w-max" href="#">
-                                <span className="material-symbols-outlined">podcasts</span>
-                                <span className="font-medium text-sm">Podcast</span>
-                            </a>
-                            <a className="flex items-center gap-2 px-4 py-4 border-b-[3px] border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all group min-w-max" href="#">
-                                <span className="material-symbols-outlined">co_present</span>
-                                <span className="font-medium text-sm">Slides</span>
-                            </a>
+                    {/* 2. MINDMAP TAB */}
+                    <TabsContent value="mindmap">
+                        <Card className="min-h-[500px] flex items-center justify-center bg-slate-100 border-2 border-dashed border-slate-300">
+                            <div className="text-center text-slate-400">
+                                <Share2 className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                                <h3 className="text-lg font-medium text-slate-600">Interactive Mermaid.js Diagram</h3>
+                                <p>Visualisasi struktur konsep akan dirender di sini.</p>
+                            </div>
+                        </Card>
+                    </TabsContent>
+
+                    {/* 3. QUIZ TAB */}
+                    <TabsContent value="quiz">
+                        <Card>
+                            <CardContent className="p-8">
+                                <div className="mb-6">
+                                    <span className="text-sm font-bold text-blue-600 uppercase tracking-wider">Pertanyaan 1 dari 10</span>
+                                    <h3 className="text-xl font-medium mt-2 text-slate-800">Manakah di bawah ini yang BUKAN merupakan karakteristik aliran laminar?</h3>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {["Bilangan Reynolds rendah (< 2000)", "Partikel fluida bergerak teratur", "Terjadi percampuran makroskopis yang kuat", "Profil kecepatan berbentuk parabola"].map((opt, i) => (
+                                        <div key={i} className="p-4 border rounded-xl hover:bg-blue-50 hover:border-blue-200 cursor-pointer transition-colors flex items-center group">
+                                            <div className="w-6 h-6 rounded-full border-2 border-slate-300 group-hover:border-blue-500 mr-4 flex items-center justify-center">
+                                                <div className="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            </div>
+                                            <span className="text-slate-700">{opt}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="mt-8 flex justify-end">
+                                    <Button className="bg-[#013880] px-8">Lanjut</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* 4. PODCAST TAB */}
+                    <TabsContent value="podcast">
+                        <Card className="bg-[#0f172a] text-white border-none overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full blur-[100px] opacity-20" />
+                            <CardContent className="p-8 md:p-12 flex flex-col items-center text-center relative z-10">
+                                <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-500 mb-6 shadow-2xl flex items-center justify-center">
+                                    <Mic className="w-12 h-12 text-white" />
+                                </div>
+                                <h3 className="text-2xl font-bold mb-2">Deep Dive: Fluid Mechanics</h3>
+                                <p className="text-slate-400 mb-8">Episode 1: Understanding Viscosity & Flow</p>
+
+                                <div className="w-full max-w-xl space-y-4">
+                                    <div className="flex justify-between text-xs text-slate-400">
+                                        <span>04:12</span>
+                                        <span>15:30</span>
+                                    </div>
+                                    <Slider defaultValue={[25]} max={100} step={1} className="[&>.relative>.bg-primary]:bg-[#FFBD07]" />
+
+                                    <div className="flex items-center justify-center gap-6 mt-6">
+                                        <Button variant="ghost" className="text-slate-400 hover:text-white"><SkipBack className="w-6 h-6" /></Button>
+                                        <Button
+                                            className="w-16 h-16 rounded-full bg-white text-[#0f172a] hover:bg-gray-200 flex items-center justify-center"
+                                            onClick={() => setIsPlaying(!isPlaying)}
+                                        >
+                                            {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current ml-1" />}
+                                        </Button>
+                                        <Button variant="ghost" className="text-slate-400 hover:text-white"><SkipForward className="w-6 h-6" /></Button>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* 5. SLIDES TAB */}
+                    <TabsContent value="slides">
+                        <div className="aspect-video bg-black rounded-xl flex items-center justify-center text-white">
+                            <p>Slide Deck Viewer Placeholder</p>
                         </div>
-                    </div>
-                </div>
+                    </TabsContent>
 
-                {/* Content Area */}
-                <div className="max-w-7xl mx-auto px-6 md:px-10 py-8 w-full flex-1">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        {/* Main Content (Left Column) */}
-                        <div className="lg:col-span-8 space-y-8">
-                            {/* Section Header */}
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <h2 className="text-2xl font-bold text-slate-900">Key Concepts (Flashcards)</h2>
-                                    <p className="text-slate-500 mt-1">Master the core terminology of AI through spaced repetition.</p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button className="p-2 text-slate-400 hover:text-[#135bec] transition-colors hover:bg-blue-50 rounded-lg">
-                                        <span className="material-symbols-outlined">grid_view</span>
-                                    </button>
-                                    <button className="p-2 text-slate-400 hover:text-[#135bec] transition-colors hover:bg-blue-50 rounded-lg">
-                                        <span className="material-symbols-outlined">view_carousel</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Flashcards Grid */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                                {/* Card 1 */}
-                                <div className="group h-64 perspective-1000 cursor-pointer">
-                                    <div className="relative w-full h-full bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between transition-all hover:shadow-md hover:border-[#135bec]/50 group-hover:-translate-y-1 duration-300">
-                                        <div className="flex justify-between items-start">
-                                            <div className="p-3 bg-blue-50 text-[#135bec] rounded-lg">
-                                                <span className="material-symbols-outlined">neurology</span>
-                                            </div>
-                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Concept 01</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-slate-900 mb-2">Neural Networks</h3>
-                                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">A computing system made up of a number of simple, highly interconnected processing elements, which process information by their dynamic state response to external inputs.</p>
-                                        </div>
-                                        <div className="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
-                                            <div className="bg-[#135bec] w-3/4 h-full rounded-full"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Card 2 */}
-                                <div className="group h-64 perspective-1000 cursor-pointer">
-                                    <div className="relative w-full h-full bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between transition-all hover:shadow-md hover:border-[#135bec]/50 group-hover:-translate-y-1 duration-300">
-                                        <div className="flex justify-between items-start">
-                                            <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
-                                                <span className="material-symbols-outlined">psychology</span>
-                                            </div>
-                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Concept 02</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-slate-900 mb-2">Machine Learning</h3>
-                                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">The study of computer algorithms that improve automatically through experience and by the use of data.</p>
-                                        </div>
-                                        <div className="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
-                                            <div className="bg-purple-500 w-1/2 h-full rounded-full"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Card 3 */}
-                                <div className="group h-64 perspective-1000 cursor-pointer">
-                                    <div className="relative w-full h-full bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between transition-all hover:shadow-md hover:border-[#135bec]/50 group-hover:-translate-y-1 duration-300">
-                                        <div className="flex justify-between items-start">
-                                            <div className="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
-                                                <span className="material-symbols-outlined">checklist</span>
-                                            </div>
-                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Concept 03</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-slate-900 mb-2">Supervised Learning</h3>
-                                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">A type of machine learning where the algorithm is trained on a labeled dataset.</p>
-                                        </div>
-                                        <div className="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
-                                            <div className="bg-emerald-500 w-full h-full rounded-full"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Card 4 */}
-                                <div className="group h-64 perspective-1000 cursor-pointer">
-                                    <div className="relative w-full h-full bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between transition-all hover:shadow-md hover:border-[#135bec]/50 group-hover:-translate-y-1 duration-300">
-                                        <div className="flex justify-between items-start">
-                                            <div className="p-3 bg-amber-50 text-amber-600 rounded-lg">
-                                                <span className="material-symbols-outlined">data_exploration</span>
-                                            </div>
-                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Concept 04</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-slate-900 mb-2">Data Mining</h3>
-                                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">The process of discovering patterns in large data sets involving methods at the intersection of machine learning, statistics, and database systems.</p>
-                                        </div>
-                                        <div className="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
-                                            <div className="bg-amber-500 w-1/4 h-full rounded-full"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Sidebar (Right Column) */}
-                        <aside className="lg:col-span-4 space-y-6">
-                            {/* Podcast Widget */}
-                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                                <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-                                    <h3 className="font-bold text-slate-700 flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-[#135bec]">headphones</span> Audio Companion
-                                    </h3>
-                                    <button className="text-xs font-bold text-[#135bec] hover:underline">View All</button>
-                                </div>
-                                <div className="p-5">
-                                    <div className="flex items-start gap-4 mb-4">
-                                        <div className="size-16 rounded-lg bg-cover bg-center shrink-0" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJp5A0n8XCprnlVfZZn4P7Zyi4R3YzKEghbXIAN6qjnpXyio053O_tLbtln3drTXfZEjwY1I-lTYduJ80pRs0EoT6CceLklJeitHbv8DqJJE-qOasHQ5LT1Y-gprzzcQr2C8Xu6hfOuiud-kOo1BvbFNjir9BWsP1UsSQTSouMooW3SeYgWdTRvi1fJkPZZ7DsvIJjjqDDEX4o9Uom_7bMzjhBBSjUh_fhtmcxWj5DjH5s5504sc0KkdPSS0OS35BPeJylNL56NG0')" }}></div>
-                                        <div>
-                                            <h4 className="font-bold text-slate-900 line-clamp-1">Ep 1: Pengenalan AI</h4>
-                                            <p className="text-xs text-slate-500 mb-2">15 mins • Prof. Agus Zainal</p>
-                                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700">Playing</span>
-                                        </div>
-                                    </div>
-                                    {/* Waveform Visual */}
-                                    <div className="flex items-center gap-1 h-8 mb-4 justify-center px-2">
-                                        <div className="w-1 bg-slate-200 h-3 rounded-full"></div>
-                                        <div className="w-1 bg-slate-300 h-5 rounded-full"></div>
-                                        <div className="w-1 bg-[#135bec] h-8 rounded-full animate-pulse"></div>
-                                        <div className="w-1 bg-[#135bec]/60 h-6 rounded-full"></div>
-                                        <div className="w-1 bg-[#135bec]/40 h-4 rounded-full"></div>
-                                        <div className="w-1 bg-slate-200 h-3 rounded-full"></div>
-                                        <div className="w-1 bg-slate-200 h-2 rounded-full"></div>
-                                        <div className="w-1 bg-[#135bec] h-5 rounded-full"></div>
-                                        <div className="w-1 bg-[#135bec] h-7 rounded-full"></div>
-                                        <div className="w-1 bg-slate-300 h-4 rounded-full"></div>
-                                        <div className="w-1 bg-slate-200 h-3 rounded-full"></div>
-                                        <div className="w-1 bg-slate-200 h-2 rounded-full"></div>
-                                        <div className="w-1 bg-[#135bec]/80 h-6 rounded-full"></div>
-                                        <div className="w-1 bg-slate-300 h-4 rounded-full"></div>
-                                        <div className="w-1 bg-slate-200 h-2 rounded-full"></div>
-                                    </div>
-                                    {/* Controls */}
-                                    <div className="flex items-center justify-between">
-                                        <button className="text-slate-400 hover:text-[#135bec]"><span className="material-symbols-outlined">replay_10</span></button>
-                                        <button className="size-10 bg-[#135bec] text-white rounded-full flex items-center justify-center hover:bg-[#0d43b3] transition-colors shadow-lg shadow-[#135bec]/30">
-                                            <span className="material-symbols-outlined">pause</span>
-                                        </button>
-                                        <button className="text-slate-400 hover:text-[#135bec]"><span className="material-symbols-outlined">forward_10</span></button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Gamification Status */}
-                            <div className="bg-gradient-to-br from-[#135bec] to-[#0b1e42] rounded-2xl text-white shadow-lg relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-4 opacity-10">
-                                    <span className="material-symbols-outlined text-8xl">military_tech</span>
-                                </div>
-                                <div className="p-6 relative z-10">
-                                    <h3 className="font-bold text-lg mb-1 flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-yellow-400">star</span>
-                                        Your Progress
-                                    </h3>
-                                    <p className="text-blue-200 text-sm mb-6">Level 5: Novice Alchemist</p>
-                                    <div className="flex items-end justify-between mb-2">
-                                        <span className="text-xs font-bold uppercase tracking-wider text-blue-200">XP Gained</span>
-                                        <span className="text-xl font-bold">1,540 <span className="text-sm font-normal text-blue-300">/ 2,000</span></span>
-                                    </div>
-                                    <div className="w-full bg-black/20 h-2 rounded-full overflow-hidden mb-6">
-                                        <div className="bg-yellow-400 h-full w-[75%] rounded-full shadow-[0_0_10px_rgba(250,204,21,0.5)]"></div>
-                                    </div>
-                                    <button className="w-full py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2">
-                                        Take Weekly Quiz
-                                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Mind Map Teaser */}
-                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-1 group cursor-pointer hover:border-[#135bec]/50 transition-colors">
-                                <div className="bg-slate-50 rounded-xl overflow-hidden relative h-32">
-                                    <div className="absolute inset-0 flex items-center justify-center opacity-30">
-                                        {/* Simple SVG pattern */}
-                                        <svg height="100%" viewBox="0 0 100 100" width="100%">
-                                            <circle cx="50" cy="50" fill="#135bec" r="4"></circle>
-                                            <circle cx="20" cy="30" fill="#94a3b8" r="3"></circle>
-                                            <circle cx="80" cy="30" fill="#94a3b8" r="3"></circle>
-                                            <circle cx="30" cy="80" fill="#94a3b8" r="3"></circle>
-                                            <line stroke="#cbd5e1" strokeWidth="1" x1="50" x2="20" y1="50" y2="30"></line>
-                                            <line stroke="#cbd5e1" strokeWidth="1" x1="50" x2="80" y1="50" y2="30"></line>
-                                            <line stroke="#cbd5e1" strokeWidth="1" x1="50" x2="30" y1="50" y2="80"></line>
-                                        </svg>
-                                    </div>
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <span className="px-4 py-2 bg-white rounded-lg shadow-sm font-bold text-sm text-slate-700 group-hover:text-[#135bec] group-hover:shadow-md transition-all">
-                                            Explore Mind Map
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </aside>
-                    </div>
-                </div>
-
-                {/* Floating AI Chat Button */}
-                <button className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[#135bec] text-white shadow-xl hover:bg-[#0d43b3] transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 group">
-                    <span className="material-symbols-outlined">auto_awesome</span>
-                    <span className="font-bold pr-2 hidden group-hover:inline-block transition-all duration-300">Ask AI</span>
-                </button>
-            </main>
+                </Tabs>
+            </div>
         </div>
     );
 }

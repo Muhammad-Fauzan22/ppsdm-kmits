@@ -1,195 +1,244 @@
 "use client";
 
+import React, { useState, useCallback } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useDropzone } from "react-dropzone";
+import { UploadCloud, Check, Loader2, ArrowLeft, XCircle, FileType } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import { createClient } from "@/lib/supabase/client";
+import { ASSETS } from "@/config/assets";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export default function LibraryUploadPage() {
+// Tahapan Proses untuk UI
+type UploadStage = "idle" | "uploading" | "ai_trigger" | "complete" | "error";
+
+export default function UploadPage() {
+    const [stage, setStage] = useState<UploadStage>("idle");
+    const [progress, setProgress] = useState(0);
+    const router = useRouter();
+    const { toast } = useToast();
+    const supabase = createClient();
+
+    const handleUpload = async (file: File) => {
+        try {
+            // START
+            setStage("uploading");
+            setProgress(10);
+
+            // 1. Sanitize Filename & Path
+            const fileExt = file.name.split('.').pop();
+            const cleanName = file.name.replace(/[^a-zA-Z0-9]/g, '_').replace(`_${fileExt}`, '');
+            const fileName = `${Date.now()}_${cleanName}.${fileExt}`;
+            const filePath = `${fileName}`; // Upload ke root bucket 'materials' atau subfolder
+
+            console.log("🚀 Starting upload:", fileName);
+
+            // 2. Upload ke Supabase Storage
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('materials')
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+            if (uploadError) throw uploadError;
+
+            setProgress(60);
+            setStage("ai_trigger");
+
+            // 3. Ambil Public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('materials')
+                .getPublicUrl(filePath);
+
+            console.log("✅ Upload success, triggering AI with URL:", publicUrl);
+
+            // 4. Trigger Quantum Engine (API Webhook)
+            // Kita kirim metadata dasar agar backend bisa membuat row di tabel learning_resources
+            const response = await fetch('/api/webhooks/process-book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fileUrl: publicUrl,
+                    fileName: file.name,
+                    fileSize: file.size,
+                    fileType: file.type
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.statusText}`);
+            }
+
+            setProgress(100);
+            setStage("complete");
+
+            toast({
+                title: "Upload & Ingest Berhasil",
+                description: "Materi sedang diproses oleh Quantum Engine di background.",
+                variant: "default", // pastikan ada variant success/default di komponen toast anda
+            });
+
+            // Redirect setelah delay singkat
+            setTimeout(() => {
+                router.push('/library');
+            }, 2000);
+
+        } catch (error: any) {
+            console.error("❌ Upload Workflow Error:", error);
+            setStage("error");
+            toast({
+                title: "Gagal Memproses",
+                description: error.message || "Terjadi kesalahan saat upload.",
+                variant: "destructive",
+            });
+        }
+    };
+
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+        if (acceptedFiles.length > 0) {
+            handleUpload(acceptedFiles[0]);
+        }
+    }, []);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: {
+            'application/pdf': ['.pdf'],
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx']
+        },
+        maxFiles: 1,
+        disabled: stage !== 'idle'
+    });
+
     return (
-        <div className="bg-[#f6f6f8] dark:bg-[#101622] text-[#111318] dark:text-white font-[family-name:var(--font-inter)] flex flex-col h-screen overflow-hidden">
-            {/* TopNavBar */}
-            <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f4] dark:border-gray-800 bg-white dark:bg-gray-900 px-10 py-3 shrink-0 z-20">
-                <div className="flex items-center gap-4 text-[#111318] dark:text-white">
-                    <div className="size-8 flex items-center justify-center rounded-lg bg-[#135bec]/10 text-[#135bec]">
-                        <span className="material-symbols-outlined">science</span>
+        <div className="min-h-screen bg-slate-50 p-6 flex items-center justify-center">
+            <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                {/* KOLOM KIRI: Upload Area */}
+                <div className="md:col-span-2 space-y-6">
+                    <Link href="/library" className="inline-flex items-center text-slate-500 hover:text-[#013880] mb-4 transition-colors">
+                        <ArrowLeft className="w-4 h-4 mr-2" /> Batal & Kembali
+                    </Link>
+
+                    <div>
+                        <h1 className="text-3xl font-bold text-[#013880]">Upload Materi</h1>
+                        <p className="text-slate-500 mt-2">Quantum Engine siap mengubah PDF/PPTX menjadi materi interaktif.</p>
                     </div>
-                    <h2 className="text-[#111318] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KM ITS</h2>
-                </div>
-                <div className="flex flex-1 justify-end gap-8">
-                    <div className="hidden md:flex items-center gap-9">
-                        <Link href="/dashboard" className="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-[#135bec] transition-colors">Dashboard</Link>
-                        <Link href="/library" className="text-[#135bec] text-sm font-bold leading-normal">Library</Link>
-                        <Link href="#" className="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-[#135bec] transition-colors">Analytics</Link>
-                        <Link href="#" className="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-[#135bec] transition-colors">Settings</Link>
-                    </div>
-                    <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-200 dark:border-gray-700" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCYB18VxijoC61l5s9ULKLVTRpk4wgtHrxuAmBOlXxg6XAQWNO4JCmJE67QtEhcTQ8wdZ6O5-Z8AG8PmrnDXubtO5zZ8h1IpAcf08IB89JZbSF29XVoc-BbLI6oYvkVK33sJEspmZ-GBqCB4VSDl6YM_IrVIFyJovpcJHhTZOjz4kC9kvKlyQEGq9Kx0bi-MdSuTP7JA3wFhOquqVI4MkGqnfGNBPgDg8imFGGuRPG24g9Im7_kGoPOI3spFDjlBdMsrGoMnUQDz_I')" }}></div>
-                </div>
-            </header>
 
-            {/* Main Content Area */}
-            <main className="flex flex-1 overflow-hidden">
-                <div className="flex w-full h-full">
-                    {/* LEFT PANEL: Upload Zone */}
-                    <div className="flex-1 flex flex-col overflow-y-auto bg-white dark:bg-[#101622] p-8 lg:p-12 relative z-10">
-                        <div className="max-w-3xl mx-auto w-full flex flex-col gap-8">
-                            {/* Page Heading */}
-                            <div className="flex flex-col gap-2">
-                                <h1 className="text-4xl font-black leading-tight tracking-[-0.033em] text-[#111318] dark:text-white">Alchemy Upload</h1>
-                                <p className="text-[#616f89] dark:text-gray-400 text-base font-normal">Ingest raw documents into the Quantum Alchemy Engine.</p>
+                    {stage === 'idle' ? (
+                        <div
+                            {...getRootProps()}
+                            className={cn(
+                                "border-3 border-dashed rounded-3xl h-80 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 bg-white relative overflow-hidden",
+                                isDragActive ? "border-[#013880] bg-blue-50 ring-4 ring-blue-100" : "border-slate-300 hover:border-blue-400 hover:shadow-xl"
+                            )}
+                        >
+                            <input {...getInputProps()} />
+                            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-[#013880] z-10">
+                                <UploadCloud className="w-10 h-10" />
                             </div>
+                            <h3 className="text-xl font-semibold text-slate-700 z-10">Drag & Drop File Disini</h3>
+                            <p className="text-slate-400 mt-2 text-sm max-w-xs z-10">
+                                Support: PDF, PPTX (Max 50MB)
+                            </p>
+                            <Button className="mt-6 bg-[#013880] hover:bg-[#012d66] z-10">Pilih File Manual</Button>
 
-                            {/* Dropzone (Empty State) */}
-                            <div className="group relative flex flex-col items-center justify-center w-full h-80 rounded-xl border-2 border-dashed border-[#135bec]/30 bg-[#135bec]/5 hover:bg-[#135bec]/10 hover:border-[#135bec] transition-all cursor-pointer">
-                                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                    <span className="material-symbols-outlined text-[#135bec] text-6xl mb-4 animate-bounce">cloud_upload</span>
-                                    <p className="text-lg font-bold text-[#111318] dark:text-white">Drag & drop PDF files here</p>
-                                    <p className="text-sm text-[#616f89] dark:text-gray-400 mt-2">or click to browse</p>
-                                    <span className="mt-6 inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-[#135bec] bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                                        Select File
-                                    </span>
-                                </div>
-                                <input className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file" />
-                            </div>
-
-                            {/* File List */}
-                            <div className="flex flex-col gap-4">
-                                <h3 className="text-lg font-bold text-[#111318] dark:text-white">Current Uploads</h3>
-                                {/* File Item 1: Uploading */}
-                                <div className="flex flex-col gap-3 rounded-xl border border-[#f0f2f4] dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm">
-                                    <div className="flex items-center justify-between gap-4">
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                                                <span className="material-symbols-outlined">picture_as_pdf</span>
+                            {/* Decorative Background Icon */}
+                            <FileType className="absolute -bottom-10 -right-10 w-64 h-64 text-slate-50 opacity-50 rotate-12" />
+                        </div>
+                    ) : (
+                        <Card className={cn("border shadow-lg transition-all", stage === 'error' && "border-red-200 bg-red-50")}>
+                            <CardContent className="p-8 space-y-8">
+                                {stage === 'error' ? (
+                                    <div className="text-center py-4">
+                                        <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+                                        <h3 className="text-xl font-bold text-red-700">Terjadi Kesalahan</h3>
+                                        <p className="text-red-600 mb-6">Gagal menghubungkan ke Quantum Server.</p>
+                                        <Button onClick={() => setStage('idle')} variant="outline" className="border-red-200 hover:bg-red-100">Coba Lagi</Button>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="space-y-6">
+                                            <StepItem
+                                                title="Secure Vault Upload"
+                                                desc="Mengenkripsi dan menyimpan file ke Storage..."
+                                                status={progress >= 60 ? 'done' : stage === 'uploading' ? 'active' : 'pending'}
+                                            />
+                                            <StepItem
+                                                title="Quantum Ingestion"
+                                                desc="Mendaftarkan materi ke antrian pemrosesan AI..."
+                                                status={stage === 'complete' ? 'done' : stage === 'ai_trigger' ? 'active' : 'pending'}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="flex justify-between text-sm font-medium text-slate-600">
+                                                <span>Status: {stage === 'complete' ? 'SELESAI' : 'MEMPROSES...'}</span>
+                                                <span>{progress}%</span>
                                             </div>
-                                            <div className="flex flex-col">
-                                                <p className="text-base font-medium text-[#111318] dark:text-white line-clamp-1">Advanced_Quantum_Mechanics_Vol1.pdf</p>
-                                                <p className="text-sm text-[#616f89] dark:text-gray-400">24.5 MB • Uploading...</p>
-                                            </div>
+                                            <Progress value={progress} className="h-3" />
                                         </div>
-                                        <button className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-700 transition-colors">
-                                            <span className="material-symbols-outlined">close</span>
-                                        </button>
-                                    </div>
-                                    {/* Progress Bar */}
-                                    <div className="h-1.5 w-full rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                                        <div className="h-full bg-[#135bec] w-[65%] rounded-full"></div>
-                                    </div>
-                                </div>
-                                {/* File Item 2: Ready */}
-                                <div className="flex items-center justify-between gap-4 rounded-xl border border-[#f0f2f4] dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm opacity-60">
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                                            <span className="material-symbols-outlined">picture_as_pdf</span>
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <p className="text-base font-medium text-[#111318] dark:text-white line-clamp-1">Lab_Safety_Guidelines_2024.pdf</p>
-                                            <p className="text-sm text-[#616f89] dark:text-gray-400">1.2 MB • Waiting in queue</p>
-                                        </div>
-                                    </div>
-                                    <button className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-700 transition-colors">
-                                        <span className="material-symbols-outlined">delete</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                                    </>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
+                </div>
+
+                {/* KOLOM KANAN: Mascot Feedback */}
+                <div className="flex flex-col items-center justify-center md:justify-start pt-12">
+                    <div className="relative w-48 h-48 mb-6">
+                        <Image
+                            src={ASSETS.mascot.seno_studio}
+                            alt="Seno Mascot"
+                            fill
+                            className="object-contain drop-shadow-xl animate-bounce-slow"
+                        />
                     </div>
 
-                    {/* RIGHT PANEL: Quantum Pipeline Tracker */}
-                    <div className="hidden lg:flex w-[400px] xl:w-[480px] shrink-0 flex-col border-l border-[#f0f2f4] dark:border-gray-800 bg-[#eff6ff]/40 dark:bg-[#0f172a] p-8 relative">
-                        <div className="mb-10">
-                            <h2 className="text-2xl font-bold text-[#135bec] mb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined">hub</span>
-                                Quantum Pipeline
-                            </h2>
-                            <p className="text-sm text-[#616f89] dark:text-gray-400">Real-time processing status of your content.</p>
-                        </div>
-                        {/* Stepper */}
-                        <div className="flex flex-col flex-1 relative pl-4">
-                            {/* Vertical Line */}
-                            <div className="absolute left-[27px] top-4 bottom-20 w-0.5 bg-gray-200 dark:bg-gray-700 -z-10"></div>
-                            {/* Step 1: Completed */}
-                            <div className="flex gap-6 mb-10 group">
-                                <div className="flex flex-col items-center">
-                                    <div className="size-6 rounded-full bg-[#135bec] text-white flex items-center justify-center shadow-md ring-4 ring-white dark:ring-[#0f172a]">
-                                        <span className="material-symbols-outlined text-sm font-bold">check</span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col -mt-1">
-                                    <h4 className="text-sm font-bold text-[#135bec]">Upload</h4>
-                                    <p className="text-xs text-[#616f89] dark:text-gray-400 mt-0.5">Securely transferring to cloud storage.</p>
-                                </div>
-                            </div>
-                            {/* Step 2: Active / Processing */}
-                            <div className="flex gap-6 mb-10 group">
-                                <div className="flex flex-col items-center">
-                                    <div className="size-6 rounded-full bg-white border-2 border-[#135bec] flex items-center justify-center shadow-md ring-4 ring-white dark:ring-[#0f172a]">
-                                        <span className="material-symbols-outlined text-[#135bec] text-sm animate-spin">progress_activity</span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col -mt-1">
-                                    <h4 className="text-sm font-bold text-[#111318] dark:text-white">Extraction</h4>
-                                    <p className="text-xs text-[#616f89] dark:text-gray-400 mt-0.5">Parsing text and images from PDF.</p>
-                                    <div className="mt-2 inline-flex items-center gap-2 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-[10px] font-medium w-fit">
-                                        <span className="size-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                                        Processing...
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Step 3: Pending */}
-                            <div className="flex gap-6 mb-10 opacity-50">
-                                <div className="flex flex-col items-center">
-                                    <div className="size-6 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 flex items-center justify-center ring-4 ring-white dark:ring-[#0f172a]">
-                                        <span className="text-xs font-bold">3</span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col -mt-1">
-                                    <h4 className="text-sm font-bold text-[#111318] dark:text-white">Analysis</h4>
-                                    <p className="text-xs text-[#616f89] dark:text-gray-400 mt-0.5">AI analyzing context and key concepts.</p>
-                                </div>
-                            </div>
-                            {/* Step 4: Pending */}
-                            <div className="flex gap-6 mb-10 opacity-50">
-                                <div className="flex flex-col items-center">
-                                    <div className="size-6 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 flex items-center justify-center ring-4 ring-white dark:ring-[#0f172a]">
-                                        <span className="text-xs font-bold">4</span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col -mt-1">
-                                    <h4 className="text-sm font-bold text-[#111318] dark:text-white">Generation</h4>
-                                    <p className="text-xs text-[#616f89] dark:text-gray-400 mt-0.5">Creating quizzes and summaries.</p>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Mascot Seno */}
-                        <div className="mt-auto pt-6 border-t border-[#f0f2f4] dark:border-gray-800">
-                            <div className="flex gap-4 items-start">
-                                <div className="size-12 rounded-full shrink-0 bg-cover bg-center border-2 border-white shadow-sm" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBBMl60YrIoFCROBq7rIAKcKa1xtx9Q2Z3qegQdUxGrEBnSiIw4XOiIDvEHfKuJyicJIl85XaZ5B93kXFED9nr-58uBL4dhSBh-xdYgpM83TEjFKBMF75dAxYuS_Bqs9fSZY21bbh-AChER_fqcmM5KQH9L5_7BaLAxYX7NhwF9BF0ThjGC4Vry-mY_2SLvGbabdDvtThEROy-Vx7ovZBYWd3RCE_j5AiqLWpub_EDjGWlPt002QLcP850X6hWeJQEYjdHNY6fFnbg')" }}></div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="bg-white dark:bg-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm border border-[#f0f2f4] dark:border-gray-700 relative">
-                                        <p className="text-xs leading-relaxed text-[#111318] dark:text-gray-200">
-                                            <span className="font-bold block mb-1">Maskot Seno says:</span>
-                                            Hi! I'm Seno. I'll notify you once the magic is done. This usually takes about 2 minutes. Sit tight! 🚀
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div className="bg-white p-5 rounded-2xl rounded-tl-none shadow-lg border border-slate-100 relative max-w-xs">
+                        <div className="absolute -top-3 -left-3 w-6 h-6 bg-white border-t border-l border-slate-100 transform -rotate-45" />
+                        <p className="text-slate-700 text-sm leading-relaxed font-medium">
+                            {stage === 'idle' && "Halo! Seret materi kuliahmu ke samping, biar Seno proses jadi kuis dan ringkasan!"}
+                            {stage === 'uploading' && "Sip! Sedang Seno angkut ke server..."}
+                            {stage === 'ai_trigger' && "Oke, file masuk. Sekarang Seno panggil teman-teman AI untuk mulai membacanya..."}
+                            {stage === 'complete' && "Berhasil! Materi sedang 'dimasak'. Cek dashboard sebentar lagi ya!"}
+                            {stage === 'error' && "Waduh, koneksinya putus sepertinya. Coba ulangi lagi ya, Commander?"}
+                        </p>
                     </div>
                 </div>
-            </main>
-            {/* Footer Action Bar */}
-            <div className="border-t border-[#f0f2f4] dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:px-12 flex items-center justify-between shrink-0">
-                <button className="text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white px-4 py-2">
-                    Cancel
-                </button>
-                <div className="flex gap-3">
-                    <button className="px-5 py-2.5 rounded-lg bg-[#135bec]/10 text-[#135bec] text-sm font-bold hover:bg-[#135bec]/20 transition-colors">
-                        Save Draft
-                    </button>
-                    <button className="px-5 py-2.5 rounded-lg bg-[#135bec] text-white text-sm font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-colors flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[18px]">play_arrow</span>
-                        Start Processing
-                    </button>
-                </div>
+
             </div>
         </div>
     );
+}
+
+// Helper Component untuk Stepper Visual
+function StepItem({ title, desc, status }: { title: string, desc: string, status: 'pending' | 'active' | 'done' }) {
+    return (
+        <div className={cn("flex items-start gap-4 transition-opacity duration-500", status === 'pending' && "opacity-40")}>
+            <div className={cn(
+                "w-10 h-10 rounded-full flex items-center justify-center shrink-0 border-2 transition-colors duration-300",
+                status === 'done' ? "bg-emerald-100 border-emerald-500 text-emerald-600" :
+                    status === 'active' ? "bg-blue-100 border-blue-600 text-blue-600 animate-pulse" :
+                        "bg-slate-50 border-slate-200 text-slate-300"
+            )}>
+                {status === 'done' ? <Check className="w-5 h-5" /> :
+                    status === 'active' ? <Loader2 className="w-5 h-5 animate-spin" /> :
+                        <div className="w-3 h-3 rounded-full bg-slate-300" />
+                }
+            </div>
+            <div>
+                <h4 className={cn("font-bold text-base", status === 'active' ? "text-[#013880]" : "text-slate-700")}>{title}</h4>
+                <p className="text-sm text-slate-500">{desc}</p>
+            </div>
+        </div>
+    )
 }
