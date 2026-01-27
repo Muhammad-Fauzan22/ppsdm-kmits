@@ -274,15 +274,148 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                                 </motion.div>
                             )}
 
-                            {activeTab !== 'microlearning' && (
+                            {activeTab === 'gamification' && (
                                 <motion.div
-                                    key="placeholder"
+                                    key="gamification"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    className="max-w-3xl mx-auto"
+                                >
+                                    <div className="bg-[#1a2332] rounded-2xl border border-white/5 overflow-hidden">
+                                        <div className="p-8 border-b border-white/5">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <span className="text-[#135bec] font-bold text-sm uppercase tracking-wider">Module Quiz</span>
+                                                <span className="text-slate-400 text-sm">Question 1 of 10</span>
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-white mb-6">Which component is responsible for maintaining the desired state of the cluster?</h3>
+
+                                            <div className="space-y-3">
+                                                {['Kubelet', 'Kube-Controller-Manager', 'Etcd', 'Kube-Proxy'].map((option, idx) => (
+                                                    <button key={idx} className="w-full p-4 rounded-xl border border-white/10 bg-[#0f1823] hover:bg-[#135bec]/10 hover:border-[#135bec]/30 transition-all flex items-center group text-left">
+                                                        <div className="size-6 rounded-full border border-slate-500 group-hover:border-[#135bec] mr-4 flex items-center justify-center">
+                                                            <div className="size-3 rounded-full bg-[#135bec] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                        </div>
+                                                        <span className="text-slate-300 group-hover:text-white font-medium">{option}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="p-6 bg-[#0f1823] flex justify-between items-center">
+                                            <div className="flex items-center gap-2 text-slate-400">
+                                                <span className="material-symbols-outlined">timer</span>
+                                                <span className="text-sm font-mono">09:45 remaining</span>
+                                            </div>
+                                            <button className="px-6 py-2.5 bg-[#135bec] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">
+                                                Next Question
+                                            </button>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'podcast' && (
+                                <motion.div
+                                    key="podcast"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="max-w-4xl mx-auto"
+                                >
+                                    <div className="bg-gradient-to-br from-[#1a2332] to-[#0f1823] rounded-3xl border border-white/10 p-8 md:p-12 relative overflow-hidden shadow-2xl">
+                                        <div className="absolute top-0 right-0 w-96 h-96 bg-[#135bec] rounded-full blur-[150px] opacity-20 -mr-20 -mt-20 pointer-events-none"></div>
+
+                                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                                            <div className="size-48 md:size-64 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-2xl flex items-center justify-center shrink-0">
+                                                <span className="material-symbols-outlined text-white text-[80px]">headphones</span>
+                                            </div>
+
+                                            <div className="flex-1 w-full text-center md:text-left">
+                                                <span className="inline-block px-3 py-1 bg-[#135bec]/20 text-[#135bec] text-xs font-bold rounded-full mb-4 border border-[#135bec]/20">AI GENERATED</span>
+                                                <h2 className="text-3xl font-bold text-white mb-2">Deep Dive: K8s Architecture</h2>
+                                                <p className="text-slate-400 mb-8">Episode 1: The Control Plane Explained</p>
+
+                                                {/* Waveform Visualization Placeholder */}
+                                                <div className="flex items-center justify-center md:justify-start gap-1 h-12 mb-8">
+                                                    {[...Array(30)].map((_, i) => (
+                                                        <div key={i} className="w-1 bg-[#135bec]" style={{ height: `${Math.random() * 100}%`, opacity: Math.random() * 0.5 + 0.5 }}></div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="flex items-center justify-center md:justify-start gap-6">
+                                                    <button className="text-slate-400 hover:text-white transition-colors"><span className="material-symbols-outlined text-3xl">skip_previous</span></button>
+                                                    <button className="size-16 rounded-full bg-white text-[#0f1823] flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-white/10">
+                                                        <span className="material-symbols-outlined text-4xl ml-1">play_arrow</span>
+                                                    </button>
+                                                    <button className="text-slate-400 hover:text-white transition-colors"><span className="material-symbols-outlined text-3xl">skip_next</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'mindmap' && (
+                                <motion.div
+                                    key="mindmap"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    className="h-64 flex flex-col items-center justify-center text-slate-500 bg-[#1a2332]/50 rounded-2xl border border-white/5 border-dashed"
+                                    className="bg-[#1a2332] rounded-2xl border border-white/5 h-[600px] flex flex-col items-center justify-center relative overflow-hidden"
                                 >
-                                    <span className="material-symbols-outlined text-4xl mb-2 opacity-50">construction</span>
-                                    <p>Content for {activeTab} is coming soon.</p>
+                                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/grid-me.png')] opacity-5"></div>
+                                    <div className="relative z-10 text-center">
+                                        <div className="size-20 bg-[#135bec]/20 rounded-full flex items-center justify-center mx-auto mb-6 text-[#135bec]">
+                                            <span className="material-symbols-outlined text-4xl">hub</span>
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-white mb-2">Interactive Knowledge Graph</h3>
+                                        <p className="text-slate-400 max-w-md mx-auto mb-8">Visualizing the relationships between Pods, Nodes, and Services in this module.</p>
+                                        <button className="px-6 py-3 bg-[#135bec] text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-lg">
+                                            Load Diagram
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'slides' && (
+                                <motion.div
+                                    key="slides"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="bg-[#1a2332] rounded-2xl border border-white/5 aspect-video flex items-center justify-center relative group cursor-pointer hover:border-[#135bec]/50 transition-colors"
+                                >
+                                    <div className="text-center">
+                                        <span className="material-symbols-outlined text-6xl text-slate-500 group-hover:text-white transition-colors mb-4">picture_as_pdf</span>
+                                        <p className="text-slate-400 group-hover:text-white font-medium">Click to open PDF Viewer</p>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'overview' && (
+                                <motion.div
+                                    key="overview"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-6"
+                                >
+                                    <div className="bg-[#1a2332] rounded-2xl p-8 border border-white/5">
+                                        <h3 className="text-2xl font-bold text-white mb-4">About this Course</h3>
+                                        <p className="text-slate-300 leading-relaxed mb-6">
+                                            Mastering Enterprise Cloud Architecture v2 provides an in-depth look at designing and deploying scalable, reliable, and secure cloud applications. This course focuses on practical, real-world scenarios and hands-on labs to prepare you for industry-standard certifications.
+                                        </p>
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            {[
+                                                { label: "Level", value: "Advanced" },
+                                                { label: "Duration", value: "4h 30m" },
+                                                { label: "Lectures", value: "24" },
+                                                { label: "Language", value: "English" }
+                                            ].map((stat, i) => (
+                                                <div key={i} className="p-4 bg-[#0f1823] rounded-xl border border-white/5">
+                                                    <p className="text-slate-500 text-xs uppercase tracking-wider mb-1">{stat.label}</p>
+                                                    <p className="text-white font-bold">{stat.value}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </motion.div>
                             )}
                         </AnimatePresence>
