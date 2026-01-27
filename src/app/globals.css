@@ -13,17 +13,10 @@
 }
 
 @layer utilities {
-  .mesh-gradient {
-    background-color: #111318;
-    background-image:
-      radial-gradient(at 0% 0%, hsla(220, 85%, 50%, 0.4) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(350, 80%, 60%, 0.3) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(220, 85%, 50%, 0.4) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, hsla(350, 80%, 60%, 0.3) 0px, transparent 50%);
-  }
-
   .glass-card {
-    @apply relative bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0, 0, 0, 0.37)] overflow-hidden;
+    /* Removed shadow-[...] from @apply and added standard box-shadow below */
+    @apply relative bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
 
   .glass-card::before {
