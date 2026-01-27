@@ -89,7 +89,7 @@ export default function AlchemyViewer({ params }: { params: { id: string } }) {
                                 <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10">
                                     <Download className="w-4 h-4 mr-2" /> Original PDF
                                 </Button>
-                                <Button variant="icon" className="bg-transparent text-white hover:bg-white/10">
+                                <Button size="icon" variant="ghost" className="bg-transparent text-white hover:bg-white/10">
                                     <Share2 className="w-5 h-5" />
                                 </Button>
                             </div>

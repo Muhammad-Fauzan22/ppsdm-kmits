@@ -1,85 +1,97 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+// Initialize clients
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
-// CORS headers
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
-
-export async function OPTIONS() {
-    return NextResponse.json({}, { headers: corsHeaders });
-}
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY!);
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { fileId, fileName, fileUrl, spreadsheetId, jobId } = body;
+        // Support both format for flexibility (direct or from GAS)
+        const fileId = body.fileId || body.file_id;
+        const fileName = body.fileName || body.file_name;
+        const userEmail = body.userEmail || body.user_email || 'system@automation.com'; // Default if not provided
 
-        console.log(`📥 Received processing request: ${fileName}`);
+        // Create job record in Supabase
+        const jobId = crypto.randomUUID();
+        const { error: insertError } = await supabase
+            .from('processing_jobs')
+            .insert({
+                job_id: jobId,
+                file_name: fileName,
+                file_id: fileId,
+                status: 'pending',
+                user_email: userEmail,
+                created_at: new Date().toISOString()
+            });
 
-        // Map jobId to webhookId (or just use jobId as webhook identifier)
-        const webhookId = jobId || body.webhookId;
+        if (insertError) throw insertError;
 
-        // Simpan ke Supabase langsung (bypass processing untuk testing)
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://hyszrracdysqgyfpwflu.supabase.co';
-        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_jdFxbjWbuitaWjblDEnKbA_04MrSCjr';
+        // Trigger Stepper workflow via webhook
+        const stepperWebhookUrl = 'https://hook.stepper.io/hook/b78251872674ee3bfba9bea2974781d4434d2e44228fde7650b8740553a020b6';
 
-        // Use fetch directly for Edge Runtime compatibility
-        const response = await fetch(`${supabaseUrl}/rest/v1/processed_books`, {
+        // Construct the payload exactly as the User specified for 7-Layer Pipeline
+        const webhookPayload = {
+            job_id: jobId,
+            file: {
+                name: fileName,
+                download_url: `https://drive.google.com/file/d/${fileId}/view`
+            },
+            timestamp: new Date().toISOString(),
+            notification: {
+                email: userEmail
+            }
+        };
+
+        console.log(`🚀 Triggering Stepper Workflow: ${jobId}`);
+
+        const stepperResponse = await fetch(stepperWebhookUrl, {
             method: 'POST',
             headers: {
-                'apikey': supabaseKey,
-                'Authorization': `Bearer ${supabaseKey}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
             },
-            body: JSON.stringify({
-                file_id: fileId,
-                file_name: fileName,
-                original_url: fileUrl || `https://drive.google.com/uc?export=download&id=${fileId}`, // Use provided URL or fallback
-                spreadsheet_id: spreadsheetId,
-                webhook_id: webhookId,
-                status: 'QUEUED',
-                created_at: new Date().toISOString(),
-                processing_time: 0
-            })
+            body: JSON.stringify(webhookPayload)
         });
 
-        if (!response.ok) {
-            console.error('Supabase error:', await response.text());
-            // Don't fail the request, just log it
+        let stepperData = {};
+        if (stepperResponse.ok) {
+            try {
+                stepperData = await stepperResponse.json();
+            } catch (e) {
+                console.warn("Stepper response not JSON", e);
+            }
+        } else {
+            console.error(`Stepper webhook failed: ${stepperResponse.status} ${stepperResponse.statusText}`);
+            // We don't throw here to ensure we return the JobID to the client, but marking it.
+            // Or should we throw? User code throws. Let's throw to be consistent.
+            throw new Error(`Stepper webhook failed: ${stepperResponse.statusText}`);
         }
+
+        // Update job status
+        await supabase
+            .from('processing_jobs')
+            .update({ status: 'processing', stepper_response: stepperData })
+            .eq('job_id', jobId);
 
         return NextResponse.json({
             success: true,
-            message: `File ${fileName} added to processing queue`,
-            fileId,
-            timestamp: new Date().toISOString(),
-            note: 'AI processing will happen in background'
-        }, { headers: corsHeaders });
+            job_id: jobId,
+            message: 'Book processing started via 7-Layer Pipeline',
+            estimated_completion: '8-12 minutes',
+            stepper_response: stepperData
+        });
 
     } catch (error: any) {
-        console.error('❌ API Error:', error);
-        return NextResponse.json({
-            success: false,
-            error: error.message,
-            timestamp: new Date().toISOString()
-        }, { status: 500, headers: corsHeaders });
+        console.error('Processing error:', error);
+        return NextResponse.json(
+            { success: false, error: error.message },
+            { status: 500 }
+        );
     }
-}
-
-export async function GET() {
-    return NextResponse.json({
-        status: 'BUKA BUKU API is running',
-        version: '1.0.0',
-        endpoints: {
-            POST: '/api/process - Process a book',
-            GET: '/api/process - API status'
-        },
-        instructions: 'Upload PDF to Google Drive folder to trigger processing'
-    }, { headers: corsHeaders });
 }

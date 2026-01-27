@@ -40,18 +40,12 @@ export function Header({ variant = "light" }: HeaderProps) {
 
     const isActive = (href: string) => pathname === href;
 
-    const getPageContext = () => {
-        if (pathname?.includes('/nexus')) return 'program pengembangan diri';
-        if (pathname?.includes('/mentorship')) return 'sesi mentoring';
-        return 'aktivitas';
-    };
-
     return (
-        <header className="sticky top-0 z-50 w-full bg-white dark:bg-card-dark border-b border-border-light dark:border-border-dark px-4 lg:px-10 py-3 shadow-sm">
+        <header className="sticky top-0 z-50 w-full bg-[#0B0E14] border-b border-[#1B2128] px-4 lg:px-10 py-3 shadow-sm">
             <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                 {/* Logo & Title */}
-                <Link href="/" className="flex items-center gap-4 text-primary dark:text-white hover:opacity-80 transition-opacity">
-                    <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+                <Link href="/" className="flex items-center gap-4 text-white hover:opacity-80 transition-opacity">
+                    <div className="size-8 flex items-center justify-center bg-brand-blue rounded-lg text-white shadow-lg shadow-brand-blue/20">
                         <span className="material-symbols-outlined text-xl">school</span>
                     </div>
                     <h2 className="text-xl font-bold tracking-tight">PPSDM KMM</h2>
@@ -65,15 +59,15 @@ export function Header({ variant = "light" }: HeaderProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={`text-sm font-medium transition-colors ${isActive(item.href)
-                                    ? "text-primary dark:text-white font-semibold border-b-2 border-primary pb-0.5"
-                                    : "text-neutral-mid dark:text-gray-400 hover:text-primary dark:hover:text-white"
+                                    ? "text-brand-blue font-semibold border-b-2 border-brand-blue pb-0.5"
+                                    : "text-slate-400 hover:text-white"
                                     }`}
                             >
                                 {item.label}
                             </Link>
                         ))}
                     </nav>
-                    <div className="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+                    <div className="h-6 w-px bg-white/10"></div>
 
                     {/* User Actions */}
                     <div className="flex items-center gap-4">
@@ -81,7 +75,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                             <>
                                 <button aria-label="User Profile" className="relative group flex items-center gap-2">
                                     <div
-                                        className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-gray-100 dark:ring-gray-700 dark:ring-offset-background-dark"
+                                        className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-[#0B0E14] ring-white/10"
                                         style={{
                                             backgroundImage: user.user_metadata?.avatar_url
                                                 ? `url("${user.user_metadata.avatar_url}")`
@@ -89,15 +83,15 @@ export function Header({ variant = "light" }: HeaderProps) {
                                         }}
                                     ></div>
                                     <div className="text-left hidden xl:block">
-                                        <p className="text-xs font-bold text-gray-700 dark:text-white line-clamp-1 max-w-[100px]">{user.email}</p>
-                                        <p className="text-[10px] text-green-600 font-bold">Online</p>
+                                        <p className="text-xs font-bold text-white line-clamp-1 max-w-[100px]">{user.email}</p>
+                                        <p className="text-[10px] text-green-400 font-bold">Online</p>
                                     </div>
 
                                     {/* Dropdown for Logout */}
-                                    <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-card-dark rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all">
+                                    <div className="absolute right-0 top-full mt-2 w-48 bg-[#1c1f27] rounded-xl shadow-xl border border-white/10 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all">
                                         <button
                                             onClick={handleLogout}
-                                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl"
+                                            className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-xl font-medium"
                                         >
                                             Keluar
                                         </button>
@@ -105,7 +99,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                                 </button>
                             </>
                         ) : (
-                            <Link href="/login" className="px-5 py-2 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-all text-sm shadow-md">
+                            <Link href="/auth/login" className="px-5 py-2 bg-brand-blue text-white rounded-lg font-bold hover:bg-blue-600 transition-all text-sm shadow-md shadow-brand-blue/20">
                                 Masuk
                             </Link>
                         )}
@@ -113,7 +107,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                 </div>
 
                 {/* Mobile Menu Toggle */}
-                <button aria-label="Toggle Mobile Menu" className="lg:hidden text-primary dark:text-white">
+                <button aria-label="Toggle Mobile Menu" className="lg:hidden text-white">
                     <span className="material-symbols-outlined text-3xl">menu</span>
                 </button>
             </div>

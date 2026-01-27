@@ -28,12 +28,6 @@ export default function LoginPage() {
         setLoading(true);
         setError(null);
 
-        // Optional: Enforce domain check or just warn
-        // if (emailError) {
-        //     setLoading(false);
-        //     return;
-        // }
-
         try {
             const { error: signInError } = await supabase.auth.signInWithPassword({
                 email,
@@ -63,9 +57,9 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen w-full flex-row bg-background-light dark:bg-[#111418] font-sans text-white overflow-x-hidden antialiased selection:bg-brand-blue selection:text-white">
+        <div className="flex min-h-screen w-full flex-row bg-background-dark font-sans text-white overflow-x-hidden antialiased selection:bg-brand-blue selection:text-white">
             {/* Left Side: Visual Panel */}
-            <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-end p-12 overflow-hidden bg-[#111418] border-r border-[#283039]">
+            <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-end p-12 overflow-hidden bg-background-dark border-r border-[#283039]">
                 {/* Background Image */}
                 <div
                     className="absolute inset-0 z-0 bg-cover bg-center transition-transform hover:scale-105 duration-[20s]"
@@ -76,7 +70,7 @@ export default function LoginPage() {
                 >
                 </div>
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#111418] via-[#111418]/80 to-transparent"></div>
+                <div className="absolute inset-0 z-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent"></div>
 
                 {/* Content Overlay */}
                 <div className="relative z-10 max-w-xl">
@@ -90,7 +84,7 @@ export default function LoginPage() {
                         Selamat Datang di <br />
                         <span className="text-brand-blue">PPSDM KM ITS</span>
                     </h1>
-                    <p className="text-lg text-[#9dabb9] leading-relaxed max-w-md">
+                    <p className="text-lg text-slate-400 leading-relaxed max-w-md">
                         Platform terintegrasi untuk pengembangan sumber daya mahasiswa Institut Teknologi Sepuluh Nopember.
                     </p>
                     <div className="mt-8 flex gap-3">
@@ -107,7 +101,7 @@ export default function LoginPage() {
             </div>
 
             {/* Right Side: Login Form */}
-            <div className="flex w-full lg:w-1/2 flex-col justify-center items-center px-6 py-12 lg:px-24 bg-[#111418]">
+            <div className="flex w-full lg:w-1/2 flex-col justify-center items-center px-6 py-12 lg:px-24 bg-background-dark">
                 <div className="w-full max-w-[440px] flex flex-col gap-8">
                     {/* Mobile Logo */}
                     <div className="lg:hidden flex justify-center mb-4">
@@ -119,14 +113,14 @@ export default function LoginPage() {
                     {/* Header Text */}
                     <div className="flex flex-col gap-2 text-center lg:text-left">
                         <h2 className="text-3xl font-bold tracking-tight text-white">Masuk ke Akun Anda</h2>
-                        <p className="text-[#9dabb9] text-sm font-normal">Akses materi dan data pengembangan diri mahasiswa.</p>
+                        <p className="text-slate-400 text-sm font-normal">Akses materi dan data pengembangan diri mahasiswa.</p>
                     </div>
 
                     {/* SSO Button Section */}
                     <div className="flex flex-col gap-4">
                         <button
                             onClick={handleGoogleLogin}
-                            className="group flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white text-[#111418] border border-transparent hover:bg-gray-100 active:scale-[0.98] transition-all duration-200"
+                            className="group flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white text-background-dark border border-transparent hover:bg-gray-100 active:scale-[0.98] transition-all duration-200"
                         >
                             <div className="mr-3">
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -142,7 +136,7 @@ export default function LoginPage() {
                         {/* Divider */}
                         <div className="relative flex py-1 items-center">
                             <div className="flex-grow border-t border-[#283039]"></div>
-                            <span className="flex-shrink-0 mx-4 text-[#9dabb9] text-xs uppercase tracking-wider font-medium">atau masuk dengan email</span>
+                            <span className="flex-shrink-0 mx-4 text-slate-500 text-xs uppercase tracking-wider font-medium">atau masuk dengan email</span>
                             <div className="flex-grow border-t border-[#283039]"></div>
                         </div>
                     </div>
@@ -156,11 +150,11 @@ export default function LoginPage() {
                         )}
 
                         {/* Email Input */}
-                        <div className="flex flex-col gap-1.5">
+                        <div className="flex flex-col gap-1.5 ">
                             <label className="text-white text-sm font-medium leading-none">Email</label>
-                            <div className="relative">
+                            <div className="relative group">
                                 <input
-                                    className={`flex w-full rounded-lg bg-[#1c2127] border ${emailError ? 'border-red-500 focus:ring-red-500' : 'border-[#283039] focus:ring-brand-blue'} text-white focus:outline-0 focus:ring-1 h-12 px-4 placeholder:text-[#9dabb9] text-base font-normal leading-normal transition-colors`}
+                                    className={`flex w-full rounded-lg bg-[#1c2127] border ${emailError ? 'border-red-500 focus:ring-red-500' : 'border-[#283039] group-hover:border-[#384250] focus:border-brand-blue'} text-white focus:outline-0 focus:ring-2 focus:ring-brand-blue/20 h-12 px-4 placeholder:text-slate-600 text-base font-normal leading-normal transition-all duration-200`}
                                     placeholder="nrp@student.its.ac.id"
                                     type="email"
                                     value={email}
@@ -187,18 +181,18 @@ export default function LoginPage() {
                         <div className="flex flex-col gap-1.5">
                             <div className="flex justify-between items-center">
                                 <label className="text-white text-sm font-medium leading-none">Password</label>
-                                <a className="text-brand-blue text-sm font-semibold hover:text-blue-400 transition-colors" href="#">Lupa Password?</a>
+                                <Link className="text-brand-blue text-sm font-semibold hover:text-blue-400 transition-colors" href="#">Lupa Password?</Link>
                             </div>
-                            <div className="relative group/pass">
+                            <div className="relative group">
                                 <input
-                                    className="flex w-full rounded-lg bg-[#1c2127] border border-[#283039] text-white focus:outline-0 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue h-12 px-4 placeholder:text-[#9dabb9] text-base font-normal leading-normal transition-colors"
+                                    className="flex w-full rounded-lg bg-[#1c2127] border border-[#283039] group-hover:border-[#384250] text-white focus:outline-0 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue h-12 px-4 placeholder:text-slate-600 text-base font-normal leading-normal transition-all duration-200"
                                     placeholder="Masukkan password Anda"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                 />
-                                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9dabb9] hover:text-white transition-colors cursor-pointer" type="button">
+                                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors cursor-pointer" type="button">
                                     <span className="material-symbols-outlined text-xl">visibility</span>
                                 </button>
                             </div>
@@ -208,7 +202,7 @@ export default function LoginPage() {
                         <button
                             disabled={loading}
                             type="submit"
-                            className="mt-2 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-brand-blue hover:bg-blue-600 active:bg-blue-700 text-white text-base font-bold leading-normal tracking-wide shadow-lg shadow-blue-900/20 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="mt-2 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-brand-blue hover:bg-blue-600 active:bg-blue-700 text-white text-base font-bold leading-normal tracking-wide shadow-lg shadow-brand-blue/20 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed hover:shadow-brand-blue/40"
                         >
                             {loading ? (
                                 <span className="flex items-center gap-2">
@@ -223,7 +217,7 @@ export default function LoginPage() {
 
                     {/* Footer */}
                     <div className="text-center pt-2">
-                        <p className="text-[#9dabb9] text-sm font-normal">
+                        <p className="text-slate-400 text-sm font-normal">
                             Belum punya akun?
                             <Link className="text-brand-blue font-bold hover:text-blue-400 hover:underline transition-all ml-1" href="/auth/register">Daftar Sekarang</Link>
                         </p>
@@ -232,7 +226,7 @@ export default function LoginPage() {
 
                 {/* Bottom Legal */}
                 <div className="absolute bottom-6 w-full text-center lg:text-left lg:pl-24">
-                    <p className="text-[#3b4754] text-xs">© 2024 PPSDM KM ITS. All rights reserved.</p>
+                    <p className="text-slate-600 text-xs">© 2024 PPSDM KM ITS. All rights reserved.</p>
                 </div>
             </div>
         </div>

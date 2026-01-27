@@ -17,17 +17,17 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
         variant === "mentor" ? "Lecturer Portal" : "Student Hub";
 
     return (
-        <aside className="w-64 flex-shrink-0 bg-white dark:bg-card-dark border-r border-border-light dark:border-border-dark flex flex-col h-full">
+        <aside className="w-64 flex-shrink-0 bg-[#0B0E14] border-r border-[#1B2128] flex flex-col h-full">
             <div className="flex flex-col h-full">
                 {/* Brand */}
-                <div className="p-4 border-b border-border-light dark:border-border-dark">
+                <div className="p-4 border-b border-[#1B2128]">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <div className="size-8 flex items-center justify-center rounded bg-primary text-white">
+                        <div className="size-8 flex items-center justify-center rounded bg-brand-blue text-white shadow-lg shadow-brand-blue/20">
                             <span className="material-symbols-outlined text-lg">school</span>
                         </div>
                         <div className="flex flex-col">
-                            <h1 className="text-base font-bold leading-normal">PPSDM KMM</h1>
-                            <p className="text-neutral-mid dark:text-gray-400 text-xs font-normal">{title}</p>
+                            <h1 className="text-base font-bold leading-normal text-white">PPSDM KMM</h1>
+                            <p className="text-slate-500 text-xs font-normal">{title}</p>
                         </div>
                     </Link>
                 </div>
@@ -43,11 +43,11 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
                                 aria-label={`Navigasi ke ${item.label}`}
                                 aria-current={active ? "page" : undefined}
                                 className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${active
-                                    ? "bg-primary/10 text-primary font-medium"
-                                    : "text-neutral-mid dark:text-gray-400 hover:bg-neutral-light dark:hover:bg-white/5"
+                                    ? "bg-brand-blue/10 text-brand-blue font-medium"
+                                    : "text-slate-400 hover:bg-white/5 hover:text-white"
                                     }`}
                             >
-                                <span className={`material-symbols-outlined text-[24px] ${active ? "text-primary" : "text-neutral-mid dark:text-gray-400"}`}>
+                                <span className={`material-symbols-outlined text-[24px] ${active ? "text-brand-blue" : "text-slate-500 group-hover:text-white"}`}>
                                     {item.icon}
                                 </span>
                                 <span className="text-sm font-medium leading-normal">{item.label}</span>
@@ -57,20 +57,20 @@ export function Sidebar({ variant = "admin" }: SidebarProps) {
                 </nav>
 
                 {/* Bottom Help Widget */}
-                <div className="p-4 border-t border-border-light dark:border-border-dark">
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-transparent dark:from-primary/30 border border-primary/10 dark:border-primary/20">
+                <div className="p-4 border-t border-[#1B2128]">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-brand-blue/10 to-transparent border border-brand-blue/10">
                         <div className="flex items-center gap-3 mb-2">
-                            <span className="material-symbols-outlined text-primary dark:text-white">help</span>
-                            <span className="font-bold text-sm text-primary dark:text-white">Need Help?</span>
+                            <span className="material-symbols-outlined text-brand-blue">help</span>
+                            <span className="font-bold text-sm text-white">Need Help?</span>
                         </div>
-                        <p className="text-xs text-neutral-mid dark:text-gray-300 mb-3">
+                        <p className="text-xs text-slate-400 mb-3">
                             Check the documentation for guidelines.
                         </p>
-                        <button className="w-full py-1.5 text-xs font-bold text-primary bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-sm hover:bg-gray-50">
+                        <button className="w-full py-1.5 text-xs font-bold text-brand-blue bg-[#1B2128] rounded-lg border border-brand-blue/20 hover:bg-brand-blue hover:text-white transition-all">
                             View Docs
                         </button>
                     </div>
-                    <button aria-label="Log Out" className="mt-4 flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-dark dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors w-full">
+                    <button aria-label="Log Out" className="mt-4 flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors w-full">
                         <span className="material-symbols-outlined">logout</span>
                         <p className="text-sm font-medium leading-normal">Log Out</p>
                     </button>
