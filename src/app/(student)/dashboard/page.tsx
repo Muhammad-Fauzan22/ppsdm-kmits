@@ -24,7 +24,6 @@ export default function StudentDashboard() {
     ];
 
     return (
-    return (
         <div className="space-y-6">
             <div className="grid grid-cols-12 gap-6 mb-6">
 

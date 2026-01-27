@@ -3,9 +3,10 @@
 import React from 'react';
 import Navbar from './landing-page/Navbar';
 import HeroSection from './landing-page/HeroSection';
-import Methodology from './landing-page/Methodology';
+// import Methodology from './landing-page/Methodology';
 import DimensionsGrid from './landing-page/DimensionsGrid';
-import MissionControlDemo from './landing-page/MissionControlDemo';
+import GrowthSection from './landing-page/GrowthSection';
+// import MissionControlDemo from './landing-page/MissionControlDemo';
 import Testimonials from './landing-page/Testimonials';
 import Footer from './landing-page/Footer';
 
@@ -17,9 +18,10 @@ export default function LandingPage() {
 
                 <main className="flex-1 pt-20">
                     <HeroSection />
-                    <Methodology />
+                    {/* <Methodology /> */}
                     <DimensionsGrid />
-                    <MissionControlDemo />
+                    <GrowthSection />
+                    {/* <MissionControlDemo /> */}
                     <Testimonials />
 
                     <section className="py-24 px-6 lg:px-12 bg-[#05080F]" id="faq">
