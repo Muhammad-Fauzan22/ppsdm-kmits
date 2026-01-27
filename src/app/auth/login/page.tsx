@@ -3,151 +3,236 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [emailError, setEmailError] = useState<string | null>(null);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const supabase = createClient();
+
+    const validateEmail = (value: string) => {
+        if (value && !value.endsWith("@student.its.ac.id")) {
+            setEmailError("Email harus menggunakan domain @student.its.ac.id");
+        } else {
+            setEmailError(null);
+        }
+    };
+
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Simulate login delay
-        setTimeout(() => {
+        setError(null);
+
+        // Optional: Enforce domain check or just warn
+        // if (emailError) {
+        //     setLoading(false);
+        //     return;
+        // }
+
+        try {
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (signInError) {
+                throw signInError;
+            }
+
+            router.push("/dashboard");
+            router.refresh();
+        } catch (err: any) {
+            setError(err.message || "Gagal masuk. Periksa email dan password Anda.");
+        } finally {
             setLoading(false);
-            router.push('/dashboard'); // Corrected route to dashboard
-        }, 1500);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: `${location.origin}/auth/callback`,
+            },
+        });
     };
 
     return (
-        <div className="min-h-screen w-full flex font-sans text-slate-200 bg-its-dark antialiased selection:bg-brand-blue selection:text-white">
-            {/* Left Panel (Visuals) */}
-            <div className="hidden lg:flex w-1/2 flex-col justify-between relative overflow-hidden p-12 border-r border-white/5 its-gradient">
-                {/* Abstract background effect */}
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[120px]"></div>
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-its-gold/10 rounded-full blur-[100px]"></div>
+        <div className="flex min-h-screen w-full flex-row bg-background-light dark:bg-[#111418] font-sans text-white overflow-x-hidden antialiased selection:bg-brand-blue selection:text-white">
+            {/* Left Side: Visual Panel */}
+            <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-end p-12 overflow-hidden bg-[#111418] border-r border-[#283039]">
+                {/* Background Image */}
+                <div
+                    className="absolute inset-0 z-0 bg-cover bg-center transition-transform hover:scale-105 duration-[20s]"
+                    style={{
+                        backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7x3PL4cdw2YT4_THSAsoahUoEjXv_XZ6XZAvlI0uOuysvjOc4Nloc1pem0B3lAKoQu9bIpIrOdcPFggWAIlbGn_8Tv1wjvFCtMAQTG6c3ibNwE2OqWvAavo-7QwpAzkaJ5h7GLZbSt7GORZetGJq5X-kyNnx8UCqV7dcsNZTJ13FP9NaVbk542ix-YOAxDxIQtOCKgEfyxHzodNobw_noGo5rnxp18mrp61_mHfFdZvDoQz0PIfXs9sprkKJ_3y_3FotrmhPaSPk')",
+                        filter: "brightness(0.4) saturate(1.2)"
+                    }}
+                >
                 </div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#111418] via-[#111418]/80 to-transparent"></div>
 
-                {/* Header Content */}
-                <div className="relative z-10 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue shadow-lg shadow-brand-blue/20">
-                        <span className="material-symbols-outlined text-white">analytics</span>
+                {/* Content Overlay */}
+                <div className="relative z-10 max-w-xl">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 rounded-lg bg-brand-blue flex items-center justify-center shadow-lg shadow-brand-blue/20">
+                            <span className="material-symbols-outlined text-white text-2xl">school</span>
+                        </div>
+                        <span className="text-xl font-bold tracking-tight text-white/90">PPSDM KM ITS</span>
                     </div>
-                    <div className="flex flex-col">
-                        <span className="text-xl font-bold font-heading tracking-tight text-white leading-none">PPSDM KMM</span>
-                        <span className="text-[10px] uppercase tracking-widest text-its-gold font-bold">ITS Surabaya</span>
-                    </div>
-                </div>
-
-                {/* Illustration & Main Message */}
-                <div className="relative z-10 flex flex-col items-center justify-center flex-1 py-12">
-                    <div className="w-full max-w-[320px] aspect-square rounded-full flex items-center justify-center mb-8 relative">
-                        <div className="absolute inset-0 bg-brand-blue/20 blur-3xl rounded-full animate-pulse"></div>
-                        {/* Mascot Placeholder */}
-                        <div className="w-full h-full bg-contain bg-center bg-no-repeat relative z-10 transition-transform hover:scale-105 duration-500" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBVLbOe4moz7X2Pt7KxjOKSJ8SmRYLJD-5Boh4JXTYl7lY6HZfmPYi95sdBpmqzHDbRibMDFUKJmQfsA-9sUlnH-uTF-YraPLdxD9PsQLcv_UeMmEuQBFkmy6kQQdfbPP6Xt2-qt8dDpFSC0c-HtYpkDcpq0HKV2VCEF4YbjPDKXfMDPfPBMx7cifL1HZJVvj3yzm8N4JSrA_bORkxiTJbRL8J4qjTNRtJZXkrFsxPDJtRtsfqcGKwe5dTdDRcloFpNpnq2y_QR-E')" }}>
+                    <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight text-white mb-4">
+                        Selamat Datang di <br />
+                        <span className="text-brand-blue">PPSDM KM ITS</span>
+                    </h1>
+                    <p className="text-lg text-[#9dabb9] leading-relaxed max-w-md">
+                        Platform terintegrasi untuk pengembangan sumber daya mahasiswa Institut Teknologi Sepuluh Nopember.
+                    </p>
+                    <div className="mt-8 flex gap-3">
+                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-xs font-medium text-white/80">
+                            <span className="material-symbols-outlined text-base">verified_user</span>
+                            Secure Login
+                        </div>
+                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-xs font-medium text-white/80">
+                            <span className="material-symbols-outlined text-base">id_card</span>
+                            ITS SSO Supported
                         </div>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold font-heading text-center leading-tight mb-4 text-white">
-                        Secure Access for <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-accent">ITS Students</span>
-                    </h1>
-                    <p className="text-slate-400 text-center max-w-md text-lg leading-relaxed">Access your academic resources, roadmap, and mentorship tools through the unified PPSDM KMM portal.</p>
-                </div>
-
-                {/* Footer Quote */}
-                <div className="relative z-10 text-xs text-slate-500 font-medium tracking-wide">
-                    <p>© 2024 Institut Teknologi Sepuluh Nopember.</p>
                 </div>
             </div>
 
-            {/* Right Panel (Form) */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-[#05080F] relative">
-                <div className="w-full max-w-[420px] glass-card p-10 rounded-2xl border-white/5 shadow-2xl relative overflow-hidden">
-                    {/* Decorative background for form */}
-                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-brand-blue/10 rounded-full blur-3xl pointer-events-none"></div>
-
-                    <div className="flex flex-col gap-8 relative z-10">
-                        {/* Heading */}
-                        <div className="text-center">
-                            <h2 className="text-3xl font-bold font-heading tracking-tight text-white mb-2">Welcome Back</h2>
-                            <p className="text-slate-400 text-sm">Enter your credentials to access your account</p>
+            {/* Right Side: Login Form */}
+            <div className="flex w-full lg:w-1/2 flex-col justify-center items-center px-6 py-12 lg:px-24 bg-[#111418]">
+                <div className="w-full max-w-[440px] flex flex-col gap-8">
+                    {/* Mobile Logo */}
+                    <div className="lg:hidden flex justify-center mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-brand-blue flex items-center justify-center shadow-lg shadow-brand-blue/20">
+                            <span className="material-symbols-outlined text-white text-3xl">school</span>
                         </div>
+                    </div>
 
-                        {/* SSO Button */}
-                        <button className="flex w-full items-center justify-center gap-3 rounded-xl bg-white/5 hover:bg-brand-blue/10 p-4 text-sm font-bold text-white transition-all border border-white/10 hover:border-brand-blue/30 group">
-                            <span className="material-symbols-outlined text-brand-accent group-hover:scale-110 transition-transform">school</span>
-                            Sign in with ITS SSO
+                    {/* Header Text */}
+                    <div className="flex flex-col gap-2 text-center lg:text-left">
+                        <h2 className="text-3xl font-bold tracking-tight text-white">Masuk ke Akun Anda</h2>
+                        <p className="text-[#9dabb9] text-sm font-normal">Akses materi dan data pengembangan diri mahasiswa.</p>
+                    </div>
+
+                    {/* SSO Button Section */}
+                    <div className="flex flex-col gap-4">
+                        <button
+                            onClick={handleGoogleLogin}
+                            className="group flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white text-[#111418] border border-transparent hover:bg-gray-100 active:scale-[0.98] transition-all duration-200"
+                        >
+                            <div className="mr-3">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M23.52 12.29C23.52 11.45 23.45 10.68 23.3 9.94H12.25V14.46H18.57C18.29 15.93 17.47 17.18 16.23 18.01V20.98H20.02C22.25 18.94 23.52 15.91 23.52 12.29Z" fill="#4285F4"></path>
+                                    <path d="M12.25 23.75C15.42 23.75 18.08 22.7 20.03 20.98L16.24 18.01C15.19 18.72 13.84 19.14 12.25 19.14C9.19 19.14 6.6 17.07 5.67 14.28H1.76V17.31C3.68 21.13 7.65 23.75 12.25 23.75Z" fill="#34A853"></path>
+                                    <path d="M5.67 14.28C5.43 13.56 5.3 12.79 5.3 12C5.3 11.21 5.43 10.44 5.67 9.72V6.69H1.76C0.97 8.28 0.52 10.08 0.52 12C0.52 13.92 0.97 15.72 1.76 17.31L5.67 14.28Z" fill="#FBBC05"></path>
+                                    <path d="M12.25 4.86C13.98 4.86 15.52 5.46 16.74 6.62L20.09 3.27C18.08 1.4 15.42 0.25 12.25 0.25C7.65 0.25 3.68 2.87 1.76 6.69L5.67 9.72C6.6 6.93 9.19 4.86 12.25 4.86Z" fill="#EA4335"></path>
+                                </svg>
+                            </div>
+                            <span className="text-sm font-bold leading-normal tracking-tight">Masuk dengan Google (SSO ITS)</span>
                         </button>
 
                         {/* Divider */}
-                        <div className="relative flex items-center py-2">
-                            <div className="flex-grow border-t border-white/10"></div>
-                            <span className="flex-shrink-0 mx-4 text-xs text-slate-500 uppercase tracking-widest font-bold">Or continue with</span>
-                            <div className="flex-grow border-t border-white/10"></div>
+                        <div className="relative flex py-1 items-center">
+                            <div className="flex-grow border-t border-[#283039]"></div>
+                            <span className="flex-shrink-0 mx-4 text-[#9dabb9] text-xs uppercase tracking-wider font-medium">atau masuk dengan email</span>
+                            <div className="flex-grow border-t border-[#283039]"></div>
                         </div>
+                    </div>
 
-                        {/* Form */}
-                        <form className="space-y-5" onSubmit={handleLogin}>
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="email">NRP / Email</label>
-                                <div className="relative">
-                                    <input
-                                        className="flex h-12 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-brand-accent focus:bg-brand-blue/5 transition-all pl-11"
-                                        id="email"
-                                        placeholder="5025201xxx"
-                                        required
-                                        type="text"
-                                    />
-                                    <span className="material-symbols-outlined absolute left-3.5 top-3 text-slate-500">mail</span>
-                                </div>
+                    {/* Manual Login Form */}
+                    <form className="flex flex-col gap-5" onSubmit={handleLogin}>
+                        {error && (
+                            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+                                {error}
                             </div>
-                            <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-xs font-bold uppercase tracking-wider text-slate-400" htmlFor="password">Password</label>
-                                    <a className="text-xs font-bold text-brand-accent hover:text-brand-accent/80 hover:underline" href="#">Forgot password?</a>
-                                </div>
-                                <div className="relative">
-                                    <input
-                                        className="flex h-12 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-brand-accent focus:bg-brand-blue/5 transition-all pl-11"
-                                        id="password"
-                                        placeholder="••••••••"
-                                        required
-                                        type="password"
-                                    />
-                                    <span className="material-symbols-outlined absolute left-3.5 top-3 text-slate-500">lock</span>
-                                    <button className="absolute right-3.5 top-3 text-slate-500 hover:text-white transition-colors" type="button">
-                                        <span className="material-symbols-outlined text-lg">visibility</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <button
-                                className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl h-12 flex items-center justify-center transition-all shadow-lg shadow-brand-blue/20 hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:pointer-events-none mt-2"
-                                type="submit"
-                                disabled={loading}
-                            >
-                                {loading ? (
-                                    <span className="flex items-center gap-2">
-                                        <span className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                                        Authenticating...
-                                    </span>
-                                ) : (
-                                    <span className="flex items-center gap-2">
-                                        Login to Portal
-                                        <span className="material-symbols-outlined text-lg">arrow_forward</span>
-                                    </span>
+                        )}
+
+                        {/* Email Input */}
+                        <div className="flex flex-col gap-1.5">
+                            <label className="text-white text-sm font-medium leading-none">Email</label>
+                            <div className="relative">
+                                <input
+                                    className={`flex w-full rounded-lg bg-[#1c2127] border ${emailError ? 'border-red-500 focus:ring-red-500' : 'border-[#283039] focus:ring-brand-blue'} text-white focus:outline-0 focus:ring-1 h-12 px-4 placeholder:text-[#9dabb9] text-base font-normal leading-normal transition-colors`}
+                                    placeholder="nrp@student.its.ac.id"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        validateEmail(e.target.value);
+                                    }}
+                                    required
+                                />
+                                {emailError && (
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none">
+                                        <span className="material-symbols-outlined text-xl">error</span>
+                                    </div>
                                 )}
-                            </button>
-                        </form>
-                    </div>
-
-                    {/* Footer Help */}
-                    <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
-                            <span className="material-symbols-outlined text-sm">lock</span>
-                            256-bit End-to-End Encryption
+                            </div>
+                            {emailError && (
+                                <p className="text-red-500 text-sm font-normal mt-0.5 flex items-center gap-1 animate-pulse">
+                                    {emailError}
+                                </p>
+                            )}
                         </div>
+
+                        {/* Password Input */}
+                        <div className="flex flex-col gap-1.5">
+                            <div className="flex justify-between items-center">
+                                <label className="text-white text-sm font-medium leading-none">Password</label>
+                                <a className="text-brand-blue text-sm font-semibold hover:text-blue-400 transition-colors" href="#">Lupa Password?</a>
+                            </div>
+                            <div className="relative group/pass">
+                                <input
+                                    className="flex w-full rounded-lg bg-[#1c2127] border border-[#283039] text-white focus:outline-0 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue h-12 px-4 placeholder:text-[#9dabb9] text-base font-normal leading-normal transition-colors"
+                                    placeholder="Masukkan password Anda"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9dabb9] hover:text-white transition-colors cursor-pointer" type="button">
+                                    <span className="material-symbols-outlined text-xl">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Submit Button */}
+                        <button
+                            disabled={loading}
+                            type="submit"
+                            className="mt-2 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-brand-blue hover:bg-blue-600 active:bg-blue-700 text-white text-base font-bold leading-normal tracking-wide shadow-lg shadow-blue-900/20 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {loading ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                    Memproses...
+                                </span>
+                            ) : (
+                                "Masuk"
+                            )}
+                        </button>
+                    </form>
+
+                    {/* Footer */}
+                    <div className="text-center pt-2">
+                        <p className="text-[#9dabb9] text-sm font-normal">
+                            Belum punya akun?
+                            <Link className="text-brand-blue font-bold hover:text-blue-400 hover:underline transition-all ml-1" href="/auth/register">Daftar Sekarang</Link>
+                        </p>
                     </div>
+                </div>
+
+                {/* Bottom Legal */}
+                <div className="absolute bottom-6 w-full text-center lg:text-left lg:pl-24">
+                    <p className="text-[#3b4754] text-xs">© 2024 PPSDM KM ITS. All rights reserved.</p>
                 </div>
             </div>
         </div>
