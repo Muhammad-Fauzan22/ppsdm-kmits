@@ -8,6 +8,10 @@ const config: Config = {
     ],
     theme: {
         extend: {
+            borderRadius: {
+                "xl": "1rem",
+                "2xl": "1.5rem",
+            },
             colors: {
                 // WARNA UTAMA BARU (Admin & Supervisor)
                 primary: "#135bec",
