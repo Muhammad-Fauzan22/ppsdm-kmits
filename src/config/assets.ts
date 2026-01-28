@@ -20,4 +20,4 @@ export const ASSETS = {
         student: "https://ui-avatars.com/api/?name=Student+User&background=0D8ABC&color=fff",
         lecturer: "https://ui-avatars.com/api/?name=Lecturer+User&background=6B7280&color=fff",
     }
-};
+} as const;

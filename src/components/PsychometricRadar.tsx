@@ -57,6 +57,10 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
                             stroke={radarColor}
                             fill={radarColor}
                             fillOpacity={0.4}
+                            isAnimationActive={true}
+                            animationBegin={0}
+                            animationDuration={1500}
+                            animationEasing="ease-out"
                         />
                     </RadarChart>
                 </ResponsiveContainer>

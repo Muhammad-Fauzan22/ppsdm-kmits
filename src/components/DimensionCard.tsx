@@ -70,7 +70,7 @@ export function DimensionCard({ id, title, description, score, icon: Icon, href 
             <div className="flex items-center gap-3 pt-4 border-t border-slate-50 dark:border-slate-800 mt-auto">
                 <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <div
-                        className={cn("h-full rounded-full", colors.text.replace('text-', 'bg-'))}
+                        className={cn("h-full rounded-full transition-all duration-1000 ease-out", colors.text.replace('text-', 'bg-'))}
                         style={{ width: `${displayScore}%` }}
                     />
                 </div>

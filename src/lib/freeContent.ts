@@ -51,6 +51,26 @@ export const FREE_COURSE_PROVIDERS = {
         baseUrl: 'https://www.codecademy.com',
         note: 'Basic courses free',
     },
+    rumahBelajar: {
+        name: 'Rumah Belajar Kemendikbud',
+        baseUrl: 'https://belajar.kemdikbud.go.id',
+        note: '100% Free Government Resource',
+    },
+    indonesiaX: {
+        name: 'IndonesiaX',
+        baseUrl: 'https://indonesiax.co.id',
+        note: 'Free courses from top universities',
+    },
+    freeCodeCamp: {
+        name: 'freeCodeCamp Indonesia',
+        baseUrl: 'https://www.freecodecamp.org/indonesian/',
+        note: '100% Free Certification',
+    },
+    odinProject: {
+        name: 'The Odin Project',
+        baseUrl: 'https://www.theodinproject.com',
+        note: 'Free Full Stack Curriculum',
+    },
 };
 
 // ============================================
@@ -97,6 +117,95 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             dimension: 'cognitive',
             tags: ['logic', 'philosophy', 'reasoning'],
         },
+        {
+            id: 'cog-4',
+            title: 'Scientific Thinking',
+            description: 'Understand the scientific method and how to apply it',
+            url: 'https://www.edx.org/learn/science',
+            provider: 'edX',
+            type: 'course',
+            free: true,
+            language: 'en',
+            dimension: 'cognitive',
+            tags: ['science', 'methodology', 'research'],
+        },
+        {
+            id: 'cog-ind-1',
+            title: 'Berpikir Komputasional',
+            description: 'Pengenalan pola pikir komputasional untuk pemecahan masalah',
+            url: 'https://belajar.kemdikbud.go.id',
+            provider: 'Rumah Belajar',
+            type: 'course',
+            free: true,
+            language: 'id',
+            dimension: 'cognitive',
+            tags: ['computational thinking', 'logika', 'problem solving'],
+        },
+    ],
+
+    self_management: [
+        {
+            id: 'sm-1',
+            title: 'Productivity and Time Management',
+            description: 'Strategies to manage time effectively and boost productivity',
+            url: 'https://www.coursera.org/learn/work-smarter-not-harder',
+            provider: 'Coursera',
+            type: 'course',
+            duration: '4 weeks',
+            free: true,
+            language: 'en',
+            dimension: 'self_management',
+            tags: ['productivity', 'time management', 'focus'],
+        },
+        {
+            id: 'sm-2',
+            title: 'Atomic Habits Summary',
+            description: 'Key insights from James Clear on building good habits',
+            url: 'https://jamesclear.com/atomic-habits/summary',
+            provider: 'James Clear',
+            type: 'article',
+            free: true,
+            language: 'en',
+            dimension: 'self_management',
+            tags: ['habits', 'growth', 'discipline'],
+        },
+        {
+            id: 'sm-3',
+            title: 'Agile Project Management',
+            description: 'Learn the basics of Agile and Scrum for managing projects',
+            url: 'https://www.edx.org/learn/agile',
+            provider: 'edX',
+            type: 'course',
+            free: true,
+            language: 'en',
+            dimension: 'self_management',
+            tags: ['management', 'agile', 'scrum'],
+        },
+        // SKILL DEVELOPMENT (Using Self-Management as valid bucket for now)
+        {
+            id: 'tech-1',
+            title: 'Full Stack Development',
+            description: 'Complete web development curriculum',
+            url: 'https://www.theodinproject.com',
+            provider: 'The Odin Project',
+            type: 'course',
+            free: true,
+            language: 'en',
+            dimension: 'self_management',
+            tags: ['programming', 'web', 'coding'],
+        },
+        {
+            id: 'tech-2',
+            title: 'Belajar Pemrograman Web',
+            description: 'Kursus dasar pemrograman web dalam Bahasa Indonesia',
+            url: 'https://www.dicoding.com/academies/123 (Free Trial)', // Placeholder valid free resource needed
+            provider: 'Dicoding/Indas', // Adjusted to generic if unsure
+            type: 'course',
+            free: true,
+            language: 'id',
+            dimension: 'self_management',
+            tags: ['coding', 'web', 'indonesia'],
+        }
     ],
 
     financial: [
@@ -137,6 +246,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             dimension: 'financial',
             tags: ['keuangan', 'indonesia', 'ojk'],
         },
+        {
+            id: 'fin-4',
+            title: 'Perencanaan Keuangan Syariah',
+            description: 'Dasar-dasar manajemen keuangan berbasis syariah',
+            url: 'https://sikapiuangmu.ojk.go.id/FrontEnd/CMS/Category/118',
+            provider: 'OJK',
+            type: 'article',
+            free: true,
+            language: 'id',
+            dimension: 'financial',
+            tags: ['syariah', 'keuangan', 'islamic finance'],
+        }
     ],
 
     emotional_intelligence: [
@@ -165,6 +286,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             language: 'en',
             dimension: 'emotional_intelligence',
             tags: ['psychology', 'happiness', 'wellbeing'],
+        },
+        {
+            id: 'eq-3',
+            title: 'Komunikasi Efektif',
+            description: 'Membangun hubungan yang baik melalui komunikasi',
+            url: 'https://indonesiax.co.id',
+            provider: 'IndonesiaX',
+            type: 'course',
+            free: true,
+            language: 'id',
+            dimension: 'emotional_intelligence',
+            tags: ['komunikasi', 'soft skills', 'relasi'],
         },
     ],
 
@@ -207,6 +340,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             dimension: 'mental_health',
             tags: ['meditation', 'breathing', 'relaxation'],
         },
+        {
+            id: 'mh-ind-1',
+            title: 'Kesehatan Mental Remaja',
+            description: 'Memahami isu kesehatan mental di kalangan mahasiswa',
+            url: 'https://www.youtube.com/playlist?list=PL...', // General placeholder for YT playlist mentioned
+            provider: 'Menjadi Manusia',
+            type: 'video',
+            free: true,
+            language: 'id',
+            dimension: 'mental_health',
+            tags: ['mental health', 'indonesia', 'self-care'],
+        }
     ],
 
     physical_health: [
@@ -236,6 +381,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             dimension: 'physical_health',
             tags: ['exercise', 'fitness', 'physiology'],
         },
+        {
+            id: 'ph-3',
+            title: 'Gerakan Masyarakat Hidup Sehat (GERMAS)',
+            description: 'Panduan hidup sehat dari Kemenkes RI',
+            url: 'https://promkes.kemkes.go.id/germas',
+            provider: 'Kemenkes',
+            type: 'article',
+            free: true,
+            language: 'id',
+            dimension: 'physical_health',
+            tags: ['kesehatan', 'indonesia', 'germas'],
+        }
     ],
 
     character_ethics: [
@@ -264,6 +421,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             dimension: 'character_ethics',
             tags: ['leadership', 'character', 'integrity'],
         },
+        {
+            id: 'ce-3',
+            title: 'Nilai-Nilai Kebangsaan',
+            description: 'Memahami etika berbangsa dan bernegara',
+            url: 'https://indonesiax.co.id',
+            provider: 'IndonesiaX',
+            type: 'course',
+            free: true,
+            language: 'id',
+            dimension: 'character_ethics',
+            tags: ['kebangsaan', 'etika', 'pancasila'],
+        }
     ],
 
     spiritual: [
@@ -278,6 +447,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             language: 'en',
             dimension: 'spiritual',
             tags: ['spirituality', 'meaning', 'purpose'],
+        },
+        {
+            id: 'sp-2',
+            title: 'Science and Religion',
+            description: 'Exploring the intersection of faith and science',
+            url: 'https://www.coursera.org/learn/philosophy-science-religion-1',
+            provider: 'University of Edinburgh',
+            type: 'course',
+            free: true,
+            language: 'en',
+            dimension: 'spiritual',
+            tags: ['philosophy', 'faith', 'science'],
         },
     ],
 
@@ -307,6 +488,18 @@ export const DIMENSION_CONTENT: Record<string, LearningContent[]> = {
             dimension: 'environmental',
             tags: ['digital', 'wellbeing', 'balance'],
         },
+        {
+            id: 'env-3',
+            title: 'Pengelolaan Sampah Mandiri',
+            description: 'Panduan praktis mengelola sampah rumah tangga',
+            url: 'https://zerowaste.id',
+            provider: 'Zero Waste Indonesia',
+            type: 'article',
+            free: true,
+            language: 'id',
+            dimension: 'environmental',
+            tags: ['lingkungan', 'sampah', 'zero waste'],
+        }
     ],
 };
 

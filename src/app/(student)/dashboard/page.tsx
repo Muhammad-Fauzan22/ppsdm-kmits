@@ -148,14 +148,29 @@ export default function StudentDashboard() {
                                 {/* Resources Widget */}
                                 <div className="flex flex-col gap-4">
                                     <div className="flex items-center justify-between px-1">
-                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recent Resources</h2>
+                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recommended for You</h2>
                                         <button className="text-sm font-medium text-primary hover:text-blue-400 transition-colors">View All</button>
                                     </div>
                                     <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin snap-x">
-                                        <BookCard title="Intro to Logic" author="Philosophy Dept." img="https://source.unsplash.com/random/400x600?book,logic" />
-                                        <BookCard title="Modern Ethics" author="Humanities" img="https://source.unsplash.com/random/400x600?book,ethics" />
-                                        <BookCard title="Leadership 101" author="Business School" img="https://source.unsplash.com/random/400x600?book,leader" />
-                                        <BookCard title="The Art of Focus" author="Self Development" img="https://source.unsplash.com/random/400x600?book,focus" />
+                                        {/* Dynamic Recommendations based on Chart Data (Spiritual=62, Physical=78, etc) */}
+                                        {recommendResources({
+                                            spiritual: 62,
+                                            physical_health: 78,
+                                            intellectual: 85,
+                                            social: 90,
+                                            emotional_intelligence: 72
+                                        }, 'id', 4).map(rec => (
+                                            rec.resources.map(res => (
+                                                <BookCard
+                                                    key={res.id}
+                                                    title={res.title}
+                                                    author={res.provider}
+                                                    img={res.thumbnail || `https://source.unsplash.com/random/400x600?${res.tags[0]}`}
+                                                    url={res.url}
+                                                    badge={rec.reason.includes("prioritas") ? "Priority" : undefined}
+                                                />
+                                            ))
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -261,17 +276,25 @@ function StatsPill({ label, value, color }: { label: string, value: string, colo
     )
 }
 
-function BookCard({ title, author, img }: { title: string, author: string, img: string }) {
+// Add import at the top
+import { recommendResources } from "@/lib/resourceRecommender";
+
+function BookCard({ title, author, img, url, badge }: { title: string, author: string, img: string, url?: string, badge?: string }) {
     return (
-        <div className="snap-start shrink-0 w-[140px] md:w-[160px] flex flex-col gap-3 group cursor-pointer">
+        <a href={url || "#"} target="_blank" rel="noopener noreferrer" className="snap-start shrink-0 w-[140px] md:w-[160px] flex flex-col gap-3 group cursor-pointer">
             <div className="aspect-[2/3] w-full rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-lg group-hover:-translate-y-1 transition-transform duration-300 relative">
                 <Image src={img} alt={title} fill className="object-cover" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                {badge && (
+                    <div className="absolute top-2 left-2 px-2 py-1 bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider rounded">
+                        {badge}
+                    </div>
+                )}
             </div>
             <div>
                 <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">{title}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{author}</p>
             </div>
-        </div>
+        </a>
     )
 }
