@@ -94,9 +94,24 @@ export default function LandingPage() {
 
             <main className="flex-1 pt-20">
                 {/* Hero Section */}
-                <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden its-gradient">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
-                    <div className="absolute inset-0 tech-grid opacity-30 pointer-events-none"></div>
+                <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden bg-[#0A0F1A]">
+                    {/* Video Background */}
+                    <div className="absolute inset-0 z-0">
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F1A]/90 via-[#0A0F1A]/70 to-[#0A0F1A]/90 z-10 pointer-events-none"></div>
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover opacity-60"
+                            poster="/images/hero-bg-poster.jpg"
+                        >
+                            <source src="/assets/hero-background.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none z-10"></div>
+                    <div className="absolute inset-0 tech-grid opacity-30 pointer-events-none z-10"></div>
 
                     <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
                         <div className="inline-flex items-center gap-3 rounded-full border border-[#FFD700]/30 bg-[#FFD700]/10 px-4 py-1.5 text-xs font-semibold text-[#FFD700] backdrop-blur-md mb-8">
