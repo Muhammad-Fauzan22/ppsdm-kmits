@@ -91,12 +91,22 @@ export default function AlchemyUploadPage() {
             // Call API
             const response = await fetch('/api/webhooks/process-book', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer internal-system'
+                },
                 body: JSON.stringify({
                     fileUrl: publicUrl,
                     fileName: item.file.name,
                     fileSize: item.file.size,
-                    fileType: item.file.type
+                    fileType: item.file.type,
+                    // Pass metadata if available, otherwise defaults
+                    metadata: {
+                        title: item.file.name,
+                        author: "Unknown",
+                        category: "General",
+                        tags: ["upload"]
+                    }
                 }),
             });
 

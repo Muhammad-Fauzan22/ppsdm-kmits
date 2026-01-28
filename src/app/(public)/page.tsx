@@ -125,7 +125,7 @@ export default function LandingPage() {
                             Sistem Saraf Digital yang Membimbing Perjalanan 4 Tahunmu di ITS.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-                            <Link href="/auth/login" className="w-full sm:w-auto px-8 py-5 bg-white text-[#013880] font-bold rounded-2xl hover:bg-[#00d4ff] transition-all hover:scale-105 shadow-2xl shadow-[#00d4ff]/20 flex items-center justify-center gap-2 text-lg">
+                            <Link href="/try-assessment" className="w-full sm:w-auto px-8 py-5 bg-white text-[#013880] font-bold rounded-2xl hover:bg-[#00d4ff] transition-all hover:scale-105 shadow-2xl shadow-[#00d4ff]/20 flex items-center justify-center gap-2 text-lg">
                                 Mulai Assessment Gratis
                                 <Zap className="w-5 h-5 fill-current" />
                             </Link>

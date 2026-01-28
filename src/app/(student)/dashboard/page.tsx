@@ -21,7 +21,33 @@ import {
 import { cn } from "@/lib/utils";
 import { ASSETS } from "@/config/assets";
 
+import { createClient } from "@/lib/supabase/client";
+
 export default function StudentDashboard() {
+    const [dynamicResources, setDynamicResources] = React.useState<any[]>([]);
+    const supabase = React.useMemo(() => createClient(), []);
+
+    React.useEffect(() => {
+        const fetchBooks = async () => {
+            const { data } = await supabase.from('learning_resources').select('*').limit(5);
+            if (data) {
+                // Map Supabase 'learning_resources' to 'LearningContent' shape roughly
+                const mapped = data.map((item: any) => ({
+                    id: item.id || Math.random().toString(),
+                    title: item.title,
+                    type: 'Book' as const,
+                    provider: item.author || 'Library',
+                    language: 'id' as const,
+                    url: item.file_url || '#',
+                    tags: ['Dynamic'],
+                    thumbnail: item.preview_url || 'https://source.unsplash.com/random/400x600?book'
+                }));
+                setDynamicResources(mapped);
+            }
+        };
+        fetchBooks();
+    }, [supabase]);
+
     return (
         <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
 
@@ -152,7 +178,19 @@ export default function StudentDashboard() {
                                         <button className="text-sm font-medium text-primary hover:text-blue-400 transition-colors">View All</button>
                                     </div>
                                     <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin snap-x">
-                                        {/* Dynamic Recommendations based on Chart Data (Spiritual=62, Physical=78, etc) */}
+                                        {/* Dynamic Recommendations from Supabase */}
+                                        {dynamicResources.length > 0 && dynamicResources.map((res) => (
+                                            <BookCard
+                                                key={res.id}
+                                                title={res.title}
+                                                author={res.provider}
+                                                img={res.thumbnail}
+                                                url={res.url}
+                                                badge="Your Library"
+                                            />
+                                        ))}
+
+                                        {/* Fallback / Additional AI Recommendations */}
                                         {recommendResources({
                                             spiritual: 62,
                                             physical_health: 78,
