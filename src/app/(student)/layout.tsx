@@ -39,8 +39,8 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all ${isActive(item.href)
-                                    ? 'bg-its-light/10 text-its-light dark:bg-its-light/20 dark:text-white shadow-sm'
-                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                                ? 'bg-its-light/10 text-its-light dark:bg-its-light/20 dark:text-white shadow-sm'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                                 }`}
                         >
                             <span className={`material-symbols-outlined ${isActive(item.href) ? 'filled' : ''}`}>{item.icon}</span>
@@ -111,8 +111,8 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
             )}
 
             {/* Main Content Scrollable Area */}
-            <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden lg:pt-0 pt-16">
-                <div className="min-h-full p-4 lg:p-8 max-w-7xl mx-auto">
+            <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden pt-14 lg:pt-0">
+                <div className="min-h-full p-4 lg:p-8 max-w-7xl mx-auto pb-24 lg:pb-8">
                     {children}
                 </div>
             </main>

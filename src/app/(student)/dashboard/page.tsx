@@ -62,34 +62,34 @@ export default function StudentDashboard() {
                 <div className="max-w-7xl mx-auto flex flex-col gap-8">
 
                     {/* Header Row */}
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-4">
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                            <h1 className="text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                                 Good Morning, Alex
                             </h1>
-                            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-                                <Calendar className="w-5 h-5" />
-                                <span className="text-sm font-medium">Wednesday, Oct 25</span>
+                            <div className="flex flex-wrap items-center gap-2 text-slate-500 dark:text-slate-400">
+                                <Calendar className="w-4 h-4 md:w-5 md:h-5" />
+                                <span className="text-xs md:text-sm font-medium">Wednesday, Oct 25</span>
                                 <span className="mx-2">•</span>
-                                <CloudSun className="w-5 h-5 text-yellow-500" />
-                                <span className="text-sm font-medium">24°C</span>
+                                <CloudSun className="w-4 h-4 md:w-5 md:h-5 text-yellow-500" />
+                                <span className="text-xs md:text-sm font-medium">24°C</span>
                             </div>
                         </div>
 
                         {/* Mascot Tip Widget */}
-                        <div className="flex items-end gap-4 max-w-md w-full lg:w-auto">
+                        <div className="flex items-center sm:items-end gap-4 max-w-md w-full lg:w-auto bg-white/50 dark:bg-black/20 p-3 rounded-2xl border border-white/40 dark:border-white/5 backdrop-blur-sm lg:bg-transparent lg:p-0 lg:border-none">
                             {/* Mascot Avatar */}
-                            <div className="size-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-1 shrink-0 shadow-lg shadow-indigo-500/20">
+                            <div className="size-12 md:size-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-1 shrink-0 shadow-lg shadow-indigo-500/20">
                                 <div className="w-full h-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden">
-                                    <div className="relative w-10 h-10">
+                                    <div className="relative w-8 h-8 md:w-10 md:h-10">
                                         <Image src={ASSETS.mascot.seno_head} alt="Seno" fill className="object-contain" />
                                     </div>
                                 </div>
                             </div>
                             {/* Speech Bubble */}
-                            <div className="relative bg-white dark:bg-[#282e39] p-4 rounded-2xl rounded-bl-none shadow-md border border-slate-100 dark:border-slate-700/50 flex-1">
-                                <p className="text-sm text-slate-700 dark:text-slate-200 font-medium leading-relaxed">
-                                    &quot;Don&apos;t forget to check your <span className="text-primary font-bold">Spiritual axis</span> today! You&apos;re making great progress.&quot;
+                            <div className="relative p-2 md:p-4 rounded-2xl rounded-bl-none flex-1 lg:bg-white lg:dark:bg-[#282e39] lg:shadow-md lg:border lg:border-slate-100 lg:dark:border-slate-700/50">
+                                <p className="text-xs md:text-sm text-slate-700 dark:text-slate-200 font-medium leading-relaxed">
+                                    &quot;Don&apos;t forget to check your <span className="text-primary font-bold">Spiritual axis</span> today!&quot;
                                 </p>
                             </div>
                         </div>
@@ -114,9 +114,9 @@ export default function StudentDashboard() {
                                 </div>
 
                                 {/* Chart Area */}
-                                <div className="relative w-full h-[300px] flex items-center justify-center py-4">
+                                <div className="relative w-full h-[250px] md:h-[300px] flex items-center justify-center py-2 md:py-4">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={[
+                                        <RadarChart cx="50%" cy="50%" outerRadius="75%" data={[
                                             { subject: 'Intellectual', A: 85, fullMark: 100 },
                                             { subject: 'Spiritual', A: 62, fullMark: 100 },
                                             { subject: 'Physical', A: 78, fullMark: 100 },
@@ -124,7 +124,7 @@ export default function StudentDashboard() {
                                             { subject: 'Emotional', A: 72, fullMark: 100 },
                                         ]}>
                                             <PolarGrid stroke="#94a3b8" strokeOpacity={0.2} />
-                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} />
+                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 10, fontWeight: 600 }} />
                                             <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                                             <Radar name="Student" dataKey="A" stroke="#135bec" strokeWidth={3} fill="#135bec" fillOpacity={0.3} />
                                         </RadarChart>
