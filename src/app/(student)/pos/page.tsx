@@ -300,27 +300,51 @@ export default function StudentPersonalOSPage() {
                         >
                             <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-4 px-1">Quick Access Dock</h3>
                             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                                <Link className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all" href="#">
+                                <button
+                                    onClick={() => alert("Transcripts feature coming soon!")}
+                                    className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
+                                    aria-label="View Transcripts"
+                                >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-brand-blue transition-colors">article</span>
                                     <span className="text-sm font-medium text-white">Transcripts</span>
-                                </Link>
-                                <Link className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all" href="#">
+                                </button>
+                                <button
+                                    onClick={() => alert("Schedule feature coming soon!")}
+                                    className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
+                                    aria-label="View Schedule"
+                                >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-brand-accent transition-colors">calendar_month</span>
                                     <span className="text-sm font-medium text-white">Schedule</span>
-                                </Link>
-                                <Link className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all" href="#">
+                                </button>
+                                <Link
+                                    href="/library"
+                                    className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
+                                    aria-label="Open Library"
+                                >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-blue-400 transition-colors">local_library</span>
                                     <span className="text-sm font-medium text-white">Library</span>
                                 </Link>
-                                <Link className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all" href="#">
+                                <button
+                                    onClick={() => alert("Tuition payment feature coming soon!")}
+                                    className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
+                                    aria-label="View Tuition"
+                                >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-green-400 transition-colors">attach_money</span>
                                     <span className="text-sm font-medium text-white">Tuition</span>
-                                </Link>
-                                <Link className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all" href="#">
+                                </button>
+                                <Link
+                                    href="/community"
+                                    className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
+                                    aria-label="Go to Forum"
+                                >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-purple-400 transition-colors">forum</span>
                                     <span className="text-sm font-medium text-white">Forum</span>
                                 </Link>
-                                <button className="bg-transparent border-2 border-dashed border-white/10 hover:border-slate-400 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all text-slate-400 hover:text-white">
+                                <button
+                                    onClick={() => alert("Widget store coming soon!")}
+                                    className="bg-transparent border-2 border-dashed border-white/10 hover:border-slate-400 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all text-slate-400 hover:text-white min-h-[100px]"
+                                    aria-label="Add New Widget"
+                                >
                                     <span className="material-symbols-outlined text-3xl">add</span>
                                     <span className="text-sm font-medium">Add Widget</span>
                                 </button>
