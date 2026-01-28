@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PieChart, TrendingUp, Brain, Shield, Info, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 
-export default function FinancialResultsPage() {
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+function FinancialResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const supabase = createClient();
@@ -25,99 +30,106 @@ export default function FinancialResultsPage() {
         fetchResult();
     }, [id]);
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center">Calculating Financial Intelligence...</div>;
-    if (!result) return <div className="min-h-screen flex items-center justify-center">Record not found.</div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Memuat analisis finansial...</div>;
+    if (!result) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Data tidak ditemukan.</div>;
 
-    const getBgColor = (score: number) => {
-        if (score >= 80) return "bg-green-500";
-        if (score >= 60) return "bg-blue-500";
-        if (score >= 40) return "bg-yellow-500";
-        return "bg-red-500";
+    const chartData = {
+        labels: ['Literasi', 'Kebiasaan', 'Mindset', 'Keamanan'],
+        datasets: [
+            {
+                data: [
+                    result.financial_literacy_score,
+                    result.financial_behavior_score,
+                    result.financial_mindset_score,
+                    result.security_knowledge_score
+                ],
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(245, 158, 11, 0.8)',
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(239, 68, 68, 0.8)',
+                ],
+                borderWidth: 0,
+            },
+        ],
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] p-6 lg:p-12 font-sans">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 lg:p-12 font-sans text-slate-900 dark:text-white">
             <div className="max-w-5xl mx-auto space-y-8">
 
                 {/* Header */}
                 <div className="text-center md:text-left space-y-2">
-                    <div className="inline-block px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-bold uppercase tracking-wider mb-2">Scientific Report</div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Financial Intelligence Profile</h1>
-                    <p className="text-slate-500 max-w-2xl">Laporan ini dibuat menggunakan Tripartite Model (Knowledge, Behavior, Attitude) dan norma mahasiswa ITS.</p>
+                    <h1 className="text-3xl font-bold">Kesehatan Finansial & Karir</h1>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                        <Shield className="w-3 h-3" /> Financial Health Check Level 1
+                    </div>
                 </div>
 
-                {/* Main Score Card */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="md:col-span-2 bg-white dark:bg-[#151b26] rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
-
-                        <div className="flex-1 z-10">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-1">Status Keuangan</h3>
-                            <div className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-2">{result.financial_level}</div>
-                            <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-                                Skor komposit Anda <strong>{result.composite_score}</strong>. Anda berada di <strong>top {100 - result.percentile_rank}%</strong> mahasiswa.
-                                {result.composite_score < 50 ? " Anda perlu segera meningkatkan literasi dasar untuk menghindari risiko finansial di masa depan." : " Kemampuan Anda dalam mengelola sumber daya sudah sangat baik."}
-                            </p>
-                        </div>
-
-                        <div className="w-40 h-40 relative flex-shrink-0">
-                            <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-                                <path className="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
-                                <path className={cn("transition-all duration-1000", result.composite_score >= 70 ? "text-green-500" : result.composite_score >= 50 ? "text-blue-500" : "text-yellow-500")} strokeDasharray={`${result.composite_score}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
-                            </svg>
+                    {/* Main Score Block */}
+                    <div className="md:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-8">
+                        <div className="relative w-48 h-48 shrink-0">
+                            <Doughnut data={chartData} options={{ cutout: '70%', plugins: { legend: { display: false } } }} />
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-3xl font-bold">{Math.round(result.composite_score)}</span>
-                                <span className="text-xs text-slate-400 uppercase">Score</span>
+                                <div className="text-4xl font-black">{result.overall_score}</div>
+                                <div className="text-xs text-slate-500 uppercase font-bold">Total Score</div>
+                            </div>
+                        </div>
+                        <div className="flex-1 space-y-4">
+                            <h2 className="text-2xl font-bold">{result.financial_persona}</h2>
+                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Anda memiliki profil finansial yang <strong>{result.risk_tolerance}</strong>.
+                                {result.financial_literacy_score > 70
+                                    ? " Pemahaman dasar Anda tentang investasi dan manajemen uang sudah sangat baik."
+                                    : " Disarankan untuk mulai mempelajari instrumen investasi dasar."}
+                            </p>
+                            <div className="flex gap-4 pt-2">
+                                <div className="flex-1 bg-slate-50 dark:bg-slate-800 p-4 rounded-xl">
+                                    <div className="text-xs text-slate-400 uppercase font-bold">Risk Profile</div>
+                                    <div className="font-bold text-lg">{result.risk_tolerance}</div>
+                                </div>
+                                <div className="flex-1 bg-slate-50 dark:bg-slate-800 p-4 rounded-xl">
+                                    <div className="text-xs text-slate-400 uppercase font-bold">Est. Tabungan</div>
+                                    <div className="font-bold text-lg">{result.savings_ratio_estimate}%</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Breakdown */}
-                    <div className="space-y-4">
-                        <ScoreRow title="Knowledge" score={result.knowledge_score} icon={<Brain className="w-4 h-4" />} desc="Pemahaman Konsep (Bunga, Inflasi)" />
-                        <ScoreRow title="Behavior" score={result.behavior_score} icon={<TrendingUp className="w-4 h-4" />} desc="Tindakan Nyata (Budgeting, Saving)" />
-                        <ScoreRow title="Attitude" score={result.attitude_score} icon={<Shield className="w-4 h-4" />} desc="Pola Pikir (Risk, Future View)" />
-
-                        <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl mt-4">
-                            <h4 className="font-bold text-sm mb-2 flex items-center gap-2"><Info className="w-4 h-4 text-blue-500" /> Analisis Gap</h4>
-                            <p className="text-xs text-slate-600 dark:text-slate-400">
-                                {result.behavior_score < result.knowledge_score
-                                    ? "Knowledge-Action Gap terdeteksi. Anda 'tahu' teorinya tapi belum 'melakukannya'."
-                                    : "Konsistensi yang baik antara pengetahuan dan tindakan."}
-                            </p>
+                    {/* Recommendation Block */}
+                    <div className="bg-emerald-600 rounded-3xl p-8 text-white shadow-xl shadow-emerald-500/20 flex flex-col justify-between">
+                        <div>
+                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                                <ArrowUpRight className="w-5 h-5" /> Next Steps
+                            </h3>
+                            {/* Recommendations */}
+                            <div className="space-y-4">
+                                <RecCard
+                                    title="Mulai Investasi"
+                                    desc="Pelajari instrumen rendah risiko seperti Reksadana Pasar Uang."
+                                    cta="Lihat Modul"
+                                    urgent={result.financial_behavior_score < 50}
+                                />
+                                <RecCard
+                                    title="Audit Pengeluaran"
+                                    desc="Track semua pengeluaran kecil selama 7 hari."
+                                    cta="Template"
+                                    urgent={false}
+                                />
+                            </div>
                         </div>
+                        <Button variant="secondary" className="w-full mt-8 bg-white text-emerald-700 hover:bg-emerald-50 font-bold">
+                            Lihat Modul Literasi
+                        </Button>
                     </div>
-                </div>
-
-                {/* Recommendations */}
-                <h3 className="text-xl font-bold">Rekomendasi Pengembangan</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <RecCard
-                        title="Mulai Investasi"
-                        desc="Pelajari instrumen rendah risiko seperti Reksadana Pasar Uang untuk melawan inflasi."
-                        cta="Lihat Modul Investasi"
-                        urgent={result.behavior_score < 50}
-                    />
-                    <RecCard
-                        title="Otomatisasi Tabungan"
-                        desc="Gunakan fitur autodebet bank untuk 'membayar diri sendiri' di awal bulan."
-                        cta="Setup Auto-Debit"
-                        urgent={result.behavior_score < 60}
-                    />
-                    <RecCard
-                        title="Audit Pengeluaran"
-                        desc="Track semua pengeluaran kecil (Latte Factor) selama 7 hari ke depan."
-                        cta="Download Template"
-                        urgent={false} // General advice
-                    />
                 </div>
 
                 <div className="flex justify-center pt-8">
                     <Link href="/dashboard">
-                        <Button size="lg" className="rounded-full px-8">Ke Dashboard Utama</Button>
+                        <Button size="lg" variant="outline" className="rounded-full px-8 border-slate-300 dark:border-slate-600">Kembali ke Dashboard</Button>
                     </Link>
                 </div>
-
             </div>
         </div>
     );
@@ -145,15 +157,23 @@ function ScoreRow({ title, score, icon, desc }: any) {
 
 function RecCard({ title, desc, cta, urgent }: any) {
     return (
-        <div className={cn("p-6 rounded-xl border-2 flex flex-col justify-between h-full", urgent ? "border-red-100 bg-red-50/50 dark:bg-red-900/10 dark:border-red-900/30" : "border-slate-100 bg-white dark:bg-[#151b26] dark:border-slate-800")}>
+        <div className={cn("p-4 rounded-xl border flex flex-col justify-between mb-4 bg-emerald-700/50 border-emerald-500/30")}>
             <div>
-                {urgent && <div className="text-xs font-bold text-red-600 uppercase mb-2 flex items-center gap-1"><Info className="w-3 h-3" /> Prioritas Tinggi</div>}
-                <h4 className="font-bold text-lg mb-2">{title}</h4>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">{desc}</p>
+                {urgent && <div className="text-[10px] font-bold text-red-200 uppercase mb-1 flex items-center gap-1"><Info className="w-3 h-3" /> Prioritas Tinggi</div>}
+                <h4 className="font-bold text-sm text-white mb-1">{title}</h4>
+                <p className="text-xs text-emerald-100 mb-2 leading-relaxed">{desc}</p>
             </div>
-            <div className="text-blue-600 text-sm font-bold flex items-center gap-1 cursor-pointer hover:underline">
-                {cta} <ArrowUpRight className="w-4 h-4" />
+            <div className="text-white text-xs font-bold flex items-center gap-1 cursor-pointer hover:underline">
+                {cta} <ArrowUpRight className="w-3 h-3" />
             </div>
         </div>
+    );
+}
+
+export default function FinancialResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Loading Report...</div>}>
+            <FinancialResultsContent />
+        </Suspense>
     );
 }

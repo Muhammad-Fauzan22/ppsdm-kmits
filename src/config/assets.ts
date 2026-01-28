@@ -9,7 +9,8 @@ export const ASSETS = {
         logo_biru: "https://drive.google.com/uc?export=view&id=1cJAFXk0jpx7L-WOGD7jE4e3uRPerzmfQ"
     },
     mascot: {
-        seno_studio: "https://drive.google.com/uc?export=view&id=1vj3fvkqGjIVDV1IufgYieVWlorvp-ew-"
+        seno_studio: "https://drive.google.com/uc?export=view&id=1vj3fvkqGjIVDV1IufgYieVWlorvp-ew-",
+        seno_head: "https://drive.google.com/uc?export=view&id=1vj3fvkqGjIVDV1IufgYieVWlorvp-ew-"
     },
     organization: {
         dikti_warna: "https://drive.google.com/uc?export=view&id=1uMUCLcbvymaCiLy1lZ6YBmJq-pWUa9NP",

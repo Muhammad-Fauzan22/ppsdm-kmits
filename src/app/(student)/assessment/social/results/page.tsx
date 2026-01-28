@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Brain, HeartHandshake, Users, Award, Crown, Lightbulb, ArrowRight, TrendingUp } from "lucide-react";
+import { Brain, HeartHandshake, Users, Award, Crown, Lightbulb, ArrowRight, TrendingUp, Activity } from "lucide-react";
 import Link from "next/link";
 
-export default function SocialResultsPage() {
+function SocialResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const supabase = createClient();
@@ -163,4 +164,10 @@ function Recommendation({ text, difficulty }: any) {
     );
 }
 
-import { Activity } from "lucide-react"; // Import missing icon
+export default function SocialResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Menganalisis Profil Sosial...</div>}>
+            <SocialResultsContent />
+        </Suspense>
+    );
+}

@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Trophy, TrendingUp, BookOpen, Shield, Medal, Target, Star, Lock } from "lucide-react";
+import { Trophy, TrendingUp, BookOpen, Shield, Medal, Target, Star, Lock, Scale } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-export default function CharacterResultsPage() {
+function CharacterResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const supabase = createClient();
@@ -176,4 +177,10 @@ function RecommendationCard({ title, desc, highlight }: any) {
     );
 }
 
-import { Scale } from "lucide-react"; 
+export default function CharacterResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Loading Report...</div>}>
+            <CharacterResultsContent />
+        </Suspense>
+    );
+} 

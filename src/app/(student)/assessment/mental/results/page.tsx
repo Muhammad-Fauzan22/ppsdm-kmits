@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { HeartPulse, Activity, Brain, Users, AlertTriangle, Phone, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export default function MentalResultsPage() {
+function MentalResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const supabase = createClient();
@@ -147,5 +148,13 @@ function ScoreBar({ title, score, icon, desc }: any) {
             </div>
             <p className="text-xs text-slate-400 dark:text-emerald-200/50">{desc}</p>
         </div>
+    );
+}
+
+export default function MentalResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading Report...</div>}>
+            <MentalResultsContent />
+        </Suspense>
     );
 }

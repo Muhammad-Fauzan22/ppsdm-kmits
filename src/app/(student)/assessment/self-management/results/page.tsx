@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Timer, AlertTriangle, CheckCircle, Target, Zap } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-export default function SMResultsPage() {
+function SMResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const supabase = createClient();
@@ -120,6 +121,11 @@ export default function SMResultsPage() {
                     </div>
                 </div>
 
+                <div className="flex justify-center pt-6">
+                    <Link href="/dashboard">
+                        <Button size="lg" variant="outline" className="rounded-full px-8 border-slate-300 dark:border-slate-600">Kembali ke Dashboard</Button>
+                    </Link>
+                </div>
             </div>
         </div>
     );
@@ -139,5 +145,13 @@ function SubscaleCard({ title, score, icon, description }: any) {
                 <div className={cn("h-full rounded-full transition-all", isGood ? "bg-green-500" : "bg-amber-500")} style={{ width: `${score}%` }}></div>
             </div>
         </div>
+    );
+}
+
+export default function SMResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading Report...</div>}>
+            <SMResultsContent />
+        </Suspense>
     );
 }

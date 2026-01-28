@@ -1,14 +1,34 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Download, Share2, Brain, TrendingUp, Lightbulb, Target, BookOpen } from "lucide-react";
 import Link from "next/link";
+import { Radar } from "react-chartjs-2";
 import { cn } from "@/lib/utils";
+import {
+    Chart as ChartJS,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend,
+} from "chart.js";
 
-export default function CognitiveResultsPage() {
+ChartJS.register(
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend
+);
+
+function CognitiveResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const supabase = createClient();
@@ -18,103 +38,101 @@ export default function CognitiveResultsPage() {
     useEffect(() => {
         const fetchResult = async () => {
             if (!id) return;
-            const { data, error } = await supabase
-                .from('cognitive_assessments')
-                .select('*')
-                .eq('assessment_id', id)
-                .single();
-
+            const { data } = await supabase.from('cognitive_assessments').select('*').eq('assessment_id', id).single();
             if (data) setResult(data);
             setLoading(false);
         };
         fetchResult();
     }, [id]);
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center">Loading Report...</div>;
-    if (!result) return <div className="min-h-screen flex items-center justify-center">Result not found.</div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Memuat analisis kognitif...</div>;
+    if (!result) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Data tidak ditemukan.</div>;
 
-    // --- HELPER FOR UI ---
-    const getLevelColor = (percentile: number) => {
-        if (percentile >= 90) return "text-purple-600 bg-purple-50 border-purple-200";
-        if (percentile >= 75) return "text-blue-600 bg-blue-50 border-blue-200";
-        if (percentile >= 50) return "text-green-600 bg-green-50 border-green-200";
-        return "text-orange-600 bg-orange-50 border-orange-200";
+    const chartData = {
+        labels: ['Memori', 'Fokus', 'Problem Solving', 'Logika', 'Kecepatan'],
+        datasets: [
+            {
+                label: 'Skor Anda',
+                data: [
+                    result.memory_score,
+                    result.focus_score,
+                    result.problem_solving_score,
+                    result.logic_score,
+                    result.speed_score
+                ],
+                backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                borderColor: 'rgba(99, 102, 241, 1)',
+                borderWidth: 2,
+            },
+        ],
+    };
+
+    const chartOptions = {
+        scales: {
+            r: {
+                angleLines: { color: 'rgba(0,0,0,0.1)' },
+                grid: { color: 'rgba(0,0,0,0.1)' },
+                pointLabels: { font: { size: 12 } },
+                suggestedMin: 0,
+                suggestedMax: 100,
+            }
+        }
     };
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1120] font-sans text-slate-900 dark:text-slate-100 p-6 lg:p-12">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 lg:p-12 font-sans text-slate-900 dark:text-white">
             <div className="max-w-5xl mx-auto space-y-8">
-
-                {/* HEADER */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wide">Scientific Report</span>
-                            <span className="text-slate-400 text-sm">{new Date(result.completed_at).toLocaleDateString()}</span>
-                        </div>
-                        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Profil Kognitif & Intelektual</h1>
-                        <p className="text-slate-500">Berdasarkan validasi pada 2,154 mahasiswa ITS</p>
-                    </div>
-                    <div className="flex gap-3">
-                        <Button variant="outline" className="gap-2"><Download className="w-4 h-4" /> PDF</Button>
-                        <Button variant="outline" className="gap-2"><Share2 className="w-4 h-4" /> Share</Button>
+                        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
+                            Profil Kognitif & Kecerdasan
+                        </h1>
+                        <p className="text-slate-500 dark:text-slate-400 mt-1">
+                            Assessment ID: {result.assessment_id.slice(0, 8)} • {new Date(result.created_at).toLocaleDateString()}
+                        </p>
                     </div>
                 </div>
 
-                {/* OVERALL SCORE CARD */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="md:col-span-2 bg-white dark:bg-[#151b26] rounded-2xl p-8 shadow-sm border border-slate-200 dark:border-slate-800 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-
-                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                            <div className="flex-1">
-                                <h3 className="text-lg font-medium text-slate-500 mb-1">Overall Cognitive Index</h3>
-                                <div className="text-5xl font-bold text-slate-900 dark:text-white mb-2">
-                                    {result.cognitive_index} <span className="text-2xl text-slate-400 font-normal">/ 100</span>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Score Card */}
+                    <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl border border-slate-100 dark:border-slate-800">
+                        <div className="md:flex items-center gap-8">
+                            <div className="w-full md:w-1/2 aspect-square relative">
+                                <Radar data={chartData} options={chartOptions} />
+                            </div>
+                            <div className="flex-1 space-y-6 mt-6 md:mt-0">
+                                <div>
+                                    <div className="text-sm uppercase tracking-wider font-bold text-slate-400 mb-1">Total IQ Estimate</div>
+                                    <div className="text-6xl font-black text-indigo-600 dark:text-indigo-400 leading-none">
+                                        {result.iq_estimate}
+                                    </div>
+                                    <div className="text-sm font-medium text-slate-500 mt-2">
+                                        Top {100 - result.percentile_rank}% Populasi Mahasiswa
+                                    </div>
                                 </div>
-                                <div className={cn("inline-flex items-center px-3 py-1 rounded-lg border text-sm font-bold mb-4", getLevelColor(result.overall_percentile))}>
-                                    LEVEL: {result.development_level.toUpperCase()}
-                                </div>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                                    Skor Anda lebih tinggi dari <strong className="text-slate-900 dark:text-white">{Math.round(result.overall_percentile)}%</strong> mahasiswa ITS lainnya.
-                                    Ini menunjukkan kapasitas kognitif yang <strong>{result.development_level}</strong> untuk menangani tantangan akademik kompleks.
+                                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    Kapasitas kognitif Anda menunjukkan kekuatan signifikan dalam <strong>Problem Solving</strong> dan <strong>Logika</strong>. Ini menunjukkan potensi tinggi untuk bidang analitis kompleks.
                                 </p>
                             </div>
-
-                            {/* Visual Gauge (Simple CSS) */}
-                            <div className="w-40 h-40 relative flex items-center justify-center">
-                                <svg className="w-full h-full transform -rotate-90">
-                                    <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-100 dark:text-slate-800" />
-                                    <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" strokeDasharray={440} strokeDashoffset={440 - (440 * result.overall_percentile) / 100} className="text-blue-600 transition-all duration-1000" />
-                                </svg>
-                                <div className="absolute text-center">
-                                    <span className="text-3xl font-bold">{Math.round(result.overall_percentile)}</span>
-                                    <span className="block text-[10px] text-slate-400 uppercase">Percentile</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
-                    {/* QUICK STATS */}
+                    {/* Quick Stats */}
                     <div className="space-y-4">
-                        <div className="bg-white dark:bg-[#151b26] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Brain className="w-5 h-5 text-purple-500" />
-                                <h4 className="font-bold text-sm text-slate-700 dark:text-slate-300">Dominant Trait</h4>
-                            </div>
-                            <p className="text-lg font-semibold">Kesadaran Metakognitif</p>
-                            {/* In real logic, calculate max(subscores) */}
-                        </div>
-                        <div className="bg-blue-600 text-white p-5 rounded-xl shadow-lg shadow-blue-500/20">
-                            <h4 className="font-bold text-sm opacity-90 mb-2">Recommendation</h4>
-                            <p className="text-sm font-medium leading-relaxed">
-                                Tingkatkan <strong>Creative Self-Efficacy</strong> Anda dengan berpartisipasi dalam PKM (Program Kreativitas Mahasiswa).
-                            </p>
+                        {/* Placeholder for future quick stats if needed */}
+                        <div className="bg-indigo-600 rounded-2xl p-6 text-white shadow-lg shadow-indigo-500/20">
+                            <h3 className="font-bold mb-2 flex items-center gap-2"><Lightbulb className="w-4 h-4" /> Rekomendasi Karir/Studi</h3>
+                            <ul className="text-sm space-y-2 opacity-90 list-disc list-inside">
+                                <li>Data Science & AI</li>
+                                <li>Strategic Management</li>
+                                <li>System Architecture</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                {/* DIMENSION DETAILS */}
+                {/* Dimension Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <DimensionCard
                         title="Berpikir Kritis"
@@ -173,7 +191,6 @@ export default function CognitiveResultsPage() {
                         <Button size="lg" className="px-8 rounded-full">Kembali ke Dashboard</Button>
                     </Link>
                 </div>
-
             </div>
         </div>
     );
@@ -206,5 +223,13 @@ function ActionCard({ step, title, desc }: any) {
                 <p className="text-sm text-slate-500">{desc}</p>
             </div>
         </div>
+    );
+}
+
+export default function CognitiveResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Loading Report...</div>}>
+            <CognitiveResultsContent />
+        </Suspense>
     );
 }
