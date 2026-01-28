@@ -14,30 +14,58 @@ const config: Config = {
                 "2xl": "1.5rem",
             },
             colors: {
-                // WARNA UTAMA BARU
-                primary: "#135bec",
+                // --- SEMANTIC THEME TOKENS (Mapped to globals.css) ---
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
+                },
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
+                },
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                },
+                popover: {
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
+                },
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
+                },
+
+                // --- LEGACY / CUSTOM COLORS (Preserved) ---
                 "its-red": "#ef4444",
                 "background-light": "#f6f6f8",
                 "background-dark": "#101622",
                 "card-dark": "#1c1f27",
                 "border-dark": "#282e39",
-
-                // Design System Tokens
                 "its-blue": "#013880",
                 "its-gold": "#FFD700",
                 "its-dark": "#0A0F1A",
                 "brand-blue": "#135bec",
                 "brand-accent": "#00d4ff",
-
-                // Student Portal Specific
                 "student-primary": "#003366",
                 "student-bg": "#f5f7f8",
                 "student-dark": "#0f1923",
                 "accent-green": "#078838",
                 "text-dark": "#101418",
                 "text-light": "#5e758d",
-
-                // Mobile & Admin Specific
                 "sidebar-dark": "#0B0E14",
                 "primary-highlight": "#4DA3FF",
                 "primary-100": "#dbeafe",
@@ -49,7 +77,7 @@ const config: Config = {
                 "text-subtle": "#9aabbc",
                 "student-primary-light": "#004080",
 
-                // WARNA PRIMER ITS
+                // WARNA PRIMER ITS (Legacy object)
                 its: {
                     DEFAULT: "#013880",
                     light: "#007BC0",
@@ -103,6 +131,7 @@ const config: Config = {
                 'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
                 marquee: 'marquee 25s linear infinite',
                 bounce: 'bounce 1s infinite',
+                'spin-slow': 'spin 3s linear infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -143,6 +172,10 @@ const config: Config = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        require("tailwindcss-animate"),
+        require("@tailwindcss/forms"),
+        require("@tailwindcss/container-queries"),
+    ],
 };
 export default config;

@@ -14,5 +14,9 @@ export const ASSETS = {
     organization: {
         dikti_warna: "https://drive.google.com/uc?export=view&id=1uMUCLcbvymaCiLy1lZ6YBmJq-pWUa9NP",
         saintek_putih: "https://drive.google.com/uc?export=view&id=1NaPWYRv0Lv5ymCQJBxziY7evUVj1_TTB"
+    },
+    avatar: {
+        student: "https://ui-avatars.com/api/?name=Student+User&background=0D8ABC&color=fff",
+        lecturer: "https://ui-avatars.com/api/?name=Lecturer+User&background=6B7280&color=fff",
     }
 };

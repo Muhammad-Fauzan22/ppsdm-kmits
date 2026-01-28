@@ -1,196 +1,277 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from "recharts";
-import { motion } from "framer-motion";
+import {
+    LayoutDashboard,
+    Target,
+    BookOpen,
+    User,
+    Calendar,
+    CloudSun,
+    Zap,
+    Clock,
+    ChevronRight,
+    Bookmark,
+    Flame,
+    Trophy
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ASSETS } from "@/config/assets";
 
 export default function StudentDashboard() {
-    const competenceData = [
-        { subject: 'Leadership', A: 120, fullMark: 150 },
-        { subject: 'Tech', A: 98, fullMark: 150 },
-        { subject: 'Global', A: 86, fullMark: 150 },
-        { subject: 'Social', A: 99, fullMark: 150 },
-        { subject: 'Ethics', A: 85, fullMark: 150 },
-        { subject: 'Spirit', A: 65, fullMark: 150 },
-        { subject: 'Creative', A: 100, fullMark: 150 },
-        { subject: 'Comms', A: 110, fullMark: 150 },
-    ];
-
-    const activities = [
-        { name: "Staff of ITS Expo 2024", date: "Oct 24, 2023", category: "Leadership", status: "Approved" },
-        { name: "Workshop: Data Science 101", date: "Oct 20, 2023", category: "Technology", status: "Pending" },
-        { name: "Volunteering at Local Shelter", date: "Sep 15, 2023", category: "Social", status: "Rejected" },
-        { name: "National Debate Competition", date: "Aug 28, 2023", category: "Communication", status: "Approved" },
-    ];
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
-    };
-
     return (
-        <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="space-y-6 text-white"
-        >
-            <div className="grid grid-cols-12 gap-6 mb-6">
+        <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
 
-                {/* Profile Card */}
-                <motion.div variants={itemVariants} className="col-span-12 lg:col-span-4 glass-card rounded-2xl p-6 border border-white/10 flex flex-col items-center justify-center text-center shadow-lg hover:border-brand-blue/30 transition-colors group">
-                    <div className="size-24 rounded-full bg-orange-200 border-4 border-card-dark overflow-hidden mb-4 shadow-xl group-hover:scale-105 transition-transform">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" className="w-full h-full" alt="Avatar" />
+            {/* Side Navigation (Desktop) */}
+            <aside className="w-64 hidden md:flex flex-col border-r border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-[#111318]/90 backdrop-blur-md z-20">
+                <div className="p-6 flex items-center gap-3">
+                    <div className="size-10 rounded-xl bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                        <span className="material-symbols-outlined text-[28px]">hub</span>
                     </div>
-                    <h2 className="text-xl font-bold text-white mb-1">Mahasiswa ITS</h2>
-                    <p className="text-sm text-slate-400 mb-4">Department of Informatics</p>
-                    <div className="bg-white/5 rounded-full px-4 py-1 text-xs font-mono text-slate-300 mb-6 border border-white/5">NRP: 5025201001</div>
+                    <div>
+                        <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Nexus</h1>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Student Portal</p>
+                    </div>
+                </div>
 
-                    <div className="w-full bg-black/20 rounded-xl p-4 border border-white/5">
-                        <div className="flex justify-between items-end mb-2">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase">Holistic Score</span>
-                            <div className="text-right">
-                                <span className="text-brand-blue font-bold text-xs uppercase tracking-wider block">Excellent</span>
-                                <span className="text-2xl font-bold text-yellow-400">780</span>
-                                <span className="text-xs text-slate-500">/1000</span>
+                <nav className="flex-1 px-4 flex flex-col gap-2 mt-4">
+                    <NavItem icon={LayoutDashboard} label="Dashboard" active />
+                    <NavItem icon={Target} label="Missions" />
+                    <NavItem icon={BookOpen} label="Resources" />
+                    <NavItem icon={User} label="Profile" />
+                </nav>
+
+                <div className="p-4 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="size-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-center bg-cover border border-slate-300 dark:border-slate-600" style={{ backgroundImage: `url('${ASSETS.avatar.student}')` }}></div>
+                        <div className="flex flex-col">
+                            <p className="text-sm font-semibold text-slate-900 dark:text-white">Alex Morgan</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Computer Science</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            {/* Main Content */}
+            <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+                {/* Background Decorations */}
+                <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none z-0"></div>
+                <div className="absolute -top-[100px] right-[10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+
+                {/* Scrollable Area */}
+                <div className="flex-1 overflow-y-auto z-10 p-4 md:p-8 lg:p-10 scrollbar-thin">
+                    <div className="max-w-7xl mx-auto flex flex-col gap-8">
+
+                        {/* Header Row */}
+                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
+                            <div className="flex flex-col gap-2">
+                                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                                    Good Morning, Alex
+                                </h1>
+                                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                                    <Calendar className="w-5 h-5" />
+                                    <span className="text-sm font-medium">Wednesday, Oct 25</span>
+                                    <span className="mx-2">•</span>
+                                    <CloudSun className="w-5 h-5 text-yellow-500" />
+                                    <span className="text-sm font-medium">24°C</span>
+                                </div>
+                            </div>
+
+                            {/* Mascot Tip Widget */}
+                            <div className="flex items-end gap-4 max-w-md w-full lg:w-auto">
+                                {/* Mascot Avatar */}
+                                <div className="size-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-1 shrink-0 shadow-lg shadow-indigo-500/20">
+                                    <div className="w-full h-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden">
+                                        <div className="relative w-10 h-10">
+                                            <Image src={ASSETS.mascot.seno_head} alt="Seno" fill className="object-contain" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Speech Bubble */}
+                                <div className="relative bg-white dark:bg-[#282e39] p-4 rounded-2xl rounded-bl-none shadow-md border border-slate-100 dark:border-slate-700/50 flex-1">
+                                    <p className="text-sm text-slate-700 dark:text-slate-200 font-medium leading-relaxed">
+                                        &quot;Don&apos;t forget to check your <span className="text-primary font-bold">Spiritual axis</span> today! You&apos;re making great progress.&quot;
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div className="h-full bg-yellow-400 w-[78%] rounded-full shadow-[0_0_10px_rgba(250,204,21,0.5)]"></div>
+
+                        {/* Main Grid */}
+                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+                            {/* Left Column (Main Stats & content) */}
+                            <div className="xl:col-span-8 flex flex-col gap-6">
+
+                                {/* Radar Chart Widget */}
+                                <div className="bg-white/60 dark:bg-[#161e2c]/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Holistic Development Radar</h2>
+                                            <p className="text-sm text-slate-500 dark:text-slate-400">Your growth across 9 core dimensions</p>
+                                        </div>
+                                        <div className="px-3 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wider border border-green-500/20">
+                                            Balanced
+                                        </div>
+                                    </div>
+
+                                    {/* Chart Area */}
+                                    <div className="relative w-full h-[300px] flex items-center justify-center py-4">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={[
+                                                { subject: 'Intellectual', A: 85, fullMark: 100 },
+                                                { subject: 'Spiritual', A: 62, fullMark: 100 },
+                                                { subject: 'Physical', A: 78, fullMark: 100 },
+                                                { subject: 'Social', A: 90, fullMark: 100 },
+                                                { subject: 'Emotional', A: 72, fullMark: 100 },
+                                            ]}>
+                                                <PolarGrid stroke="#94a3b8" strokeOpacity={0.2} />
+                                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} />
+                                                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                                <Radar name="Student" dataKey="A" stroke="#135bec" strokeWidth={3} fill="#135bec" fillOpacity={0.3} />
+                                            </RadarChart>
+                                        </ResponsiveContainer>
+                                    </div>
+
+                                    {/* Legend / Labels */}
+                                    <div className="grid grid-cols-3 md:grid-cols-5 gap-2 pt-2 border-t border-slate-200 dark:border-slate-700/50">
+                                        <StatsPill label="Intellectual" value="85%" color="text-primary" />
+                                        <StatsPill label="Spiritual" value="62%" color="text-yellow-500" />
+                                        <StatsPill label="Physical" value="78%" color="text-primary" />
+                                        <StatsPill label="Social" value="90%" color="text-primary" />
+                                        <StatsPill label="Emotional" value="72%" color="text-primary" />
+                                    </div>
+                                </div>
+
+                                {/* Resources Widget */}
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex items-center justify-between px-1">
+                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recent Resources</h2>
+                                        <button className="text-sm font-medium text-primary hover:text-blue-400 transition-colors">View All</button>
+                                    </div>
+                                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin snap-x">
+                                        <BookCard title="Intro to Logic" author="Philosophy Dept." img="https://source.unsplash.com/random/400x600?book,logic" />
+                                        <BookCard title="Modern Ethics" author="Humanities" img="https://source.unsplash.com/random/400x600?book,ethics" />
+                                        <BookCard title="Leadership 101" author="Business School" img="https://source.unsplash.com/random/400x600?book,leader" />
+                                        <BookCard title="The Art of Focus" author="Self Development" img="https://source.unsplash.com/random/400x600?book,focus" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Column (Sidebar Widgets) */}
+                            <div className="xl:col-span-4 flex flex-col gap-6">
+
+                                {/* XP Tracker Widget */}
+                                <div className="bg-white/60 dark:bg-[#161e2c]/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="size-12 rounded-full bg-yellow-500/20 text-yellow-500 flex items-center justify-center border border-yellow-500/30">
+                                            <Trophy className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-base font-bold text-slate-900 dark:text-white">Level 4 Scholar</p>
+                                            <p className="text-sm text-slate-500 dark:text-slate-400">Keep going, you&apos;re close!</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">
+                                        <span>1250 XP</span>
+                                        <span>2000 XP</span>
+                                    </div>
+                                    <div className="h-3 w-full bg-slate-200 dark:bg-slate-700/50 rounded-full overflow-hidden">
+                                        <div className="h-full bg-gradient-to-r from-primary to-blue-400 rounded-full" style={{ width: "62%" }}></div>
+                                    </div>
+                                    <p className="text-xs text-center mt-3 text-slate-400 dark:text-slate-500 font-medium">Next: Level 5 Visionary</p>
+                                </div>
+
+                                {/* Mission Card */}
+                                <div className="relative overflow-hidden rounded-2xl bg-[#0f172a] border border-slate-700 shadow-lg group">
+                                    <div className="absolute inset-0 opacity-40 mix-blend-overlay bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/random/800x600?meditation,space')" }}></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+
+                                    <div className="relative p-6 flex flex-col gap-4">
+                                        <div className="flex justify-between items-start">
+                                            <span className="px-2 py-1 rounded bg-white/10 backdrop-blur text-xs font-bold text-white border border-white/10">Recommended</span>
+                                            <Bookmark className="w-5 h-5 text-white/50" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-white mb-1">Spiritual Assessment</h3>
+                                            <p className="text-sm text-slate-300">Complete your monthly reflection to unlock new insights.</p>
+                                        </div>
+                                        <div className="flex items-center gap-3 mt-2">
+                                            <div className="flex items-center gap-1 text-yellow-400 text-xs font-bold">
+                                                <Zap className="w-4 h-4" />
+                                                <span>+150 XP</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                                                <Clock className="w-4 h-4" />
+                                                <span>10 min</span>
+                                            </div>
+                                        </div>
+                                        <button className="w-full py-3 mt-2 rounded-xl bg-primary hover:bg-blue-600 text-white font-bold transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
+                                            <span>Start Mission</span>
+                                            <ChevronRight className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Quick Stats */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="bg-white/60 dark:bg-[#161e2c]/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 shadow-sm">
+                                        <Flame className="w-8 h-8 text-orange-500 mb-1" />
+                                        <p className="text-2xl font-bold text-slate-900 dark:text-white">12</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Day Streak</p>
+                                    </div>
+                                    <div className="bg-white/60 dark:bg-[#161e2c]/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 shadow-sm">
+                                        <Trophy className="w-8 h-8 text-purple-500 mb-1" />
+                                        <p className="text-2xl font-bold text-slate-900 dark:text-white">5</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Badges</p>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </motion.div>
-
-                {/* Welcome Banner */}
-                <motion.div variants={itemVariants} className="col-span-12 lg:col-span-8 bg-brand-blue rounded-2xl overflow-hidden relative border border-brand-blue/50 flex flex-col justify-center p-10 group shadow-lg shadow-brand-blue/20">
-                    {/* Background Accent */}
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-                    <div className="absolute -right-20 -top-20 size-64 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-colors duration-500"></div>
-
-                    <div className="relative z-10 max-w-lg">
-                        <div className="inline-flex items-center gap-2 bg-white/10 text-white text-[10px] font-bold px-2 py-1 rounded mb-4 border border-white/20 backdrop-blur-md">
-                            <span className="bg-yellow-400 text-black px-1.5 py-0.5 rounded text-[9px]">UPDATE</span>
-                            Term 2024/2025 Started
-                        </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Halo, Mahasiswa!</h2>
-                        <p className="text-blue-100 mb-8 leading-relaxed">
-                            Siap kembangkan potensimu hari ini? Cek aktivitas terbaru atau input kegiatan barumu sekarang.
-                        </p>
-                        <div className="flex flex-wrap gap-4">
-                            <button className="bg-white text-brand-blue hover:bg-blue-50 font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-lg active:scale-95">
-                                <span className="material-symbols-outlined text-lg">add_circle</span> Input Kegiatan
-                            </button>
-                            <Link href="#" className="bg-blue-800/50 hover:bg-blue-800/70 text-white font-bold py-3 px-6 rounded-xl transition-all border border-blue-400/30 backdrop-blur-sm">
-                                View Guidebook
-                            </Link>
-                        </div>
-                    </div>
-                </motion.div>
-
-            </div>
-
-            {/* Quick Actions */}
-            <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                {[
-                    { title: 'Input Kegiatan', desc: 'Log new achievement', icon: 'edit_square', color: 'bg-brand-blue', text: 'text-brand-blue' },
-                    { title: 'Lihat Transkrip', desc: 'Check valid points', icon: 'visibility', color: 'bg-emerald-600', text: 'text-emerald-500' },
-                    { title: 'Panduan', desc: 'Holistic handbook', icon: 'menu_book', color: 'bg-yellow-500', text: 'text-yellow-500' },
-                ].map((action, i) => (
-                    <motion.div variants={itemVariants} key={i} className="glass-card hover:bg-white/5 border border-white/10 p-6 rounded-2xl flex items-center gap-4 cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg group">
-                        <div className={`size-12 rounded-xl ${action.text} bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform border border-white/5`}>
-                            <span className={`material-symbols-outlined text-xl`}>{action.icon}</span>
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-white group-hover:text-brand-blue transition-colors">{action.title}</h3>
-                            <p className="text-xs text-slate-400">{action.desc}</p>
-                        </div>
-                    </motion.div>
-                ))}
-            </motion.div>
-
-            <div className="grid grid-cols-12 gap-6">
-
-                {/* Competence Map */}
-                <motion.div variants={itemVariants} className="col-span-12 lg:col-span-4 glass-card border border-white/10 rounded-2xl p-6 shadow-lg">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="font-bold text-white">Competence Map</h3>
-                        <button className="text-slate-400 hover:text-brand-blue"><span className="material-symbols-outlined">more_horiz</span></button>
-                    </div>
-                    <div className="h-64 relative">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={competenceData}>
-                                <PolarGrid stroke="#e2e8f0" strokeOpacity={0.1} />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 'bold' }} />
-                                <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} axisLine={false} />
-                                <Radar name="Student" dataKey="A" stroke="#FFD700" strokeWidth={2} fill="#FFD700" fillOpacity={0.4} />
-                            </RadarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </motion.div>
-
-                {/* Recent Activities */}
-                <motion.div variants={itemVariants} className="col-span-12 lg:col-span-8 glass-card border border-white/10 rounded-2xl p-6 flex flex-col shadow-lg">
-                    <div className="flex justify-between items-center mb-6">
-                        <div className="flex items-center gap-2">
-                            <span className="material-symbols-outlined text-brand-blue">history</span>
-                            <h3 className="font-bold text-white">Recent Activities</h3>
-                        </div>
-                        <Link href="/student/activities/management" className="text-xs font-bold text-brand-blue flex items-center gap-1 hover:underline">
-                            View All <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                        </Link>
-                    </div>
-
-                    <div className="flex-1 overflow-x-auto">
-                        <table className="w-full text-left text-sm">
-                            <thead>
-                                <tr className="text-xs font-bold text-slate-400 uppercase border-b border-white/10">
-                                    <th className="pb-3 pl-4">Activity Name</th>
-                                    <th className="pb-3">Date</th>
-                                    <th className="pb-3">Category</th>
-                                    <th className="pb-3 text-right pr-4">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-white/5">
-                                {activities.map((activity, i) => (
-                                    <tr key={i} className="hover:bg-white/5 transition-colors group text-slate-300">
-                                        <td className="py-4 pl-4 font-bold text-white group-hover:text-brand-blue transition-colors">
-                                            {activity.name}
-                                            <div className="block md:hidden text-[10px] text-slate-400 font-normal mt-1">{activity.category}</div>
-                                        </td>
-                                        <td className="py-4 text-slate-400">{activity.date}</td>
-                                        <td className="py-4">
-                                            <span className="bg-white/5 text-slate-400 px-2.5 py-0.5 rounded text-xs border border-white/10 font-medium">
-                                                {activity.category}
-                                            </span>
-                                        </td>
-                                        <td className="py-4 text-right pr-4">
-                                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
-                                                 ${activity.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                                                    activity.status === 'Pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                                                        'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
-                                                {activity.status}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </motion.div>
-
-            </div>
-
-        </motion.div>
+                </div>
+            </main>
+        </div>
     );
+}
+
+// --- SUB COMPONENTS ---
+
+function NavItem({ icon: Icon, label, active }: { icon: any, label: string, active?: boolean }) {
+    return (
+        <a href="#" className={cn(
+            "flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors group",
+            active ? "bg-primary/10 text-primary dark:text-blue-400" : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50"
+        )}>
+            <Icon className={cn("w-5 h-5", active ? "text-primary dark:text-blue-400" : "group-hover:text-slate-900 dark:group-hover:text-white transition-colors")} />
+            <span>{label}</span>
+        </a>
+    )
+}
+
+function StatsPill({ label, value, color }: { label: string, value: string, color: string }) {
+    return (
+        <div className="text-center p-2 rounded hover:bg-white/10 transition-colors cursor-default">
+            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">{label}</p>
+            <span className={cn("font-bold", color)}>{value}</span>
+        </div>
+    )
+}
+
+function BookCard({ title, author, img }: { title: string, author: string, img: string }) {
+    return (
+        <div className="snap-start shrink-0 w-[140px] md:w-[160px] flex flex-col gap-3 group cursor-pointer">
+            <div className="aspect-[2/3] w-full rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-lg group-hover:-translate-y-1 transition-transform duration-300 relative">
+                <Image src={img} alt={title} fill className="object-cover" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+            </div>
+            <div>
+                <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">{title}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{author}</p>
+            </div>
+        </div>
+    )
 }

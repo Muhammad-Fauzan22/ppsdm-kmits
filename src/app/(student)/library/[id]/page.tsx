@@ -1,14 +1,36 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { ASSETS } from "@/config/assets";
+import { cn } from "@/lib/utils";
+import {
+    BookOpen,
+    Share2,
+    Download,
+    Plus,
+    MessageSquare,
+    PlayCircle,
+    PauseCircle,
+    CheckCircle,
+    XCircle,
+    BrainCircuit,
+    Cpu,
+    Zap,
+    LayoutGrid,
+    Search,
+    User,
+    ChevronLeft,
+    ChevronRight,
+    Loader2
+} from "lucide-react";
 
 // --- MOCK DATA ---
 const FLASHCARDS = [
-    { question: "What is a Pod?", answer: "The smallest deployable unit in Kubernetes." },
-    { question: "What is a Node?", answer: "A worker machine in Kubernetes." },
-    { question: "What is a Service?", answer: "An abstract way to expose an application running on a set of Pods." },
+    { question: "What is a Neural Network?", answer: "A computing system made up of a number of simple, highly interconnected processing elements, which process information by their dynamic state response to external inputs." },
+    { question: "Define Machine Learning.", answer: "The study of computer algorithms that improve automatically through experience and by the use of data." },
+    { question: "What is Supervised Learning?", answer: "A type of machine learning where the algorithm is trained on a labeled dataset." },
 ];
 
 const QUIZ_QUESTIONS = [
@@ -22,40 +44,12 @@ const QUIZ_QUESTIONS = [
         options: ['Log data', 'Cluster configuration and state', 'Container images', 'User metrics'],
         correct: 1
     },
-    {
-        question: "Which command lists all pods?",
-        options: ['kubectl get pods', 'kubectl list pods', 'kubectl show pods', 'kubectl run pods'],
-        correct: 0
-    }
 ];
 
-// --- TOAST COMPONENT (INTERNAL) ---
-const Toast = ({ message, onClose }: { message: string, onClose: () => void }) => {
-    useEffect(() => {
-        const timer = setTimeout(onClose, 3000);
-        return () => clearTimeout(timer);
-    }, [onClose]);
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 50, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, x: '-50%' }}
-            exit={{ opacity: 0, y: 20, x: '-50%' }}
-            className="fixed bottom-24 left-1/2 z-[100] bg-[#135bec] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 font-medium"
-        >
-            <span className="material-symbols-outlined">check_circle</span>
-            {message}
-        </motion.div>
-    );
-};
-
-export default function ResourceDetailPage({ params }: { params: { id: string } }) {
+export default function ResourceViewerPage({ params }: { params: { id: string } }) {
     // --- STATE ---
     const [activeTab, setActiveTab] = useState("microlearning");
-
-    // Actions
     const [isBookmarked, setIsBookmarked] = useState(false);
-    const [toastMessage, setToastMessage] = useState<string | null>(null);
 
     // Flashcards
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -72,28 +66,35 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
 
     // Chat
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [chatMessages, setChatMessages] = useState<{ role: 'ai' | 'user', text: string }[]>([
+        { role: 'ai', text: "Hello! I've analyzed this entire book. Ask me to summarize any chapter or explain a difficult concept." }
+    ]);
+    const [chatInput, setChatInput] = useState("");
+    const [isChatLoading, setIsChatLoading] = useState(false);
+    const chatEndRef = useRef<HTMLDivElement>(null);
+
+    // Auto-scroll chat
+    useEffect(() => {
+        if (isChatOpen) {
+            chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [chatMessages, isChatOpen]);
 
     // --- HANDLERS ---
-    const showToast = (msg: string) => {
-        setToastMessage(msg);
-    };
+    const handleChatSubmit = async (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && chatInput.trim()) {
+            const userMsg = chatInput;
+            setChatInput("");
+            setChatMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+            setIsChatLoading(true);
 
-    const handleBookmark = () => {
-        setIsBookmarked(!isBookmarked);
-        showToast(isBookmarked ? "Removed from bookmarks" : "Bookmarked successfully");
-    };
-
-    const handleDownload = () => {
-        showToast("Download started...");
-    };
-
-    const handleShare = () => {
-        navigator.clipboard.writeText(window.location.href);
-        showToast("Link copied to clipboard");
-    };
-
-    const handleAddToPlaylist = () => {
-        showToast("Added to 'My Learning' playlist");
+            // Mock Response
+            setTimeout(() => {
+                let aiResponse = "I can explain that concept in detail. Based on Chapter 3, this refers to...";
+                setChatMessages(prev => [...prev, { role: 'ai', text: aiResponse }]);
+                setIsChatLoading(false);
+            }, 1000);
+        }
     };
 
     const handleFlashcardNav = (direction: 'next' | 'prev') => {
@@ -107,507 +108,188 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
         }, 200);
     };
 
-    const handleQuizOptionSelect = (index: number) => {
-        if (selectedOption !== null) return; // Prevent changing after selection
-        setSelectedOption(index);
-    };
-
-    const handleQuizNext = () => {
-        if (selectedOption === QUIZ_QUESTIONS[currentQuestionIndex].correct) {
-            setQuizScore(prev => prev + 1);
-        }
-
-        if (currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
-            setCurrentQuestionIndex(prev => prev + 1);
-            setSelectedOption(null);
-        } else {
-            setQuizCompleted(true);
-        }
-    };
-
-    const handleScrollToContent = () => {
-        document.getElementById('content-tabs')?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     return (
-        <div className="min-h-screen bg-[#0f1823] text-white font-sans selection:bg-[#135bec] selection:text-white pb-24">
+        <div className="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-white min-h-screen flex flex-col">
 
-            {/* TOAST NOTIFICATION */}
-            <AnimatePresence>
-                {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage(null)} />}
-            </AnimatePresence>
-
-            <div className="flex justify-center py-6 px-4 md:px-8 xl:px-0">
-                <div className="flex flex-col max-w-[1200px] w-full gap-8">
-
-                    {/* Breadcrumbs */}
-                    <nav className="flex flex-wrap gap-2 text-sm font-medium">
-                        <Link href="/library" className="text-slate-400 hover:text-white transition-colors">Library</Link>
-                        <span className="text-slate-600">/</span>
-                        <Link href="/library" className="text-slate-400 hover:text-white transition-colors">Cloud Computing</Link>
-                        <span className="text-slate-600">/</span>
-                        <span className="text-white">Enterprise Cloud Architecture v2</span>
-                    </nav>
-
-                    {/* Hero Section */}
-                    <div className="relative rounded-2xl overflow-hidden bg-[#1c222b] border border-white/5 shadow-2xl">
-                        {/* Background Effects */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#135bec]/20 to-[#0f1823] opacity-90 z-0"></div>
-                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 z-0 mix-blend-overlay"></div>
-
-                        <div className="relative z-10 flex flex-col md:flex-row gap-8 p-6 md:p-10 items-start">
-                            {/* Book Cover */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="shrink-0 mx-auto md:mx-0"
-                            >
-                                <div className="w-[240px] md:w-[280px] aspect-[2/3] rounded-lg shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 relative group overflow-hidden"
-                                    style={{
-                                        backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbaD49UTyhDaxnm1JyYMWuVTmk-GrculHJz_Cso45W3RjQJ72CVwKRFcpSt8T8yFUIDg_4-z5O4EdEKYd_7AwnavLagJm_-PgONFs4RRXsjkQuC_DggtUXcRnT9meT1yQj7rAsdC1CNmXZPqBrqBuJLG87W5T0ovnqcLRoxxXapW8r9kXfOLCR0ETHNUdZb_rPDFYNrJMi2yFvT_41Hj-5sePnVwNRAiGadojZ3mYwq_9aOsPA0zIdNz7hfPzdAt6lBWkAzTI6FPw')",
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4)'
-                                    }}>
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
-                                        <div className="flex gap-2">
-                                            <span className="bg-[#135bec] text-white text-xs font-bold px-2 py-0.5 rounded shadow-lg">v2.4</span>
-                                            <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded shadow-lg">Interactive</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
-
-                            {/* Hero Content */}
-                            <div className="flex flex-col gap-6 flex-1 w-full">
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="material-symbols-outlined text-blue-400 text-lg">verified</span>
-                                        <span className="text-blue-300 text-xs font-bold tracking-wider uppercase">Official Certification Material</span>
-                                    </div>
-                                    <h1 className="text-3xl md:text-5xl font-bold font-grotesk leading-tight tracking-tight text-white">
-                                        Enterprise Cloud Architecture v2
-                                    </h1>
-                                    <p className="text-slate-300 text-base font-medium">
-                                        By J. Doe • 4h 30m • Cloud Computing
-                                    </p>
-                                </div>
-
-                                {/* AI Summary Box */}
-                                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5 max-w-3xl">
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <span className="material-symbols-outlined text-purple-400 text-lg">auto_awesome</span>
-                                        <span className="text-purple-300 text-xs font-bold uppercase tracking-wide">Quantum AI Summary</span>
-                                    </div>
-                                    <p className="text-slate-300 text-sm leading-relaxed">
-                                        This resource comprehensively covers Kubernetes orchestration, containerization strategies, and scalable infrastructure patterns for enterprise environments. The AI has generated 3D models for pod structures and a 5-module quiz based on recent updates.
-                                    </p>
-                                </div>
-
-                                <div className="flex flex-wrap gap-3 mt-auto">
-                                    <button
-                                        onClick={handleScrollToContent}
-                                        className="flex items-center justify-center rounded-xl h-12 px-8 bg-white text-[#135bec] hover:bg-slate-100 transition-all text-base font-bold tracking-wide shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                                    >
-                                        <span className="material-symbols-outlined mr-2 text-xl">play_arrow</span>
-                                        Start Learning
-                                    </button>
-                                    <button
-                                        onClick={handleBookmark}
-                                        className={`flex items-center justify-center rounded-xl h-12 px-6 border transition-all text-base font-bold tracking-wide ${isBookmarked
-                                                ? 'bg-[#135bec] border-[#135bec] text-white'
-                                                : 'bg-[#1a2332]/80 hover:bg-[#1a2332] border-white/10 text-white'
-                                            }`}
-                                    >
-                                        <span className={`material-symbols-outlined mr-2 text-xl ${isBookmarked ? 'filled' : ''}`}>
-                                            {isBookmarked ? 'bookmark' : 'bookmark_border'}
-                                        </span>
-                                        {isBookmarked ? 'Saved' : 'Bookmark'}
-                                    </button>
-                                </div>
+            {/* Top Navigation Bar */}
+            <nav className="sticky top-0 z-50 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+                <div className="px-6 md:px-10 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-8">
+                        <Link href="/library" className="flex items-center gap-3 group">
+                            <div className="size-8 bg-primary/10 rounded flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span className="material-symbols-outlined">arrow_back</span>
                             </div>
+                            <h2 className="text-[#0b1e42] dark:text-white text-lg font-bold tracking-tight">Library</h2>
+                        </Link>
+                        <div className="hidden md:flex items-center gap-6">
+                            <Link href="/dashboard" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Dashboard</Link>
+                            <span className="text-primary text-sm font-medium">Resource Viewer</span>
                         </div>
                     </div>
-
-                    {/* Actions Bar */}
-                    <div className="flex flex-wrap gap-4 py-4 border-b border-white/10 items-center">
-                        <div className="flex gap-2">
-                            <button
-                                onClick={handleDownload}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
-                            >
-                                <div className="flex items-center justify-center size-8 rounded-full bg-white/10 group-hover:bg-[#135bec]/20 text-slate-300 group-hover:text-[#135bec] transition-colors">
-                                    <span className="material-symbols-outlined text-lg">download</span>
-                                </div>
-                                <span className="text-slate-300 text-sm font-medium group-hover:text-white">Download</span>
-                            </button>
-                            <button
-                                onClick={handleShare}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
-                            >
-                                <div className="flex items-center justify-center size-8 rounded-full bg-white/10 group-hover:bg-[#135bec]/20 text-slate-300 group-hover:text-[#135bec] transition-colors">
-                                    <span className="material-symbols-outlined text-lg">share</span>
-                                </div>
-                                <span className="text-slate-300 text-sm font-medium group-hover:text-white">Share</span>
-                            </button>
-                            <button
-                                onClick={handleAddToPlaylist}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
-                            >
-                                <div className="flex items-center justify-center size-8 rounded-full bg-white/10 group-hover:bg-[#135bec]/20 text-slate-300 group-hover:text-[#135bec] transition-colors">
-                                    <span className="material-symbols-outlined text-lg">playlist_add</span>
-                                </div>
-                                <span className="text-slate-300 text-sm font-medium group-hover:text-white">Add Playlist</span>
-                            </button>
+                    <div className="flex items-center gap-4">
+                        <div className="hidden md:flex relative group">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+                            <input className="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-primary/20 text-slate-700 dark:text-slate-200 placeholder:text-slate-400" placeholder="Search inside book..." type="text" />
                         </div>
-                        <div className="flex-1"></div>
-                        <div className="flex items-center gap-2 text-slate-500 text-sm">
-                            <span className="material-symbols-outlined text-lg">visibility</span>
-                            <span>1.2k views</span>
-                        </div>
+                        <div className="size-10 rounded-full bg-slate-200 bg-cover bg-center border-2 border-white shadow-sm" style={{ backgroundImage: `url('${ASSETS.avatar.student}')` }}></div>
                     </div>
+                </div>
+            </nav>
 
-                    {/* Tabs System */}
-                    <div id="content-tabs" className="flex flex-col gap-8 scroll-mt-24">
-                        <div className="overflow-x-auto pb-1 no-scrollbar">
-                            <div className="flex border-b border-white/10 min-w-max">
-                                {['Overview', 'Microlearning', 'Mind Map', 'Gamification', 'Podcast', 'Slides'].map((tab) => {
-                                    const id = tab.toLowerCase().replace(' ', '');
-                                    const isActive = activeTab === id;
-                                    const icons: Record<string, string> = {
-                                        overview: 'description',
-                                        microlearning: 'flash_on',
-                                        mindmap: 'hub',
-                                        gamification: 'sports_esports',
-                                        podcast: 'headphones',
-                                        slides: 'co_present'
-                                    };
+            {/* Hero Section */}
+            <section className="relative w-full bg-gradient-to-br from-[#0b1e42] via-[#0f3575] to-[#135bec] text-white overflow-hidden">
+                {/* Abstract Pattern */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.03] pointer-events-none translate-x-1/3 -translate-y-1/4">
+                    <svg className="w-full h-full fill-white" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M42.7,-62.9C50.9,-52.8,50.1,-34.4,51.7,-19.2C53.4,-4,57.4,8,54.5,18.7C51.6,29.4,41.8,38.8,31.4,48.3C21,57.9,10,67.5,-2.5,70.9C-15,74.4,-29,71.6,-41.6,63.1C-54.2,54.6,-65.4,40.3,-70.5,23.6C-75.6,6.9,-74.7,-12.3,-65.5,-26.8C-56.3,-41.3,-38.8,-51.1,-24.3,-58.1C-9.8,-65.1,1.7,-69.3,14.3,-68.8C26.9,-68.4,40.6,-63.3,42.7,-62.9Z" transform="translate(100 100)"></path>
+                    </svg>
+                </div>
 
-                                    return (
-                                        <button
-                                            key={id}
-                                            onClick={() => setActiveTab(id)}
-                                            className={`group flex items-center gap-2 px-6 py-4 border-b-[3px] transition-all cursor-pointer ${isActive
-                                                    ? 'border-[#135bec] bg-[#135bec]/5'
-                                                    : 'border-transparent hover:border-slate-700'
-                                                }`}
-                                        >
-                                            <span className={`material-symbols-outlined text-xl ${isActive ? 'text-[#135bec]' : 'text-slate-500 group-hover:text-slate-300'
-                                                }`}>{icons[id]}</span>
-                                            <span className={`text-sm font-bold tracking-wide ${isActive ? 'text-[#135bec]' : 'text-slate-500 group-hover:text-white'
-                                                }`}>{tab}</span>
-                                        </button>
-                                    );
-                                })}
+                <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 relative z-10">
+                    <div className="flex flex-col md:flex-row gap-10 items-start">
+                        {/* Book Cover */}
+                        <div className="shrink-0 relative group perspective-1000">
+                            <div className="w-48 h-72 md:w-56 md:h-80 bg-white rounded-lg shadow-2xl overflow-hidden transform transition-transform duration-500 hover:rotate-y-12">
+                                <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBFUyyJDDSKJxD2JoGf5XxOdwZyOIQZW0jnSae8qh0TJpE0lb_P8ZdwQ4r2H5xMvvKiUITLrlcb9OASZyoDr_gF4qSVhRanzQWANL4IJHe2k_Y6L7JW5m8wcfdwG_iKEYfZlOzQhESAntt0wFR4eXsBTKu1yleFHjca_MLCTUXwdmP4-QUvTuYho5u0FJoqHwM1gOOE2U_xUPaxF_FYUb6YcW7i-y3eMo1Xx7Uq8Uqco4mN0iD10mHg_oBA1Hp8oIC2VjmoYNzuTyY')" }}></div>
+                                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                             </div>
                         </div>
 
-                        {/* Tab Content */}
+                        {/* Book Metadata */}
+                        <div className="flex-1 flex flex-col justify-center h-full pt-2">
+                            <div className="inline-flex items-center gap-2 mb-3">
+                                <span className="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-100 text-xs font-semibold backdrop-blur-sm">Computer Science</span>
+                                <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-100 text-xs font-semibold backdrop-blur-sm flex items-center gap-1">
+                                    <span className="material-symbols-outlined text-[14px]">verified</span> Verified Resource
+                                </span>
+                            </div>
+                            <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-2 tracking-tight">Dasar-Dasar Kecerdasan Buatan</h1>
+                            <p className="text-blue-100 text-lg md:text-xl font-light mb-6">Prof. Dr. Eng. Agus Zainal <span className="mx-2 opacity-50">•</span> 2024 Edition</p>
+                            <p className="text-blue-50/80 max-w-2xl leading-relaxed mb-8">
+                                Explore the fundamentals of Artificial Intelligence through our Quantum Alchemy Engine. Transform this static PDF into interactive mind maps, quizzes, and audio lessons instantly.
+                            </p>
+                            <div className="flex flex-wrap gap-4">
+                                <button className="flex items-center gap-2 px-6 py-3 bg-white text-primary font-bold rounded-lg hover:bg-blue-50 transition-all shadow-lg shadow-blue-900/20 active:scale-95">
+                                    <span className="material-symbols-outlined">picture_as_pdf</span> Baca PDF Asli
+                                </button>
+                                <button onClick={() => setIsChatOpen(true)} className="flex items-center gap-2 px-6 py-3 bg-transparent border border-white/30 text-white font-bold rounded-lg hover:bg-white/10 transition-all backdrop-blur-sm active:scale-95">
+                                    <span className="material-symbols-outlined">auto_awesome</span> Chat dengan Buku
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Navigation Tabs */}
+            <div className="sticky top-[73px] z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-slate-200 dark:border-slate-800">
+                <div className="max-w-7xl mx-auto px-6 md:px-10">
+                    <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                        {[
+                            { id: 'microlearning', label: 'Microlearning', icon: 'flash_on' },
+                            { id: 'mindmap', label: 'Mind Map', icon: 'hub' },
+                            { id: 'gamification', label: 'Gamification', icon: 'trophy' },
+                            { id: 'podcast', label: 'Podcast', icon: 'podcasts' },
+                            { id: 'slides', label: 'Slides', icon: 'co_present' },
+                        ].map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={cn(
+                                    "flex items-center gap-2 px-4 py-4 border-b-[3px] transition-all group min-w-max",
+                                    activeTab === tab.id ? "border-primary text-primary" : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300"
+                                )}
+                            >
+                                <span className="material-symbols-outlined">{tab.icon}</span>
+                                <span className={cn("text-sm", activeTab === tab.id ? "font-bold" : "font-medium")}>{tab.label}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Content Area */}
+            <div className="max-w-7xl mx-auto px-6 md:px-10 py-8 w-full flex-1">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                    {/* LEFT COLUMN: Main Interaction */}
+                    <div className="lg:col-span-8 space-y-8">
                         <AnimatePresence mode="wait">
                             {activeTab === 'microlearning' && (
                                 <motion.div
-                                    key="microlearning"
+                                    key="micro"
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
-                                    className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+                                    className="space-y-6"
                                 >
-                                    {/* Main Card Interface */}
-                                    <div className="lg:col-span-2 flex flex-col gap-6">
-                                        <div className="flex items-center justify-between">
-                                            <h3 className="text-xl font-bold text-white font-grotesk">Chapter 1: K8s Fundamentals</h3>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-sm font-medium text-slate-400">Card {currentCardIndex + 1} of {FLASHCARDS.length}</span>
-                                                <div className="w-32 h-2 bg-[#272f3a] rounded-full overflow-hidden">
-                                                    <div
-                                                        className="bg-[#135bec] h-full rounded-full transition-all duration-300"
-                                                        style={{ width: `${((currentCardIndex + 1) / FLASHCARDS.length) * 100}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Key Concepts (Flashcards)</h2>
+                                            <p className="text-slate-500 mt-1">Master the core terminology of AI through spaced repetition.</p>
                                         </div>
+                                    </div>
 
-                                        {/* 3D Flip Card */}
-                                        <div
-                                            className="group relative w-full aspect-[16/9] perspective-1000 cursor-pointer"
-                                            onClick={() => setIsFlipped(!isFlipped)}
+                                    {/* Flashcard Component */}
+                                    <div className="perspective-1000 w-full h-80 relative group cursor-pointer" onClick={() => setIsFlipped(!isFlipped)}>
+                                        <motion.div
+                                            className="w-full h-full relative preserve-3d transition-transform duration-700"
+                                            animate={{ rotateY: isFlipped ? 180 : 0 }}
                                         >
-                                            <motion.div
-                                                className="relative w-full h-full preserve-3d"
-                                                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                                                transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
-                                                style={{ transformStyle: "preserve-3d" }}
-                                            >
-                                                {/* Front */}
-                                                <div className="absolute inset-0 backface-hidden bg-[#1a2332] rounded-2xl shadow-2xl border border-white/5 flex flex-col items-center justify-center p-12 text-center" style={{ backfaceVisibility: 'hidden' }}>
-                                                    <div className="mb-6 size-16 rounded-full bg-[#135bec]/20 flex items-center justify-center text-[#135bec]">
-                                                        <span className="material-symbols-outlined text-4xl">help_center</span>
-                                                    </div>
-                                                    <h4 className="text-2xl md:text-3xl font-bold text-white mb-4">{FLASHCARDS[currentCardIndex].question}</h4>
-                                                    <p className="text-slate-500 text-sm uppercase tracking-widest font-bold">Tap to flip</p>
+                                            {/* FRONT */}
+                                            <div className="backface-hidden absolute inset-0 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center p-12 text-center">
+                                                <div className="mb-6 size-16 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary">
+                                                    <span className="material-symbols-outlined text-4xl">psychology</span>
                                                 </div>
+                                                <h3 className="text-3xl font-bold text-slate-800 dark:text-white mb-4">{FLASHCARDS[currentCardIndex].question}</h3>
+                                                <p className="text-slate-400 text-sm font-bold uppercase tracking-widest">Tap to reveal answer</p>
+                                            </div>
 
-                                                {/* Back */}
-                                                <div
-                                                    className="absolute inset-0 backface-hidden bg-[#0f1823] rounded-2xl shadow-2xl border border-[#135bec]/30 flex flex-col items-center justify-center p-12 text-center"
-                                                    style={{ transform: "rotateY(180deg)", backfaceVisibility: 'hidden' }}
-                                                >
-                                                    <div className="mb-6 size-16 rounded-full bg-green-500/20 flex items-center justify-center text-green-500">
-                                                        <span className="material-symbols-outlined text-4xl">check_circle</span>
-                                                    </div>
-                                                    <p className="text-xl md:text-2xl text-slate-200 leading-relaxed font-medium">
-                                                        "{FLASHCARDS[currentCardIndex].answer}"
-                                                    </p>
+                                            {/* BACK */}
+                                            <div className="backface-hidden rotate-y-180 absolute inset-0 bg-gradient-to-br from-blue-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl shadow-lg border border-primary/30 flex flex-col items-center justify-center p-12 text-center">
+                                                <div className="mb-6 size-16 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600">
+                                                    <span className="material-symbols-outlined text-4xl">check_circle</span>
                                                 </div>
-                                            </motion.div>
-                                        </div>
-
-                                        {/* Controls */}
-                                        <div className="flex items-center justify-center gap-4">
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); handleFlashcardNav('prev'); }}
-                                                className="size-12 rounded-full bg-[#1a2332] border border-white/10 text-slate-400 hover:text-white hover:bg-[#272f3a] flex items-center justify-center transition-colors"
-                                            >
-                                                <span className="material-symbols-outlined">arrow_back</span>
-                                            </button>
-                                            <button className="px-8 h-12 rounded-full bg-[#272f3a] text-white font-bold text-sm hover:bg-[#394556] transition-colors border border-white/5">
-                                                I Know This
-                                            </button>
-                                            <button className="px-8 h-12 rounded-full bg-[#135bec] text-white font-bold text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-900/20">
-                                                Study Again
-                                            </button>
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); handleFlashcardNav('next'); }}
-                                                className="size-12 rounded-full bg-[#1a2332] border border-white/10 text-slate-400 hover:text-white hover:bg-[#272f3a] flex items-center justify-center transition-colors"
-                                            >
-                                                <span className="material-symbols-outlined">arrow_forward</span>
-                                            </button>
-                                        </div>
+                                                <p className="text-xl text-slate-800 dark:text-white font-medium leading-relaxed">"{FLASHCARDS[currentCardIndex].answer}"</p>
+                                            </div>
+                                        </motion.div>
                                     </div>
 
-                                    {/* Side Panel: Stats & Context */}
-                                    <div className="flex flex-col gap-6">
-                                        <div className="bg-[#1a2332] rounded-2xl p-6 border border-white/5 flex flex-col gap-4 shadow-lg">
-                                            <div className="flex items-center justify-between">
-                                                <h4 className="text-white font-bold">Session Mastery</h4>
-                                                <span className="text-green-400 font-bold text-sm bg-green-900/20 px-2 py-0.5 rounded">+50 XP</span>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <div className="flex-1 flex flex-col items-center gap-1 p-3 bg-[#0f1823] rounded-xl border border-white/5">
-                                                    <span className="text-2xl font-bold text-white">12</span>
-                                                    <span className="text-xs text-slate-400">Mastered</span>
-                                                </div>
-                                                <div className="flex-1 flex flex-col items-center gap-1 p-3 bg-[#0f1823] rounded-xl border border-white/5">
-                                                    <span className="text-2xl font-bold text-white">8</span>
-                                                    <span className="text-xs text-slate-400">To Review</span>
-                                                </div>
-                                            </div>
-                                            <button onClick={() => showToast("Showing full stats...")} className="w-full py-3 rounded-xl border border-[#135bec]/30 text-[#135bec] font-bold text-sm hover:bg-[#135bec]/10 transition-colors">
-                                                View Detailed Stats
-                                            </button>
-                                        </div>
-
-                                        <div onClick={() => setActiveTab('podcast')} className="bg-gradient-to-br from-[#1a2332] to-[#0f1823] rounded-2xl p-6 border border-white/5 relative overflow-hidden group cursor-pointer hover:border-[#135bec]/30 transition-all">
-                                            <div className="absolute top-0 right-0 p-4 opacity-10">
-                                                <span className="material-symbols-outlined text-[80px] text-white">headphones</span>
-                                            </div>
-                                            <h5 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Up Next</h5>
-                                            <h4 className="text-white font-bold text-lg mb-2 group-hover:text-[#135bec] transition-colors">Listen to Podcast</h4>
-                                            <p className="text-slate-400 text-sm line-clamp-2 mb-4">Continue with an AI-generated audio summary of Chapter 2: Nodes & Clusters.</p>
-                                            <div className="flex items-center gap-2 text-[#135bec] text-sm font-bold">
-                                                <span>Start Playing</span>
-                                                <span className="material-symbols-outlined text-lg">play_circle</span>
-                                            </div>
-                                        </div>
+                                    {/* Controls */}
+                                    <div className="flex justify-center gap-4">
+                                        <button onClick={() => handleFlashcardNav('prev')} className="size-12 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><ChevronLeft /></button>
+                                        <button onClick={() => handleFlashcardNav('next')} className="size-12 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><ChevronRight /></button>
                                     </div>
+
                                 </motion.div>
                             )}
 
                             {activeTab === 'gamification' && (
-                                <motion.div
-                                    key="gamification"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    className="max-w-3xl mx-auto"
-                                >
-                                    {!quizCompleted ? (
-                                        <div className="bg-[#1a2332] rounded-2xl border border-white/5 overflow-hidden">
-                                            <div className="p-8 border-b border-white/5">
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <span className="text-[#135bec] font-bold text-sm uppercase tracking-wider">Module Quiz</span>
-                                                    <span className="text-slate-400 text-sm">Question {currentQuestionIndex + 1} of {QUIZ_QUESTIONS.length}</span>
-                                                </div>
-                                                <h3 className="text-2xl font-bold text-white mb-6">{QUIZ_QUESTIONS[currentQuestionIndex].question}</h3>
-
-                                                <div className="space-y-3">
-                                                    {QUIZ_QUESTIONS[currentQuestionIndex].options.map((option, idx) => (
-                                                        <button
-                                                            key={idx}
-                                                            onClick={() => handleQuizOptionSelect(idx)}
-                                                            className={`w-full p-4 rounded-xl border transition-all flex items-center group text-left ${selectedOption === idx
-                                                                    ? 'bg-[#135bec]/20 border-[#135bec] text-white'
-                                                                    : 'border-white/10 bg-[#0f1823] hover:bg-[#135bec]/10 hover:border-[#135bec]/30 text-slate-300'
-                                                                }`}
-                                                        >
-                                                            <div className={`size-6 rounded-full border mr-4 flex items-center justify-center ${selectedOption === idx ? 'border-[#135bec]' : 'border-slate-500 group-hover:border-[#135bec]'
-                                                                }`}>
-                                                                {selectedOption === idx && <div className="size-3 rounded-full bg-[#135bec]"></div>}
-                                                            </div>
-                                                            <span className="font-medium">{option}</span>
-                                                        </button>
-                                                    ))}
-                                                </div>
+                                <motion.div key="game" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                                        <div className="p-8">
+                                            <div className="flex justify-between items-center mb-6">
+                                                <h3 className="text-xl font-bold">Module Quiz 1</h3>
+                                                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Question {currentQuestionIndex + 1}/{QUIZ_QUESTIONS.length}</span>
                                             </div>
-                                            <div className="p-6 bg-[#0f1823] flex justify-between items-center">
-                                                <div className="flex items-center gap-2 text-slate-400">
-                                                    <span className="material-symbols-outlined">timer</span>
-                                                    <span className="text-sm font-mono">09:45 remaining</span>
-                                                </div>
-                                                <button
-                                                    disabled={selectedOption === null}
-                                                    onClick={handleQuizNext}
-                                                    className={`px-6 py-2.5 font-bold rounded-lg transition-colors ${selectedOption !== null
-                                                            ? 'bg-[#135bec] text-white hover:bg-blue-600'
-                                                            : 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                                                        }`}
-                                                >
-                                                    {currentQuestionIndex < QUIZ_QUESTIONS.length - 1 ? 'Next Question' : 'Finish Quiz'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="bg-[#1a2332] rounded-2xl border border-white/5 p-8 text-center">
-                                            <div className="size-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
-                                                <span className="material-symbols-outlined text-5xl">emoji_events</span>
-                                            </div>
-                                            <h3 className="text-3xl font-bold text-white mb-2">Quiz Completed!</h3>
-                                            <p className="text-slate-400 mb-8">You scored {quizScore} out of {QUIZ_QUESTIONS.length}</p>
-                                            <button onClick={() => { setQuizCompleted(false); setCurrentQuestionIndex(0); setQuizScore(0); setSelectedOption(null); }} className="px-8 py-3 bg-[#135bec] text-white font-bold rounded-xl hover:bg-blue-600 transition-colors">
-                                                Retake Quiz
-                                            </button>
-                                        </div>
-                                    )}
-                                </motion.div>
-                            )}
-
-                            {activeTab === 'podcast' && (
-                                <motion.div
-                                    key="podcast"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    className="max-w-4xl mx-auto"
-                                >
-                                    <div className="bg-gradient-to-br from-[#1a2332] to-[#0f1823] rounded-3xl border border-white/10 p-8 md:p-12 relative overflow-hidden shadow-2xl">
-                                        <div className="absolute top-0 right-0 w-96 h-96 bg-[#135bec] rounded-full blur-[150px] opacity-20 -mr-20 -mt-20 pointer-events-none"></div>
-
-                                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                                            <div className="size-48 md:size-64 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-2xl flex items-center justify-center shrink-0">
-                                                {isPlaying ? (
-                                                    <div className="flex items-center gap-1">
-                                                        {[...Array(5)].map((_, i) => (
-                                                            <motion.div
-                                                                key={i}
-                                                                animate={{ height: [20, 60, 20] }}
-                                                                transition={{ repeat: Infinity, duration: 1, delay: i * 0.1 }}
-                                                                className="w-3 bg-white rounded-full"
-                                                            ></motion.div>
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <span className="material-symbols-outlined text-white text-[80px]">headphones</span>
-                                                )}
-                                            </div>
-
-                                            <div className="flex-1 w-full text-center md:text-left">
-                                                <span className="inline-block px-3 py-1 bg-[#135bec]/20 text-[#135bec] text-xs font-bold rounded-full mb-4 border border-[#135bec]/20">AI GENERATED</span>
-                                                <h2 className="text-3xl font-bold text-white mb-2">Deep Dive: K8s Architecture</h2>
-                                                <p className="text-slate-400 mb-8">Episode 1: The Control Plane Explained</p>
-
-                                                {/* Waveform Visualization Placeholder */}
-                                                <div className="flex items-center justify-center md:justify-start gap-1 h-12 mb-8">
-                                                    {[...Array(30)].map((_, i) => (
-                                                        <div key={i} className={`w-1 rounded-full transition-all duration-300 ${isPlaying ? 'bg-[#135bec] animate-pulse' : 'bg-slate-700'}`} style={{ height: `${Math.random() * 100}%`, opacity: Math.random() * 0.5 + 0.5 }}></div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="flex items-center justify-center md:justify-start gap-6">
-                                                    <button className="text-slate-400 hover:text-white transition-colors"><span className="material-symbols-outlined text-3xl">skip_previous</span></button>
+                                            <h4 className="text-2xl font-bold mb-8">{QUIZ_QUESTIONS[currentQuestionIndex].question}</h4>
+                                            <div className="space-y-3">
+                                                {QUIZ_QUESTIONS[currentQuestionIndex].options.map((opt, idx) => (
                                                     <button
-                                                        onClick={() => setIsPlaying(!isPlaying)}
-                                                        className="size-16 rounded-full bg-white text-[#0f1823] flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-white/10"
+                                                        key={idx}
+                                                        onClick={() => setSelectedOption(idx)}
+                                                        className={cn(
+                                                            "w-full text-left p-4 rounded-xl border-2 transition-all flex items-center gap-3",
+                                                            selectedOption === idx ? "border-primary bg-blue-50 dark:bg-blue-900/20 text-primary" : "border-slate-100 dark:border-slate-700 hover:border-slate-300"
+                                                        )}
                                                     >
-                                                        <span className="material-symbols-outlined text-4xl ml-1">{isPlaying ? 'pause' : 'play_arrow'}</span>
+                                                        <div className={cn("size-6 rounded-full border-2 flex items-center justify-center", selectedOption === idx ? "border-primary" : "border-slate-300")}>
+                                                            {selectedOption === idx && <div className="size-3 bg-primary rounded-full" />}
+                                                        </div>
+                                                        {opt}
                                                     </button>
-                                                    <button className="text-slate-400 hover:text-white transition-colors"><span className="material-symbols-outlined text-3xl">skip_next</span></button>
-                                                </div>
+                                                ))}
                                             </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-
-                            {activeTab === 'mindmap' && (
-                                <motion.div
-                                    key="mindmap"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="bg-[#1a2332] rounded-2xl border border-white/5 h-[600px] flex flex-col items-center justify-center relative overflow-hidden"
-                                >
-                                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/grid-me.png')] opacity-5"></div>
-                                    <div className="relative z-10 text-center">
-                                        <div className="size-20 bg-[#135bec]/20 rounded-full flex items-center justify-center mx-auto mb-6 text-[#135bec]">
-                                            <span className="material-symbols-outlined text-4xl">hub</span>
-                                        </div>
-                                        <h3 className="text-2xl font-bold text-white mb-2">Interactive Knowledge Graph</h3>
-                                        <p className="text-slate-400 max-w-md mx-auto mb-8">Visualizing the relationships between Pods, Nodes, and Services in this module.</p>
-                                        <button onClick={() => showToast("Loading diagram...")} className="px-6 py-3 bg-[#135bec] text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-lg">
-                                            Load Diagram
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            )}
-
-                            {activeTab === 'slides' && (
-                                <motion.div
-                                    key="slides"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="bg-[#1a2332] rounded-2xl border border-white/5 aspect-video flex items-center justify-center relative group cursor-pointer hover:border-[#135bec]/50 transition-colors"
-                                >
-                                    <div className="text-center">
-                                        <span className="material-symbols-outlined text-6xl text-slate-500 group-hover:text-white transition-colors mb-4">picture_as_pdf</span>
-                                        <p className="text-slate-400 group-hover:text-white font-medium">Click to open PDF Viewer</p>
-                                    </div>
-                                </motion.div>
-                            )}
-
-                            {activeTab === 'overview' && (
-                                <motion.div
-                                    key="overview"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="space-y-6"
-                                >
-                                    <div className="bg-[#1a2332] rounded-2xl p-8 border border-white/5">
-                                        <h3 className="text-2xl font-bold text-white mb-4">About this Course</h3>
-                                        <p className="text-slate-300 leading-relaxed mb-6">
-                                            Mastering Enterprise Cloud Architecture v2 provides an in-depth look at designing and deploying scalable, reliable, and secure cloud applications. This course focuses on practical, real-world scenarios and hands-on labs to prepare you for industry-standard certifications.
-                                        </p>
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                            {[
-                                                { label: "Level", value: "Advanced" },
-                                                { label: "Duration", value: "4h 30m" },
-                                                { label: "Lectures", value: "24" },
-                                                { label: "Language", value: "English" }
-                                            ].map((stat, i) => (
-                                                <div key={i} className="p-4 bg-[#0f1823] rounded-xl border border-white/5">
-                                                    <p className="text-slate-500 text-xs uppercase tracking-wider mb-1">{stat.label}</p>
-                                                    <p className="text-white font-bold">{stat.value}</p>
-                                                </div>
-                                            ))}
                                         </div>
                                     </div>
                                 </motion.div>
@@ -615,87 +297,121 @@ export default function ResourceDetailPage({ params }: { params: { id: string } 
                         </AnimatePresence>
                     </div>
 
-                    {/* Related Resources */}
-                    <div className="mt-8 pt-8 border-t border-slate-700/50">
-                        <h3 className="text-2xl font-bold text-white font-grotesk mb-6">Recommended for you</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {[
-                                { title: "Advanced Docker Security", author: "Sarah Connor", label: "12m", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCf7sVjuzY2pLWFGg3WzaePxdLSt6mmoYd4LXslpCzJzWz7wadRnbsa2FZIc4R-rUkWtSgtnt-zWbkOWUWtxAeLON8DLIo-ekH5qaIQHxnZkQKrc2UeIok-56LRd61tlhIlf1dnuAFMpraMOyIQ66dEPtvEp032CvTomPPZsOH-4sYqHI0qsfpTaoq21P_Qo2R8qc74sEIqR3iNdO_kV6il7MKBmHsKPjH_NEJvWOvYcGPxumiKeAbHFYxzXwo5kiMYU44oMQefZM4" },
-                                { title: "Serverless Patterns", author: "Mike Ross", label: "45m", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBsvei4fclJEBjkPvHmmf0SocUy1kDqTLTtSzr6oEJR6fZ84zhHKJirpp_m-4g0x4lrX04S4j_9mBbghaHJW72PAZstastpv_w_Dl-Wv7UPo02cW90bHmIVuU6c5eGt6QWaPhDhrsexZc4SiHOvkMwbFcvaU7EHQuaIomRwfpGpF_F1dRsRswQcBy8w1hjXs6a9svRv7T3D8xRurZHjntmL7OI0GoLwIudlSp-th4f1mZvVuf0ujMMCfj3davvm5jhDDKpfXexeR5k" },
-                                { title: "Kubernetes Best Practices", author: "Google Cloud", label: "PDF", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAEZe2-LRx7yRTEeNpQR0NloeLbOlMItUIzw5ztCzqAWHZ8YRreWjaqPxtm6tRN7Klkf3DluxNvGPEe2weWGm2EoYSifLP4t_lbw2tW8I_f_4pDkY3iazXU5Uy9fiY7o3FkW17JAcin-5b8rfPOhh4CHQXD6btmgq4QrcWcaRrbBLSZXbVHUuSlCjqytKxUJZbM2no26cRWIK8y0QATExwqjPZJfplg1udWHRu_jAel3o2HiRsCDVSIjdv8kCd4ZyGY8SKro06-RxI" },
-                                { title: "Cloud Networking Exam", author: "ITS Training", label: "Quiz", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCjkpitO_6G-XLRgSwQYZrjfWqABNq0LnS2yw_Xd_G93gdnjX82w2Pm4zZX99fCifGPMraevBEXy1BCxjJV8c-tvXEJTzz0pn6VHMxd_LVVAZNwn6l_xBH8c2HUZu-kS9UbvPBMgzlRBzdhNXj-PhF-gb-e9itNEqI3l42Nl3Vav7DzeeXTHE2GMdg0bG9S800nOw-QrEufTcvJpl3EURu6YjyLV75ODttG8BaebRiaNvbK6luHB3uhiXLo3U1OjaY6zf_rxnjtPj8" }
-                            ].map((item, i) => (
-                                <div key={i} className="flex flex-col gap-3 group cursor-pointer">
-                                    <div className="aspect-video w-full rounded-xl bg-center bg-cover relative overflow-hidden border border-white/5" style={{ backgroundImage: `url('${item.img}')` }}>
-                                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all"></div>
-                                        <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-xs text-white font-medium backdrop-blur-sm">{item.label}</div>
-                                    </div>
+                    {/* RIGHT COLUMN: Widgets */}
+                    <aside className="lg:col-span-4 space-y-6">
+
+                        {/* Podcast Widget */}
+                        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                            <div className="p-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                <h3 className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary">headphones</span> Audio Companion
+                                </h3>
+                            </div>
+                            <div className="p-5">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="size-16 rounded-lg bg-cover bg-center shrink-0" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJp5A0n8XCprnlVfZZn4P7Zyi4R3YzKEghbXIAN6qjnpXyio053O_tLbtln3drTXfZEjwY1I-lTYduJ80pRs0EoT6CceLklJeitHbv8DqJJE-qOasHQ5LT1Y-gprzzcQr2C8Xu6hfOuiud-kOo1BvbFNjir9BWsP1UsSQTSouMooW3SeYgWdTRvi1fJkPZZ7DsvIJjjqDDEX4o9Uom_7bMzjhBBSjUh_fhtmcxWj5DjH5s5504sc0KkdPSS0OS35BPeJylNL56NG0')" }}></div>
                                     <div>
-                                        <h5 className="text-white font-bold leading-tight mb-1 group-hover:text-[#135bec] transition-colors line-clamp-1">{item.title}</h5>
-                                        <p className="text-slate-400 text-xs">{item.author}</p>
+                                        <h4 className="font-bold text-slate-900 dark:text-white line-clamp-1">Ep 1: Pengenalan AI</h4>
+                                        <p className="text-xs text-slate-500 mb-2">15 mins • Prof. Agus Zainal</p>
+                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700">Playing</span>
                                     </div>
                                 </div>
-                            ))}
+                                {/* Visualizer Mock */}
+                                <div className="flex gap-1 h-8 items-center justify-center mb-4 opacity-50">
+                                    {[...Array(20)].map((_, i) => (
+                                        <div key={i} className="w-1 bg-primary rounded-full animate-pulse" style={{ height: `${Math.random() * 100}%`, animationDelay: `${i * 0.1}s` }} />
+                                    ))}
+                                </div>
+                                <div className="flex justify-between items-center px-4">
+                                    <button className="text-slate-400 hover:text-primary"><span className="material-symbols-outlined">replay_10</span></button>
+                                    <button onClick={() => setIsPlaying(!isPlaying)} className="size-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-primary-dark transition-transform hover:scale-105 active:scale-95">
+                                        <span className="material-symbols-outlined text-3xl">{isPlaying ? 'pause' : 'play_arrow'}</span>
+                                    </button>
+                                    <button className="text-slate-400 hover:text-primary"><span className="material-symbols-outlined">forward_10</span></button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
+                        {/* Gamification Widget */}
+                        <div className="bg-gradient-to-br from-[#135bec] to-[#0b1e42] rounded-2xl text-white shadow-lg relative overflow-hidden p-6">
+                            <div className="absolute top-0 right-0 p-4 opacity-10">
+                                <span className="material-symbols-outlined text-8xl">military_tech</span>
+                            </div>
+                            <div className="relative z-10">
+                                <h3 className="font-bold text-lg mb-1 flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-yellow-400">star</span> Your Progress
+                                </h3>
+                                <p className="text-blue-200 text-sm mb-6">Level 5: Novice Alchemist</p>
+                                <div className="flex items-end justify-between mb-2">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-blue-200">XP Gained</span>
+                                    <span className="text-xl font-bold">1,540 <span className="text-sm font-normal text-blue-300">/ 2,000</span></span>
+                                </div>
+                                <div className="w-full bg-black/20 h-2 rounded-full overflow-hidden mb-6">
+                                    <div className="bg-yellow-400 h-full w-[75%] rounded-full shadow-[0_0_10px_rgba(250,204,21,0.5)]"></div>
+                                </div>
+                                <button className="w-full py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2">
+                                    Take Weekly Quiz <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </aside>
                 </div>
             </div>
 
-            {/* Floating Action Button: Chat with Book */}
-            {/* Added functionality to toggle Chat (mock) */}
-            <div className="fixed bottom-8 right-8 z-50">
-                <AnimatePresence>
-                    {isChatOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                            className="absolute bottom-16 right-0 w-80 h-96 bg-[#1a2332] rounded-2xl shadow-2xl border border-white/10 flex flex-col overflow-hidden mb-4"
-                        >
-                            <div className="p-4 bg-[#135bec] flex items-center justify-between">
-                                <span className="font-bold text-white">AI Assistant</span>
-                                <button onClick={() => setIsChatOpen(false)} className="text-white hover:text-white/80"><span className="material-symbols-outlined text-sm">close</span></button>
+            {/* Chat Overlay */}
+            <AnimatePresence>
+                {isChatOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 50, scale: 0.9 }}
+                        className="fixed bottom-24 right-6 w-96 h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 z-50 flex flex-col overflow-hidden"
+                    >
+                        <div className="bg-primary p-4 text-white flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                                <span className="material-symbols-outlined">auto_awesome</span>
+                                <span className="font-bold">Book AI Assistant</span>
                             </div>
-                            <div className="flex-1 p-4 overflow-y-auto">
-                                <div className="bg-[#0f1823] p-3 rounded-xl rounded-tl-none mb-3 max-w-[85%] text-sm text-slate-300">
-                                    Hello! I'm your AI tutor for this book. Ask me anything about Cloud Architecture.
+                            <button onClick={() => setIsChatOpen(false)} className="hover:bg-white/20 rounded-full p-1"><XCircle className="w-5 h-5" /></button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-950">
+                            {chatMessages.map((msg, i) => (
+                                <div key={i} className={cn("max-w-[85%] p-3 rounded-xl text-sm", msg.role === 'ai' ? "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-tl-none mr-auto" : "bg-primary text-white rounded-tr-none ml-auto")}>
+                                    {msg.text}
                                 </div>
-                            </div>
-                            <div className="p-3 border-t border-white/5">
-                                <input type="text" placeholder="Type a message..." className="w-full bg-[#0f1823] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#135bec]" />
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-                <button
-                    onClick={() => setIsChatOpen(!isChatOpen)}
-                    className="group flex items-center gap-3 pl-4 pr-2 py-2 bg-[#135bec] hover:bg-blue-600 text-white rounded-full shadow-2xl shadow-blue-900/50 transition-all hover:scale-105 active:scale-95"
-                >
-                    <div className="flex flex-col items-start mr-1">
-                        <span className="font-bold text-sm leading-none mb-0.5">Chat with Book</span>
-                        <span className="text-[10px] text-blue-200 leading-none">AI Persona Active</span>
-                    </div>
-                    <div className="size-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30">
-                        <span className="material-symbols-outlined text-2xl">{isChatOpen ? 'close' : 'smart_toy'}</span>
-                    </div>
-                </button>
-            </div>
+                            ))}
+                            {isChatLoading && <div className="flex gap-2 p-2"><div className="size-2 bg-slate-400 rounded-full animate-bounce" /><div className="size-2 bg-slate-400 rounded-full animate-bounce delay-75" /><div className="size-2 bg-slate-400 rounded-full animate-bounce delay-150" /></div>}
+                            <div ref={chatEndRef} />
+                        </div>
+                        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+                            <input
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
+                                onKeyDown={handleChatSubmit}
+                                placeholder="Ask a question about this page..."
+                                className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary"
+                            />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            <style jsx>{`
-                .perspective-1000 {
-                    perspective: 1000px;
-                }
-                .transform-style-3d {
-                    transform-style: preserve-3d;
-                }
-                .backface-hidden {
-                    backface-visibility: hidden;
-                }
-                .rotate-y-180 {
-                    transform: rotateY(180deg);
-                }
+            {/* Floating AI Trigger */}
+            <button onClick={() => setIsChatOpen(!isChatOpen)} className="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-primary text-white shadow-xl hover:bg-primary-dark transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 group">
+                <span className="material-symbols-outlined">auto_awesome</span>
+                <span className="font-bold pr-2 hidden group-hover:inline-block transition-all duration-300">Ask AI</span>
+            </button>
+
+            <style jsx global>{`
+                .perspective-1000 { perspective: 1000px; }
+                .preserve-3d { transform-style: preserve-3d; }
+                .backface-hidden { backface-visibility: hidden; }
+                .rotate-y-180 { transform: rotateY(180deg); }
+                .no-scrollbar::-webkit-scrollbar { display: none; }
+                .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
+
         </div>
     );
 }

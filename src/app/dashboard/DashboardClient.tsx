@@ -18,7 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const PsychometricRadar = dynamic(
     () => import('@/components/PsychometricRadar').then(mod => mod.PsychometricRadar),
     {
-        loading: () => <Skeleton className="h-[400px] w-full rounded-2xl bg-surface-100" />,
+        loading: () => <Skeleton className="h-[400px] w-full rounded-2xl bg-muted" />,
         ssr: false
     }
 );
@@ -31,7 +31,7 @@ export function DashboardClient({ assets }: DashboardClientProps) {
     const { user, loading, radarData, greeting } = useDashboardData();
 
     return (
-        <div className="min-h-screen bg-surface-50 dark:bg-its-dark font-sans text-slate-900 pb-20">
+        <div className="min-h-screen bg-background font-sans text-foreground pb-20">
 
             {/* Header Sticky - Pass assets */}
             <DashboardHeader assets={assets} />
@@ -49,8 +49,8 @@ export function DashboardClient({ assets }: DashboardClientProps) {
 
                         {/* Radar Chart Card */}
                         <FadeIn delay={0.2}>
-                            <div className="rounded-2xl bg-white p-4 shadow-soft border border-slate-100 dark:bg-slate-900 dark:border-slate-800">
-                                <h3 className="text-sm font-bold text-slate-800 mb-4 px-2 uppercase tracking-wide">
+                            <div className="rounded-2xl bg-card p-4 shadow-soft border border-border">
+                                <h3 className="text-sm font-bold text-card-foreground mb-4 px-2 uppercase tracking-wide">
                                     Holistic Balance
                                 </h3>
                                 <div className="h-[350px] w-full">
@@ -85,10 +85,10 @@ export function DashboardClient({ assets }: DashboardClientProps) {
                         <FadeIn delay={0.5}>
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between px-1">
-                                    <h2 className="text-xl font-bold text-its-dark dark:text-white">
+                                    <h2 className="text-xl font-bold text-foreground">
                                         The 9 Dimensions
                                     </h2>
-                                    <button className="text-sm font-medium text-its-light hover:text-its-DEFAULT transition-colors">
+                                    <button className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                                         View All Metrics &rarr;
                                     </button>
                                 </div>
