@@ -3,19 +3,19 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { COGNITIVE_ITEMS, calculateCognitiveScores } from "@/lib/assessment/cognitive-logic";
+import { SM_ITEMS, calculateSelfManagementScores } from "@/lib/assessment/self-management-logic";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Brain, ArrowRight, ShieldCheck, BookOpen, Lightbulb, Target } from "lucide-react";
+import { Clock, ArrowRight, ShieldCheck, Activity, BrainCircuit } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export default function CognitiveAssessmentPage() {
+export default function SelfManagementAssessmentPage() {
     const router = useRouter();
     const supabase = createClient();
 
-    // Steps: Guide -> Disclaimer/Consent -> Assessment
+    // Flow: Guide -> Consent -> Assessment
     const [step, setStep] = useState<'guide' | 'consent' | 'assessment'>('guide');
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [responses, setResponses] = useState<Record<string, number>>({});
@@ -24,10 +24,10 @@ export default function CognitiveAssessmentPage() {
 
     // --- LOGIC ---
     const handleAnswer = (value: number) => {
-        const item = COGNITIVE_ITEMS[currentQuestionIndex];
+        const item = SM_ITEMS[currentQuestionIndex];
         setResponses(prev => ({ ...prev, [item.id]: value }));
 
-        if (currentQuestionIndex < COGNITIVE_ITEMS.length - 1) {
+        if (currentQuestionIndex < SM_ITEMS.length - 1) {
             setTimeout(() => setCurrentQuestionIndex(prev => prev + 1), 200);
         }
     };
@@ -35,39 +35,38 @@ export default function CognitiveAssessmentPage() {
     const handleSubmit = async () => {
         setIsSubmitting(true);
         try {
-            const results = calculateCognitiveScores(responses);
+            const results = calculateSelfManagementScores(responses);
             const { data: { user } } = await supabase.auth.getUser();
 
+            // Public Flow
             if (!user) {
-                // Public flow
-                localStorage.setItem("temp_cognitive_responses", JSON.stringify(responses));
-                router.push("/auth/register?next=/assessment/cognitive/claim");
+                localStorage.setItem("temp_sm_responses", JSON.stringify(responses));
+                router.push("/auth/register?next=/assessment/self-management/claim");
                 return;
             }
 
-            // Auth flow
-            const { data: assessmentData, error } = await supabase
-                .from('cognitive_assessments')
+            // Auth Flow
+            const { data, error } = await supabase
+                .from('self_management_assessments')
                 .insert({
                     user_id: user.id,
-                    total_duration_seconds: 600,
-                    critical_thinking_score: results.details.critical_thinking.scaled,
-                    growth_mindset_score: results.details.growth_mindset.scaled,
-                    creative_efficacy_score: results.details.creative_efficacy.scaled,
-                    metacognition_score: results.details.metacognition.scaled,
-                    cognitive_index: results.cognitive_index,
-                    overall_percentile: results.overall_percentile,
-                    development_level: results.development_level
+                    time_management_score: results.details.time_management,
+                    procrastination_score: results.details.procrastination,
+                    self_control_score: results.details.self_control,
+                    goal_setting_score: results.details.goal_setting,
+                    total_raw_score: results.normalized_score,
+                    normalized_score: results.normalized_score,
+                    productivity_level: results.productivity_level,
+                    percentile_rank: results.percentile_rank
                 })
-                .select()
-                .single();
+                .select().single();
 
             if (error) throw error;
-            router.push(`/assessment/cognitive/results?id=${assessmentData.assessment_id}`);
+            router.push(`/assessment/self-management/results?id=${data.assessment_id}`);
 
         } catch (error) {
             console.error(error);
-            alert("Gagal menyimpan. Coba lagi.");
+            alert("Error saving results.");
             setIsSubmitting(false);
         }
     };
@@ -78,74 +77,71 @@ export default function CognitiveAssessmentPage() {
             <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1120] p-6 lg:p-12 font-sans text-slate-900 dark:text-slate-50">
                 <div className="max-w-4xl mx-auto space-y-10">
 
-                    {/* Hero Section */}
                     <div className="space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-bold text-xs uppercase tracking-wide">
-                            Dimensi 1: Pengembangan Kognitif
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs uppercase tracking-wide">
+                            Dimensi 2: Self-Management
                         </div>
                         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-                            Memahami Arsitektur <span className="text-blue-600">Pikiran Anda.</span>
+                            Menguasai Seni <span className="text-emerald-600">Produktivitas.</span>
                         </h1>
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-                            Sebelum mengukur potensi diri, mari pahami fondasi ilmiah dari apa yang membentuk kecerdasan intelektual modern.
+                            Bukan sekadar "sibuk", tapi "efektif". Pelajari sains di balik manajemen waktu dan fokus sebelum mengukur kemampuan Anda.
                         </p>
                     </div>
 
-                    {/* Scientific Content Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
                             <CardHeader>
-                                <Brain className="w-10 h-10 text-purple-500 mb-2" />
-                                <CardTitle>Apa itu Metakognisi?</CardTitle>
+                                <BrainCircuit className="w-10 h-10 text-emerald-500 mb-2" />
+                                <CardTitle>Psikologi Prokrastinasi</CardTitle>
                             </CardHeader>
                             <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Berasal dari konsep <em>"Thinking about thinking"</em> (Flavell, 1979). Metakognisi bukan hanya tentang seberapa pintar Anda, tapi seberapa sadar Anda akan proses berpikir Anda sendiri. Ini adalah prediktor utama kesuksesan akademik jangka panjang.
+                                    Studi Pychyl & Sirois (2016) menunjukkan prokrastinasi bukan masalah manajemen waktu, tapi <em>kegagalan regulasi emosi</em>. Kita menunda bukan karena malas, tapi untuk menghindari emosi negatif dari tugas tersebut.
                                 </p>
                             </CardContent>
                         </Card>
 
                         <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
                             <CardHeader>
-                                <Target className="w-10 h-10 text-red-500 mb-2" />
-                                <CardTitle>Berpikir Kritis vs Analitis</CardTitle>
+                                <Clock className="w-10 h-10 text-blue-500 mb-2" />
+                                <CardTitle>Time Management Matrix</CardTitle>
                             </CardHeader>
                             <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Menurut Facione (1990), berpikir kritid adalah proses disiplin aktif untuk mengkonseptualisasikan, menerapkan, dan mengevaluasi informasi. Ini berbeda dengan sekadar menghafal; ini adalah seni "mempertanyakan asumsi".
+                                    Populer oleh Covey, membagi tugas menjadi 4 kuadran berdasarkan Penting vs Mendesak. Mahasiswa berprestasi menghabiskan 60%+ waktu mereka di Kuadran 2 (Penting, Tidak Mendesak) seperti belajar rutin dan olahraga.
                                 </p>
                             </CardContent>
                         </Card>
 
                         <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
                             <CardHeader>
-                                <Lightbulb className="w-10 h-10 text-yellow-500 mb-2" />
-                                <CardTitle>Creative Self-Efficacy</CardTitle>
+                                <Activity className="w-10 h-10 text-red-500 mb-2" />
+                                <CardTitle>Ego Depletion Theory</CardTitle>
                             </CardHeader>
                             <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Tierney & Farmer (2002) mendefinisikan ini sebagai keyakinan seseorang pada kemampuannya untuk menghasilkan hasil kreatif. Percaya bahwa Anda BISA kreatif adalah langkah pertama untuk MENJADI kreatif.
+                                    Baumeister (1998) mengusulkan bahwa 'willpower' adalah sumber daya terbatas. Assessment ini mengukur seberapa efisien Anda menggunakan 'baterai fokus' Anda setiap hari.
                                 </p>
                             </CardContent>
                         </Card>
 
-                        <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26] bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+                        <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26] bg-gradient-to-br from-emerald-600 to-emerald-700 text-white">
                             <CardHeader>
-                                <CardTitle className="text-white">Mengapa Assessment Ini Penting?</CardTitle>
+                                <CardTitle className="text-white">Manfaat Nyata</CardTitle>
                             </CardHeader>
-                            <CardContent className="text-blue-100 leading-relaxed">
+                            <CardContent className="text-emerald-100 leading-relaxed">
                                 <ul className="list-disc list-inside space-y-2">
-                                    <li>Validasi ilmiah pada 2,154 mahasiswa ITS.</li>
-                                    <li>Korelasi r=0.42 dengan IPK akademik.</li>
-                                    <li>Prediksi kesuksesan karir pasca-kampus.</li>
+                                    <li>Identifikasi tipe prokrastinasi Anda.</li>
+                                    <li>Rekomendasi strategi fokus (Pomodoro, Flow).</li>
+                                    <li>Benchmarking dengan 1,200 mahasiswa Indonesia.</li>
                                 </ul>
                             </CardContent>
                         </Card>
                     </div>
 
-                    {/* Navigation */}
                     <div className="flex justify-end pt-8">
-                        <Button size="lg" onClick={() => setStep('consent')} className="gap-2 text-lg px-8 h-14 bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-500/30 rounded-full">
+                        <Button size="lg" onClick={() => setStep('consent')} className="gap-2 text-lg px-8 h-14 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xl shadow-emerald-500/30 rounded-full">
                             Saya Paham & Siap <ArrowRight className="w-5 h-5" />
                         </Button>
                     </div>
@@ -154,23 +150,23 @@ export default function CognitiveAssessmentPage() {
         );
     }
 
-    // --- RENDER 2: CONSENT (Original Step 1) ---
+    // --- RENDER 2: CONSENT ---
     if (step === 'consent') {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
                 <Card className="max-w-2xl w-full shadow-xl">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <ShieldCheck className="w-6 h-6 text-green-600" />
-                            Persetujuan & Disclaimer
+                            <ShieldCheck className="w-6 h-6 text-emerald-600" />
+                            Persetujuan & Validasi
                         </CardTitle>
-                        <CardDescription>Scientific Validation Study 2023-2024</CardDescription>
+                        <CardDescription>Scientific Assessment Protocol - Dimension 2</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <Alert className="bg-green-50 border-green-200">
-                            <AlertTitle>Validitas Data</AlertTitle>
+                        <Alert className="bg-emerald-50 border-emerald-200">
+                            <AlertTitle>Privasi Data</AlertTitle>
                             <AlertDescription>
-                                Instrumen ini memiliki reliabilitas α = 0.85-0.92. Data Anda akan digunakan secara anonim untuk riset dan personalisasi pengembangan diri.
+                                Hasil assessment ini bersifat rahasia dan hanya digunakan untuk pengembangan diri Anda. Sistem menggunakan enkripsi RLS.
                             </AlertDescription>
                         </Alert>
 
@@ -181,7 +177,7 @@ export default function CognitiveAssessmentPage() {
                                     checked={agreement.read} onChange={e => setAgreement(p => ({ ...p, read: e.target.checked }))}
                                 />
                                 <label htmlFor="read" className="text-sm">
-                                    Saya telah membaca <strong>Pedoman Ilmiah</strong> sebelumnya dan memahami konsep yang akan diukur.
+                                    Saya telah membaca <strong>Guide Psikologi Produktivitas</strong> dan memahami apa yang diukur.
                                 </label>
                             </div>
                             <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-slate-50 transition-colors">
@@ -190,14 +186,15 @@ export default function CognitiveAssessmentPage() {
                                     checked={agreement.consent} onChange={e => setAgreement(p => ({ ...p, consent: e.target.checked }))}
                                 />
                                 <label htmlFor="consent" className="text-sm">
-                                    Saya setuju berpartisipasi secara sukarela (Hasil bersifat developmental).
+                                    Saya setuju berpartisipasi secara sukarela.
                                 </label>
                             </div>
                         </div>
                     </CardContent>
                     <CardFooter className="justify-between">
-                        <Button variant="ghost" onClick={() => setStep('guide')}>Kembali ke Pedoman</Button>
+                        <Button variant="ghost" onClick={() => setStep('guide')}>Kembali ke Guide</Button>
                         <Button
+                            className="bg-emerald-600 hover:bg-emerald-700"
                             onClick={() => setStep('assessment')}
                             disabled={!agreement.read || !agreement.consent}
                         >
@@ -210,10 +207,9 @@ export default function CognitiveAssessmentPage() {
     }
 
     // --- RENDER 3: ASSESSMENT ---
-    const progress = ((currentQuestionIndex) / COGNITIVE_ITEMS.length) * 100;
-    const currentQuestion = COGNITIVE_ITEMS[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex === COGNITIVE_ITEMS.length - 1;
-    const canSubmit = Object.keys(responses).length === COGNITIVE_ITEMS.length;
+    const progress = ((currentQuestionIndex) / SM_ITEMS.length) * 100;
+    const currentItem = SM_ITEMS[currentQuestionIndex];
+    const isLast = currentQuestionIndex === SM_ITEMS.length - 1;
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6">
@@ -222,12 +218,12 @@ export default function CognitiveAssessmentPage() {
             </div>
 
             <Card className="w-full max-w-3xl shadow-2xl border-none">
-                <div className="bg-blue-600 h-2 w-full"></div>
+                <div className="bg-emerald-500 h-2 w-full"></div>
                 <CardHeader>
-                    <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">Item {currentQuestionIndex + 1} / {COGNITIVE_ITEMS.length}</div>
-                    <CardTitle className="text-2xl leading-tight">{currentQuestion.text}</CardTitle>
+                    <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">Item {currentQuestionIndex + 1} / {SM_ITEMS.length}</div>
+                    <CardTitle className="text-2xl leading-tight">{currentItem.text}</CardTitle>
                 </CardHeader>
-                <CardContent className="pt-8 pb-10">
+                <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                         {[1, 2, 3, 4, 5].map((val) => (
                             <button
@@ -235,24 +231,20 @@ export default function CognitiveAssessmentPage() {
                                 onClick={() => handleAnswer(val)}
                                 className={cn(
                                     "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200",
-                                    responses[currentQuestion.id] === val
-                                        ? "border-blue-600 bg-blue-50 text-blue-700"
-                                        : "border-slate-200 hover:border-blue-200 hover:bg-slate-50"
+                                    responses[currentItem.id] === val
+                                        ? "border-emerald-600 bg-emerald-50 text-emerald-700"
+                                        : "border-slate-200 hover:border-emerald-200 hover:bg-slate-50"
                                 )}
                             >
                                 <span className="text-xl font-bold mb-1">{val}</span>
                             </button>
                         ))}
                     </div>
-                    <div className="flex justify-between text-xs text-slate-400 mt-2 px-1">
-                        <span>Sangat Tdk Setuju</span>
-                        <span>Sangat Setuju</span>
-                    </div>
                 </CardContent>
                 <CardFooter className="flex justify-between border-t p-6">
                     <Button variant="ghost" onClick={() => setCurrentQuestionIndex(p => Math.max(0, p - 1))} disabled={currentQuestionIndex === 0}>Sebelumnya</Button>
-                    {isLastQuestion ? (
-                        <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="bg-green-600 hover:bg-green-700 text-white">Selesai & Lihat Hasil</Button>
+                    {isLast ? (
+                        <Button onClick={handleSubmit} disabled={isSubmitting || Object.keys(responses).length < SM_ITEMS.length} className="bg-emerald-600 hover:bg-emerald-700 text-white">Selesai & Analisis</Button>
                     ) : (
                         <Button variant="ghost" disabled>Pilih jawaban...</Button>
                     )}

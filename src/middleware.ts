@@ -48,7 +48,8 @@ export async function middleware(request: NextRequest) {
         path.startsWith("/auth") ||
         path.startsWith("/help") ||
         path.startsWith("/research") ||
-        path.startsWith("/api/public");
+        path.startsWith("/api/public") ||
+        path.startsWith("/assessment");
 
     if (isPublicRoute) {
         // Jika user sudah login tapi buka halaman login/register, redirect ke dashboard masing-masing
