@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import HeroBoomerang from '@/components/HeroBoomerang';
 
 export default function HeroVideo() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -26,19 +27,7 @@ export default function HeroVideo() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-20 pointer-events-none" />
 
                 {/* Placeholder Video - Ganti src dengan file hasil convert sequence Anda */}
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="object-cover w-full h-full opacity-80"
-                >
-                    {/* Fallback ke poster jika video gagal load */}
-                    <source src="/assets/hero-loop.webm" type="video/webm" />
-                    <source src="/assets/hero-loop.mp4" type="video/mp4" />
-                    {/* Use a static image from public assets as fallback - using the first frame of the sequence if available or a placeholder */}
-                    <img src="/assets/hero-sequence/keyframe_000.jpg" alt="ITS Campus" className="object-cover w-full h-full" />
-                </video>
+                <HeroBoomerang />
             </motion.div>
 
             {/* Content Layer */}

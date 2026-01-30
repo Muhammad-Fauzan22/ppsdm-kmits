@@ -4,12 +4,15 @@ import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer, Tool
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const data = [
-    { subject: 'Cognitive', A: 120, fullMark: 150 },
-    { subject: 'Affective', A: 98, fullMark: 150 },
-    { subject: 'Psychomotor', A: 86, fullMark: 150 },
-    { subject: 'Social', A: 99, fullMark: 150 },
-    { subject: 'Spiritual', A: 85, fullMark: 150 },
-    { subject: 'Financial', A: 65, fullMark: 150 },
+    { subject: 'Cognitive', A: 0, fullMark: 100 },
+    { subject: 'Self-Management', A: 0, fullMark: 100 },
+    { subject: 'Financial', A: 0, fullMark: 100 },
+    { subject: 'Physical', A: 0, fullMark: 100 },
+    { subject: 'Social', A: 0, fullMark: 100 },
+    { subject: 'Emotional', A: 0, fullMark: 100 },
+    { subject: 'Spiritual', A: 0, fullMark: 100 },
+    { subject: 'Environmental', A: 0, fullMark: 100 },
+    { subject: 'Character', A: 0, fullMark: 100 },
 ];
 
 interface PsychometricRadarProps {

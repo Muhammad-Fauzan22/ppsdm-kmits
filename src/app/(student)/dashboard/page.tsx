@@ -252,6 +252,37 @@ export default function StudentDashboard() {
                                 </div>
                             </div>
 
+                            {/* Physical Health Mission Card */}
+                            <div className="relative overflow-hidden rounded-2xl bg-[#0f172a] border border-slate-700 shadow-lg group">
+                                <div className="absolute inset-0 opacity-40 mix-blend-overlay bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/random/800x600?fitness,health')" }}></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+
+                                <div className="relative p-6 flex flex-col gap-4">
+                                    <div className="flex justify-between items-start">
+                                        <span className="px-2 py-1 rounded bg-emerald-500/20 backdrop-blur text-xs font-bold text-emerald-400 border border-emerald-500/20">New Available</span>
+                                        <Bookmark className="w-5 h-5 text-white/50" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold text-white mb-1">Physical Health Check</h3>
+                                        <p className="text-sm text-slate-300">Assess your vitality and habits to boost performance.</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 mt-2">
+                                        <div className="flex items-center gap-1 text-emerald-400 text-xs font-bold">
+                                            <Zap className="w-4 h-4" />
+                                            <span>+200 XP</span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                                            <Clock className="w-4 h-4" />
+                                            <span>5 min</span>
+                                        </div>
+                                    </div>
+                                    <Link href="/assessment/physical-health" className="w-full py-3 mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2">
+                                        <span>Start Assessment</span>
+                                        <ChevronRight className="w-4 h-4" />
+                                    </Link>
+                                </div>
+                            </div>
+
                             {/* Quick Stats */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-white/60 dark:bg-[#161e2c]/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 shadow-sm">
@@ -302,8 +333,8 @@ import { recommendResources } from "@/lib/resourceRecommender";
 
 function BookCard({ title, author, img, url, badge }: { title: string, author: string, img: string, url?: string, badge?: string }) {
     return (
-        <a href={url || "#"} target="_blank" rel="noopener noreferrer" className="snap-start shrink-0 w-[140px] md:w-[160px] flex flex-col gap-3 group cursor-pointer">
-            <div className="aspect-[2/3] w-full rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-lg group-hover:-translate-y-1 transition-transform duration-300 relative">
+        <a href={url || "#"} target="_blank" rel="noopener noreferrer" className="snap-start shrink-0 w-[140px] md:w-[160px] flex flex-col gap-3 group cursor-pointer perspective-1000">
+            <div className="aspect-[2/3] w-full rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-lg group-hover:-translate-y-2 group-hover:rotate-y-12 group-hover:shadow-2xl transition-all duration-500 ease-out relative transform-style-3d">
                 <Image src={img} alt={title} fill className="object-cover" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
                 {badge && (

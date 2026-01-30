@@ -2,169 +2,161 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-export const dynamic = "force-dynamic";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { PieChart, TrendingUp, Brain, Shield, Info, ArrowUpRight } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+    TrendingUp, Shield, BarChart3, ChevronRight,
+    DollarSign, Wallet, PieChart, Users, CheckCircle, AlertCircle
+} from "lucide-react";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+interface FinancialResult {
+    knowledgeScore: number;
+    behaviorScore: number;
+    attitudeScore: number;
+    compositeScore: number;
+    intelligenceLevel: string;
+}
 
 function FinancialResultsContent() {
     const searchParams = useSearchParams();
-    const id = searchParams.get('id');
     const supabase = createClient();
-    const [result, setResult] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
+    const [result, setResult] = useState<FinancialResult | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const fetchResult = async () => {
-            if (!id) return;
-            const { data } = await supabase.from('financial_assessments').select('*').eq('assessment_id', id).single();
-            if (data) setResult(data);
-            setLoading(false);
-        };
-        fetchResult();
-    }, [id]);
+        async function loadResults() {
+            try {
+                const assessmentId = searchParams.get('id');
+                if (!assessmentId) return;
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Memuat analisis finansial...</div>;
-    if (!result) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Data tidak ditemukan.</div>;
+                const { data } = await supabase
+                    .from('financial_assessment_scores')
+                    .select('*')
+                    .eq('assessment_id', assessmentId)
+                    .single();
 
-    const chartData = {
-        labels: ['Literasi', 'Kebiasaan', 'Mindset', 'Keamanan'],
-        datasets: [
-            {
-                data: [
-                    result.financial_literacy_score,
-                    result.financial_behavior_score,
-                    result.financial_mindset_score,
-                    result.security_knowledge_score
-                ],
-                backgroundColor: [
-                    'rgba(16, 185, 129, 0.8)',
-                    'rgba(245, 158, 11, 0.8)',
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(239, 68, 68, 0.8)',
-                ],
-                borderWidth: 0,
-            },
-        ],
+                if (data) {
+                    setResult({
+                        knowledgeScore: Number(data.knowledge_score),
+                        behaviorScore: Number(data.behavior_score),
+                        attitudeScore: Number(data.attitude_score),
+                        compositeScore: Number(data.composite_score),
+                        intelligenceLevel: data.intelligence_level
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to load results", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        loadResults();
+    }, [searchParams, supabase]);
+
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center animate-pulse">Calculating Financial Intelligence...</div>;
+    }
+
+    if (!result) {
+        return <div className="min-h-screen flex items-center justify-center">Results not found.</div>;
+    }
+
+    const getColor = (score: number) => {
+        if (score >= 80) return "text-green-500";
+        if (score >= 60) return "text-yellow-500";
+        return "text-red-500";
+    };
+
+    const getBgColor = (score: number) => {
+        if (score >= 80) return "bg-green-500";
+        if (score >= 60) return "bg-yellow-500";
+        return "bg-red-500";
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 lg:p-12 font-sans text-slate-900 dark:text-white">
-            <div className="max-w-5xl mx-auto space-y-8">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6">
+            <div className="max-w-4xl mx-auto space-y-8">
 
                 {/* Header */}
-                <div className="text-center md:text-left space-y-2">
-                    <h1 className="text-3xl font-bold">Kesehatan Finansial & Karir</h1>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                        <Shield className="w-3 h-3" /> Financial Health Check Level 1
+                <div className="text-center space-y-4 pt-8">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-100 text-green-700 font-bold text-xs uppercase tracking-wide">
+                        <DollarSign className="w-4 h-4" /> Dimension 3: Financial Intelligence
                     </div>
+                    <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white">
+                        Financial Profile: <span className={getColor(result.compositeScore)}>{result.intelligenceLevel}</span>
+                    </h1>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Main Score Block */}
-                    <div className="md:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-8">
-                        <div className="relative w-48 h-48 shrink-0">
-                            <Doughnut data={chartData} options={{ cutout: '70%', plugins: { legend: { display: false } } }} />
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className="text-4xl font-black">{result.overall_score}</div>
-                                <div className="text-xs text-slate-500 uppercase font-bold">Total Score</div>
-                            </div>
-                        </div>
-                        <div className="flex-1 space-y-4">
-                            <h2 className="text-2xl font-bold">{result.financial_persona}</h2>
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                                Anda memiliki profil finansial yang <strong>{result.risk_tolerance}</strong>.
-                                {result.financial_literacy_score > 70
-                                    ? " Pemahaman dasar Anda tentang investasi dan manajemen uang sudah sangat baik."
-                                    : " Disarankan untuk mulai mempelajari instrumen investasi dasar."}
-                            </p>
-                            <div className="flex gap-4 pt-2">
-                                <div className="flex-1 bg-slate-50 dark:bg-slate-800 p-4 rounded-xl">
-                                    <div className="text-xs text-slate-400 uppercase font-bold">Risk Profile</div>
-                                    <div className="font-bold text-lg">{result.risk_tolerance}</div>
-                                </div>
-                                <div className="flex-1 bg-slate-50 dark:bg-slate-800 p-4 rounded-xl">
-                                    <div className="text-xs text-slate-400 uppercase font-bold">Est. Tabungan</div>
-                                    <div className="font-bold text-lg">{result.savings_ratio_estimate}%</div>
+                {/* Main Score Card */}
+                <Card className="border-none shadow-xl bg-white dark:bg-slate-900 overflow-hidden">
+                    <div className={`h-2 w-full ${getBgColor(result.compositeScore)}`}></div>
+                    <CardContent className="p-8">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                            <div className="relative w-48 h-48 flex items-center justify-center">
+                                <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" strokeWidth="8" />
+                                    <circle cx="50" cy="50" r="45" fill="none" className={getColor(result.compositeScore).replace('text-', 'stroke-')} strokeWidth="8" strokeDasharray={`${result.compositeScore * 2.83} 283`} strokeLinecap="round" />
+                                </svg>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span className={`text-5xl font-bold ${getColor(result.compositeScore)}`}>{Math.round(result.compositeScore)}</span>
+                                    <span className="text-xs text-slate-400">Composite Index</span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Recommendation Block */}
-                    <div className="bg-emerald-600 rounded-3xl p-8 text-white shadow-xl shadow-emerald-500/20 flex flex-col justify-between">
-                        <div>
-                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                                <ArrowUpRight className="w-5 h-5" /> Next Steps
-                            </h3>
-                            {/* Recommendations */}
-                            <div className="space-y-4">
-                                <RecCard
-                                    title="Mulai Investasi"
-                                    desc="Pelajari instrumen rendah risiko seperti Reksadana Pasar Uang."
-                                    cta="Lihat Modul"
-                                    urgent={result.financial_behavior_score < 50}
-                                />
-                                <RecCard
-                                    title="Audit Pengeluaran"
-                                    desc="Track semua pengeluaran kecil selama 7 hari."
-                                    cta="Template"
-                                    urgent={false}
-                                />
+                            <div className="flex-1 space-y-4">
+                                <div>
+                                    <h3 className="font-bold text-lg mb-2">Financial Knowledge</h3>
+                                    <div className="flex items-center gap-4">
+                                        <Progress value={result.knowledgeScore} className="h-2 flex-1" />
+                                        <span className="font-bold w-12">{Math.round(result.knowledgeScore)}%</span>
+                                    </div>
+                                    <p className="text-xs text-slate-500 mt-1">Understanding of financial concepts and instruments.</p>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg mb-2">Financial Behavior</h3>
+                                    <div className="flex items-center gap-4">
+                                        <Progress value={result.behaviorScore} className="h-2 flex-1" />
+                                        <span className="font-bold w-12">{Math.round(result.behaviorScore)}%</span>
+                                    </div>
+                                    <p className="text-xs text-slate-500 mt-1">Daily habits regarding saving, spending, and budgeting.</p>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg mb-2">Financial Attitude</h3>
+                                    <div className="flex items-center gap-4">
+                                        <Progress value={result.attitudeScore} className="h-2 flex-1" />
+                                        <span className="font-bold w-12">{Math.round(result.attitudeScore)}%</span>
+                                    </div>
+                                    <p className="text-xs text-slate-500 mt-1">Psychological outlook towards money and future planning.</p>
+                                </div>
                             </div>
                         </div>
-                        <Button variant="secondary" className="w-full mt-8 bg-white text-emerald-700 hover:bg-emerald-50 font-bold">
-                            Lihat Modul Literasi
-                        </Button>
-                    </div>
+                    </CardContent>
+                </Card>
+
+                {/* Integration with Holistic Radar */}
+                <Alert className="bg-blue-50 border-blue-200">
+                    <TrendingUp className="w-5 h-5 text-blue-600" />
+                    <AlertTitle className="text-blue-800">Holistic Integration</AlertTitle>
+                    <AlertDescription className="text-blue-700">
+                        Skor ini telah diperbarui ke dalam "9 Dimensions Radar Chart" di Dashboard Anda. Aspek finansial Anda mempengaruhi keseimbangan Environmental dan Social.
+                    </AlertDescription>
+                </Alert>
+
+                <div className="flex justify-center gap-4 content-center">
+                    <Button asChild size="lg" className="px-8 rounded-full">
+                        <Link href="/dashboard">
+                            Kembali ke Dashboard <ChevronRight className="ml-2 w-4 h-4" />
+                        </Link>
+                    </Button>
                 </div>
 
-                <div className="flex justify-center pt-8">
-                    <Link href="/dashboard">
-                        <Button size="lg" variant="outline" className="rounded-full px-8 border-slate-300 dark:border-slate-600">Kembali ke Dashboard</Button>
-                    </Link>
+                <div className="text-center text-xs text-slate-400 pb-8">
+                    Financial Intelligence Assessment v2.1 • PPSDM KM ITS
                 </div>
-            </div>
-        </div>
-    );
-}
-
-function ScoreRow({ title, score, icon, desc }: any) {
-    return (
-        <div className="bg-white dark:bg-[#151b26] p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
-            <div className={`p-3 rounded-lg ${score >= 60 ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                {icon}
-            </div>
-            <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
-                    <h4 className="font-bold text-sm">{title}</h4>
-                    <span className="font-mono font-bold">{score}/100</span>
-                </div>
-                <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                    <div className={`h-full ${score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-blue-500' : score >= 40 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${score}%` }}></div>
-                </div>
-                <p className="text-[10px] text-slate-400 mt-1">{desc}</p>
-            </div>
-        </div>
-    );
-}
-
-function RecCard({ title, desc, cta, urgent }: any) {
-    return (
-        <div className={cn("p-4 rounded-xl border flex flex-col justify-between mb-4 bg-emerald-700/50 border-emerald-500/30")}>
-            <div>
-                {urgent && <div className="text-[10px] font-bold text-red-200 uppercase mb-1 flex items-center gap-1"><Info className="w-3 h-3" /> Prioritas Tinggi</div>}
-                <h4 className="font-bold text-sm text-white mb-1">{title}</h4>
-                <p className="text-xs text-emerald-100 mb-2 leading-relaxed">{desc}</p>
-            </div>
-            <div className="text-white text-xs font-bold flex items-center gap-1 cursor-pointer hover:underline">
-                {cta} <ArrowUpRight className="w-3 h-3" />
             </div>
         </div>
     );
@@ -172,7 +164,7 @@ function RecCard({ title, desc, cta, urgent }: any) {
 
 export default function FinancialResultsPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Loading Report...</div>}>
+        <Suspense fallback={<div>Loading Results...</div>}>
             <FinancialResultsContent />
         </Suspense>
     );

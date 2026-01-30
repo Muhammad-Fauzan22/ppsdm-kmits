@@ -2,314 +2,278 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { FINANCIAL_ITEMS, calculateFinancialScore, FSection } from "@/lib/assessment/financial-logic";
-import { cn } from "@/lib/utils";
+import { KNOWLEDGE_ITEMS, BEHAVIOR_ITEMS, ATTITUDE_ITEMS } from "@/lib/assessment/financial-items";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Coins, TrendingUp, PiggyBank, ArrowRight, ShieldCheck, PieChart, Info } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ShieldCheck, ArrowRight, DollarSign, Wallet, TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type Section = 'guide' | 'consent' | 'knowledge' | 'behavior' | 'attitude' | 'submitting';
 
 export default function FinancialAssessmentPage() {
     const router = useRouter();
-    const supabase = createClient();
+    const [step, setStep] = useState<Section>('guide');
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Steps: guide -> consent -> knowledge -> likert (behavior+attitude)
-    const [step, setStep] = useState<'guide' | 'consent' | 'knowledge' | 'likert'>('guide');
+    // Store responses separately
+    const [knowledgeResp, setKnowledgeResp] = useState<Record<string, string>>({});
+    const [behaviorResp, setBehaviorResp] = useState<Record<string, number>>({});
+    const [attitudeResp, setAttitudeResp] = useState<Record<string, number>>({});
 
-    // Logic State
-    const [responses, setResponses] = useState<Record<string, string | number>>({});
-    const [currentKIndex, setCurrentKIndex] = useState(0); // Knowledge Index
-    const [currentLIndex, setCurrentLIndex] = useState(0); // Likert Index (Behavior + Attitude combined)
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [startTime, setStartTime] = useState<string>("");
     const [agreement, setAgreement] = useState({ read: false, consent: false });
 
-    // Filter Items
-    const knowledgeItems = FINANCIAL_ITEMS.filter(i => i.section === 'knowledge');
-    const likertItems = FINANCIAL_ITEMS.filter(i => i.section !== 'knowledge'); // Behavior + Attitude
+    // Start Assessment
+    const startAssessment = () => {
+        setStartTime(new Date().toISOString());
+        setStep('knowledge');
+        setCurrentIndex(0);
+    };
 
-    // HANDLERS
-    const handleKnowledgeAnswer = (optId: string) => {
-        const item = knowledgeItems[currentKIndex];
-        setResponses(prev => ({ ...prev, [item.id]: optId }));
-        if (currentKIndex < knowledgeItems.length - 1) {
-            setTimeout(() => setCurrentKIndex(p => p + 1), 200);
+    // Handle Knowledge Answer
+    const handleKnowledge = (val: string) => {
+        const item = KNOWLEDGE_ITEMS[currentIndex];
+        setKnowledgeResp(p => ({ ...p, [item.id]: val }));
+
+        if (currentIndex < KNOWLEDGE_ITEMS.length - 1) {
+            setTimeout(() => setCurrentIndex(p => p + 1), 200);
         } else {
-            // End of Knowledge Section
-            setTimeout(() => setStep('likert'), 500);
+            // Move to next section
+            setTimeout(() => {
+                setStep('behavior');
+                setCurrentIndex(0);
+            }, 300);
         }
     };
 
-    const handleLikertAnswer = (val: number) => {
-        const item = likertItems[currentLIndex];
-        setResponses(prev => ({ ...prev, [item.id]: val }));
-        if (currentLIndex < likertItems.length - 1) {
-            setTimeout(() => setCurrentLIndex(p => p + 1), 200);
+    // Handle Likert Answer (Behavior/Attitude)
+    const handleLikert = (val: number, type: 'behavior' | 'attitude') => {
+        const items = type === 'behavior' ? BEHAVIOR_ITEMS : ATTITUDE_ITEMS;
+        const setter = type === 'behavior' ? setBehaviorResp : setAttitudeResp;
+        const currentItem = items[currentIndex];
+
+        setter(p => ({ ...p, [currentItem.id]: val }));
+
+        if (currentIndex < items.length - 1) {
+            setTimeout(() => setCurrentIndex(p => p + 1), 150);
+        } else {
+            if (type === 'behavior') {
+                setTimeout(() => {
+                    setStep('attitude');
+                    setCurrentIndex(0);
+                }, 300);
+            } else {
+                handleSubmit();
+            }
         }
     };
 
     const handleSubmit = async () => {
-        setIsSubmitting(true);
+        setStep('submitting');
+        const endTime = new Date().toISOString();
+
+        // Prepare payload
+        const payload = {
+            startTime,
+            endTime,
+            knowledgeResponses: Object.entries(knowledgeResp).map(([k, v]) => ({
+                itemId: k,
+                response: v,
+                isCorrect: KNOWLEDGE_ITEMS.find(i => i.id === k)?.correctAnswer === v
+            })),
+            behaviorResponses: Object.entries(behaviorResp).map(([k, v]) => ({
+                itemId: k,
+                response: v
+            })),
+            attitudeResponses: Object.entries(attitudeResp).map(([k, v]) => ({
+                itemId: k,
+                response: v
+            }))
+        };
+
         try {
-            const results = calculateFinancialScore(responses);
-            const { data: { user } } = await supabase.auth.getUser();
+            const res = await fetch('/api/assessment/financial/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-            // Public Flow
-            if (!user) {
-                localStorage.setItem("temp_fin_responses", JSON.stringify(responses));
-                router.push("/auth/register?next=/assessment/financial/claim");
-                return;
-            }
+            if (!res.ok) throw new Error("Submission failed");
 
-            // Auth Flow
-            const { data, error } = await supabase
-                .from('financial_assessments')
-                .insert({
-                    user_id: user.id,
-                    knowledge_score: results.knowledge_score,
-                    behavior_score: results.behavior_score,
-                    attitude_score: results.attitude_score,
-                    composite_score: results.composite_score,
-                    percentile_rank: results.percentile_rank,
-                    financial_level: results.level
-                })
-                .select().single();
-
-            if (error) throw error;
-            router.push(`/assessment/financial/results?id=${data.assessment_id}`);
-
+            const data = await res.json();
+            // Redirect to results
+            router.push(`/assessment/financial/results?id=${data.assessmentId}`);
         } catch (error) {
             console.error(error);
-            alert("Submission failed.");
-            setIsSubmitting(false);
+            alert("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
+            setStep('attitude'); // Go back to allow retry
         }
     };
 
-    // --- STEP 1: EDUCATIONAL GUIDE (PEDOMAN ILMIAH) ---
+    // --- RENDERERS ---
+
     if (step === 'guide') {
         return (
-            <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1120] p-6 lg:p-12 font-sans text-slate-900 dark:text-slate-50">
-                <div className="max-w-4xl mx-auto space-y-10">
-                    <div className="space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-bold text-xs uppercase tracking-wide">
-                            Dimensi 3: Kecerdasan Finansial
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 flex flex-col items-center justify-center">
+                <Card className="max-w-3xl w-full border-none shadow-xl">
+                    <CardHeader className="text-center pb-8 pt-10">
+                        <div className="mx-auto w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
+                            <TrendingUp className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-                            Revolusi <span className="text-yellow-600">Literasi Keuangan.</span>
-                        </h1>
-                        <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-                            OECD mendefinisikan Literasi Keuangan sebagai kombinasi Pengetahuan, Perilaku, dan Sikap. Pelajari kerangka kerjanya sebelum Anda diuji.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
-                            <CardHeader>
-                                <PieChart className="w-10 h-10 text-yellow-500 mb-2" />
-                                <CardTitle>Tripartite Model</CardTitle>
-                            </CardHeader>
-                            <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                <p>Huston (2010) membagi kecerdasan finansial menjadi 3 pilar: <strong>Knowledge</strong> (memahami konsep), <strong>Skill</strong> (kemampuan hitung), dan <strong>Application</strong> (perilaku nyata).</p>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
-                            <CardHeader>
-                                <TrendingUp className="w-10 h-10 text-green-500 mb-2" />
-                                <CardTitle>Efek Bunga Majemuk</CardTitle>
-                            </CardHeader>
-                            <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                <p>Einstein menyebutnya "Keajaiban Dunia ke-8". Investasi kecil yang dilakukan sejak dini (usia kulaih) bernilai 10x lipat lebih besar dari investasi besar yang terlambat.</p>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
-                            <CardHeader>
-                                <Coins className="w-10 h-10 text-blue-500 mb-2" />
-                                <CardTitle>Behavioral Bias</CardTitle>
-                            </CardHeader>
-                            <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                <p>Otak kita diprogram untuk menghindari kerugian (Loss Aversion). Assessment ini akan mendeteksi apakah Anda rasional atau emosional dalam keputusan uang.</p>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border-0 shadow-lg bg-white dark:bg-[#151b26] bg-gradient-to-br from-yellow-500 to-orange-600 text-white">
-                            <CardHeader>
-                                <CardTitle className="text-white">Standar OJK & OECD</CardTitle>
-                            </CardHeader>
-                            <CardContent className="text-yellow-50 leading-relaxed">
-                                <ul className="list-disc list-inside space-y-2">
-                                    <li>Instrumen tervalidasi di 39 negara.</li>
-                                    <li>Mengukur Kesiapan Digital Banking.</li>
-                                    <li>Deteksi risiko "Sandwich Generation".</li>
-                                </ul>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    <div className="flex justify-end pt-8">
-                        <Button size="lg" onClick={() => setStep('consent')} className="gap-2 text-lg px-8 h-14 bg-yellow-600 hover:bg-yellow-700 text-white shadow-xl shadow-yellow-500/30 rounded-full">
-                            Pelajari & Uji Kemampuan <ArrowRight className="w-5 h-5" />
+                        <CardTitle className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+                            Financial Intelligence Assessment
+                        </CardTitle>
+                        <CardDescription className="text-lg max-w-xl mx-auto">
+                            Mengukur pemahaman, kebiasaan, dan sikap Anda terhadap pengelolaan finansial untuk masa depan yang lebih sejahtera.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid md:grid-cols-3 gap-6 pb-10">
+                        <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                            <DollarSign className="w-8 h-8 text-green-500 mb-2" />
+                            <h3 className="font-bold mb-1">Knowledge</h3>
+                            <p className="text-sm text-slate-500">Pemahaman konsep dasar keuangan.</p>
+                        </div>
+                        <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                            <Wallet className="w-8 h-8 text-purple-500 mb-2" />
+                            <h3 className="font-bold mb-1">Behavior</h3>
+                            <p className="text-sm text-slate-500">Kebiasaan dan tindakan finansial sehari-hari.</p>
+                        </div>
+                        <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                            <ShieldCheck className="w-8 h-8 text-amber-500 mb-2" />
+                            <h3 className="font-bold mb-1">Attitude</h3>
+                            <p className="text-sm text-slate-500">Pola pikir terhadap uang & risiko.</p>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-center pb-10">
+                        <Button size="lg" onClick={() => setStep('consent')} className="px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full h-12 text-lg shadow-lg shadow-blue-500/20">
+                            Mulai Assessment <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
-                    </div>
-                </div>
+                    </CardFooter>
+                </Card>
             </div>
-        )
+        );
     }
 
-    // --- STEP 2: CONSENT ---
     if (step === 'consent') {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
                 <Card className="max-w-2xl w-full shadow-xl">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <ShieldCheck className="w-6 h-6 text-yellow-600" />
-                            Validasi & Privasi
+                            <ShieldCheck className="w-6 h-6 text-green-600" />
+                            Persetujuan & Disclaimer
                         </CardTitle>
-                        <CardDescription>Scientific Protocol - Financial Dimension</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <Alert className="bg-yellow-50 border-yellow-200">
-                            <AlertTitle>Format Test</AlertTitle>
+                        <Alert className="bg-blue-50 border-blue-200 text-blue-800">
+                            <AlertTitle>Kerahasiaan Data</AlertTitle>
                             <AlertDescription>
-                                Test ini terdiri dari 24 item: 8 Pengetahuan (Pilihan Ganda) dan 16 Perilaku (Skala Likert). Pastikan Anda fokus.
+                                Hasil tes ini digunakan untuk pengembangan diri Anda. Data finansial spesifik tidak akan dibagikan kepada pihak ketiga.
                             </AlertDescription>
                         </Alert>
-
                         <div className="space-y-4 pt-4">
-                            <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-slate-50 transition-colors">
-                                <input
-                                    type="checkbox" id="read" className="mt-1"
-                                    checked={agreement.read} onChange={e => setAgreement(p => ({ ...p, read: e.target.checked }))}
-                                />
-                                <label htmlFor="read" className="text-sm">
-                                    Saya telah memahami kerangka kerja <strong>Tripartite Model</strong>.
-                                </label>
+                            <div className="flex items-start space-x-3 p-3 rounded-lg border">
+                                <input type="checkbox" id="read" className="mt-1" checked={agreement.read} onChange={e => setAgreement(p => ({ ...p, read: e.target.checked }))} />
+                                <label htmlFor="read" className="text-sm">Saya telah membaca pedoman.</label>
                             </div>
-                            <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-slate-50 transition-colors">
-                                <input
-                                    type="checkbox" id="consent" className="mt-1"
-                                    checked={agreement.consent} onChange={e => setAgreement(p => ({ ...p, consent: e.target.checked }))}
-                                />
-                                <label htmlFor="consent" className="text-sm">
-                                    Saya setuju berpartisipasi secara sukarela.
-                                </label>
+                            <div className="flex items-start space-x-3 p-3 rounded-lg border">
+                                <input type="checkbox" id="consent" className="mt-1" checked={agreement.consent} onChange={e => setAgreement(p => ({ ...p, consent: e.target.checked }))} />
+                                <label htmlFor="consent" className="text-sm">Saya setuju untuk berpartisipasi.</label>
                             </div>
                         </div>
                     </CardContent>
                     <CardFooter className="justify-between">
                         <Button variant="ghost" onClick={() => setStep('guide')}>Kembali</Button>
-                        <Button
-                            className="bg-yellow-600 hover:bg-yellow-700 text-white"
-                            onClick={() => setStep('knowledge')}
-                            disabled={!agreement.read || !agreement.consent}
-                        >
-                            Mulai Bagian 1: Pengetahuan
-                        </Button>
+                        <Button onClick={startAssessment} disabled={!agreement.read || !agreement.consent}>Mulai</Button>
                     </CardFooter>
                 </Card>
             </div>
         )
     }
 
-    // --- STEP 3: KNOWLEDGE TEST ---
+    if (step === 'submitting') {
+        return <div className="min-h-screen flex items-center justify-center text-xl font-bold animate-pulse">Menproses Hasil Analisis...</div>;
+    }
+
+    // Question Rendering Logic
+    let currentItem: any;
+    let progress = 0;
+    const totalSteps = KNOWLEDGE_ITEMS.length + BEHAVIOR_ITEMS.length + ATTITUDE_ITEMS.length;
+
     if (step === 'knowledge') {
-        const item = knowledgeItems[currentKIndex];
-        const progress = ((currentKIndex) / knowledgeItems.length) * 100;
+        currentItem = KNOWLEDGE_ITEMS[currentIndex];
+        progress = ((currentIndex) / totalSteps) * 100;
+    } else if (step === 'behavior') {
+        currentItem = BEHAVIOR_ITEMS[currentIndex];
+        progress = ((KNOWLEDGE_ITEMS.length + currentIndex) / totalSteps) * 100;
+    } else {
+        currentItem = ATTITUDE_ITEMS[currentIndex];
+        progress = ((KNOWLEDGE_ITEMS.length + BEHAVIOR_ITEMS.length + currentIndex) / totalSteps) * 100;
+    }
 
-        return (
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6">
-                <div className="w-full max-w-2xl mb-8">
-                    <p className="text-xs uppercase font-bold text-slate-500 mb-2">Bagian 1: Uji Pengetahuan Finansial</p>
-                    <Progress value={progress} className="h-2 mb-2" />
-                    <p className="text-right text-xs text-slate-400">{currentKIndex + 1}/{knowledgeItems.length}</p>
+    return (
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6">
+            <div className="w-full max-w-2xl mb-8">
+                <div className="flex justify-between text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">
+                    <span>{step} Phase</span>
+                    <span>{Math.round(progress)}% Complete</span>
                 </div>
+                <Progress value={progress} className="h-2" />
+            </div>
 
-                <Card className="w-full max-w-3xl shadow-xl min-h-[400px] flex flex-col">
-                    <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
-                        <CardTitle className="text-xl leading-relaxed font-medium">{item.text}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-8 flex-1">
+            <Card className="w-full max-w-3xl shadow-2xl border-none min-h-[400px] flex flex-col">
+                <div className={cn("h-2 w-full", step === 'knowledge' ? "bg-blue-500" : step === 'behavior' ? "bg-purple-500" : "bg-amber-500")}></div>
+                <CardHeader>
+                    <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">Question</div>
+                    <CardTitle className="text-2xl leading-tight">{currentItem?.text}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1 pt-6">
+                    {step === 'knowledge' ? (
                         <div className="grid grid-cols-1 gap-3">
-                            {item.options?.map((opt) => (
+                            {currentItem.options.map((opt: any) => (
                                 <button
-                                    key={opt.id}
-                                    onClick={() => handleKnowledgeAnswer(opt.id)}
+                                    key={opt.value}
+                                    onClick={() => handleKnowledge(opt.value)}
                                     className={cn(
-                                        "p-4 text-left rounded-lg border transition-all text-sm md:text-base hover:bg-slate-50 dark:hover:bg-slate-800",
-                                        responses[item.id] === opt.id
-                                            ? "border-yellow-500 bg-yellow-50 text-yellow-900 ring-1 ring-yellow-500"
-                                            : "border-slate-200"
+                                        "text-left p-4 rounded-xl border-2 transition-all hover:bg-slate-50",
+                                        knowledgeResp[currentItem.id] === opt.value ? "border-blue-500 bg-blue-50" : "border-slate-200"
                                     )}
                                 >
-                                    <span className="font-bold mr-3 uppercase">{opt.id}.</span>
-                                    {opt.text}
+                                    <span className="font-bold mr-2">{opt.value}.</span> {opt.label}
                                 </button>
                             ))}
                         </div>
-                    </CardContent>
-                </Card>
-            </div>
-        )
-    }
-
-    // --- STEP 4: LIKERT TEST ---
-    if (step === 'likert') {
-        const item = likertItems[currentLIndex];
-        const progress = ((currentLIndex) / likertItems.length) * 100;
-        const isLast = currentLIndex === likertItems.length - 1;
-        const canSubmit = Object.keys(responses).length === FINANCIAL_ITEMS.length;
-
-        return (
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6">
-                <div className="w-full max-w-2xl mb-8">
-                    <p className="text-xs uppercase font-bold text-slate-500 mb-2">Bagian 2: Perilaku & Sikap</p>
-                    <Progress value={progress} className="h-2 mb-2" />
-                    <p className="text-right text-xs text-slate-400">{currentLIndex + 1}/{likertItems.length}</p>
-                </div>
-
-                <Card className="w-full max-w-3xl shadow-xl">
-                    <div className="bg-gradient-to-r from-green-400 to-blue-500 h-2 w-full"></div>
-                    <CardHeader>
-                        <CardTitle className="text-2xl leading-tight">{item.text}</CardTitle>
-                        <CardDescription>{item.section === 'behavior' ? 'Seberapa sering Anda melakukan ini?' : 'Seberapa setuju Anda dengan pernyataan ini?'}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="pt-6 pb-10">
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                            {[1, 2, 3, 4, 5].map((val) => (
-                                <button
-                                    key={val}
-                                    onClick={() => handleLikertAnswer(val)}
-                                    className={cn(
-                                        "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200",
-                                        responses[item.id] === val
-                                            ? "border-blue-600 bg-blue-50 text-blue-700"
-                                            : "border-slate-200 hover:border-blue-200"
-                                    )}
-                                >
-                                    <span className="text-xl font-bold mb-1">{val}</span>
-                                </button>
-                            ))}
+                    ) : (
+                        <div className="space-y-6">
+                            <div className="flex justify-between text-sm text-slate-500 font-medium px-2">
+                                <span>Sangat Tidak Setuju</span>
+                                <span>Sangat Setuju</span>
+                            </div>
+                            <div className="grid grid-cols-5 gap-2 md:gap-4">
+                                {[1, 2, 3, 4, 5].map((val) => (
+                                    <button
+                                        key={val}
+                                        onClick={() => handleLikert(val, step as 'behavior' | 'attitude')}
+                                        className={cn(
+                                            "flex flex-col items-center justify-center p-4 md:p-6 rounded-xl border-2 transition-all hover:scale-105 active:scale-95",
+                                            (step === 'behavior' ? behaviorResp[currentItem.id] : attitudeResp[currentItem.id]) === val
+                                                ? (step === 'behavior' ? "border-purple-500 bg-purple-50 text-purple-700" : "border-amber-500 bg-amber-50 text-amber-700")
+                                                : "border-slate-200 hover:border-slate-300 bg-white"
+                                        )}
+                                    >
+                                        <span className="text-2xl font-bold">{val}</span>
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                        <div className="flex justify-between text-xs text-slate-400 mt-2">
-                            <span>Sangat Tidak Setuju/Pernah</span>
-                            <span>Sangat Setuju/Selalu</span>
-                        </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between border-t p-6">
-                        <Button variant="ghost" onClick={() => setCurrentLIndex(p => Math.max(0, p - 1))} disabled={currentLIndex === 0}>Kembali</Button>
-                        {isLast ? (
-                            <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={handleSubmit} disabled={isSubmitting}>Selesai & Analisis</Button>
-                        ) : (
-                            <Button variant="ghost" disabled>Pilih jawaban...</Button>
-                        )}
-                    </CardFooter>
-                </Card>
-            </div>
-        )
-    }
-
-    return <div>Loading...</div>;
+                    )}
+                </CardContent>
+                <CardFooter className="border-t p-6 text-center text-sm text-slate-400">
+                    {step === 'knowledge' ? "Pilih jawaban yang paling tepat." : "Jawab sesuai dengan kondisi Anda sebenarnya."}
+                </CardFooter>
+            </Card>
+        </div>
+    );
 }
