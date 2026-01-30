@@ -1,5 +1,5 @@
 
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabase/server';
 
 // EXISTING SCORING MODULES (Verified export names)
 import { calculateCognitiveScores } from './cognitiveScoring';
@@ -40,6 +40,10 @@ export class AssessmentEngine {
 
     constructor() { }
 
+    private async getSupabase() {
+        return await createClient();
+    }
+
     /**
      * Conduct comprehensive assessment for a specific domain
      */
@@ -50,6 +54,7 @@ export class AssessmentEngine {
     ) {
         console.log(`Starting assessment for ${userId} in domain ${domain}`);
 
+        const supabase = await this.getSupabase();
         const context = await this.getUserContext(userId);
         let scores, profile, recommendations, validity;
 
@@ -139,6 +144,7 @@ export class AssessmentEngine {
 
     private async getUserContext(userId: string): Promise<AssessmentContext> {
         try {
+            const supabase = await this.getSupabase();
             const { data, error } = await supabase
                 .from('users')
                 .select('faculty, year_level')

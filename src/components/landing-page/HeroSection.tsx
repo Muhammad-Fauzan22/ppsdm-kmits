@@ -48,16 +48,18 @@ export default function HeroSection() {
                     transition={{ duration: 0.7, delay: 0.5 }}
                     className="flex flex-col sm:flex-row gap-4 pt-4"
                 >
-                    <Link href="/auth/login">
-                        <button className="group flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-base font-bold text-white transition-all hover:bg-primary/90 hover:scale-105 shadow-xl shadow-primary/30 font-body">
-                            <span>Mulai Perjalanan Anda</span>
-                            <span className="material-symbols-outlined transition-transform group-hover:translate-x-1 text-lg">arrow_forward</span>
-                        </button>
+                    <Link
+                        href="/auth/login"
+                        className="group flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-base font-bold text-white transition-all hover:bg-primary/90 hover:scale-105 shadow-xl shadow-primary/30 font-body"
+                    >
+                        <span>Mulai Perjalanan Anda</span>
+                        <span className="material-symbols-outlined transition-transform group-hover:translate-x-1 text-lg">arrow_forward</span>
                     </Link>
-                    <Link href="#program">
-                        <button className="flex h-12 items-center justify-center rounded-lg border border-white/20 bg-white/5 px-8 text-base font-bold text-white transition-all hover:bg-white/10 hover:border-white/40 backdrop-blur-sm font-body">
-                            Pelajari Lebih Lanjut
-                        </button>
+                    <Link
+                        href="#program"
+                        className="flex h-12 items-center justify-center rounded-lg border border-white/20 bg-white/5 px-8 text-base font-bold text-white transition-all hover:bg-white/10 hover:border-white/40 backdrop-blur-sm font-body"
+                    >
+                        Pelajari Lebih Lanjut
                     </Link>
                 </motion.div>
             </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
 import { Search, BookOpen, Filter, Loader2, Sparkles, TrendingUp, Grid, List } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -25,6 +25,7 @@ export default function LibraryPage() {
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const [categories, setCategories] = useState<string[]>(['All']);
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+    const supabase = createClient();
 
     useEffect(() => {
         fetchBooks();
@@ -123,8 +124,8 @@ export default function LibraryPage() {
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${selectedCategory === cat
-                                        ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg scale-105'
-                                        : 'bg-white dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
+                                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg scale-105'
+                                    : 'bg-white dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
                                     }`}
                             >
                                 {cat}

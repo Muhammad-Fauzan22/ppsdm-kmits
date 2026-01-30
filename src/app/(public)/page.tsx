@@ -38,7 +38,7 @@ import {
     Blocks
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import HeroImageSequence from "@/components/HeroImageSequence";
+import HeroVideo from '@/components/HeroVideo';
 
 export default function LandingPage() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -95,73 +95,7 @@ export default function LandingPage() {
 
             <main className="flex-1 pt-20">
                 {/* Hero Section */}
-                <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden bg-[#0A0F1A]">
-                    {/* Image Sequence Background */}
-                    <div className="absolute inset-0 z-0">
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F1A]/90 via-[#0A0F1A]/60 to-[#0A0F1A]/90 z-10 pointer-events-none"></div>
-                        <HeroImageSequence
-                            frameCount={80}
-                            folderPath="/assets/hero-sequence"
-                            fileNamePrefix="A_seamless_hypnotic_1080p_202601282032_"
-                            fps={20}
-                            className="opacity-70"
-                        />
-                    </div>
-
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none z-10"></div>
-                    <div className="absolute inset-0 tech-grid opacity-30 pointer-events-none z-10"></div>
-
-                    <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
-                        <div className="inline-flex items-center gap-3 rounded-full border border-[#FFD700]/30 bg-[#FFD700]/10 px-4 py-1.5 text-xs font-semibold text-[#FFD700] backdrop-blur-md mb-8">
-                            <Award className="w-4 h-4" />
-                            Tidak Hanya Pintar Akademik, Tapi Juara dalam 9 Dimensi Kehidupan
-                        </div>
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black font-heading tracking-tighter text-white leading-[1.1] mb-6">
-                            Bangun Versi Terbaik Dirimu:<br />
-                            <span className="gradient-text bg-clip-text text-transparent bg-gradient-to-r from-[#135bec] to-[#00d4ff]">Platform Pengembangan Holistik</span><br />
-                            Pertama di Indonesia
-                        </h1>
-                        <p className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed mb-10">
-                            Sistem Saraf Digital yang Membimbing Perjalanan 4 Tahunmu di ITS.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-                            <Link href="/try-assessment" className="w-full sm:w-auto px-8 py-5 bg-white text-[#013880] font-bold rounded-2xl hover:bg-[#00d4ff] transition-all hover:scale-105 shadow-2xl shadow-[#00d4ff]/20 flex items-center justify-center gap-2 text-lg">
-                                Mulai Assessment Gratis
-                                <Zap className="w-5 h-5 fill-current" />
-                            </Link>
-                            <button className="w-full sm:w-auto px-8 py-5 glass-card text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-lg border-white/20">
-                                <PlayCircle className="w-6 h-6" />
-                                Tonton Demo
-                            </button>
-                        </div>
-
-                        <div className="mt-20 flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
-                            <div className="flex items-center gap-3">
-                                <GraduationCap className="text-[#FFD700] w-8 h-8" />
-                                <div className="text-left leading-tight">
-                                    <div className="font-bold text-white text-lg">5,000+</div>
-                                    <div className="text-[10px] uppercase tracking-wider text-slate-400">Mahasiswa Aktif</div>
-                                </div>
-                            </div>
-                            <div className="w-px h-10 bg-white/20 hidden md:block"></div>
-                            <div className="flex items-center gap-3">
-                                <ShieldCheck className="text-[#00d4ff] w-8 h-8" />
-                                <div className="text-left leading-tight">
-                                    <div className="font-bold text-white text-lg">Verified</div>
-                                    <div className="text-[10px] uppercase tracking-wider text-slate-400">Blockchain Certs</div>
-                                </div>
-                            </div>
-                            <div className="w-px h-10 bg-white/20 hidden md:block"></div>
-                            <div className="flex items-center gap-3">
-                                <Workflow className="text-[#135bec] w-8 h-8" />
-                                <div className="text-left leading-tight">
-                                    <div className="font-bold text-white text-lg">AI Driven</div>
-                                    <div className="text-[10px] uppercase tracking-wider text-slate-400">Personal Roadmap</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <HeroVideo />
 
                 {/* Pain Points */}
                 <section className="py-20 px-6 lg:px-12 bg-black relative">
@@ -198,7 +132,7 @@ export default function LandingPage() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section >
 
                 {/* Methodology */}
                 <section className="py-24 px-6 lg:px-12 bg-[#05080F]" id="methodology">
@@ -484,7 +418,7 @@ export default function LandingPage() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section >
 
                 {/* FAQ / CTA */}
                 <section className="py-24 px-6 lg:px-12 bg-[#05080F]" id="faq">

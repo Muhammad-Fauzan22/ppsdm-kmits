@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
 import { notFound, useParams, useRouter } from 'next/navigation';
 import { Loader2, ArrowLeft, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ export default function ReaderPage() {
     const router = useRouter();
     const [book, setBook] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const supabase = createClient();
 
     useEffect(() => {
         async function getBook() {

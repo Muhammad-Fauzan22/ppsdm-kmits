@@ -4,17 +4,21 @@
  * Handles feedback ingestion and autonomous quality recalibration.
  */
 
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/server';
 
 export class FeedbackService {
-    private supabase = supabase;
+    private async getSupabase() {
+        return await createClient();
+    }
 
     /**
      * Records user feedback and triggers autonomous recalibration
      */
     async submitFeedback(resourceId: string, userId: string, rating: number, comment?: string) {
+        const supabase = await this.getSupabase();
+
         // 1. Store explicit feedback
-        const { error } = await this.supabase
+        const { error } = await supabase
             .from('gre_feedback') // Assuming this table exists or we log it
             .insert({
                 resource_id: resourceId,
@@ -37,8 +41,10 @@ export class FeedbackService {
      * Adjusts the 'Engagement' and 'Impact' scores based on live feedback
      */
     private async recalibrateQuality(resourceId: string, newRating: number) {
+        const supabase = await this.getSupabase();
+
         // Fetch current scores
-        const { data: currentScores } = await this.supabase
+        const { data: currentScores } = await supabase
             .from('gre_quality_scores')
             .select('*')
             .eq('resource_id', resourceId)
@@ -55,7 +61,7 @@ export class FeedbackService {
         const newEngagement = Math.min(Math.max((currentScores.engagement_potential_score || 0.5) + engagementBoost, 0), 1);
 
         // Update DB
-        await this.supabase
+        await supabase
             .from('gre_quality_scores')
             .update({
                 engagement_potential_score: newEngagement,

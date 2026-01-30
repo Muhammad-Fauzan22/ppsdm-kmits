@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
     LayoutDashboard,
     Users,
@@ -21,8 +22,37 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ASSETS } from "@/config/assets";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminDashboardPage() {
+    const router = useRouter();
+    const supabase = createClient();
+
+    // State for interactive elements
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [timeRange, setTimeRange] = useState<"1H" | "24H" | "7D">("1H");
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push("/auth/login");
+    };
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            // Navigate to search results or filter dashboard
+            console.log("Searching for:", searchQuery);
+        }
+    };
+
+    const handleRefresh = useCallback(async () => {
+        setIsRefreshing(true);
+        // Simulate data refresh
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setIsRefreshing(false);
+    }, []);
     return (
         <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-sans selection:bg-primary selection:text-white transition-colors duration-300">
 
@@ -59,7 +89,10 @@ export default function AdminDashboardPage() {
                 {/* Footer / Settings */}
                 <div className="flex flex-col gap-2 border-t border-slate-200 dark:border-slate-800 pt-4">
                     <NavItem href="/admin/settings" icon={Settings} label="Settings" />
-                    <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full text-left">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full text-left"
+                    >
                         <span className="material-symbols-outlined">logout</span>
                         <p className="text-sm font-medium">Logout</p>
                     </button>
@@ -81,18 +114,34 @@ export default function AdminDashboardPage() {
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <Search className="w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors" />
                             </div>
-                            <input
-                                className="block w-full pl-10 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-slate-50 dark:bg-[#1a2230] text-slate-900 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-all shadow-sm"
-                                placeholder="Search commands, users, or logs (Press '/')"
-                                type="text"
-                            />
+                            <form onSubmit={handleSearch}>
+                                <input
+                                    className="block w-full pl-10 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-slate-50 dark:bg-[#1a2230] text-slate-900 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-all shadow-sm"
+                                    placeholder="Search commands, users, or logs (Press '/')"
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </form>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <button className="relative p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1a2230] transition-colors">
+                        <button
+                            onClick={() => setShowNotifications(!showNotifications)}
+                            className="relative p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1a2230] transition-colors"
+                        >
                             <Bell className="w-5 h-5" />
                             <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#101622] animate-pulse"></span>
                         </button>
+                        {showNotifications && (
+                            <div className="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-[#1a2230] rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-4 z-50">
+                                <h4 className="font-bold text-slate-900 dark:text-white mb-3">Notifications</h4>
+                                <div className="space-y-2">
+                                    <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm text-slate-600 dark:text-slate-300">New user registration pending</div>
+                                    <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm text-slate-600 dark:text-slate-300">System backup completed</div>
+                                </div>
+                            </div>
+                        )}
                         <div className="h-6 w-px bg-slate-200 dark:bg-slate-800"></div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">v2.4.0-stable</div>
                     </div>
@@ -129,9 +178,18 @@ export default function AdminDashboardPage() {
                                         <p className="text-slate-500 dark:text-slate-400 text-sm">Monitoring gateway traffic across all nodes</p>
                                     </div>
                                     <div className="flex gap-2 bg-slate-100 dark:bg-[#101622] p-1 rounded-lg border border-slate-200 dark:border-slate-800">
-                                        <button className="px-3 py-1 text-xs font-medium text-white bg-primary rounded shadow-sm">1H</button>
-                                        <button className="px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">24H</button>
-                                        <button className="px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">7D</button>
+                                        <button
+                                            onClick={() => setTimeRange("1H")}
+                                            className={`px-3 py-1 text-xs font-medium rounded shadow-sm transition-colors ${timeRange === "1H" ? "text-white bg-primary" : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"}`}
+                                        >1H</button>
+                                        <button
+                                            onClick={() => setTimeRange("24H")}
+                                            className={`px-3 py-1 text-xs font-medium rounded shadow-sm transition-colors ${timeRange === "24H" ? "text-white bg-primary" : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"}`}
+                                        >24H</button>
+                                        <button
+                                            onClick={() => setTimeRange("7D")}
+                                            className={`px-3 py-1 text-xs font-medium rounded shadow-sm transition-colors ${timeRange === "7D" ? "text-white bg-primary" : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"}`}
+                                        >7D</button>
                                     </div>
                                 </div>
                                 <div className="flex-1 w-full relative group overflow-hidden">
@@ -184,7 +242,9 @@ export default function AdminDashboardPage() {
                                 <div className="bg-white dark:bg-[#1a2230] border border-slate-200 dark:border-slate-700/50 rounded-xl p-6 flex-1 flex flex-col shadow-sm">
                                     <div className="flex items-center justify-between mb-6">
                                         <h3 className="text-lg font-bold text-slate-900 dark:text-white">System Health</h3>
-                                        <RefreshCw className="w-5 h-5 text-slate-400 animate-spin-slow cursor-pointer hover:text-primary transition-colors" />
+                                        <button onClick={handleRefresh}>
+                                            <RefreshCw className={`w-5 h-5 text-slate-400 cursor-pointer hover:text-primary transition-colors ${isRefreshing ? "animate-spin" : ""}`} />
+                                        </button>
                                     </div>
                                     <div className="flex flex-col gap-4 flex-1 justify-center">
                                         <StatusItem icon={Database} label="Database" sub="PostgreSQL Cluster" status="Healthy" color="green" />

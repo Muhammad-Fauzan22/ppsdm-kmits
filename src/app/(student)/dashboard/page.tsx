@@ -23,30 +23,43 @@ import { ASSETS } from "@/config/assets";
 
 import { createClient } from "@/lib/supabase/client";
 
+import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
+
 export default function StudentDashboard() {
     const [dynamicResources, setDynamicResources] = React.useState<any[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
     const supabase = React.useMemo(() => createClient(), []);
 
     React.useEffect(() => {
         const fetchBooks = async () => {
-            const { data } = await supabase.from('learning_resources').select('*').limit(5);
-            if (data) {
-                // Map Supabase 'learning_resources' to 'LearningContent' shape roughly
-                const mapped = data.map((item: any) => ({
-                    id: item.id || Math.random().toString(),
-                    title: item.title,
-                    type: 'Book' as const,
-                    provider: item.author || 'Library',
-                    language: 'id' as const,
-                    url: item.file_url || '#',
-                    tags: ['Dynamic'],
-                    thumbnail: item.preview_url || 'https://source.unsplash.com/random/400x600?book'
-                }));
-                setDynamicResources(mapped);
+            try {
+                const { data } = await supabase.from('learning_resources').select('*').limit(5);
+                if (data) {
+                    // Map Supabase 'learning_resources' to 'LearningContent' shape roughly
+                    const mapped = data.map((item: any) => ({
+                        id: item.id || Math.random().toString(),
+                        title: item.title,
+                        type: 'Book' as const,
+                        provider: item.author || 'Library',
+                        language: 'id' as const,
+                        url: item.file_url || '#',
+                        tags: ['Dynamic'],
+                        thumbnail: item.preview_url || 'https://source.unsplash.com/random/400x600?book'
+                    }));
+                    setDynamicResources(mapped);
+                }
+            } catch (error) {
+                console.error("Failed to fetch resources", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchBooks();
     }, [supabase]);
+
+    if (isLoading) {
+        return <DashboardSkeleton />;
+    }
 
     return (
         <div className="min-h-full font-sans text-slate-900 dark:text-slate-100 pb-20">
@@ -148,6 +161,7 @@ export default function StudentDashboard() {
                                     <button className="text-sm font-medium text-primary hover:text-blue-400 transition-colors">View All</button>
                                 </div>
                                 <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin snap-x">
+                                    {/* Dynamic Recommendations from Supabase */}
                                     {/* Dynamic Recommendations from Supabase */}
                                     {dynamicResources.length > 0 && dynamicResources.map((res) => (
                                         <BookCard

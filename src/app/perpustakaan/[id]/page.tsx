@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
 import { ArrowLeft, BookOpen, Clock, Calendar, Share2, Download, AlertCircle, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -25,6 +25,7 @@ export default function BookReaderPage() {
     const params = useParams();
     const [book, setBook] = useState<BookDetail | null>(null);
     const [loading, setLoading] = useState(true);
+    const supabase = createClient();
 
     useEffect(() => {
         if (params?.id) {

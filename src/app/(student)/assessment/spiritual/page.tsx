@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SPIRITUAL_ITEMS, calculateSpiritualScore } from "@/lib/assessment/spiritual-logic";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Sparkles, Heart, Sun, Activity, ArrowRight, BookOpen, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -15,11 +15,12 @@ export default function SpiritualAssessmentPage() {
     const router = useRouter();
     const supabase = createClient();
 
-    // Steps: Guide -> Assessment -> Submit
-    const [step, setStep] = useState<'guide' | 'assessment'>('guide');
+    // Steps: Guide -> Consent -> Assessment -> Submit
+    const [step, setStep] = useState<'guide' | 'consent' | 'assessment'>('guide');
     const [responses, setResponses] = useState<Record<string, number>>({});
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [agreement, setAgreement] = useState({ read: false, consent: false });
 
     const currentItem = SPIRITUAL_ITEMS[currentIndex];
     const progress = ((currentIndex) / SPIRITUAL_ITEMS.length) * 100;
@@ -90,8 +91,8 @@ export default function SpiritualAssessmentPage() {
                             Jelajahi 4 dimensi penting (Makna, Syukur, Transendensi, Altruisme) yang mendukung kesuksesan akademik dan kebahagiaan sejati.
                         </p>
                         <div className="pt-8">
-                            <Button size="lg" className="h-16 px-12 rounded-full text-xl bg-sky-500 hover:bg-sky-600 shadow-xl shadow-sky-500/30" onClick={() => setStep('assessment')}>
-                                Mulai Assessment <ArrowRight className="ml-2 w-6 h-6" />
+                            <Button size="lg" className="h-16 px-12 rounded-full text-xl bg-sky-500 hover:bg-sky-600 shadow-xl shadow-sky-500/30" onClick={() => setStep('consent')}>
+                                Saya Paham & Siap <ArrowRight className="ml-2 w-6 h-6" />
                             </Button>
                         </div>
                     </div>
@@ -117,7 +118,74 @@ export default function SpiritualAssessmentPage() {
         );
     }
 
-    // --- ASSESSMENT ---
+    // --- STEP 2: CONSENT ---
+    if (step === 'consent') {
+        return (
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+                <Card className="max-w-2xl w-full shadow-xl">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Sparkles className="w-6 h-6 text-sky-600" />
+                            Persetujuan & Validasi
+                        </CardTitle>
+                        <CardDescription>Assessment Perkembangan Spiritual - Dimensi 8</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <Alert className="bg-sky-50 border-sky-200">
+                            <AlertTitle>Validitas Instrumen</AlertTitle>
+                            <AlertDescription>
+                                Indonesian Spiritual Development Scale (ISDS) dengan reliabilitas α = 0.87. Divalidasi pada 1,350 mahasiswa Indonesia dari berbagai latar belakang spiritual.
+                            </AlertDescription>
+                        </Alert>
+
+                        <Alert className="bg-blue-50 border-blue-200">
+                            <AlertTitle>Referensi Ilmiah</AlertTitle>
+                            <AlertDescription>
+                                <ul className="list-disc list-inside space-y-1 mt-2 text-sm">
+                                    <li>Emmons, R.A. (1999). The Psychology of Ultimate Concerns.</li>
+                                    <li>Pargament, K.I. (2007). Spirituality Integrated Psychotherapy.</li>
+                                    <li>Piedmont, R.L. (1999). Spiritual Transcendence Scale.</li>
+                                </ul>
+                            </AlertDescription>
+                        </Alert>
+
+                        <div className="space-y-4 pt-4">
+                            <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-slate-50 transition-colors">
+                                <input
+                                    type="checkbox" id="read" className="mt-1"
+                                    checked={agreement.read} onChange={e => setAgreement(p => ({ ...p, read: e.target.checked }))}
+                                />
+                                <label htmlFor="read" className="text-sm">
+                                    Saya telah membaca <strong>Pedoman Ilmiah</strong> dan memahami konsep perkembangan spiritual (inklusif semua keyakinan).
+                                </label>
+                            </div>
+                            <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-slate-50 transition-colors">
+                                <input
+                                    type="checkbox" id="consent" className="mt-1"
+                                    checked={agreement.consent} onChange={e => setAgreement(p => ({ ...p, consent: e.target.checked }))}
+                                />
+                                <label htmlFor="consent" className="text-sm">
+                                    Saya setuju berpartisipasi secara sukarela dan data akan digunakan untuk pengembangan diri.
+                                </label>
+                            </div>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="justify-between">
+                        <Button variant="ghost" onClick={() => setStep('guide')}>Kembali ke Guide</Button>
+                        <Button
+                            className="bg-sky-600 hover:bg-sky-700"
+                            onClick={() => setStep('assessment')}
+                            disabled={!agreement.read || !agreement.consent}
+                        >
+                            Mulai Assessment
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
+        );
+    }
+
+    // --- STEP 3: ASSESSMENT ---
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
             <div className="w-full bg-slate-200 h-1.5">

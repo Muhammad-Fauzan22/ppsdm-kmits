@@ -1,5 +1,5 @@
 
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/server';
 import { GlobalResourceEngine } from '../resources/GlobalResourceEngine';
 
 // --- TYPES FOR 12-DIMENSIONAL IDP ---
@@ -73,6 +73,8 @@ export class HolisticIDPGenerator {
     async generateCompleteIDP(input: HolisticIDPInput): Promise<any> {
         console.log(`Generating Perfect Holistic IDP for ${input.userId}...`);
 
+        const supabase = await createClient();
+
         // 1. Core Identity & Purpose Layer
         const coreLayer = this.buildCoreIdentity(input);
 
@@ -86,7 +88,7 @@ export class HolisticIDPGenerator {
         const temporalLayer = this.createTemporalRoadmap(input, developmentLayer);
 
         // 5. Resource Ecosystem
-        const resourceLayer = await this.curateResourceEcosystem(developmentLayer);
+        const resourceLayer = await this.curateResourceEcosystem(supabase, developmentLayer);
 
         // 6. Measurement System
         const measurementLayer = this.designMeasurementSystem(input.visionStatement);
@@ -185,7 +187,7 @@ export class HolisticIDPGenerator {
         };
     }
 
-    private async curateResourceEcosystem(devLayer: Record<IDPDomain, DomainPlanDetail>): Promise<any> {
+    private async curateResourceEcosystem(supabase: any, devLayer: Record<IDPDomain, DomainPlanDetail>): Promise<any> {
         const resourceEngine = new GlobalResourceEngine();
         const resources: any = { learning: [], mentors: [], experiential: [] };
 

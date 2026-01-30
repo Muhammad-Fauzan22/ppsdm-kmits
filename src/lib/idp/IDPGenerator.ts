@@ -1,5 +1,5 @@
 
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/server';
 
 // --- Types for Holistic IDP ---
 
@@ -46,6 +46,8 @@ export class IDPGenerator {
      */
     async generateIDP(config: HolisticIDPConfig) {
         console.log(`Generating Holistic IDP for ${config.userId}`);
+
+        const supabase = await createClient();
 
         // 1. Vision Decomposition
         const visionComponents = this.decomposeVision(config.visionStatement);

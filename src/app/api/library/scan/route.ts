@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { google } from "googleapis";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/server";
 
 // ADAPTATION: Use Service Account or API Key if public
 // For robust "internal" system, we recommend Service Account or User OAuth.
@@ -15,6 +15,8 @@ const DRIVE_FOLDER_ID = "1B1g7rSHGQtO1VXEWxSS8Ncbg0R3nxmFf"; // From original re
 
 export async function POST(req: NextRequest) {
     try {
+        const supabase = await createClient();
+
         if (!GOOGLE_API_KEY) {
             return NextResponse.json({ success: false, error: "Missing GOOGLE_API_KEY" }, { status: 500 });
         }

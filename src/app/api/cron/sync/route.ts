@@ -1,6 +1,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/server";
 import { Client } from "@upstash/qstash";
 
 // 1. Cron Job hits this endpoint (e.g., every hour)
@@ -24,6 +24,8 @@ export async function GET(req: NextRequest) {
 
     try {
         console.log("Cron: Starting Sync...");
+
+        const supabase = await createClient();
 
         // 1. Trigger Scan locally
         // We can reuse the logic, or call the API if absolute URL known.

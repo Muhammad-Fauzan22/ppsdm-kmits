@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 
 interface HeaderProps {
     variant?: "light" | "dark";
@@ -11,7 +11,10 @@ interface HeaderProps {
 
 export function Header({ variant = "light" }: HeaderProps) {
     const pathname = usePathname();
+    const router = useRouter();
     const [user, setUser] = useState<any>(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const supabase = createClient();
 
     useEffect(() => {
         // Get initial session
@@ -25,15 +28,16 @@ export function Header({ variant = "light" }: HeaderProps) {
         });
 
         return () => subscription.unsubscribe();
-    }, []);
+    }, [supabase.auth]);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
+        router.push("/auth/login");
     };
 
     const navItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Perpustakaan", href: "/perpustakaan" }, // Added Library link
+        { label: "Perpustakaan", href: "/perpustakaan" },
         { label: "RPI Planning", href: "/rpi" },
         { label: "Portfolio", href: "/portfolio" },
     ];
@@ -41,11 +45,11 @@ export function Header({ variant = "light" }: HeaderProps) {
     const isActive = (href: string) => pathname === href;
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-[#0B0E14] border-b border-[#1B2128] px-4 lg:px-10 py-3 shadow-sm">
+        <header className="sticky top-0 z-50 w-full bg-background dark:bg-card border-b border-border px-4 lg:px-10 py-3 shadow-sm">
             <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                 {/* Logo & Title */}
-                <Link href="/" className="flex items-center gap-4 text-white hover:opacity-80 transition-opacity">
-                    <div className="size-8 flex items-center justify-center bg-brand-blue rounded-lg text-white shadow-lg shadow-brand-blue/20">
+                <Link href="/" className="flex items-center gap-4 text-foreground hover:opacity-80 transition-opacity">
+                    <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-primary-foreground shadow-lg shadow-primary/20">
                         <span className="material-symbols-outlined text-xl">school</span>
                     </div>
                     <h2 className="text-xl font-bold tracking-tight">PPSDM KMM</h2>
@@ -59,15 +63,15 @@ export function Header({ variant = "light" }: HeaderProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={`text-sm font-medium transition-colors ${isActive(item.href)
-                                    ? "text-brand-blue font-semibold border-b-2 border-brand-blue pb-0.5"
-                                    : "text-slate-400 hover:text-white"
+                                    ? "text-primary font-semibold border-b-2 border-primary pb-0.5"
+                                    : "text-muted-foreground hover:text-foreground"
                                     }`}
                             >
                                 {item.label}
                             </Link>
                         ))}
                     </nav>
-                    <div className="h-6 w-px bg-white/10"></div>
+                    <div className="h-6 w-px bg-border"></div>
 
                     {/* User Actions */}
                     <div className="flex items-center gap-4">
@@ -75,7 +79,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                             <>
                                 <button aria-label="User Profile" className="relative group flex items-center gap-2">
                                     <div
-                                        className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-[#0B0E14] ring-white/10"
+                                        className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-offset-2 ring-background ring-border"
                                         style={{
                                             backgroundImage: user.user_metadata?.avatar_url
                                                 ? `url("${user.user_metadata.avatar_url}")`
@@ -83,15 +87,15 @@ export function Header({ variant = "light" }: HeaderProps) {
                                         }}
                                     ></div>
                                     <div className="text-left hidden xl:block">
-                                        <p className="text-xs font-bold text-white line-clamp-1 max-w-[100px]">{user.email}</p>
-                                        <p className="text-[10px] text-green-400 font-bold">Online</p>
+                                        <p className="text-xs font-bold text-foreground line-clamp-1 max-w-[100px]">{user.email}</p>
+                                        <p className="text-[10px] text-green-500 font-bold">Online</p>
                                     </div>
 
                                     {/* Dropdown for Logout */}
-                                    <div className="absolute right-0 top-full mt-2 w-48 bg-[#1c1f27] rounded-xl shadow-xl border border-white/10 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all">
+                                    <div className="absolute right-0 top-full mt-2 w-48 bg-popover rounded-xl shadow-xl border border-border opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all">
                                         <button
                                             onClick={handleLogout}
-                                            className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-xl font-medium"
+                                            className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-destructive/10 rounded-xl font-medium"
                                         >
                                             Keluar
                                         </button>
@@ -99,7 +103,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                                 </button>
                             </>
                         ) : (
-                            <Link href="/auth/login" className="px-5 py-2 bg-brand-blue text-white rounded-lg font-bold hover:bg-blue-600 transition-all text-sm shadow-md shadow-brand-blue/20">
+                            <Link href="/auth/login" className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-bold hover:bg-primary/90 transition-all text-sm shadow-md shadow-primary/20">
                                 Masuk
                             </Link>
                         )}
@@ -107,10 +111,53 @@ export function Header({ variant = "light" }: HeaderProps) {
                 </div>
 
                 {/* Mobile Menu Toggle */}
-                <button aria-label="Toggle Mobile Menu" className="lg:hidden text-white">
-                    <span className="material-symbols-outlined text-3xl">menu</span>
+                <button
+                    aria-label="Toggle Mobile Menu"
+                    className="lg:hidden text-foreground"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                    <span className="material-symbols-outlined text-3xl">
+                        {mobileMenuOpen ? "close" : "menu"}
+                    </span>
                 </button>
             </div>
+
+            {/* Mobile Menu */}
+            {mobileMenuOpen && (
+                <div className="lg:hidden absolute top-full left-0 right-0 bg-background dark:bg-card border-b border-border shadow-lg">
+                    <nav className="flex flex-col p-4 gap-2">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive(item.href)
+                                    ? "bg-primary/10 text-primary"
+                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                    }`}
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
+                        {user ? (
+                            <button
+                                onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                                className="px-4 py-3 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 text-left"
+                            >
+                                Keluar
+                            </button>
+                        ) : (
+                            <Link
+                                href="/auth/login"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="px-4 py-3 rounded-lg text-sm font-medium bg-primary text-primary-foreground text-center"
+                            >
+                                Masuk
+                            </Link>
+                        )}
+                    </nav>
+                </div>
+            )}
         </header>
     );
 }

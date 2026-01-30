@@ -1,6 +1,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getJson } from "serpapi";
 import { google } from "googleapis";
@@ -78,6 +78,8 @@ async function fetchBookReviews(title: string, author: string) {
 
 export async function POST(req: NextRequest) {
     try {
+        const supabase = await createClient();
+
         const body = await req.json();
         const { bookId } = body;
 

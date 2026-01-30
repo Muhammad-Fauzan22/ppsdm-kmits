@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NAV_CONFIG } from '@/config/nav';
 import Image from 'next/image';
+import SmartBreadcrumbs from '@/components/SmartBreadcrumbs';
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -113,6 +114,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
             {/* Main Content Scrollable Area */}
             <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden pt-14 lg:pt-0">
                 <div className="min-h-full p-4 lg:p-8 max-w-7xl mx-auto pb-24 lg:pb-8">
+                    <SmartBreadcrumbs />
                     {children}
                 </div>
             </main>

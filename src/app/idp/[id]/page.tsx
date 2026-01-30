@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,6 +19,7 @@ export default function HolisticIDPDashboard() {
     const params = useParams();
     const [idp, setIdp] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const supabase = createClient();
 
     useEffect(() => {
         async function fetchIDP() {
