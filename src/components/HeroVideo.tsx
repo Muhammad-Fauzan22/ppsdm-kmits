@@ -80,7 +80,7 @@ export default function HeroVideo() {
                             size="lg"
                             className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:text-[#FFBD07] rounded-xl px-8 h-14 text-lg backdrop-blur-sm"
                         >
-                            <Link href="#features">
+                            <Link href="#methodology">
                                 Lihat Fitur
                             </Link>
                         </Button>

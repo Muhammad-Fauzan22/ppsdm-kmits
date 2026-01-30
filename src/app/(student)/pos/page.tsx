@@ -300,22 +300,22 @@ export default function StudentPersonalOSPage() {
                         >
                             <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-4 px-1">Quick Access Dock</h3>
                             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                                <button
-                                    onClick={() => alert("Transcripts feature coming soon!")}
+                                <Link
+                                    href="/assessment-results"
                                     className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="View Transcripts"
                                 >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-brand-blue transition-colors">article</span>
                                     <span className="text-sm font-medium text-white">Transcripts</span>
-                                </button>
-                                <button
-                                    onClick={() => alert("Schedule feature coming soon!")}
+                                </Link>
+                                <Link
+                                    href="/weekly-plan"
                                     className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="View Schedule"
                                 >
                                     <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-brand-accent transition-colors">calendar_month</span>
                                     <span className="text-sm font-medium text-white">Schedule</span>
-                                </button>
+                                </Link>
                                 <Link
                                     href="/library"
                                     className="bg-white/5 hover:bg-brand-blue/20 hover:border-brand-blue/50 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
