@@ -31,19 +31,20 @@ export default function ClaimResultPage() {
                 const responses = JSON.parse(storedResponses);
                 const results = calculateSelfManagementScores(responses);
 
-                // 3. Save to DB
+                // 3. Save to DB with new 4-factor structure
                 const { data: assessmentData, error } = await supabase
                     .from('self_management_assessments')
                     .insert({
                         user_id: user.id,
-                        time_management_score: results.details.time_management,
-                        procrastination_score: results.details.procrastination,
-                        self_control_score: results.details.self_control,
-                        goal_setting_score: results.details.goal_setting,
-                        total_raw_score: results.normalized_score,
-                        normalized_score: results.normalized_score,
-                        productivity_level: results.productivity_level,
-                        percentile_rank: results.percentile_rank
+                        planning_score: results.details.planning.scaled,
+                        procrastination_score: results.details.procrastination.scaled,
+                        focus_score: results.details.focus.scaled,
+                        energy_score: results.details.energy.scaled,
+                        productivity_index: results.productivity_index,
+                        overall_percentile: results.overall_percentile,
+                        development_level: results.development_level,
+                        profile_pattern: results.profilePattern.type,
+                        profile_title: results.profilePattern.title
                     })
                     .select()
                     .single();

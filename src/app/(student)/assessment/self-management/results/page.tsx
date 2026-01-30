@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Timer, AlertTriangle, CheckCircle, Target, Zap } from "lucide-react";
+import { Timer, AlertTriangle, CheckCircle, Target, Zap, Calendar, Clock, Focus, Battery } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -47,10 +47,10 @@ function SMResultsContent() {
                     <div className="md:col-span-2 bg-white dark:bg-[#151b26] rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-8">
                         <div className="flex-1">
                             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">Productivity Level</h3>
-                            <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">{result.productivity_level}</div>
+                            <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">{result.development_level}</div>
                             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                Skor Anda lebih tinggi dari <strong>{result.percentile_rank}%</strong> populasi mahasiswa.
-                                {result.normalized_score >= 70
+                                Skor Anda lebih tinggi dari <strong>{result.overall_percentile}%</strong> populasi mahasiswa.
+                                {result.productivity_index >= 70
                                     ? " Anda memiliki kontrol diri yang sangat baik dan manajemen waktu yang efektif."
                                     : " Ada beberapa area yang perlu dioptimalkan untuk mencapai performa puncak."}
                             </p>
@@ -59,9 +59,9 @@ function SMResultsContent() {
                             {/* Simple Pie Chart Representation */}
                             <svg viewBox="0 0 36 36" className="w-full h-full text-blue-600">
                                 <path className="text-slate-200 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
-                                <path className="animate-[spin_1s_ease-out_reverse]" strokeDasharray={`${result.normalized_score}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
+                                <path className="animate-[spin_1s_ease-out_reverse]" strokeDasharray={`${result.productivity_index}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
                             </svg>
-                            <div className="absolute inset-0 flex items-center justify-center font-bold text-xl">{Math.round(result.normalized_score)}</div>
+                            <div className="absolute inset-0 flex items-center justify-center font-bold text-xl">{Math.round(result.productivity_index)}</div>
                         </div>
                     </div>
 
@@ -96,10 +96,10 @@ function SMResultsContent() {
 
                 {/* Subscales Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <SubscaleCard title="Time Management" score={result.time_management_score} icon={<Timer className="w-5 h-5" />} description="Jadwal & Rutinitas" />
-                    <SubscaleCard title="Procrastination Control" score={result.procrastination_score} icon={<Zap className="w-5 h-5" />} description="Segera Bertindak" />
-                    <SubscaleCard title="Self-Control (Focus)" score={result.self_control_score} icon={<Target className="w-5 h-5" />} description="Menahan Distraksi" />
-                    <SubscaleCard title="Goal Setting" score={result.goal_setting_score} icon={<CheckCircle className="w-5 h-5" />} description="Tujuan Terukur" />
+                    <SubscaleCard title="Planning" score={result.planning_score} icon={<Calendar className="w-5 h-5" />} description="Perencanaan & Prioritas" />
+                    <SubscaleCard title="Procrastination Control" score={result.procrastination_score} icon={<Clock className="w-5 h-5" />} description="Manajemen Penundaan" />
+                    <SubscaleCard title="Focus" score={result.focus_score} icon={<Target className="w-5 h-5" />} description="Konsentrasi & Distraksi" />
+                    <SubscaleCard title="Energy" score={result.energy_score} icon={<Zap className="w-5 h-5" />} description="Kesadaran Energi" />
                 </div>
 
                 {/* Recommendation */}
