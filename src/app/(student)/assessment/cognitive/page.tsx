@@ -39,13 +39,14 @@ export default function CognitiveAssessmentPage() {
             const { data: { user } } = await supabase.auth.getUser();
 
             if (!user) {
-                // Public flow
+                // Public flow - save to localStorage and redirect
                 localStorage.setItem("temp_cognitive_responses", JSON.stringify(responses));
-                router.push("/auth/register?next=/assessment/cognitive/claim");
+                localStorage.setItem("temp_cognitive_results", JSON.stringify(results));
+                router.push("/assessment/cognitive/results");
                 return;
             }
 
-            // Auth flow
+            // Auth flow - save to database
             const { data: assessmentData, error } = await supabase
                 .from('cognitive_assessments')
                 .insert({
@@ -57,12 +58,44 @@ export default function CognitiveAssessmentPage() {
                     metacognition_score: results.details.metacognition.scaled,
                     cognitive_index: results.cognitive_index,
                     overall_percentile: results.overall_percentile,
-                    development_level: results.development_level
+                    development_level: results.development_level,
+                    profile_pattern: results.profilePattern.type,
+                    profile_title: results.profilePattern.title,
+                    validity_flag: results.validityCheck.isValid,
+                    straight_lining: results.validityCheck.straightLining,
+                    extreme_response_style: results.validityCheck.extremeResponseStyle,
+                    completion_rate: results.validityCheck.completionRate,
+                    assessment_version: '2.0.0'
                 })
                 .select()
                 .single();
 
             if (error) throw error;
+
+            // Save individual responses
+            const responseRecords = Object.entries(responses).map(([itemId, value]) => ({
+                assessment_id: assessmentData.assessment_id,
+                item_id: itemId,
+                response_value: value
+            }));
+
+            await supabase.from('cognitive_responses').insert(responseRecords);
+
+            // Save recommendations
+            if (results.recommendations.length > 0) {
+                const recRecords = results.recommendations.map(rec => ({
+                    assessment_id: assessmentData.assessment_id,
+                    recommendation_type: rec.type,
+                    title: rec.title,
+                    description: rec.description,
+                    resources: rec.resources,
+                    priority_level: rec.priority
+                }));
+                await supabase.from('cognitive_recommendations').insert(recRecords);
+            }
+
+            // Store in localStorage for results page
+            localStorage.setItem("temp_cognitive_results", JSON.stringify(results));
             router.push(`/assessment/cognitive/results?id=${assessmentData.assessment_id}`);
 
         } catch (error) {
