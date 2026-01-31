@@ -1,44 +1,39 @@
-import { z } from "zod";
+/**
+ * Kimi AI Integration (via Unified AI Service)
+ * Deprecated: Use @/lib/ai-service.ts instead
+ * This file is kept for backward compatibility
+ */
 
-// API Configuration
-// NOTE: In production, this should be in process.env
-const KIMI_API_KEY = "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";
-const KIMI_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
+import { queryAI, AIMessage } from "@/lib/ai-service";
 
 interface KimiMessage {
-    role: "user" | "assistant" | "system";
-    content: string;
+  role: "user" | "assistant" | "system";
+  content: string;
 }
 
+/**
+ * @deprecated Use queryAI from @/lib/ai-service instead
+ * This wrapper is kept for backward compatibility only
+ */
 export async function chatWithKimi(messages: KimiMessage[]) {
-    try {
-        const response = await fetch(KIMI_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${KIMI_API_KEY}`,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                model: "moonshotai/kimi-k2.5",
-                messages,
-                max_tokens: 16384,
-                temperature: 1.0,
-                top_p: 1.0,
-                stream: false,
-                chat_template_kwargs: { thinking: true }
-            })
-        });
+  console.warn(
+    "[DEPRECATED] chatWithKimi is deprecated. Use queryAI from @/lib/ai-service instead."
+  );
 
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`Kimi API Error: ${response.status} ${response.statusText} - ${errorBody}`);
-        }
+  try {
+    const result = await queryAI(
+      messages as AIMessage[],
+      undefined,
+      16384
+    );
 
-        const data = await response.json();
-        return data.choices[0].message.content;
-    } catch (error) {
-        console.error("Kimi AI Integration Error:", error);
-        throw error;
+    if (!result.success) {
+      throw new Error(`Kimi API Error: ${result.error}`);
     }
+
+    return result.content;
+  } catch (error) {
+    console.error("Kimi AI Integration Error:", error);
+    throw error;
+  }
 }

@@ -9,9 +9,16 @@ from openai import OpenAI
 # Load environment variables
 load_dotenv('.env.local')
 
-api_key = os.getenv('NVIDIA_API_KEY')
+# Try different API key env vars in priority order
+api_key = (
+    os.getenv('NEMOTRON_API_KEY') or
+    os.getenv('NVIDIA_API_KEY') or
+    os.getenv('NVIDIA_MULTI_API_KEY')
+)
+
 if not api_key:
-    print("❌ Error: NVIDIA_API_KEY not found in .env.local")
+    print("❌ Error: No API key found in .env.local")
+    print("   Tried: NEMOTRON_API_KEY, NVIDIA_API_KEY, NVIDIA_MULTI_API_KEY")
     sys.exit(1)
 
 _USE_COLOR = sys.stdout.isatty() and os.getenv("NO_COLOR") is None
