@@ -7,7 +7,12 @@ Usage: set env vars in .env.local (GOOGLE_GENERATIVE_AI_API_KEY, OPTIONAL NEMOTR
 This script is defensive: it saves outputs locally and only uploads to Drive if a service account JSON path is provided via `GOOGLE_SERVICE_ACCOUNT_FILE`.
 """
 
+import sys
 import os
+
+# Fix Windows Unicode encoding
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding='utf-8')
 import json
 import time
 import subprocess
@@ -67,8 +72,10 @@ def _gen_text_fallback_nemotron(prompt: str) -> str:
 
 def generate_podcast_script(topic: str) -> List[Dict[str, str]]:
     prompt = (
-        f"Write a conversational podcast script between two hosts (Budi and Siti) on the topic '{topic}'. "
-        "Return a JSON array where each item is {\"speaker\": \"A|B\", \"text\": \"...\"}. Keep it ~5-8 minutes spoken length. Tone: academic yet engaging."
+        f"Buatkan naskah podcast percakapan antara dua pembawa acara (Budi dan Siti) tentang topik '{topic}'. "
+        "Kembalikan array JSON di mana setiap item adalah {\"speaker\": \"A|B\", \"text\": \"...\"}. "
+        "Durasi percakapan sekitar 5-8 menit. Gunakan Bahasa Indonesia yang natural, menarik, dan sedikit akademis tapi santai. "
+        "Hindari kalimat pembuka bahasa inggris."
     )
     raw = None
     try:
@@ -105,7 +112,7 @@ def generate_podcast_script(topic: str) -> List[Dict[str, str]]:
     ]
     return local_script
 
-def generate_audio_files(script_json: List[Dict[str, str]], out_basename: str = 'podcast_final') -> str:
+def generate_audio_files(script_json: List[Dict[str, str]], out_basename: str = 'podcast_final', output_dir: str = OUT_DIR) -> str:
     try:
         import edge_tts
     except Exception:
@@ -120,7 +127,7 @@ def generate_audio_files(script_json: List[Dict[str, str]], out_basename: str = 
         speaker = seg.get('speaker', 'A')
         text = seg.get('text', '')
         voice = 'id-ID-ArdiNeural' if speaker == 'A' else 'id-ID-GadisNeural'
-        out_path = os.path.join(OUT_DIR, f'{out_basename}_{i}.mp3')
+        out_path = os.path.join(output_dir, f'{out_basename}_{i}.mp3')
 
         communicate = edge_tts.Communicate(text, voice)
         # Use async save helper
@@ -131,7 +138,7 @@ def generate_audio_files(script_json: List[Dict[str, str]], out_basename: str = 
         except Exception as e:
             print(f'edge-tts save failed for segment {i}: {e}')
 
-    final_path = os.path.join(OUT_DIR, f'{out_basename}.mp3')
+    final_path = os.path.join(output_dir, f'{out_basename}.mp3')
     if AudioSegment is None:
         print('pydub not available; returning last segment or list')
         return temp_files[-1] if temp_files else ''
@@ -150,10 +157,11 @@ def generate_audio_files(script_json: List[Dict[str, str]], out_basename: str = 
         return final_path
     return ''
 
-def generate_slide_content(topic: str, out_name: str = 'slides.md') -> str:
+def generate_slide_content(topic: str, out_name: str = 'slides.md', output_dir: str = OUT_DIR) -> str:
     prompt = (
-        f"Create a Marp-compatible Markdown presentation for '{topic}'. Include: Title slide, Agenda, 3 content slides, Conclusion. "
-        "Include image placeholders using Pollinations.ai links."
+        f"Buatkan materi presentasi Markdown (format Marp) untuk topik '{topic}'. "
+        "Mencakup: Slide Judul, Agenda, 3 slide konten utama, dan Kesimpulan. "
+        "Gunakan Bahasa Indonesia. Sertakan placeholder gambar menggunakan link Pollinations.ai yang relevan."
     )
     raw = None
     try:
@@ -171,7 +179,7 @@ def generate_slide_content(topic: str, out_name: str = 'slides.md') -> str:
         raw = (
             f'---\ntitle: {topic}\n---\n\n# {topic}\n\n---\n\n## Agenda\n- Pengantar\n- Konsep Utama\n- Contoh & Aplikasi\n\n---\n\n## Konsep 1\nPenjelasan singkat...\n\n---\n\n## Konsep 2\nPenjelasan singkat...\n\n---\n\n## Kesimpulan\n- Ringkasan poin penting\n')
 
-    md_path = os.path.join(OUT_DIR, out_name)
+    md_path = os.path.join(output_dir, out_name)
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write(raw)
 
@@ -211,19 +219,27 @@ def upload_to_drive(filepath: str, folder_id: str) -> Dict:
     file = service.files().create(body=file_metadata, media_body=media, fields='id, webViewLink').execute()
     return file
 
-def run_factory(topic: str):
-    print('🔎 Generating script...')
+def run_factory(topic: str, output_dir: str = None):
+    target_dir = output_dir if output_dir else OUT_DIR
+    os.makedirs(target_dir, exist_ok=True)
+    
+    print(f'🔎 Generating script for {topic} in {target_dir}...')
     script = generate_podcast_script(topic)
-    script_path = os.path.join(OUT_DIR, f'{topic.replace(" ", "_")}_script.json')
+    script_path = os.path.join(target_dir, f'{topic.replace(" ", "_")}_script.json')
     with open(script_path, 'w', encoding='utf-8') as f:
         json.dump(script, f, ensure_ascii=False, indent=2)
 
     print('🎙️ Generating audio...')
-    audio_path = generate_audio_files(script, out_basename=topic.replace(' ', '_'))
+    # Update generate_audio_files to use target_dir
+    # We need to pass target_dir to generate_audio_files or modify it. 
+    # Since generate_audio_files uses OUT_DIR global, we should modify it to use the passed path or update the global.
+    # For simplicitly in this script, let's update the global OUT_DIR or pass it.
+    # Refactoring generate_audio_files signature is better.
+    audio_path = generate_audio_files(script, out_basename=topic.replace(' ', '_'), output_dir=target_dir)
     print('✅ Audio generated at', audio_path)
 
     print('🖼️ Generating slides...')
-    md = generate_slide_content(topic, out_name=topic.replace(' ', '_') + '_slides.md')
+    md = generate_slide_content(topic, out_name=topic.replace(' ', '_') + '_slides.md', output_dir=target_dir)
     print('✅ Slides markdown at', md)
 
     if DRIVE_SA and DRIVE_FOLDER:
@@ -235,13 +251,14 @@ def run_factory(topic: str):
             except Exception as e:
                 print('Upload failed for', p, e)
     else:
-        print('Drive upload skipped (no service account). Save local outputs in', OUT_DIR)
+        print(f'Drive upload skipped. Saved outputs in {target_dir}')
 
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('topic', type=str, help='Topic to generate content for')
+    parser.add_argument('--output-dir', type=str, default=None, help='Directory to save outputs')
     args = parser.parse_args()
-    run_factory(args.topic)
+    run_factory(args.topic, args.output_dir)
 

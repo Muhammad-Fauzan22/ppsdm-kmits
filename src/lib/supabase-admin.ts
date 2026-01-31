@@ -1,6 +1,6 @@
 
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@/types/database.types'
+import { Database } from '../types/database.types'
 
 // Accessing the service role key for admin tasks
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!

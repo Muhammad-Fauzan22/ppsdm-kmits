@@ -98,27 +98,51 @@ def step_1_plan_curriculum(topic: str) -> Dict[str, Any]:
     print(f"\nPHASE 1: Designing Curriculum for '{topic}' (DeepSeek)...")
     
     prompt = f"""
-    Design a comprehensive university-level course curriculum for: "{topic}".
+    Anda adalah Pakar Kurikulum di ITS (Institut Teknologi Sepuluh Nopember) yang merancang mata kuliah universitas standar nasional.
     
-    Output MUST be valid JSON (no markdown formatting) with this structure:
+    Topik: "{topic}"
+    Standar Referensi & Framework:
+    1. **KKNI Level 6 (Sarjana)**: Aplikasi keahlian, konsep teoritis, manajerial, dan sikap (SN-DIKTI).
+    2. **UNESCO Education 2030**: Literasi, Critical Thinking, Leadership, Sustainability.
+    3. **Kurikulum Merdeka**: Case-Based & Project-Based Learning (Experiential).
+    4. **4 Poin Kunci ITS**: Integritas, Kreativitas, Kemandirian, dan Kontribusi Nasional.
+
+    DIMENSI HOLISTIK PPSDM (Harus tercermin dalam kurikulum):
+    1. Kognitif & Intelektual (HOTS)
+    2. Manajemen Diri & Produktivitas
+    3. Kecerdasan Finansial (Konteks Indonesia)
+    4. Kesehatan Fisik & Vitalitas
+    5. Kecerdasan Emosional & Sosial (Budaya Indonesia)
+    6. Kesehatan Mental & Psikologis
+    7. Karakter & Etika (Pancasila & Etika Profesi)
+    8. Pengembangan Spiritual
+    9. Manajemen Lingkungan & Gaya Hidup Berkelanjutan
+
+    TUGAS:
+    Rancang kurikulum mata kuliah (3 SKS) yang komprehensif, akademis, dan sangat relevan dengan dunia karir modern serta nilai-nilai kebangsaan.
+
+    STRUKTUR WAJIB (JSON):
     {{
-      "title": "Course Title",
-      "description": "2-sentence overview",
+      "title": "Nama Mata Kuliah (Bahasa Indonesia yang Menarik & Profesional)",
+      "description": "Deskripsi mata kuliah yang mencakup CPL (Capaian Pembelajaran Lulusan), relevansi industri, dan dimensi holistik yang disentuh.",
       "modules": [
         {{
-          "title": "Module Title",
-          "description": "Module objectives",
+          "title": "Judul Modul (Harus ada 3 Modul: misal, Fondasi/Konsep, Aplikasi/Praktik, Studi Kasus/Proyek)",
+          "description": "Tujuan instruksional khusus modul ini (Competency-based).",
           "lessons": [
-            {{ "title": "Lesson Title", "concept_notes": "Key specific concepts to cover in 100 words" }}
+            {{ 
+              "title": "Judul Materi (Harus ada 2 Materi per Modul)", 
+              "concept_notes": "Poin-poin konsep krusial (teori + praktik) yang MENGACU pada referensi standar nasional/internasional (misal: WHO, OJK, PII, BSNP, dsb sesuai topik)" 
+            }}
           ]
         }}
       ]
     }}
     
-    Requirements:
-    - Create exactly 3 Modules.
-    - Each Module must have 2 Lessons.
-    - Total 6 Lessons.
+    ATURAN KONTEN:
+    - **Bahasa**: Indonesia Akademik Baku namun komunikatif.
+    - **Studi Kasus**: WAJIB menggunakan contoh nyata di Indonesia (Startups, BUMN, Masalah Lokal, Etika PII).
+    - **Metode**: Tekankan pada 'How-to', Framework berpikir, dan Solusi praktis.
     """
     
     json_str = query_ai("planner", prompt, system_prompt="You are an expert Instructional Designer. Output raw JSON only.", json_mode=True)
@@ -134,19 +158,27 @@ def step_2_write_lesson(lesson_title: str, concept_notes: str, course_context: s
     print(f"  [Parallel] Writing Lesson: {lesson_title} (Nemotron)...")
     
     prompt = f"""
-    Write a detailed, engaging course lesson titled "{lesson_title}".
+    Bertindaklah sebagai Dosen Senior ITS yang sedang menulis materi E-Book Interaktif untuk mata kuliah PPSDM (Pengembangan Sumber Daya Mahasiswa).
     
-    Context: This is part of the course "{course_context}".
-    Concept Notes: {concept_notes}
+    Judul Materi: "{lesson_title}"
+    Konteks Kuliah: "{course_context}"
+    Bahan Konsep: {concept_notes}
     
-    Format:
-    - Start with a real-world hook/example.
-    - Use clear headings (##).
-    - Include a "Key Concept" callout (> blockquote).
-    - Provide a code snippet or practical example if applicable.
-    - End with a "Summary" section.
+    PEDOMAN PENULISAN (Strict Adherence Required):
+    1. **Style**: Akademis tapi mengalir (Flesch-Kincaid Grade 12-14), Tone profesional, memotivasi, dan empatik.
+    2. **Referensi**: Gunakan data terbaru, jurnal kredibel, atau standar industri.
     
-    Output strictly Markdown content.
+    3. **STRUKTUR MATERI (WAJIB):**
+       - **Pendahuluan**: Hook yang kuat (statistik Indonesia, fakta mengejutkan, atau relevansi karir lulusan ITS).
+       - **Landasan Teori Evaluatif**: Jelaskan konsep dengan kedalaman akademis (mengapa dan bagaimana).
+       - **Studi Kasus Kontekstual**: Contoh nyata di industri/masyarakat Indonesia (misal: proyek infrastruktur, startup lokal, dinamika sosial).
+       - **Aplikasi Praktis (Step-by-Step)**: Langkah konkret atau framework yang bisa langsung dipraktekkan mahasiswa.
+       - **Pojok ITS (Values)**: Kaitkan materi dengan nilai 'Sepuluh Nopember' (Perjuangan, Inovasi) atau Moto ITS 'Advancing Humanity'.
+       - **Ringkasan**: 3 poin kunci.
+    
+    4. **Format**: Markdown standar. Gunakan Heading (##), Bold (**), Blockquote (>), dan Lists yang rapi.
+    
+    Pastikan konten berbobot, bebas plagiarisme, sangat edukatif, dan menumbuhkan karakter luhur.
     """
     
     # Simulate thinking time for effect if needed, but here we just call
@@ -158,17 +190,23 @@ def step_3_generate_quiz(module_content: str, module_title: str) -> List[Dict[st
     print(f"  [Parallel] Generating Quiz for '{module_title}' (Mistral)...")
     
     prompt = f"""
-    Create a 3-question multiple-choice quiz based on this content:
+    Buatlah Kuis Evaluasi Pembelajaran (3 Soal) berbasis HOTS (Higher Order Thinking Skills).
     
-    {module_content[:2500]}... (truncated)
+    Materi Referensi:
+    {module_content[:3000]}...
     
-    Output JSON format only:
+    KRITERIA SOAL:
+    1. **Analitis**: Jangan hanya menanyakan hafalan. Minta mahasiswa menganalisis situasi atau menerapkan konsep.
+    2. **Kontekstual**: Gunakan skenario dunia nyata (studi kasus singkat).
+    3. **Bahasa**: Indonesia Baku.
+    
+    OUTPUT JSON (Strict Array of Objects):
     [
       {{
-        "question": "Question text?",
-        "options": ["A) Option 1", "B) Option 2", "C) Option 3", "D) Option 4"],
-        "correct_answer": "A) Option 1",
-        "explanation": "Why it is correct."
+        "question": "Skenario/Pertanyaan yang memicu berpikir kritis...",
+        "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+        "correct_answer": "A) ...",
+        "explanation": "Penjelasan mendalam mengapa jawaban ini benar dan yang lain salah, mengacu pada konsep materi."
       }}
     ]
     """
@@ -206,27 +244,28 @@ def save_to_supabase(curriculum: Dict, full_content: Dict[str, str], quizzes: Di
         slide_url = None
         if CONTENT_FACTORY_AVAILABLE:
             try:
+                # Define safe book dir
+                book_safe_title = "".join([c for c in curriculum['title'] if c.isalnum() or c in (' ','-','_')]).strip().replace(' ', '_')
+                demos_root = os.path.join(os.path.dirname(__file__), '..', 'public', 'demos')
+                book_dir = os.path.join(demos_root, book_safe_title)
+                os.makedirs(book_dir, exist_ok=True)
+
                 print(f"    - Generating Media for '{mod['title']}'...")
+                
                 # Podcast
                 script = generate_podcast_script(mod['title'])
-                audio_file = generate_audio_files(script, out_basename=f"mod_{i}_{mod['title'].replace(' ', '_')}")
+                # Use book_dir directly with the new output_dir parameter
+                audio_file = generate_audio_files(script, out_basename=f"mod_{i}_{mod['title'].replace(' ', '_')}", output_dir=book_dir)
                 
-                # Move to public/demos
                 if audio_file and os.path.exists(audio_file):
-                    dest_dir = os.path.join(os.path.dirname(__file__), '..', 'public', 'demos')
-                    os.makedirs(dest_dir, exist_ok=True)
-                    dest_file = os.path.join(dest_dir, os.path.basename(audio_file))
-                    shutil.move(audio_file, dest_file)
-                    podcast_url = f"/demos/{os.path.basename(audio_file)}"
+                    podcast_url = f"/demos/{book_safe_title}/{os.path.basename(audio_file)}"
+                    print(f"      > Saved Podcast: {podcast_url}")
                 
                 # Slides
-                slide_file = generate_slide_content(mod['title'], out_name=f"mod_{i}_{mod['title'].replace(' ', '_')}_slides.md")
+                slide_file = generate_slide_content(mod['title'], out_name=f"mod_{i}_{mod['title'].replace(' ', '_')}_slides.md", output_dir=book_dir)
                 if slide_file and os.path.exists(slide_file):
-                    dest_dir = os.path.join(os.path.dirname(__file__), '..', 'public', 'demos')
-                    os.makedirs(dest_dir, exist_ok=True)
-                    dest_file = os.path.join(dest_dir, os.path.basename(slide_file))
-                    shutil.move(slide_file, dest_file)
-                    slide_url = f"/demos/{os.path.basename(slide_file)}"
+                    slide_url = f"/demos/{book_safe_title}/{os.path.basename(slide_file)}"
+                    print(f"      > Saved Slides: {slide_url}")
 
             except Exception as e:
                 print(f"    ! Media generation failed: {e}")

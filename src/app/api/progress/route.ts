@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '../../../../lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: Request) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     // NOTE: In production, get user from session/auth
     const user_id = form.get('user_id') as string || null
 
-    const supabase = createServerSupabaseClient()
+    const supabase = await createClient()
 
     const payload = {
       user_id: user_id,
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     // Upsert learning progress (simple logic)
     const { data, error } = await supabase
       .from('learning_progress')
-      .upsert(payload, { on_conflict: ['user_id', 'course_id', 'module_id'] })
+      .upsert(payload, { onConflict: 'user_id, course_id, module_id' })
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

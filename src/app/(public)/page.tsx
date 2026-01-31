@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import {
     Activity,
@@ -41,6 +41,14 @@ import { cn } from "@/lib/utils";
 import HeroVideo from '@/components/HeroVideo';
 
 export default function LandingPage() {
+    return (
+        <Suspense fallback={null}>
+            <LandingContent />
+        </Suspense>
+    );
+}
+
+function LandingContent() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (

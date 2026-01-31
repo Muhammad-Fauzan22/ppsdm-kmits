@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Loader2, ShieldCheck, TrendingUp, Award, BookOpen, AlertCircle } from "lucide-react";
@@ -33,6 +33,14 @@ interface CharacterResult {
 }
 
 export default function CharacterResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin" /></div>}>
+            <CharacterResultsContent />
+        </Suspense>
+    );
+}
+
+function CharacterResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get("id"); // Optional: if we want specific result. Defaults to latest.
     const supabase = createClient();

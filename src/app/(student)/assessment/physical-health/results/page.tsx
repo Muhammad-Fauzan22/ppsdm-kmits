@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,6 +24,14 @@ interface DBResult {
 }
 
 export default function PhysicalHealthResultsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading results...</div>}>
+            <PhysicalHealthResultsContent />
+        </Suspense>
+    );
+}
+
+function PhysicalHealthResultsContent() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const [result, setResult] = useState<DBResult | null>(null);

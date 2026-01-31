@@ -10,6 +10,7 @@ import { z } from "zod";
 export enum AIModel {
   NEMOTRON = "nemotron",
   GLM4 = "glm4",
+  QWEN = "qwen",
   AUTO = "auto",
 }
 
@@ -44,6 +45,8 @@ function getApiKey(model: AIModel): string | null {
       return process.env.NEMOTRON_API_KEY || null;
     case AIModel.GLM4:
       return process.env.NVIDIA_API_KEY_GLM4 || null;
+    case AIModel.QWEN:
+      return process.env.QWEN_API_KEY || null;
     default:
       return null;
   }
@@ -196,8 +199,81 @@ async function queryGLM4(
 }
 
 /**
+ * Query QWEN model (Alibaba Cloud)
+ */
+async function queryQwen(
+  messages: AIMessage[],
+  maxTokens: number = 1024
+): Promise<AIResponse> {
+  const apiKey = getApiKey(AIModel.QWEN);
+
+  if (!apiKey) {
+    return {
+      success: false,
+      content: "",
+      model: "qwen",
+      error: "QWEN_API_KEY not configured",
+      timestamp: Date.now(),
+    };
+  }
+
+  try {
+    const response = await fetch(
+      "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "qwen-turbo-latest",
+          messages,
+          max_tokens: maxTokens,
+          temperature: 0.7,
+          top_p: 0.9,
+          stream: false,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`HTTP ${response.status}: ${error}`);
+    }
+
+    const data = await response.json();
+
+    if (
+      data.choices &&
+      data.choices[0] &&
+      data.choices[0].message &&
+      data.choices[0].message.content
+    ) {
+      return {
+        success: true,
+        content: data.choices[0].message.content,
+        model: "qwen",
+        timestamp: Date.now(),
+      };
+    }
+
+    throw new Error("Unexpected response format from QWEN API");
+  } catch (error) {
+    console.error("QWEN query failed:", error);
+    return {
+      success: false,
+      content: "",
+      model: "qwen",
+      error: `QWEN error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      timestamp: Date.now(),
+    };
+  }
+}
+
+/**
  * Main AI Service - Unified interface
- * AUTO mode: Try Nemotron first, fallback to GLM4
+ * AUTO mode: Try Nemotron first, fallback to GLM4, then QWEN
  */
 export async function queryAI(
   messages: AIMessage[],
@@ -234,18 +310,29 @@ export async function queryAI(
       return glm4Result;
     }
 
-    // Both failed
+    // Fallback to QWEN
+    console.log("[AI] GLM4 failed, attempting QWEN (final fallback)...");
+    const qwenResult = await queryQwen(messages, maxTokens);
+
+    if (qwenResult.success) {
+      console.log("[AI] ✅ QWEN succeeded");
+      return qwenResult;
+    }
+
+    // All failed
     return {
       success: false,
       content: "",
       model: "auto",
-      error: `Both models failed: Nemotron (${nemotronResult.error}), GLM4 (${glm4Result.error})`,
+      error: `All models failed: Nemotron (${nemotronResult.error}), GLM4 (${glm4Result.error}), QWEN (${qwenResult.error})`,
       timestamp: Date.now(),
     };
   } else if (model === AIModel.NEMOTRON) {
     return queryNemotron(messages, maxTokens);
   } else if (model === AIModel.GLM4) {
     return queryGLM4(messages, maxTokens);
+  } else if (model === AIModel.QWEN) {
+    return queryQwen(messages, maxTokens);
   }
 
   return {

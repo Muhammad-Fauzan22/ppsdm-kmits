@@ -11,19 +11,21 @@ CSV_PATH = r"EBOOK MANAGEMENT SYSTEM - 📚 DATABASE UTAMA.csv"
 def process_ebooks():
     print("STARTING MASS EBOOK PROCESSING")
     
-    if not os.path.exists(CSV_PATH):
-        print(f"Database not found at: {CSV_PATH}")
-        return
+    # Manual list from user request to ensure exact match
+    ebooks = [
+        "CHEATSHEET MANAJEMEN",
+        "DRAF NEO PPSDM Keluarga Mahasiswa Mesin ITS",
+        "NEOPPSDM",
+        "ORGANISASI",
+        "Naskah Akademik dan Penyusunan PPSDM KMM ITS",
+        "SHORT CUT",
+        "UU MESIN",
+        "AD ART ORMAWA",
+        "FORUM",
+        "Buku 1 KDKM dan HDPSDM MUBES V ITS"
+    ]
 
-    ebooks = []
-    with open(CSV_PATH, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            title = row.get('TITLE')
-            if title:
-                ebooks.append(title)
-
-    print(f"Found {len(ebooks)} books in database.")
+    print(f"Processing {len(ebooks)} books from priority list.")
     
     for i, title in enumerate(ebooks):
         print(f"\n[{i+1}/{len(ebooks)}] Processing: {title}")
