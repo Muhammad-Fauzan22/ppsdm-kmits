@@ -5,6 +5,8 @@ import { BookOpen, CheckCircle, Clock, Trophy, Activity, ArrowRight, Zap } from 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { StudyGroupFinder } from "@/components/peer/StudyGroupFinder";
+import { RecommendationEngine } from "@/lib/adaptive/engine";
+import { InterventionCard } from "@/components/adaptive/InterventionCard";
 
 async function getStats() {
   const supabase = await createClient();
@@ -136,6 +138,24 @@ export default async function DashboardPage() {
       {/* Peer Learning Section */}
       <div className="grid gap-6">
         <StudyGroupFinder />
+      </div>
+
+      {/* Adaptive Intervention Section (Phase 2) */}
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <Zap className="w-6 h-6 text-yellow-500" /> Personalized Growth Path
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {RecommendationEngine.getRecommendations({
+            'financial': 40, // Mock weak score
+            'cognitive': 80,
+            'emotional': 65,
+            'physical': 55
+          }).map(intervention => (
+            <InterventionCard key={intervention.id} intervention={intervention} />
+          ))}
+        </div>
       </div>
     </div>
   );
