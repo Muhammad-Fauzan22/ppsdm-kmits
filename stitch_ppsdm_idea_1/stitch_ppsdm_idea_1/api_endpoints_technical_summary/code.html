@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM API Documentation</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Roboto+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#067ff9",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                        "surface-dark": "#1a242f",
+                        "surface-dark-lighter": "#27303a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["Roboto Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dark theme code aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1923; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27303a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a4755; 
+        }
+        
+        .code-block {
+            font-family: 'Roboto Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Side Navigation -->
+<aside class="w-72 hidden md:flex flex-col border-r border-surface-dark-lighter bg-background-dark shrink-0">
+<div class="p-6 pb-2">
+<div class="flex flex-col gap-1">
+<h1 class="text-white text-lg font-bold leading-normal tracking-tight">PPSDM API</h1>
+<p class="text-[#9babbb] text-xs font-mono">v2.4.0 • Production</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 p-4 overflow-y-auto flex-1">
+<div class="text-[#9babbb] text-xs font-bold uppercase tracking-wider px-3 mb-1 mt-2">Core Services</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#27303a] text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<p class="text-sm font-medium leading-normal">Auth &amp; Identity</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#9babbb] group-hover:text-white">check_circle</span>
+<p class="text-[#9babbb] group-hover:text-white text-sm font-medium leading-normal">Assessment</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#9babbb] group-hover:text-white">school</span>
+<p class="text-[#9babbb] group-hover:text-white text-sm font-medium leading-normal">Learning</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#9babbb] group-hover:text-white">folder_shared</span>
+<p class="text-[#9babbb] group-hover:text-white text-sm font-medium leading-normal">Portfolio</p>
+</a>
+<div class="text-[#9babbb] text-xs font-bold uppercase tracking-wider px-3 mb-1 mt-6">Advanced Modules</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#9babbb] group-hover:text-white">smart_toy</span>
+<p class="text-[#9babbb] group-hover:text-white text-sm font-medium leading-normal">AI/ML Engine</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#9babbb] group-hover:text-white">link</span>
+<p class="text-[#9babbb] group-hover:text-white text-sm font-medium leading-normal">Blockchain Ledger</p>
+</a>
+</div>
+<!-- Sidebar Footer -->
+<div class="p-4 border-t border-surface-dark-lighter">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 shrink-0" data-alt="User avatar placeholder with abstract gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjdCetqtZ9F5owuRx-W98MGd09ZT2bgL484hJuDQgoLPkmMT4nST_8Z6b6ePp6AsqJ93DsUQtc5vJxxwy9gimKTGPu_q3X3Eutt1ZMqYXmCFC8WlzNeqWEZQugsP8Htzj-GAeEesb-a3Th97GhXnEHKVTokx3meFeolEFy8UScr584gpFKLLtV-iE7zWgx-U1XNtNJkxJmitF8XvekTM3wzNPQw0hC0eKIfC_6w_yy5loTe6ffsyBCvSFP2v5LbputN-qSW8PQGos");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">Dev Admin</p>
+<p class="text-[#9babbb] text-xs truncate">admin@ppsdm.kmm.id</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+<!-- Top Navbar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-surface-dark-lighter bg-background-dark/80 backdrop-blur-md px-8 py-3 shrink-0 z-10">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">PPSDM Developer Portal</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="hidden lg:flex gap-2">
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-surface-dark-lighter text-[#9babbb] hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-surface-dark-lighter text-[#9babbb] hover:text-white transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-surface-dark-lighter text-[#9babbb] hover:text-white transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<button class="bg-primary hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg transition-colors shadow-lg shadow-primary/20">
+                        Generate Key
+                    </button>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+<div class="max-w-[1024px] mx-auto flex flex-col gap-8 pb-20">
+<!-- Page Heading & Stats -->
+<div class="flex flex-col lg:flex-row gap-6 justify-between items-start lg:items-end">
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-3xl font-black tracking-tight">API Endpoints Summary</h2>
+<div class="flex items-center gap-2 text-[#9babbb] text-sm font-mono bg-surface-dark-lighter/50 px-3 py-1.5 rounded-md w-fit border border-white/5">
+<span class="material-symbols-outlined text-[16px]">dns</span>
+<span>https://api.ppsdm.kmm.id/v1</span>
+<span class="mx-1 text-white/20">|</span>
+<span class="text-emerald-500">Production</span>
+</div>
+</div>
+<!-- System Health Widget -->
+<div class="flex gap-4">
+<div class="flex flex-col gap-1 bg-surface-dark border border-surface-dark-lighter rounded-lg p-4 min-w-[140px]">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[#9babbb] text-[18px]">speed</span>
+<p class="text-[#9babbb] text-xs font-medium uppercase tracking-wider">Latency</p>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-2xl font-bold font-mono">24ms</p>
+<span class="text-emerald-500 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 2ms
+                                    </span>
+</div>
+</div>
+<div class="flex flex-col gap-1 bg-surface-dark border border-surface-dark-lighter rounded-lg p-4 min-w-[140px]">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[#9babbb] text-[18px]">check_circle</span>
+<p class="text-[#9babbb] text-xs font-medium uppercase tracking-wider">Uptime</p>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-2xl font-bold font-mono">99.99%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Search & Filter -->
+<div class="sticky top-0 z-20 pt-2 pb-4 bg-background-dark/95 backdrop-blur-sm">
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[#9babbb]">search</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-surface-dark-lighter/50 border border-surface-dark-lighter rounded-xl text-white placeholder-[#9babbb] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-mono text-sm" placeholder="Filter endpoints by method, path, or description..." type="text"/>
+<div class="absolute inset-y-0 right-2 flex items-center">
+<kbd class="hidden sm:inline-flex items-center border border-white/10 rounded px-2 text-xs font-sans font-medium text-[#9babbb]">⌘ K</kbd>
+</div>
+</div>
+</div>
+<!-- Endpoints List -->
+<div class="flex flex-col gap-5">
+<!-- Endpoint Item: Auth Login (POST) -->
+<div class="group flex flex-col bg-surface-dark border border-surface-dark-lighter rounded-xl overflow-hidden hover:border-emerald-500/50 transition-all duration-200 shadow-sm hover:shadow-emerald-900/10">
+<div class="flex items-center justify-between p-4 cursor-pointer select-none bg-gradient-to-r from-transparent to-transparent group-hover:from-emerald-500/5 transition-all">
+<div class="flex items-center gap-4 flex-1 min-w-0">
+<span class="shrink-0 px-3 py-1 rounded text-xs font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 w-16 text-center">POST</span>
+<span class="font-mono text-sm text-white truncate group-hover:text-emerald-400 transition-colors">/auth/login</span>
+<span class="text-[#9babbb] text-sm truncate hidden sm:block">- Authenticate user and retrieve token</span>
+</div>
+<span class="material-symbols-outlined text-[#9babbb] group-hover:text-emerald-500 transition-transform group-hover:rotate-180">expand_more</span>
+</div>
+<!-- Details (Expanded by default for demo) -->
+<div class="border-t border-surface-dark-lighter p-6 bg-[#151b23]">
+<div class="flex flex-col gap-4">
+<p class="text-[#9babbb] text-sm">Validates user credentials and returns a JWT Bearer token for accessing protected resources.</p>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2">
+<!-- Request -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-[#9babbb] uppercase tracking-wider">Request Body</span>
+<span class="text-xs font-mono text-emerald-500">application/json</span>
+</div>
+<div class="bg-[#0d1117] rounded-lg p-4 border border-white/5 font-mono text-xs overflow-x-auto relative group/code">
+<button class="absolute top-2 right-2 opacity-0 group-hover/code:opacity-100 transition-opacity p-1 hover:bg-white/10 rounded text-[#9babbb]">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+<pre class="text-[#e6edf3]"><span class="text-purple-400">{</span>
+  <span class="text-blue-400">"email"</span>: <span class="text-green-400">"developer@ppsdm.kmm.id"</span>,
+  <span class="text-blue-400">"password"</span>: <span class="text-green-400">"********"</span>
+<span class="text-purple-400">}</span></pre>
+</div>
+</div>
+<!-- Response -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-[#9babbb] uppercase tracking-wider">Response (200 OK)</span>
+<span class="text-xs font-mono text-emerald-500">application/json</span>
+</div>
+<div class="bg-[#0d1117] rounded-lg p-4 border border-white/5 font-mono text-xs overflow-x-auto">
+<pre class="text-[#e6edf3]"><span class="text-purple-400">{</span>
+  <span class="text-blue-400">"token"</span>: <span class="text-green-400">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+  <span class="text-blue-400">"expiresIn"</span>: <span class="text-orange-400">3600</span>,
+  <span class="text-blue-400">"tokenType"</span>: <span class="text-green-400">"Bearer"</span>
+<span class="text-purple-400">}</span></pre>
+</div>
+</div>
+</div>
+<div class="mt-2 flex justify-end">
+<button class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-lg transition-colors shadow-lg shadow-emerald-900/20">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                            Try It Out
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Endpoint Item: Assessments List (GET) -->
+<div class="group flex flex-col bg-surface-dark border border-surface-dark-lighter rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-200">
+<div class="flex items-center justify-between p-4 cursor-pointer select-none bg-gradient-to-r from-transparent to-transparent group-hover:from-primary/5 transition-all">
+<div class="flex items-center gap-4 flex-1 min-w-0">
+<span class="shrink-0 px-3 py-1 rounded text-xs font-bold bg-primary/10 text-primary border border-primary/20 w-16 text-center">GET</span>
+<span class="font-mono text-sm text-white truncate group-hover:text-blue-400 transition-colors">/assessments/{id}</span>
+<span class="text-[#9babbb] text-sm truncate hidden sm:block">- Retrieve specific assessment details</span>
+</div>
+<span class="material-symbols-outlined text-[#9babbb] group-hover:text-primary transition-transform">expand_more</span>
+</div>
+</div>
+<!-- Endpoint Item: Update Portfolio (PUT) -->
+<div class="group flex flex-col bg-surface-dark border border-surface-dark-lighter rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-200">
+<div class="flex items-center justify-between p-4 cursor-pointer select-none bg-gradient-to-r from-transparent to-transparent group-hover:from-amber-500/5 transition-all">
+<div class="flex items-center gap-4 flex-1 min-w-0">
+<span class="shrink-0 px-3 py-1 rounded text-xs font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 w-16 text-center">PUT</span>
+<span class="font-mono text-sm text-white truncate group-hover:text-amber-400 transition-colors">/portfolio/update</span>
+<span class="text-[#9babbb] text-sm truncate hidden sm:block">- Update user portfolio project data</span>
+</div>
+<span class="material-symbols-outlined text-[#9babbb] group-hover:text-amber-500 transition-transform">expand_more</span>
+</div>
+</div>
+<!-- Endpoint Item: AI Analysis (POST) -->
+<div class="group flex flex-col bg-surface-dark border border-surface-dark-lighter rounded-xl overflow-hidden hover:border-emerald-500/50 transition-all duration-200">
+<div class="flex items-center justify-between p-4 cursor-pointer select-none bg-gradient-to-r from-transparent to-transparent group-hover:from-emerald-500/5 transition-all">
+<div class="flex items-center gap-4 flex-1 min-w-0">
+<span class="shrink-0 px-3 py-1 rounded text-xs font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 w-16 text-center">POST</span>
+<span class="font-mono text-sm text-white truncate group-hover:text-emerald-400 transition-colors">/ai/analyze-code</span>
+<span class="text-[#9babbb] text-sm truncate hidden sm:block">- Run static analysis on code snippet</span>
+</div>
+<span class="material-symbols-outlined text-[#9babbb] group-hover:text-emerald-500 transition-transform">expand_more</span>
+</div>
+</div>
+<!-- Endpoint Item: Delete Blockchain Record (DELETE) -->
+<div class="group flex flex-col bg-surface-dark border border-surface-dark-lighter rounded-xl overflow-hidden hover:border-red-500/50 transition-all duration-200">
+<div class="flex items-center justify-between p-4 cursor-pointer select-none bg-gradient-to-r from-transparent to-transparent group-hover:from-red-500/5 transition-all">
+<div class="flex items-center gap-4 flex-1 min-w-0">
+<span class="shrink-0 px-3 py-1 rounded text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20 w-16 text-center">DEL</span>
+<span class="font-mono text-sm text-white truncate group-hover:text-red-400 transition-colors">/ledger/transaction/{hash}</span>
+<span class="text-[#9babbb] text-sm truncate hidden sm:block">- Revoke pending transaction</span>
+</div>
+<span class="material-symbols-outlined text-[#9babbb] group-hover:text-red-500 transition-transform">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Empty State / Pagination -->
+<div class="flex justify-center mt-4">
+<button class="text-[#9babbb] hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
+                            Load more endpoints <span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

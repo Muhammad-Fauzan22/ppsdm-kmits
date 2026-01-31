@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM KMM | Ultimate Human Capital Platform</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "its-blue": "#013880",
+                        "its-gold": "#FFD700",
+                        "its-dark": "#0A0F1A",
+                        "brand-blue": "#135bec",
+                        "brand-accent": "#00d4ff",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "heading": ["Poppins", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem",
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">@layer utilities {
+    . glass-card {
+        @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow- [0_8px_32px_0_rgba (0, 0, 0, 0.37)];
+        } . glass-card-strong {
+        @apply bg- [#0A0F1A]/60 backdrop-blur-2xl border border-white/10 shadow-2xl;
+        } . gradient-text {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue via-brand-accent to-white;
+        } . its-gradient {
+        background: radial-gradient(circle at 50% 0%, #013880 0%, #0A0F1A 60%);
+        } . text-glow {
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+    }
+.timeline-line {
+    background: linear-gradient(90deg, transparent 0%, #135bec 50%, transparent 100%)
+    }.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDQxbg59ohd0e8Gf_j2cwv1A8ef7bdUMdoDJsAOosnDfgd2L5P9d-qtOtLi-YgDcKwZ3AKkcbinKyC02T7lAt_zgoDJA8QweKicbTgXxP26Do4HqOvyVsyrucbVAHhBRMlV0aol0wjk0gu6vw_XRLDnMYlqC9cZYfvVbZcLH46snCEFYi23cUc01F5HVSbABlWIN16PZ_jjKYFgN58UKj2vM_HghE7PxyJS-AZojdOi__VFQIJYHoT9Il047S-Wyk-fHjS8nhChSuc);
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.4;
+    mix-blend-mode: overlay
+    }
+.card-hover:hover .progress-fill {
+    width: 100% !important;
+    transition: width 1s ease-in-out
+    }::-webkit-scrollbar {
+    width: 8px
+    }
+::-webkit-scrollbar-track {
+    background: #0A0F1A
+    }
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px
+    }</style>
+</head>
+<body class="bg-its-dark font-sans text-slate-200 antialiased selection:bg-brand-blue selection:text-white overflow-x-hidden">
+<div class="noise-overlay"></div>
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="fixed top-0 z-[100] w-full border-b border-white/5 bg-its-dark/80 backdrop-blur-xl supports-[backdrop-filter]:bg-its-dark/60">
+<div class="flex h-20 items-center justify-between px-6 lg:px-12 max-w-7xl mx-auto">
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue shadow-lg shadow-brand-blue/30 group-hover:shadow-brand-accent/40 transition-all duration-300">
+<span class="material-symbols-outlined text-white relative z-10">analytics</span>
+<div class="absolute inset-0 bg-white/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-bold font-heading tracking-tight text-white leading-none group-hover:text-brand-accent transition-colors">PPSDM KMM</span>
+<span class="text-[10px] uppercase tracking-widest text-its-gold font-bold">ITS Surabaya</span>
+</div>
+</div>
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-sm font-medium text-slate-300 hover:text-white hover:text-glow transition-all" href="#how-it-works">Metodologi</a>
+<a class="text-sm font-medium text-slate-300 hover:text-white hover:text-glow transition-all" href="#dimensions">9 Dimensi</a>
+<a class="text-sm font-medium text-slate-300 hover:text-white hover:text-glow transition-all" href="#demo">Mission Control</a>
+<a class="text-sm font-medium text-slate-300 hover:text-white hover:text-glow transition-all" href="#faq">FAQ</a>
+<button class="bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-blue/30 hover:shadow-brand-blue/50 active:scale-95 flex items-center gap-2 group">
+                    Mulai Sekarang
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</nav>
+<button class="lg:hidden flex h-10 w-10 items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-1 pt-20">
+<section class="relative min-h-[92vh] flex flex-col items-center justify-center px-6 py-20 text-center overflow-hidden its-gradient">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+<div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-its-blue/30 rounded-full blur-[150px] pointer-events-none"></div>
+<div class="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
+<div class="inline-flex items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-blue/10 px-4 py-1.5 text-xs font-semibold text-brand-accent backdrop-blur-md mb-8 animate-float">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
+</span>
+                    Join 12,450+ ITS Students Shaping the Future
+                </div>
+<h1 class="text-5xl md:text-7xl lg:text-8xl font-black font-heading tracking-tighter text-white leading-[1.05] mb-6 drop-shadow-2xl">
+                    Elevate Your <br/>
+<span class="gradient-text">Human Capital</span>
+</h1>
+<p class="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed mb-10 text-shadow">
+                    Platform pengembangan terpadu berbasis data untuk mahasiswa ITS. Bangun portofolio kompetensi melalui asesmen presisi, roadmap terukur, dan bimbingan mentor eksklusif.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
+<button class="w-full sm:w-auto px-8 py-4 bg-white text-its-blue font-bold rounded-2xl hover:bg-brand-accent hover:text-its-dark transition-all hover:scale-105 shadow-2xl shadow-brand-accent/20 flex items-center justify-center gap-2 text-lg group">
+                        Mulai Assessment Gratis
+                        <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">bolt</span>
+</button>
+<button class="w-full sm:w-auto px-8 py-4 glass-card text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-lg border-white/20 hover:border-brand-accent/50 group">
+<span class="material-symbols-outlined group-hover:text-brand-accent transition-colors">play_circle</span>
+                        Tonton Demo
+                    </button>
+</div>
+<div class="mt-24 grid grid-cols-3 gap-8 md:gap-20 border-t border-white/5 pt-12 px-8 rounded-3xl bg-white/[0.02] backdrop-blur-sm">
+<div class="flex flex-col items-center gap-1 group">
+<span class="text-3xl md:text-4xl font-bold text-white group-hover:text-brand-accent transition-colors">9</span>
+<span class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-slate-500">Dimensi Utama</span>
+</div>
+<div class="flex flex-col items-center gap-1 group relative">
+<div class="absolute -left-4 md:-left-10 top-1/2 -translate-y-1/2 w-px h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+<div class="absolute -right-4 md:-right-10 top-1/2 -translate-y-1/2 w-px h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+<span class="text-3xl md:text-4xl font-bold text-white group-hover:text-its-gold transition-colors">450+</span>
+<span class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-slate-500">Materi Kursus</span>
+</div>
+<div class="flex flex-col items-center gap-1 group">
+<span class="text-3xl md:text-4xl font-bold text-white group-hover:text-brand-accent transition-colors">100%</span>
+<span class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-slate-500">Kurikulum ITS</span>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 lg:px-12 bg-[#05080F] relative overflow-hidden" id="how-it-works">
+<div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="text-center mb-20">
+<h2 class="text-3xl md:text-5xl font-bold font-heading text-white mb-4">Metodologi Kami</h2>
+<p class="text-slate-400 max-w-2xl mx-auto">Transformasi potensi menjadi aksi nyata melalui 4 langkah strategis yang terintegrasi dengan sistem akademik.</p>
+</div>
+<div class="relative grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="hidden md:block absolute top-12 left-1/2 -translate-x-1/2 w-[85%] h-0.5 timeline-line"></div>
+<div class="relative z-10 flex flex-col items-center text-center group cursor-default">
+<div class="w-24 h-24 rounded-3xl glass-card flex items-center justify-center mb-6 group-hover:bg-brand-blue/20 group-hover:-translate-y-4 group-hover:shadow-[0_0_40px_-10px_rgba(19,91,236,0.5)] transition-all duration-500 border-brand-blue/30 relative">
+<span class="material-symbols-outlined text-4xl text-brand-accent">psychology</span>
+<div class="absolute -bottom-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-accent text-its-dark text-[10px] font-bold px-2 py-0.5 rounded-full">STEP 01</div>
+</div>
+<h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">Assessment</h3>
+<p class="text-sm text-slate-500 max-w-[200px] leading-relaxed">Uji 9 dimensi kompetensi dasar Anda dengan AI-driven psychometric testing.</p>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center group cursor-default">
+<div class="w-24 h-24 rounded-3xl glass-card flex items-center justify-center mb-6 group-hover:bg-brand-blue/20 group-hover:-translate-y-4 group-hover:shadow-[0_0_40px_-10px_rgba(19,91,236,0.5)] transition-all duration-500 border-brand-blue/30 relative">
+<span class="material-symbols-outlined text-4xl text-brand-accent">map</span>
+<div class="absolute -bottom-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-accent text-its-dark text-[10px] font-bold px-2 py-0.5 rounded-full">STEP 02</div>
+</div>
+<h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">Roadmap</h3>
+<p class="text-sm text-slate-500 max-w-[200px] leading-relaxed">Dapatkan rencana belajar personal sesuai minat, jurusan, dan gap kompetensi.</p>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center group cursor-default">
+<div class="w-24 h-24 rounded-3xl glass-card flex items-center justify-center mb-6 group-hover:bg-brand-blue/20 group-hover:-translate-y-4 group-hover:shadow-[0_0_40px_-10px_rgba(19,91,236,0.5)] transition-all duration-500 border-brand-blue/30 relative">
+<span class="material-symbols-outlined text-4xl text-brand-accent">groups_3</span>
+<div class="absolute -bottom-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-accent text-its-dark text-[10px] font-bold px-2 py-0.5 rounded-full">STEP 03</div>
+</div>
+<h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">Mentorship</h3>
+<p class="text-sm text-slate-500 max-w-[200px] leading-relaxed">Bimbingan 1-on-1 langsung dari alumni sukses dan profesional industri.</p>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center group cursor-default">
+<div class="w-24 h-24 rounded-3xl glass-card flex items-center justify-center mb-6 group-hover:bg-brand-blue/20 group-hover:-translate-y-4 group-hover:shadow-[0_0_40px_-10px_rgba(19,91,236,0.5)] transition-all duration-500 border-brand-blue/30 relative">
+<span class="material-symbols-outlined text-4xl text-brand-accent">verified</span>
+<div class="absolute -bottom-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-accent text-its-dark text-[10px] font-bold px-2 py-0.5 rounded-full">STEP 04</div>
+</div>
+<h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">Portfolio</h3>
+<p class="text-sm text-slate-500 max-w-[200px] leading-relaxed">Klaim sertifikat digital dan hasilkan portofolio karir yang divalidasi ITS.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 lg:px-12 relative" id="dimensions">
+<div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-its-blue/10 to-transparent pointer-events-none"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+<div>
+<h2 class="text-4xl md:text-5xl font-bold font-heading text-white mb-4">The 9 Dimensions</h2>
+<p class="text-slate-400 max-w-xl">Kurikulum komprehensif yang membagi pengembangan menjadi kategori Hard Skills yang teknis dan Soft Skills yang esensial untuk abad 21.</p>
+</div>
+<div class="flex gap-4">
+<span class="px-4 py-2 rounded-full border border-brand-blue/50 bg-brand-blue/10 text-brand-blue text-xs font-bold uppercase tracking-wider backdrop-blur-sm">Soft Skills</span>
+<span class="px-4 py-2 rounded-full border border-its-gold/50 bg-its-gold/10 text-its-gold text-xs font-bold uppercase tracking-wider backdrop-blur-sm">Hard Skills</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-brand-blue">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-brand-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-brand-blue">diversity_3</span>
+</div>
+<span class="text-[10px] font-bold text-brand-blue/80 uppercase border border-brand-blue/30 px-2 py-1 rounded">Soft Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">Leadership</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Mampu mengarahkan visi dan menginspirasi tim dalam lingkungan yang dinamis.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-brand-blue w-[65%] rounded-full shadow-[0_0_10px_rgba(19,91,236,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-its-gold">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-its-gold/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-its-gold">code</span>
+</div>
+<span class="text-[10px] font-bold text-its-gold/80 uppercase border border-its-gold/30 px-2 py-1 rounded">Hard Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-its-gold transition-colors">Tech Mastery</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Penguasaan perangkat lunak, coding, dan metodologi engineering standar global.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-its-gold w-[40%] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-brand-blue">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-brand-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-brand-blue">forum</span>
+</div>
+<span class="text-[10px] font-bold text-brand-blue/80 uppercase border border-brand-blue/30 px-2 py-1 rounded">Soft Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">Communication</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Keahlian menyampaikan ide kompleks secara sederhana, tertulis maupun lisan.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-brand-blue w-[80%] rounded-full shadow-[0_0_10px_rgba(19,91,236,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-its-gold">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-its-gold/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-its-gold">analytics</span>
+</div>
+<span class="text-[10px] font-bold text-its-gold/80 uppercase border border-its-gold/30 px-2 py-1 rounded">Hard Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-its-gold transition-colors">Data Analytics</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Pengambilan keputusan berbasis data menggunakan tools statistik modern.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-its-gold w-[25%] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-brand-blue">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-brand-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-brand-blue">auto_fix_high</span>
+</div>
+<span class="text-[10px] font-bold text-brand-blue/80 uppercase border border-brand-blue/30 px-2 py-1 rounded">Soft Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">Ethics &amp; Growth</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Integritas akademik, etika profesi, dan mentalitas pembelajar sepanjang hayat.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-brand-blue w-[90%] rounded-full shadow-[0_0_10px_rgba(19,91,236,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-its-gold">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-its-gold/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-its-gold">business_center</span>
+</div>
+<span class="text-[10px] font-bold text-its-gold/80 uppercase border border-its-gold/30 px-2 py-1 rounded">Hard Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-its-gold transition-colors">Project Mgmt</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Manajemen sumber daya, risiko, dan waktu melalui framework Agile/Scrum.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-its-gold w-[55%] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-brand-blue">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-brand-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-brand-blue">psychology_alt</span>
+</div>
+<span class="text-[10px] font-bold text-brand-blue/80 uppercase border border-brand-blue/30 px-2 py-1 rounded">Soft Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">Critical Thinking</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Analisis mendalam dan evaluasi objektif untuk solusi masalah yang inovatif.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-brand-blue w-[75%] rounded-full shadow-[0_0_10px_rgba(19,91,236,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-its-gold">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-its-gold/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-its-gold">architecture</span>
+</div>
+<span class="text-[10px] font-bold text-its-gold/80 uppercase border border-its-gold/30 px-2 py-1 rounded">Hard Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-its-gold transition-colors">System Design</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Merancang arsitektur sistem yang skalabel, aman, dan efisien untuk enterprise.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-its-gold w-[50%] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)]"></div>
+</div>
+</div>
+<div class="glass-card card-hover p-8 rounded-2xl cursor-pointer group hover:-translate-y-2 transition-all duration-300 border-l-4 border-l-brand-blue">
+<div class="flex justify-between items-start mb-6">
+<div class="size-14 rounded-xl bg-brand-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-brand-blue">public</span>
+</div>
+<span class="text-[10px] font-bold text-brand-blue/80 uppercase border border-brand-blue/30 px-2 py-1 rounded">Soft Skill</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">Global Mindset</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">Wawasan internasional dan kemampuan adaptasi dalam keragaman budaya.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="progress-fill h-full bg-brand-blue w-[85%] rounded-full shadow-[0_0_10px_rgba(19,91,236,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 lg:px-12 bg-white/5 relative overflow-hidden" id="demo">
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-blue/20 rounded-full blur-[120px]"></div>
+<div class="absolute -bottom-40 -left-40 w-96 h-96 bg-its-blue/30 rounded-full blur-[120px]"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="flex flex-col lg:flex-row gap-16 items-center">
+<div class="lg:w-1/2 space-y-8">
+<h2 class="text-4xl md:text-5xl font-bold font-heading text-white">Mission Control <br/><span class="text-brand-accent drop-shadow-[0_0_15px_rgba(0,212,255,0.4)]">Personal Dashboard</span></h2>
+<p class="text-slate-400 text-lg leading-relaxed">Rasakan langsung visualisasi radar kompetensi Anda. Platform kami melacak pertumbuhan setiap dimensi secara real-time, memberikan insights yang actionable.</p>
+<div class="space-y-6">
+<div class="glass-card p-6 rounded-2xl border-brand-blue/20 hover:border-brand-blue/40 transition-colors">
+<div class="flex items-center justify-between mb-4">
+<p class="text-brand-accent text-xs font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">quiz</span>
+                                        MINI ASSESSMENT PREVIEW
+                                    </p>
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Question 1 of 3</span>
+</div>
+<div class="space-y-4">
+<p class="text-white font-medium text-lg">Bagaimana Anda bereaksi terhadap kegagalan tim yang Anda pimpin?</p>
+<div class="grid gap-3">
+<button class="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-brand-blue/20 border border-white/10 hover:border-brand-blue/50 transition-all text-sm group flex items-center gap-3">
+<div class="size-4 rounded-full border border-slate-500 group-hover:border-brand-accent group-hover:bg-brand-accent/20"></div>
+                                            A. Evaluasi proses dan tanggung jawab bersama
+                                        </button>
+<button class="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-brand-blue/20 border border-white/10 hover:border-brand-blue/50 transition-all text-sm group flex items-center gap-3">
+<div class="size-4 rounded-full border border-slate-500 group-hover:border-brand-accent group-hover:bg-brand-accent/20"></div>
+                                            B. Mencari individu yang membuat kesalahan utama
+                                        </button>
+</div>
+<div class="flex gap-1 pt-2">
+<div class="h-1 w-1/3 bg-brand-accent rounded-full"></div>
+<div class="h-1 w-1/3 bg-white/10 rounded-full"></div>
+<div class="h-1 w-1/3 bg-white/10 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:w-1/2 w-full max-w-[550px]">
+<div class="glass-card-strong p-8 rounded-[2.5rem] border-white/10 relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[10px] text-brand-accent uppercase tracking-widest font-bold mb-1 block">Analysis Profile</span>
+<h4 class="text-xl font-bold text-white flex items-center gap-2">
+                                        Student 2024.08.12
+                                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+</h4>
+</div>
+<div class="p-2 bg-white/5 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-white text-lg">settings</span>
+</div>
+</div>
+<div class="aspect-square w-full flex items-center justify-center relative my-4">
+<svg class="w-full h-full max-w-[350px] transform -rotate-90 overflow-visible drop-shadow-[0_0_20px_rgba(19,91,236,0.3)]" viewBox="0 0 200 200">
+<polygon fill="#0A0F1A" points="100,20 170,60 170,140 100,180 30,140 30,60" stroke="rgba(255,255,255,0.1)" stroke-width="1"></polygon>
+<polygon fill="none" points="100,40 152.5,70 152.5,130 100,160 47.5,130 47.5,70" stroke="rgba(255,255,255,0.05)" stroke-width="1"></polygon>
+<polygon fill="none" points="100,60 135,80 135,120 100,140 65,120 65,80" stroke="rgba(255,255,255,0.05)" stroke-width="1"></polygon>
+<line stroke="rgba(255,255,255,0.1)" x1="100" x2="100" y1="100" y2="20"></line>
+<line stroke="rgba(255,255,255,0.1)" x1="100" x2="170" y1="100" y2="60"></line>
+<line stroke="rgba(255,255,255,0.1)" x1="100" x2="170" y1="100" y2="140"></line>
+<line stroke="rgba(255,255,255,0.1)" x1="100" x2="100" y1="100" y2="180"></line>
+<line stroke="rgba(255,255,255,0.1)" x1="100" x2="30" y1="100" y2="140"></line>
+<line stroke="rgba(255,255,255,0.1)" x1="100" x2="30" y1="100" y2="60"></line>
+<polygon class="shadow-glow transition-all duration-1000 ease-in-out" fill="rgba(0, 212, 255, 0.2)" points="100,40 150,80 140,130 100,160 50,130 60,70" stroke="#00d4ff" stroke-linejoin="round" stroke-width="2"></polygon>
+<circle class="cursor-grab hover:scale-150 transition-transform shadow-lg" cx="100" cy="40" fill="#fff" r="4" stroke="#00d4ff" stroke-width="2"></circle>
+<circle class="cursor-grab hover:scale-150 transition-transform shadow-lg" cx="150" cy="80" fill="#fff" r="4" stroke="#00d4ff" stroke-width="2"></circle>
+<circle class="cursor-grab hover:scale-150 transition-transform shadow-lg" cx="140" cy="130" fill="#fff" r="4" stroke="#00d4ff" stroke-width="2"></circle>
+<circle class="cursor-grab hover:scale-150 transition-transform shadow-lg" cx="100" cy="160" fill="#fff" r="4" stroke="#00d4ff" stroke-width="2"></circle>
+<circle class="cursor-grab hover:scale-150 transition-transform shadow-lg" cx="50" cy="130" fill="#fff" r="4" stroke="#00d4ff" stroke-width="2"></circle>
+<circle class="cursor-grab hover:scale-150 transition-transform shadow-lg" cx="60" cy="70" fill="#fff" r="4" stroke="#00d4ff" stroke-width="2"></circle>
+</svg>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 text-[10px] text-white font-bold tracking-widest bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm">LEADERSHIP</div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 text-[10px] text-white font-bold tracking-widest bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm">ETHICS</div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-white font-bold rotate-90 origin-right -mr-4 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm">TECH</div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 text-[10px] text-white font-bold -rotate-90 origin-left -ml-4 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm">SOCIAL</div>
+</div>
+<div class="mt-4 flex justify-between items-center bg-brand-blue/10 p-4 rounded-xl border border-brand-blue/20">
+<div>
+<p class="text-[10px] text-slate-400 font-bold uppercase">Development Status</p>
+<p class="text-white font-bold">Growth Potential: 85%</p>
+</div>
+<div class="h-10 w-10 bg-brand-accent/20 rounded-lg flex items-center justify-center text-brand-accent animate-bounce">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 lg:px-12 overflow-hidden">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold font-heading text-white mb-4">Student Success Stories</h2>
+<p class="text-slate-400">Bukti nyata transformasi kompetensi mahasiswa ITS di dunia profesional.</p>
+</div>
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex-1 glass-card p-8 rounded-3xl relative hover:bg-white/10 transition-colors group">
+<div class="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-6xl">format_quote</span>
+</div>
+<div class="flex items-center gap-4 mb-8">
+<div class="size-16 rounded-2xl bg-gradient-to-tr from-brand-blue to-brand-accent flex items-center justify-center text-white font-bold text-xl overflow-hidden shadow-xl ring-2 ring-white/10">
+<img alt="Student" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5SVVpH4Be-WqS0W1VPrxzjlB3vbZb4C-UE7mFxtbTzc9QISczBj8vA_ABHpRX7wQ8MOfsZkOEgPcHisOEiDbuueRsHz3_jiQjEk4uPefakcBGCmRR665cDvRnob5C_bdkRs4--_0Iu_rQsQnXNBxTmJeA_OW5SMiyO18xVXrLNzdGPw3RtSlgknXFDGfe_W52p6k4bukffT4Oc8Yhye_4pBtlN-T20ZzFSqUCbRxgymNI0b4R7XkNCS5ggui_ngcch8eCuFgdguM"/>
+</div>
+<div>
+<h4 class="text-white font-bold text-lg">Rizky Maulana</h4>
+<p class="text-slate-500 text-xs uppercase tracking-wide">Teknik Mesin '21</p>
+</div>
+</div>
+<p class="italic text-slate-300 mb-8 font-light text-lg leading-relaxed">"Sebelum ikut PPSDM, saya kesulitan berorganisasi. Setelah roadmap 6 bulan, saya terpilih jadi Ketua Himpunan dan memimpin 50+ anggota tim."</p>
+<div class="grid grid-cols-2 gap-4 border-t border-white/5 pt-6">
+<div>
+<p class="text-[10px] font-bold text-slate-500 uppercase">Leadership</p>
+<p class="text-brand-accent font-bold text-xl">+150% Increase</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-slate-500 uppercase">Career Status</p>
+<p class="text-white font-bold text-sm bg-white/10 inline-block px-2 py-1 rounded">Intern @ Pertamina</p>
+</div>
+</div>
+</div>
+<div class="flex-1 glass-card p-8 rounded-3xl relative border-brand-blue/20 bg-brand-blue/5 hover:bg-brand-blue/10 transition-colors group">
+<div class="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-6xl">format_quote</span>
+</div>
+<div class="flex items-center gap-4 mb-8">
+<div class="size-16 rounded-2xl bg-gradient-to-tr from-its-gold to-orange-400 flex items-center justify-center text-white font-bold text-xl overflow-hidden shadow-xl ring-2 ring-white/10">
+<img alt="Student" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb-aNlXgtqk-22vz2E74FIlapMvtcjzMSbEdYJWqzksp22VO5cPha0FZeTgaqRynHJktg-YEchq3bkqqxhWAZEyivY1A3U-dauRwS-jOESr49qPfH_5N166P4xI91j0yS57NlNgmvWCzzHom5w1S1VtBPdpp-izUFI1K_yoversEgQBoIR_joSpRkWci6Y1b4xZuY0-bg3yfPYRGhR_QNkByGIQbEjecI5LKkSvPbJkA-CCfvv5Rf6NaFBdb575l4UXdQ_qR-NFnE"/>
+</div>
+<div>
+<h4 class="text-white font-bold text-lg">Ayu Lestari</h4>
+<p class="text-slate-500 text-xs uppercase tracking-wide">Sistem Informasi '22</p>
+</div>
+</div>
+<p class="italic text-slate-300 mb-8 font-light text-lg leading-relaxed">"Program mentorship menghubungkan saya dengan alumni yang sekarang jadi atasan saya. Skill komunikasi saya meningkat drastis berkat feedback nyata."</p>
+<div class="grid grid-cols-2 gap-4 border-t border-white/5 pt-6">
+<div>
+<p class="text-[10px] font-bold text-slate-500 uppercase">Communication</p>
+<p class="text-brand-accent font-bold text-xl">Mastery Level</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-slate-500 uppercase">Impact</p>
+<p class="text-white font-bold text-sm bg-white/10 inline-block px-2 py-1 rounded">Top 10 Finalist PKM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 lg:px-12 bg-[#05080F] relative" id="faq">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold font-heading text-white">Pertanyaan Sering Diajukan</h2>
+</div>
+<div class="space-y-4">
+<details class="group glass-card rounded-2xl p-6 [&amp;_summary::-webkit-details-marker]:hidden cursor-pointer open:bg-white/10 transition-all">
+<summary class="flex items-center justify-between text-white font-bold list-none text-lg">
+                            Apakah program ini gratis untuk mahasiswa ITS?
+                            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<p class="mt-4 text-slate-400 text-sm leading-relaxed pl-1 border-l-2 border-brand-accent ml-1">Ya, seluruh fitur dasar, assessment, dan akses materi digital tersedia secara gratis bagi seluruh mahasiswa aktif ITS melalui integrasi Single Sign-On (SSO) myITS.</p>
+</details>
+<details class="group glass-card rounded-2xl p-6 [&amp;_summary::-webkit-details-marker]:hidden cursor-pointer open:bg-white/10 transition-all">
+<summary class="flex items-center justify-between text-white font-bold list-none text-lg">
+                            Bagaimana cara mendapatkan bimbingan mentor?
+                            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<p class="mt-4 text-slate-400 text-sm leading-relaxed pl-1 border-l-2 border-brand-accent ml-1">Anda perlu menyelesaikan assessment awal dan mencapai 'Roadmap Level 3' untuk membuka akses ke fitur penjadwalan mentor. Hal ini memastikan sesi mentoring lebih efektif dan terarah.</p>
+</details>
+<details class="group glass-card rounded-2xl p-6 [&amp;_summary::-webkit-details-marker]:hidden cursor-pointer open:bg-white/10 transition-all">
+<summary class="flex items-center justify-between text-white font-bold list-none text-lg">
+                            Apakah sertifikat PPSDM diakui industri?
+                            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<p class="mt-4 text-slate-400 text-sm leading-relaxed pl-1 border-l-2 border-brand-accent ml-1">Tentu. Sertifikat kami mencantumkan detail kompetensi yang divalidasi dan dilengkapi dengan ID verifikasi digital yang dapat dilampirkan di LinkedIn atau CV.</p>
+</details>
+</div>
+<div class="mt-24 p-12 rounded-[3rem] bg-gradient-to-br from-its-blue/40 to-brand-blue/20 border border-white/10 text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+<div class="absolute top-0 right-0 w-64 h-64 bg-brand-accent/20 blur-[100px] rounded-full pointer-events-none group-hover:bg-brand-accent/30 transition-colors"></div>
+<div class="relative z-10">
+<h3 class="text-3xl md:text-4xl font-bold text-white mb-6">Siap Memulai Perjalanan Anda?</h3>
+<p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Dapatkan Digital Brochure PPSDM KMM 2024 dan tips pengembangan diri mingguan langsung di email Anda.</p>
+<div class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+<input class="flex-1 bg-its-dark/60 border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-slate-500 focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all backdrop-blur-sm" placeholder="Email ITS Anda (e.g. mhs@its.ac.id)" type="email"/>
+<button class="bg-white text-its-blue font-bold px-8 py-4 rounded-xl hover:bg-brand-accent hover:text-its-dark transition-all whitespace-nowrap shadow-lg">Dapatkan Info</button>
+</div>
+<button class="mt-8 text-brand-accent text-sm font-bold flex items-center justify-center gap-2 mx-auto hover:text-white transition-colors group/link">
+<span class="material-symbols-outlined group-hover/link:animate-bounce">download</span>
+                            Download Full Brochure (PDF 4.2 MB)
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-its-dark pt-20 pb-10 px-6 lg:px-12 border-t border-white/5 relative z-10">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="col-span-1 md:col-span-2 space-y-6">
+<div class="flex items-center gap-3">
+<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-its-blue font-black shadow-xl text-lg">ITS</div>
+<h2 class="text-xl font-bold font-heading text-white">Institut Teknologi Sepuluh Nopember</h2>
+</div>
+<p class="text-slate-500 text-sm max-w-sm leading-relaxed">Pusat Pengembangan Sumber Daya Manusia - KMM ITS berfokus pada integrasi pendidikan akademik dan pembentukan karakter unggul untuk Indonesia Emas 2045.</p>
+<div class="flex gap-4">
+<a class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue hover:scale-110 transition-all text-white border border-white/10" href="#"><span class="material-symbols-outlined text-lg">public</span></a>
+<a class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue hover:scale-110 transition-all text-white border border-white/10" href="#"><span class="material-symbols-outlined text-lg">mail</span></a>
+<a class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue hover:scale-110 transition-all text-white border border-white/10" href="#"><span class="material-symbols-outlined text-lg">smart_display</span></a>
+</div>
+</div>
+<div>
+<h3 class="text-white font-bold mb-6 text-lg">Program</h3>
+<ul class="space-y-4 text-sm text-slate-500">
+<li><a class="hover:text-brand-accent transition-colors flex items-center gap-2" href="#"><span class="w-1 h-1 bg-brand-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Assessment Mandiri</a></li>
+<li><a class="hover:text-brand-accent transition-colors flex items-center gap-2" href="#"><span class="w-1 h-1 bg-brand-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Bootcamp Kompetensi</a></li>
+<li><a class="hover:text-brand-accent transition-colors flex items-center gap-2" href="#"><span class="w-1 h-1 bg-brand-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Mentorship Karir</a></li>
+<li><a class="hover:text-brand-accent transition-colors flex items-center gap-2" href="#"><span class="w-1 h-1 bg-brand-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Katalog Soft Skills</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-white font-bold mb-6 text-lg">Kontak</h3>
+<ul class="space-y-4 text-sm text-slate-500">
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-sm mt-1 text-brand-blue">location_on</span> Kampus ITS Sukolilo,<br/>Surabaya 60111</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-sm text-brand-blue">phone</span> +62-31-5994251</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-sm text-brand-blue">alternate_email</span> ppsdm@its.ac.id</li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold text-slate-600 uppercase tracking-widest">
+<p>© 2024 PPSDM KMM ITS. Developed for Excellence.</p>
+<div class="flex gap-8">
+<a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-white transition-colors" href="#">Cookie Policy</a>
+<a class="hover:text-white transition-colors" href="#">Accessibility</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Co-Creation &amp; Brainstorming Lab</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1313ec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111118", // Matching the snippet's dark background
+                        "surface-dark": "#1c1c26",
+                        "border-dark": "#282839",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Dot Pattern Background for Canvas */
+        .bg-grid-pattern {
+            background-color: #111118;
+            background-image: radial-gradient(#282839 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen flex flex-col overflow-hidden selection:bg-primary/30">
+<!-- Top Navigation -->
+<header class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-background-dark px-6 py-3 z-30">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 flex items-center justify-center rounded bg-primary/20 text-primary">
+<span class="material-symbols-outlined">hub</span>
+</div>
+<div>
+<h2 class="text-white text-base font-bold leading-tight tracking-[-0.015em]">PPSDM KMM | Co-Create</h2>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-xs text-slate-400 font-medium">Seno AI Online</span>
+</div>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="hidden md:flex items-center gap-6">
+<a class="text-slate-300 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">File</a>
+<a class="text-slate-300 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">View</a>
+<a class="text-slate-300 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Export</a>
+</div>
+<div class="h-6 w-px bg-border-dark hidden md:block"></div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-blue-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="mr-2 material-symbols-outlined text-[18px]">ios_share</span>
+<span class="truncate">Share</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 ring-2 ring-border-dark" data-alt="User profile avatar showing a smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcbNN-oqLzByd4ppdMfAYchm8YR5PtfDoPCXWwFyfa3EpLNpTO3tH7ziFmLt9aZFw3S_OG58Zlc8aENabSZzqZ6VjBXCKSpL2__XKSn757p3dqbrCQxnE-Z57qGCaX4Q7aUskoXLIkuNiP2zkf-jpNjd79e5RGaEYg-N_ePbJ9d0rvkBYfBd5pmvNHeQ3NdHVdv8bQrROeePytoXEYK_VzTHm4ZG3ktx82EglUkvnXdne3DfsB67jVRiZrZf1Fn9EEm60eEfxnAwE");'></div>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex flex-1 overflow-hidden relative">
+<!-- Infinite Canvas Area -->
+<section class="flex-1 relative bg-grid-pattern overflow-hidden cursor-grab active:cursor-grabbing group/canvas">
+<!-- Floating Toolbar (Bottom Center) -->
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+<div class="flex justify-between gap-1 p-1.5 bg-surface-dark/90 backdrop-blur-md border border-border-dark rounded-xl shadow-2xl">
+<button class="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
+<span class="material-symbols-outlined">arrow_selector_tool</span>
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Select</span>
+</button>
+<button class="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
+<span class="material-symbols-outlined">title</span>
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Text</span>
+</button>
+<button class="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
+<span class="material-symbols-outlined">sticky_note_2</span>
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Sticky</span>
+</button>
+<button class="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-colors group relative">
+<span class="material-symbols-outlined">shapes</span>
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Shape</span>
+</button>
+<div class="w-px h-6 my-auto bg-white/10 mx-1"></div>
+<button class="p-2.5 rounded-lg text-primary hover:text-blue-400 hover:bg-primary/10 transition-colors group relative">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">AI Generate</span>
+</button>
+</div>
+</div>
+<!-- Canvas Content Simulation -->
+<div class="w-full h-full flex items-center justify-center relative scale-90 md:scale-100 origin-center transition-transform duration-500">
+<!-- SVG Connections Background -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0" style="overflow: visible;">
+<!-- Line from Center to Left -->
+<path d="M 50% 50% C 40% 50%, 35% 35%, 28% 30%" fill="none" stroke="#282839" stroke-width="2"></path>
+<!-- Line from Center to Right -->
+<path d="M 50% 50% C 60% 50%, 65% 65%, 72% 70%" fill="none" stroke="#282839" stroke-width="2"></path>
+<!-- Line from Center to Bottom -->
+<path d="M 50% 50% L 50% 75%" fill="none" stroke="#282839" stroke-dasharray="6,4" stroke-width="2"></path>
+</svg>
+<!-- Central Node -->
+<div class="absolute z-10 p-6 bg-surface-dark border-2 border-primary/50 rounded-2xl shadow-[0_0_30px_rgba(19,19,236,0.15)] w-80 flex flex-col items-center text-center gap-3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<div class="w-12 h-12 bg-gradient-to-br from-primary to-purple-600 rounded-lg flex items-center justify-center text-white mb-2 shadow-lg">
+<span class="material-symbols-outlined text-2xl">eco</span>
+</div>
+<h3 class="text-xl font-bold text-white leading-tight">Project Outline: Renewable Energy</h3>
+<p class="text-xs text-slate-400">Main Focus: Sustainable implementation in developing regions.</p>
+<div class="flex gap-2 mt-2">
+<button class="text-xs px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 rounded font-bold transition-colors">Expand</button>
+<button class="text-xs px-3 py-1.5 bg-white/5 text-slate-300 hover:bg-white/10 rounded font-bold transition-colors">Edit</button>
+</div>
+<!-- User Cursor Simulation -->
+<div class="absolute -bottom-6 -right-6 flex items-center gap-2 pointer-events-none">
+<svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19177L11.7841 12.3673H5.65376Z" fill="#1313EC" stroke="white"></path>
+</svg>
+<span class="px-2 py-0.5 bg-primary text-[10px] font-bold text-white rounded shadow">You</span>
+</div>
+</div>
+<!-- Generated Node: Solar (Top Left) -->
+<div class="absolute top-[30%] left-[28%] -translate-x-1/2 -translate-y-1/2 p-4 bg-surface-dark border border-border-dark hover:border-slate-500 transition-colors rounded-xl shadow-lg w-56 cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-amber-500 material-symbols-outlined">wb_sunny</span>
+<span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Generated</span>
+</div>
+<h4 class="text-white font-bold mb-1">Solar Infrastructure</h4>
+<p class="text-[11px] text-slate-400 leading-relaxed">Cost-benefit analysis of photovoltaic cells in tropical climates.</p>
+</div>
+<!-- Generated Node: Wind (Bottom Right) -->
+<div class="absolute top-[70%] left-[72%] -translate-x-1/2 -translate-y-1/2 p-4 bg-surface-dark border border-border-dark hover:border-slate-500 transition-colors rounded-xl shadow-lg w-56 cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-cyan-400 material-symbols-outlined">air</span>
+<span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Generated</span>
+</div>
+<h4 class="text-white font-bold mb-1">Wind Farm Policy</h4>
+<p class="text-[11px] text-slate-400 leading-relaxed">Regulatory frameworks for offshore wind turbines.</p>
+</div>
+<!-- Note (Bottom Center) -->
+<div class="absolute top-[75%] left-[50%] -translate-x-1/2 p-4 bg-[#fff9c4] text-slate-900 -rotate-2 rounded shadow-md w-48 shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
+<p class="font-handwriting text-sm font-medium leading-snug">Don't forget to include the recent case study from East Java!</p>
+</div>
+</div>
+<!-- Zoom Controls (Bottom Right) -->
+<div class="absolute bottom-8 right-8 flex flex-col bg-surface-dark border border-border-dark rounded-lg overflow-hidden shadow-xl z-20">
+<button class="p-2 text-slate-400 hover:text-white hover:bg-white/5"><span class="material-symbols-outlined text-[20px]">add</span></button>
+<div class="h-px w-full bg-border-dark"></div>
+<button class="p-2 text-slate-400 hover:text-white hover:bg-white/5"><span class="material-symbols-outlined text-[20px]">remove</span></button>
+</div>
+</section>
+<!-- Sidebar: Seno AI -->
+<aside class="w-96 shrink-0 bg-background-dark border-l border-border-dark flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.2)] z-30">
+<!-- Sidebar Header -->
+<div class="p-4 border-b border-border-dark bg-background-dark/50 backdrop-blur-sm z-10">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-white font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+                        Seno AI Companion
+                    </h3>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-dark border border-border-dark hover:bg-white/5 text-xs font-medium text-slate-300 py-1.5 px-2 rounded transition-colors text-center">Chat</button>
+<button class="flex-1 bg-primary/10 border border-primary/20 text-xs font-bold text-primary py-1.5 px-2 rounded transition-colors text-center">Co-Create</button>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-4 space-y-6 no-scrollbar">
+<!-- Welcome Message -->
+<div class="flex gap-3">
+<div class="size-8 shrink-0 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="bg-surface-dark border border-border-dark p-3 rounded-2xl rounded-tl-none">
+<p class="text-sm text-slate-200 leading-relaxed">
+                                Hello! I'm ready to help you brainstorm on <span class="text-white font-bold">Renewable Energy</span>. Would you like to generate a mind map or draft an outline first?
+                            </p>
+</div>
+<span class="text-[10px] text-slate-500 ml-1">10:42 AM</span>
+</div>
+</div>
+<!-- Live Suggestion Block (Contextual) -->
+<div class="relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-xl opacity-30 blur group-hover:opacity-60 transition duration-500"></div>
+<div class="relative bg-[#1a1a24] rounded-lg p-4 border border-primary/30">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg animate-pulse">lightbulb</span>
+<span class="text-xs font-bold uppercase tracking-wider">Live Insight</span>
+</div>
+<button class="text-slate-500 hover:text-white"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+<p class="text-sm text-white mb-3 leading-relaxed">
+                            Since you added "Wind Energy", consider including a section on <strong>noise pollution impact</strong> and mitigation strategies.
+                        </p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-blue-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                                Add Node
+                            </button>
+<button class="px-3 py-2 bg-white/5 hover:bg-white/10 text-slate-300 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">refresh</span>
+</button>
+</div>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex gap-3 flex-row-reverse">
+<div class="size-8 shrink-0 rounded-full bg-slate-700 bg-center bg-cover" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBIQCrYEPDAGuefUrLbGAXs1fHGJQPGetiJF1LC6w5s823WOFVo3FAb-qC3Dyj4eIa0dHRNyrqm1LqvyrgFr_dJDvuOYs6ZzYlzWzpFV--N8rMdgmkk6WjF6ltXVD3EqX_DRS5VBD28zq6MCCHPvvj3muAjbSI32BUOFMu6oiY5JQgph2U8NGZKGkrHINMBUlSuB8bTVlqFQXo3ZXv1o5ITOOLvY5D7qsKCaDe6u0J1JaHnTZvocLZz7GA0uW18OiIW4f5z7Et_Z9o");'></div>
+<div class="flex flex-col gap-1 items-end max-w-[85%]">
+<div class="bg-primary p-3 rounded-2xl rounded-tr-none text-white shadow-lg shadow-primary/10">
+<p class="text-sm leading-relaxed">
+                                Create a sub-branch for "Micro-Hydro" systems in rural Indonesia.
+                            </p>
+</div>
+<span class="text-[10px] text-slate-500 mr-1">10:45 AM</span>
+</div>
+</div>
+<!-- AI Response (Processing) -->
+<div class="flex gap-3">
+<div class="size-8 shrink-0 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="bg-surface-dark border border-border-dark p-3 rounded-2xl rounded-tl-none flex items-center gap-3">
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+<span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
+<span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
+</div>
+<p class="text-xs text-slate-400">Generating nodes...</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-4 bg-background-dark border-t border-border-dark relative">
+<!-- Quick Prompts Pill List -->
+<div class="flex gap-2 mb-3 overflow-x-auto no-scrollbar">
+<button class="whitespace-nowrap px-3 py-1 bg-surface-dark hover:bg-white/10 border border-border-dark rounded-full text-[11px] font-medium text-slate-300 transition-colors">Summarize Canvas</button>
+<button class="whitespace-nowrap px-3 py-1 bg-surface-dark hover:bg-white/10 border border-border-dark rounded-full text-[11px] font-medium text-slate-300 transition-colors">Find Sources</button>
+<button class="whitespace-nowrap px-3 py-1 bg-surface-dark hover:bg-white/10 border border-border-dark rounded-full text-[11px] font-medium text-slate-300 transition-colors">Suggest Layout</button>
+</div>
+<div class="relative bg-surface-dark rounded-xl border border-border-dark focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/50 transition-all shadow-sm">
+<textarea class="w-full bg-transparent text-sm text-white p-3 pr-10 min-h-[50px] max-h-32 resize-none outline-none placeholder:text-slate-500" placeholder="Ask Seno to create, refine, or explain..."></textarea>
+<div class="flex items-center justify-between px-2 pb-2">
+<button class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
+</button>
+<button class="p-2 bg-primary hover:bg-blue-600 text-white rounded-lg transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[18px] block">send</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</body></html>

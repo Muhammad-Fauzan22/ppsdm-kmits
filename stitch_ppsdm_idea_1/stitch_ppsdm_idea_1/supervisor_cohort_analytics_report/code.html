@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Supervisor Cohort Analytics Report</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "surface-dark": "#1e293b",
+              "surface-light": "#ffffff",
+              "border-dark": "#334155",
+              "border-light": "#e2e8f0",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for dense data tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden antialiased">
+<div class="relative flex h-full min-h-screen w-full flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-border-light dark:border-border-dark bg-surface-light/95 dark:bg-surface-dark/95 backdrop-blur">
+<div class="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[28px]">school</span>
+<h2 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">PPSDM KMM</h2>
+</div>
+<div class="hidden h-6 w-px bg-border-light dark:bg-border-dark md:block"></div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors" href="#">Home</a>
+<a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors" href="#">Supervisor</a>
+<a class="text-sm font-medium text-primary dark:text-white" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-surface-dark"></span>
+</button>
+<div class="h-8 w-8 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+<div class="h-full w-full bg-cover bg-center" data-alt="Supervisor profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxxgVFP6rF78jm13g4iMAHqiNTydglb3IAAfoAHPWGHAIFXXrMOBzTbY2JCraHJ3dGk7Qcwp1AC-eh-lf4Q_We1A7T1JbLxSv7u4_zUl9_P8Nh6a3ncqDhlM7jsWRn8QXPRr5tkvZx8H31kHyQzHRFsNxNDbBGeIF8H7woVX1Vzg1RHCGmutOUJ6aWu0-sSRS9ils9k91QD1KyT-Dp9d2IORTdT6bPtBdhf-U8gV8xFYvzvFij5QM0kns7t7KsgeQlLsfJYLejBp0");'></div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 justify-center py-6">
+<div class="flex w-full max-w-[1400px] flex-col gap-6 px-4 sm:px-6 lg:px-8">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary dark:hover:text-white" href="#">Home</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary dark:hover:text-white" href="#">Supervisor</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-medium text-slate-900 dark:text-white">Analytics</span>
+</div>
+<!-- Page Heading & Actions -->
+<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+<div>
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Cohort Analytics Report</h1>
+<p class="mt-1 text-base text-slate-500 dark:text-slate-400">Fall Semester 2023 - Cohort Alpha</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden sm:flex items-center rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-3 py-2">
+<span class="material-symbols-outlined mr-2 text-[20px] text-slate-500">calendar_today</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Sep 2023 - Dec 2023</span>
+</div>
+<button class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-surface-dark">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                        Print Report
+                    </button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+<!-- Card 1 -->
+<div class="relative overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Avg. Cohort GPA</p>
+<h3 class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">3.42</h3>
+</div>
+<span class="flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-500/10 dark:text-green-400">
+<span class="material-symbols-outlined mr-1 text-[14px]">trending_up</span>
+                            +0.2%
+                        </span>
+</div>
+<div class="mt-4 h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+<div class="h-1.5 rounded-full bg-primary" style="width: 85%"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Engagement Score</p>
+<h3 class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">88%</h3>
+</div>
+<span class="flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-500/10 dark:text-green-400">
+<span class="material-symbols-outlined mr-1 text-[14px]">trending_up</span>
+                            +5%
+                        </span>
+</div>
+<div class="mt-4 h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+<div class="h-1.5 rounded-full bg-green-500" style="width: 88%"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="relative overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Pending Reviews</p>
+<h3 class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">12</h3>
+</div>
+<span class="flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-500/10 dark:text-orange-400">
+<span class="material-symbols-outlined mr-1 text-[14px]">schedule</span>
+                            Action needed
+                        </span>
+</div>
+<div class="mt-4 h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+<div class="h-1.5 rounded-full bg-orange-500" style="width: 30%"></div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="relative overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Risk Level</p>
+<h3 class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">Low</h3>
+</div>
+<span class="flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                            0% Change
+                        </span>
+</div>
+<div class="mt-4 flex gap-1">
+<div class="h-1.5 flex-1 rounded-l-full bg-green-500"></div>
+<div class="h-1.5 flex-1 bg-slate-100 dark:bg-slate-700"></div>
+<div class="h-1.5 flex-1 rounded-r-full bg-slate-100 dark:bg-slate-700"></div>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid gap-6 lg:grid-cols-3">
+<!-- Bar Chart: Performance -->
+<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm lg:col-span-2">
+<div class="mb-6 flex items-center justify-between">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Performance by Subject</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Mentees Average vs Department Average</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-medium">
+<div class="flex items-center gap-2">
+<span class="h-3 w-3 rounded-sm bg-primary"></span>
+<span class="text-slate-600 dark:text-slate-300">My Mentees</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="h-3 w-3 rounded-sm bg-slate-300 dark:bg-slate-600"></span>
+<span class="text-slate-600 dark:text-slate-300">Dept Avg</span>
+</div>
+</div>
+</div>
+<div class="relative h-64 w-full">
+<!-- Y-axis grid lines -->
+<div class="absolute inset-0 flex flex-col justify-between text-xs text-slate-400">
+<div class="flex w-full items-center"><span class="w-8">100</span><div class="ml-2 h-px w-full bg-slate-100 dark:bg-slate-700/50"></div></div>
+<div class="flex w-full items-center"><span class="w-8">75</span><div class="ml-2 h-px w-full bg-slate-100 dark:bg-slate-700/50"></div></div>
+<div class="flex w-full items-center"><span class="w-8">50</span><div class="ml-2 h-px w-full bg-slate-100 dark:bg-slate-700/50"></div></div>
+<div class="flex w-full items-center"><span class="w-8">25</span><div class="ml-2 h-px w-full bg-slate-100 dark:bg-slate-700/50"></div></div>
+<div class="flex w-full items-center"><span class="w-8">0</span><div class="ml-2 h-px w-full bg-slate-100 dark:bg-slate-700/50"></div></div>
+</div>
+<!-- Bars Container -->
+<div class="absolute inset-0 ml-10 flex items-end justify-between px-4 pb-6">
+<!-- Group 1: Math -->
+<div class="group flex h-full w-full flex-col justify-end items-center gap-2">
+<div class="flex h-full items-end gap-1 sm:gap-3">
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-primary transition-all group-hover:bg-primary/90" style="height: 85%;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">85</div>
+</div>
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-slate-300 dark:bg-slate-600" style="height: 72%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Math</span>
+</div>
+<!-- Group 2: Ethics -->
+<div class="group flex h-full w-full flex-col justify-end items-center gap-2">
+<div class="flex h-full items-end gap-1 sm:gap-3">
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-primary transition-all group-hover:bg-primary/90" style="height: 92%;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">92</div>
+</div>
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-slate-300 dark:bg-slate-600" style="height: 88%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Ethics</span>
+</div>
+<!-- Group 3: Lab -->
+<div class="group flex h-full w-full flex-col justify-end items-center gap-2">
+<div class="flex h-full items-end gap-1 sm:gap-3">
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-primary transition-all group-hover:bg-primary/90" style="height: 78%;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">78</div>
+</div>
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-slate-300 dark:bg-slate-600" style="height: 82%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Lab</span>
+</div>
+<!-- Group 4: Physics -->
+<div class="group flex h-full w-full flex-col justify-end items-center gap-2">
+<div class="flex h-full items-end gap-1 sm:gap-3">
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-primary transition-all group-hover:bg-primary/90" style="height: 65%;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">65</div>
+</div>
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-slate-300 dark:bg-slate-600" style="height: 70%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Physics</span>
+</div>
+<!-- Group 5: History -->
+<div class="group flex h-full w-full flex-col justify-end items-center gap-2">
+<div class="flex h-full items-end gap-1 sm:gap-3">
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-primary transition-all group-hover:bg-primary/90" style="height: 88%;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">88</div>
+</div>
+<div class="relative w-4 sm:w-8 rounded-t-sm bg-slate-300 dark:bg-slate-600" style="height: 75%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">History</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Heatmap: Engagement -->
+<div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
+<div class="mb-4">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Engagement Activity</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Student activity submissions (Last 90 days)</p>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Heatmap Grid -->
+<div class="grid grid-flow-col grid-rows-7 gap-1.5 auto-cols-fr overflow-hidden">
+<!-- Rows (Days) x Cols (Weeks) simulated -->
+<!-- We will render a bunch of small divs with varying opacities -->
+<!-- Week 1 -->
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<!-- Week 2 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<!-- Week 3 -->
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<!-- Week 4 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<!-- Week 5 -->
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<!-- Week 6 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<!-- Week 7 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<!-- Week 8 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<!-- Week 9 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<!-- Week 10 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<!-- Week 11 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<!-- Week 12 -->
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/60"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+</div>
+<!-- Legend -->
+<div class="mt-4 flex items-center justify-end gap-2 text-xs text-slate-500 dark:text-slate-400">
+<span>Less</span>
+<div class="flex gap-1">
+<div class="h-3 w-3 rounded-[2px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/20"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/40"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary/80"></div>
+<div class="h-3 w-3 rounded-[2px] bg-primary"></div>
+</div>
+<span>More</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Student List Table -->
+<div class="overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="border-b border-border-light dark:border-border-dark px-6 py-4 flex justify-between items-center">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Mentee Roster</h3>
+<button class="text-sm font-medium text-primary hover:text-primary/80">View All Mentees</button>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left text-sm text-slate-500 dark:text-slate-400">
+<thead class="bg-slate-50 text-xs uppercase text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+<tr>
+<th class="px-6 py-3 font-medium" scope="col">Student Name</th>
+<th class="px-6 py-3 font-medium" scope="col">Student ID</th>
+<th class="px-6 py-3 font-medium" scope="col">Current GPA</th>
+<th class="px-6 py-3 font-medium" scope="col">Activity Trend</th>
+<th class="px-6 py-3 font-medium" scope="col">Last Login</th>
+<th class="px-6 py-3 font-medium text-right" scope="col">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Student avatar 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCu79KVb5DInqKuRvE_4lzyURkjnw9CCUGW2qKOg-Wv-Ju5pRULZsL65_peFbthq74koBXjfJA4wPTykwPzN9ZuJJEvgm270RI8-YGjaRTwIGCviDYQTyqfSAl_qJwsw53xct8OJY9GXr7MEu4VjGKDQ0Zpehj7lRG2N7krL9SKnOIVCdnY4LWz5fsPUOlefJKbu2bTJJXIQgnCxFdVNtH2IvnjQs718yrFcaNt2KujuaX5R7tAJHYI4xwCgdkmN_xU4_n319PFvWY");'></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Alexander Smith</div>
+<div class="text-xs">Computer Science</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-xs whitespace-nowrap">2023-CS-001</td>
+<td class="px-6 py-4 font-bold text-slate-900 dark:text-white">3.8</td>
+<td class="px-6 py-4">
+<svg class="h-8 w-24" preserveaspectratio="none" viewbox="0 0 100 30">
+<path d="M0,25 C10,25 10,10 20,10 C30,10 30,15 40,15 C50,15 50,5 60,5 C70,5 70,20 80,20 C90,20 90,10 100,10" fill="none" stroke="#135bec" stroke-width="2"></path>
+</svg>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">2 hours ago</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<span class="inline-flex rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-500/10 dark:text-green-400">On Track</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Student avatar 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUHJgmuSvbaOddNZu_dK8_n50RrItzu4W_vXSfJikLes6KjuRN01iWZtGstyvTgtYpbynfV96wBEsY3W6nMOqiTG5RLTMHU8LZTdAbbW-lNfKG5ikOuHJQinqR5rS9TKdoAc4-H5ukYrlWZcvpVoxGiFrJTWNAvsBUAyVUy9kKT4-B5wsn4y9jU7WStyr6IjBmarwIRtKoQHIx25NC4Himuu4c9dqcKVTYOYNhUcLV8dCn8q0ofBXdcNU2UQAe-9SibLPUtc0LK_A");'></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Maria Garcia</div>
+<div class="text-xs">Information Systems</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-xs whitespace-nowrap">2023-IS-042</td>
+<td class="px-6 py-4 font-bold text-slate-900 dark:text-white">3.2</td>
+<td class="px-6 py-4">
+<svg class="h-8 w-24" preserveaspectratio="none" viewbox="0 0 100 30">
+<path d="M0,20 C10,20 10,25 20,25 C30,25 30,15 40,15 C50,15 50,20 60,20 C70,20 70,10 80,10 C90,10 90,5 100,5" fill="none" stroke="#10b981" stroke-width="2"></path>
+</svg>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">1 day ago</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<span class="inline-flex rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-500/10 dark:text-green-400">On Track</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Student avatar 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBREp9w3nSMMz7w8NY1dsruiHZqXdCtLqcsJvJYbY5tJATbpkYm7MuAKfcQnkwbQbSU0B2H_EUwT3yfMWHLG5C-NvzkR5yZ56zKwV5bj9BjTTHWRMHdOf-hv_mOZ-2Z1MvQSnX7CHGcSt5_YIhe3WjrT2a88z2QiDAf4057MWmvAA2_ccFgAq9adayjGz4INzYiOHCiSAQHFOXt5qFbgo9QnweoHLar64L8BI9MJfHpq6DiriPHEtcH-E7tAW6bxN5WHzGOZ-D1FDI");'></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">James Wilson</div>
+<div class="text-xs">Software Eng.</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-xs whitespace-nowrap">2023-SE-089</td>
+<td class="px-6 py-4 font-bold text-slate-900 dark:text-white">2.4</td>
+<td class="px-6 py-4">
+<svg class="h-8 w-24" preserveaspectratio="none" viewbox="0 0 100 30">
+<path d="M0,10 C10,10 10,20 20,20 C30,20 30,25 40,25 C50,25 50,28 60,28 C70,28 70,25 80,25 C90,25 90,20 100,20" fill="none" stroke="#f97316" stroke-width="2"></path>
+</svg>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-orange-500 font-medium">5 days ago</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<span class="inline-flex rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800 dark:bg-orange-500/10 dark:text-orange-400">Review Needed</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Student avatar 4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAq0gSNAwmRlVuvMCNcllmFqd412fh4hRGrz91o-rg_pN4G95WvzoBvVOtcy4pMlJtoaZA93sO2JBZJ7tWj3goRHC98e2VaUIGHGCkS7A66Abp52H_mmcB7EQuLFFB1vdFhye3Z-fqkN4SFy7eUstKRTXMEwypNkzf3DB2mtOG8CmEKU6AfJ3kwIIE4zfWDcjDsmg8XE9Ja2f95Al_oRZKgFEsM-zyn4YrU1JredEG3NLQupelSsQ0BAWmjudLWld76R1F2OVtw_H0");'></div>
+<div>
+<div class="font-medium text-slate-900 dark:text-white">Chen Wei</div>
+<div class="text-xs">Data Science</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-xs whitespace-nowrap">2023-DS-104</td>
+<td class="px-6 py-4 font-bold text-slate-900 dark:text-white">3.9</td>
+<td class="px-6 py-4">
+<svg class="h-8 w-24" preserveaspectratio="none" viewbox="0 0 100 30">
+<path d="M0,25 C10,25 10,5 20,5 C30,5 30,10 40,10 C50,10 50,5 60,5 C70,5 70,10 80,10 C90,10 90,5 100,5" fill="none" stroke="#135bec" stroke-width="2"></path>
+</svg>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">4 hours ago</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<span class="inline-flex rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-500/10 dark:text-green-400">On Track</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

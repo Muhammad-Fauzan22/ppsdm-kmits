@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, CheckCircle, Clock, Trophy, Activity, ArrowRight, Zap } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { StudyGroupFinder } from "@/components/peer/StudyGroupFinder";
 
 async function getStats() {
   const supabase = await createClient();
@@ -130,6 +131,11 @@ export default async function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Peer Learning Section */}
+      <div className="grid gap-6">
+        <StudyGroupFinder />
       </div>
     </div>
   );

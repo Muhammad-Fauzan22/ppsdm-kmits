@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM KMM Mobile Help Center</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for the mobile container */
+        .mobile-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .mobile-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .mobile-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        
+        /* Accordion animation */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary ~ * {
+            animation: sweep .3s ease-in-out;
+        }
+        @keyframes sweep {
+            0%    {opacity: 0; transform: translateY(-10px)}
+            100%  {opacity: 1; transform: translateY(0)}
+        }
+        
+        .rotate-icon {
+            transition: transform 0.3s ease;
+        }
+        details[open] summary .rotate-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-display flex items-center justify-center min-h-screen py-8">
+<!-- Mobile Device Simulator Container -->
+<div class="relative w-full max-w-[400px] h-[850px] bg-background-light dark:bg-background-dark rounded-[30px] shadow-2xl overflow-hidden border-4 border-white ring-1 ring-gray-900/5 flex flex-col">
+<!-- Header Section -->
+<header class="bg-primary pt-12 pb-6 px-6 relative shrink-0">
+<!-- Decorative circle -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-6 relative z-10">
+<div class="flex items-center gap-3 text-white">
+<div class="size-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-xl">security</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">PPSDM Help Center</h1>
+</div>
+<button class="text-white hover:bg-white/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+<!-- Greeting -->
+<div class="text-white mb-6">
+<p class="text-white/80 text-sm font-medium">Halo, Pengguna</p>
+<h2 class="text-2xl font-bold leading-tight">Perlu bantuan apa hari ini?</h2>
+</div>
+<!-- Search Bar -->
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-primary">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3.5 border-none rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white shadow-lg shadow-primary/10 sm:text-sm font-medium" placeholder="Cari topik bantuan..." type="text"/>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto mobile-scroll relative">
+<div class="p-6 pb-24 space-y-8">
+<!-- Categories Grid -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-800 dark:text-white text-base font-bold">Kategori Bantuan</h3>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Card 1 -->
+<button class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">person</span>
+</div>
+<span class="text-slate-800 dark:text-white text-sm font-bold">Akun &amp; Profil</span>
+</button>
+<!-- Card 2 -->
+<button class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">assignment</span>
+</div>
+<span class="text-slate-800 dark:text-white text-sm font-bold">Asesmen</span>
+</button>
+<!-- Card 3 -->
+<button class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<span class="text-slate-800 dark:text-white text-sm font-bold">Sertifikasi</span>
+</button>
+<!-- Card 4 -->
+<button class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">build</span>
+</div>
+<span class="text-slate-800 dark:text-white text-sm font-bold">Kendala Teknis</span>
+</button>
+</div>
+</section>
+<!-- FAQ Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-800 dark:text-white text-base font-bold">Pertanyaan Sering Diajukan</h3>
+<a class="text-primary text-xs font-semibold hover:underline" href="#">Lihat Semua</a>
+</div>
+<div class="flex flex-col gap-3">
+<!-- FAQ Item 1 -->
+<details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+<summary class="flex items-center justify-between p-4 cursor-pointer select-none">
+<span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Bagaimana cara reset password?</span>
+<span class="material-symbols-outlined text-slate-400 rotate-icon">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                                Anda dapat mereset password melalui halaman login dengan menekan tombol "Lupa Password", kemudian ikuti instruksi yang dikirimkan ke email Anda.
+                            </div>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+<summary class="flex items-center justify-between p-4 cursor-pointer select-none">
+<span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Cara mengunduh sertifikat?</span>
+<span class="material-symbols-outlined text-slate-400 rotate-icon">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                                Sertifikat dapat diunduh setelah Anda menyelesaikan seluruh modul pelatihan dan lulus ujian akhir. Cek menu "Sertifikasi" di profil Anda.
+                            </div>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+<summary class="flex items-center justify-between p-4 cursor-pointer select-none">
+<span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Apakah aplikasi ini gratis?</span>
+<span class="material-symbols-outlined text-slate-400 rotate-icon">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                                Ya, aplikasi PPSDM KMM dapat diakses secara gratis oleh seluruh karyawan terdaftar.
+                            </div>
+</details>
+<!-- FAQ Item 4 -->
+<details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+<summary class="flex items-center justify-between p-4 cursor-pointer select-none">
+<span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Jadwal maintenance sistem?</span>
+<span class="material-symbols-outlined text-slate-400 rotate-icon">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                                Maintenance rutin dilakukan setiap hari Sabtu pukul 00:00 - 04:00 WIB untuk memastikan performa sistem tetap optimal.
+                            </div>
+</details>
+</div>
+</section>
+<!-- Bottom Banner -->
+<div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-5 relative overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay" data-alt="Abstract dark gradient pattern background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZwKdza7cA4sl9MbLeYSDATnQP_ZXfWtQ_a0xFVsk8VpNtMyBAr4C3fAHvXtButA_l3y4cQWUEWtvue0nVWMTc4ahKo9FeCMH2k2g_0YLKI4sF4rYq978nd0qOxFHaL6MgDvQWH89XIFtyW8QQtHtPJc5Ewd9qJfTX_f9a3HKQL6Ao6LTjdHmwNP7IcLu8lhGFubHGHRJfj4ZOUvjXCi0VervlDU8WMJDbzQ8P9YFFzRl76Wm1tFx2wB3uCM4fCM189-yaB0NWX4g"/>
+<div class="relative z-10">
+<h4 class="text-white font-bold text-sm mb-1">Butuh bantuan lebih lanjut?</h4>
+<p class="text-slate-300 text-xs mb-3">Tim support kami siap membantu anda di jam kerja.</p>
+<button class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 px-4 rounded-lg backdrop-blur-sm transition-colors border border-white/10">
+                            Hubungi via Email
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button (WhatsApp) -->
+<div class="absolute bottom-6 right-6 z-50">
+<button class="group flex items-center justify-center size-14 rounded-full bg-[#25D366] text-white shadow-xl shadow-green-500/30 hover:scale-105 hover:bg-[#20bd5a] transition-all duration-300">
+<!-- Using generic chat icon as Material Symbols doesn't have brand logos -->
+<span class="material-symbols-outlined text-3xl">chat_bubble</span>
+<span class="absolute right-0 top-0 flex h-3 w-3 -mt-1 -mr-1">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+</span>
+</button>
+</div>
+</div>
+</body></html>
