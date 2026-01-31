@@ -20,6 +20,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import { SystemHealthWidget } from '@/components/analytics/SystemHealthWidget';
 
 // Mock analytics data
 const weeklyProgress = [
@@ -108,48 +109,38 @@ export default function AnalyticsDashboardPage() {
 
             <main className="max-w-7xl mx-auto px-4 py-8">
                 {/* Summary Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    {/* SYSTEM HEALTH WIDGET (New) */}
+                    <div className="lg:col-span-2">
+                        <SystemHealthWidget />
+                    </div>
+
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-xl p-5 shadow-lg"
+                        className="bg-white rounded-xl p-5 shadow-lg flex flex-col justify-between"
                     >
-                        <div className="text-gray-500 text-sm">Total XP</div>
-                        <div className="text-3xl font-bold text-indigo-600 mt-1">{totalXP.toLocaleString()}</div>
-                        <div className="text-green-500 text-sm mt-2">↑ 42% from last month</div>
+                        <div>
+                            <div className="text-gray-500 text-sm">Total XP</div>
+                            <div className="text-3xl font-bold text-indigo-600 mt-1">{totalXP.toLocaleString()}</div>
+                        </div>
+                        <div className="text-green-500 text-sm mt-2 flex items-center gap-1">
+                            <span>↑ 42%</span>
+                            <span className="text-gray-400">from last month</span>
+                        </div>
                     </motion.div>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="bg-white rounded-xl p-5 shadow-lg"
+                        className="bg-white rounded-xl p-5 shadow-lg flex flex-col justify-between"
                     >
-                        <div className="text-gray-500 text-sm">Average Score</div>
-                        <div className="text-3xl font-bold text-purple-600 mt-1">{avgScore}/100</div>
-                        <div className="text-green-500 text-sm mt-2">↑ 8 points from last month</div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="bg-white rounded-xl p-5 shadow-lg"
-                    >
-                        <div className="text-gray-500 text-sm">Learning Time</div>
-                        <div className="text-3xl font-bold text-teal-600 mt-1">{Math.round(totalMinutes / 60)}h {totalMinutes % 60}m</div>
-                        <div className="text-gray-500 text-sm mt-2">This week</div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="bg-white rounded-xl p-5 shadow-lg"
-                    >
-                        <div className="text-gray-500 text-sm">Goal Completion</div>
-                        <div className="text-3xl font-bold text-green-600 mt-1">{completionRate}%</div>
-                        <div className="text-yellow-500 text-sm mt-2">{9 - Math.round(completionRate / 11)} targets remaining</div>
+                        <div>
+                            <div className="text-gray-500 text-sm">Average Score</div>
+                            <div className="text-3xl font-bold text-purple-600 mt-1">{avgScore}/100</div>
+                        </div>
+                        <div className="text-green-500 text-sm mt-2">↑ 8 points this month</div>
                     </motion.div>
                 </div>
 
