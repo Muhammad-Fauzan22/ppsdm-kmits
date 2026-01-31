@@ -123,15 +123,15 @@ const config: Config = {
 					'serif'
 				],
 				display: [
-					'Lexend"',
+					'Lexend',
 					'sans-serif'
 				],
 				body: [
-					'Noto Sans"',
+					'Noto Sans',
 					'sans-serif'
 				],
 				grotesk: [
-					'Space Grotesk"',
+					'Space Grotesk',
 					'sans-serif'
 				]
 			},
@@ -238,11 +238,12 @@ const config: Config = {
 				}
 			}
 		},
-		plugins: [
-			require("tailwindcss-animate"),
-			require("@tailwindcss/forms"),
-			require("@tailwindcss/container-queries"),
-			require("@tailwindcss/typography"),
-		],
-	};
-	export default config;
+	},
+	plugins: [
+		require("tailwindcss-animate"),
+		require("@tailwindcss/forms"),
+		require("@tailwindcss/container-queries"),
+		require("@tailwindcss/typography"),
+	],
+};
+export default config;
