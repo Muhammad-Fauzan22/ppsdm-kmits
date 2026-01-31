@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Work_Sans, Space_Grotesk, Noto_Sans, Manrope, Merriweather, Lexend, Inter, Poppins } from "next/font/google"; // Font resmi sesuai Brand Guideline
 import "./globals.css";
+import { NudgeNotification } from "@/components/features/NudgeNotification";
 
 
 const workSans = Work_Sans({
@@ -126,6 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
         {children}
+        <NudgeNotification />
       </body>
     </html>
   );
