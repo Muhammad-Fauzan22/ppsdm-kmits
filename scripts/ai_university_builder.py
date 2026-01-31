@@ -190,7 +190,7 @@ def step_3_generate_quiz(module_content: str, module_title: str) -> List[Dict[st
     print(f"  [Parallel] Generating Quiz for '{module_title}' (Mistral)...")
     
     prompt = f"""
-    Buatlah Kuis Evaluasi Pembelajaran (3 Soal) berbasis HOTS (Higher Order Thinking Skills).
+    Buatlah Kuis Evaluasi Pembelajaran (5 Soal) berbasis HOTS (Higher Order Thinking Skills).
     
     Materi Referensi:
     {module_content[:3000]}...
@@ -199,6 +199,7 @@ def step_3_generate_quiz(module_content: str, module_title: str) -> List[Dict[st
     1. **Analitis**: Jangan hanya menanyakan hafalan. Minta mahasiswa menganalisis situasi atau menerapkan konsep.
     2. **Kontekstual**: Gunakan skenario dunia nyata (studi kasus singkat).
     3. **Bahasa**: Indonesia Baku.
+    4. **Variasi**: Mencakup pemahaman, aplikasi, dan analisis.
     
     OUTPUT JSON (Strict Array of Objects):
     [
@@ -207,7 +208,8 @@ def step_3_generate_quiz(module_content: str, module_title: str) -> List[Dict[st
         "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
         "correct_answer": "A) ...",
         "explanation": "Penjelasan mendalam mengapa jawaban ini benar dan yang lain salah, mengacu pada konsep materi."
-      }}
+      }},
+      ... (Total 5 Soal)
     ]
     """
     

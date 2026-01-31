@@ -4,6 +4,28 @@ Sistem scraping otomatis untuk mengumpulkan konten edukatif dan informasi dari b
 
 ## 📋 Fitur
 
+### 🎯 Comprehensive ITS Scraper (NEW)
+**`its_comprehensive_scraper.py`** - Scraper yang mengambil data dari SEMUA bagian website resmi ITS sesuai struktur menu:
+
+**Main Menu (Top Bar):**
+- ✓ Calon Mahasiswa (Admission, Beasiswa, Jalur Masuk)
+- ✓ Mahasiswa (Portal, Prestasi, Organisasi)
+- ✓ Mahasiswa Baru (Registrasi, Biaya, Fasilitas)
+- ✓ Dosen & Staf (Penelitian, Hibah, Karir)
+- ✓ Orang Tua (Panduan, Keuangan, FAQ)
+- ✓ Alumni (Tracer Study, Job Vacancy, Networking)
+
+**Secondary Menu (Main Navigation):**
+- ✓ Profil ITS (Sejarah, Visi-Misi, Pimpinan, Fakultas)
+- ✓ Pendaftaran (Sarjana, Magister, Doktor, Vokasi, Internasional)
+- ✓ Kuliah di ITS (Program S1, S2, S3, MBKM, Internasional)
+- ✓ Riset (Pusat Riset, Publikasi, Hibah, Repository)
+- ✓ Inovasi (Inkubator, Startup, Paten, Techno Park)
+- ✓ Inisiatif (ITS Goes Global, Sustainability, Smart Campus)
+- ✓ Layanan (Akademik, Perpustakaan, Asrama, Karir)
+- ✓ Berita (Terkini, Pengumuman, Event, Prestasi)
+
+### Other Scrapers
 - **ITS News Scraper**: Mengumpulkan berita dari website resmi ITS
 - **YouTube Aggregator**: Aggregasi video edukatif dari channel teknologi
 - **GitHub Trending**: Repository trending berdasarkan bahasa pemrograman
@@ -33,6 +55,39 @@ $env:SUPABASE_KEY="your-supabase-key"
 ```
 
 ### 3. Run Scrapers
+
+#### 🎯 Comprehensive ITS Scraper (Recommended)
+
+```bash
+# Scrape ALL ITS sections (complete website scraping)
+python scrapers/its_comprehensive_scraper.py --all --json --supabase --stats
+
+# Scrape specific section only
+python scrapers/its_comprehensive_scraper.py --section berita --news-pages 5
+python scrapers/its_comprehensive_scraper.py --section profil_its
+python scrapers/its_comprehensive_scraper.py --section pendaftaran
+
+# Scrape with custom delay (be more polite)
+python scrapers/its_comprehensive_scraper.py --all --delay 5 --json
+```
+
+**Available Sections:**
+- `calon_mahasiswa` - Informasi untuk calon mahasiswa
+- `mahasiswa` - Portal dan info mahasiswa
+- `mahasiswa_baru` - Registrasi dan orientasi
+- `dosen_staf` - Info dosen dan staf
+- `orang_tua` - Panduan untuk orang tua
+- `alumni` - Portal alumni
+- `profil_its` - Profil dan sejarah ITS
+- `pendaftaran` - Jalur pendaftaran
+- `kuliah_di_its` - Program studi
+- `riset` - Penelitian dan publikasi
+- `inovasi` - Inovasi dan startup
+- `inisiatif` - Inisiatif strategis
+- `layanan` - Layanan kampus
+- `berita` - Berita dan pengumuman
+
+#### Other Scrapers
 
 ```bash
 # ITS News
