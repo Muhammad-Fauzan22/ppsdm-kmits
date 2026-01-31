@@ -4,10 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { ITS_FACULTIES } from "@/lib/its_programs";
+
 type FormData = {
     // Step 1: Identity
     nrp: string;
     fullName: string;
+    faculty: string;
     department: string;
     // Step 2: Academic
     gpa: string;
@@ -24,6 +27,7 @@ export default function OnboardingPage() {
     const [formData, setFormData] = useState<FormData>({
         nrp: "",
         fullName: "",
+        faculty: "",
         department: "",
         gpa: "",
         semester: "",
@@ -211,21 +215,49 @@ export default function OnboardingPage() {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Department</label>
-                                            <div className="relative">
-                                                <select
-                                                    name="department"
-                                                    value={formData.department}
-                                                    onChange={handleInputChange}
-                                                    className="w-full rounded-xl bg-black/20 border border-white/10 text-white p-4 focus:border-brand-accent focus:bg-brand-blue/5 outline-none transition-all appearance-none"
-                                                >
-                                                    <option value="" disabled className="bg-its-dark text-slate-500">Select Department</option>
-                                                    <option value="cs" className="bg-its-dark">Informatics (Teknik Informatika)</option>
-                                                    <option value="is" className="bg-its-dark">Information Systems</option>
-                                                    <option value="it" className="bg-its-dark">Information Technology</option>
-                                                    <option value="ds" className="bg-its-dark">Data Science</option>
-                                                </select>
-                                                <span className="material-symbols-outlined absolute right-4 top-4 text-slate-500 pointer-events-none">expand_more</span>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Faculty</label>
+                                                <div className="relative">
+                                                    <select
+                                                        name="faculty"
+                                                        value={formData.faculty}
+                                                        onChange={(e) => {
+                                                            setFormData(prev => ({ ...prev, faculty: e.target.value, department: "" }));
+                                                        }}
+                                                        className="w-full rounded-xl bg-black/20 border border-white/10 text-white p-4 focus:border-brand-accent focus:bg-brand-blue/5 outline-none transition-all appearance-none"
+                                                    >
+                                                        <option value="" disabled className="bg-its-dark text-slate-500">Select Faculty</option>
+                                                        {ITS_FACULTIES.map((faculty) => (
+                                                            <option key={faculty.name} value={faculty.name} className="bg-its-dark">
+                                                                {faculty.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <span className="material-symbols-outlined absolute right-4 top-4 text-slate-500 pointer-events-none">expand_more</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Study Program (Department)</label>
+                                                <div className="relative">
+                                                    <select
+                                                        name="department"
+                                                        value={formData.department}
+                                                        onChange={handleInputChange}
+                                                        disabled={!formData.faculty}
+                                                        className={`w-full rounded-xl bg-black/20 border border-white/10 text-white p-4 focus:border-brand-accent focus:bg-brand-blue/5 outline-none transition-all appearance-none ${!formData.faculty ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                    >
+                                                        <option value="" disabled className="bg-its-dark text-slate-500">
+                                                            {formData.faculty ? "Select Study Program" : "Select Faculty First"}
+                                                        </option>
+                                                        {formData.faculty && ITS_FACULTIES.find(f => f.name === formData.faculty)?.programs.map((prog) => (
+                                                            <option key={prog} value={prog} className="bg-its-dark">
+                                                                {prog}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <span className="material-symbols-outlined absolute right-4 top-4 text-slate-500 pointer-events-none">expand_more</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

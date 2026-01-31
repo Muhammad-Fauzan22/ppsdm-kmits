@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
 
-const groq = new Groq({
+export const dynamic = 'force-dynamic';
+
+
+
+// Lazy init to prevent build errors if API key is missing
+const getGroqClient = () => new Groq({
     apiKey: process.env.GROQ_API_KEY,
 });
+
 
 const SYSTEM_PROMPT = `Kamu adalah AI Tutor untuk platform PPSDM KMM (Pusat Pengembangan Sumber Daya Mahasiswa - Keluarga Mahasiswa Mesin).
 
@@ -44,7 +50,7 @@ export async function POST(request: NextRequest) {
             { role: 'user', content: message },
         ];
 
-        const completion = await groq.chat.completions.create({
+        const completion = await getGroqClient().chat.completions.create({
             model: 'llama-3.3-70b-versatile',
             messages,
             temperature: 0.7,

@@ -75,26 +75,48 @@ export default function LoginPage() {
                 {/* Content Overlay */}
                 <div className="relative z-10 max-w-xl">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 rounded-lg bg-brand-blue flex items-center justify-center shadow-lg shadow-brand-blue/20">
-                            <span className="material-symbols-outlined text-white text-2xl">school</span>
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#013880] to-[#135bec] flex items-center justify-center shadow-lg shadow-[#135bec]/30">
+                            <span className="material-symbols-outlined text-white text-3xl">school</span>
                         </div>
-                        <span className="text-xl font-bold tracking-tight text-white/90">PPSDM KM ITS</span>
+                        <div className="flex flex-col">
+                            <span className="text-xl font-bold tracking-tight text-white">PPSDM KM ITS</span>
+                            <span className="text-xs text-[#FFD700] font-medium">Institut Teknologi Sepuluh Nopember</span>
+                        </div>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight text-white mb-4">
-                        Selamat Datang di <br />
-                        <span className="text-brand-blue">PPSDM KM ITS</span>
+                        Pengembangan Holistik <br />
+                        <span className="text-brand-blue">Mahasiswa ITS</span>
                     </h1>
-                    <p className="text-lg text-slate-400 leading-relaxed max-w-md">
-                        Platform terintegrasi untuk pengembangan sumber daya mahasiswa Institut Teknologi Sepuluh Nopember.
+                    <p className="text-lg text-slate-400 leading-relaxed max-w-md mb-6">
+                        Platform terintegrasi untuk pengembangan sumber daya manusia di Institut Teknologi Sepuluh Nopember - Mencetak generasi emas Indonesia.
                     </p>
-                    <div className="mt-8 flex gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-xs font-medium text-white/80">
-                            <span className="material-symbols-outlined text-base">verified_user</span>
-                            Secure Login
+                    
+                    {/* ITS Programs Preview */}
+                    <div className="space-y-3 mb-8">
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">37 Program Sarjana • 7 Fakultas</p>
+                        <div className="flex flex-wrap gap-2">
+                            <span className="px-2 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-medium">Teknik Informatika</span>
+                            <span className="px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-medium">Teknik Mesin</span>
+                            <span className="px-2 py-1 rounded-md bg-orange-500/20 text-orange-400 text-xs font-medium">Teknik Sipil</span>
+                            <span className="px-2 py-1 rounded-md bg-cyan-500/20 text-cyan-400 text-xs font-medium">Teknik Perkapalan</span>
+                            <span className="px-2 py-1 rounded-md bg-violet-500/20 text-violet-400 text-xs font-medium">Teknik Elektro</span>
+                            <span className="px-2 py-1 rounded-md bg-pink-500/20 text-pink-400 text-xs font-medium">Desain Produk</span>
+                            <span className="px-2 py-1 rounded-md bg-red-500/20 text-red-400 text-xs font-medium">Kedokteran</span>
                         </div>
-                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-xs font-medium text-white/80">
+                    </div>
+
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-xs font-medium text-white/80">
+                            <span className="material-symbols-outlined text-base">verified_user</span>
+                            Secure ITS Login
+                        </div>
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-xs font-medium text-white/80">
                             <span className="material-symbols-outlined text-base">id_card</span>
-                            ITS SSO Supported
+                            @student.its.ac.id
+                        </div>
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFD700]/20 backdrop-blur-sm border border-[#FFD700]/20 text-xs font-medium text-[#FFD700]">
+                            <span className="material-symbols-outlined text-base">workspace_premium</span>
+                            Kampus Merdeka Ready
                         </div>
                     </div>
                 </div>

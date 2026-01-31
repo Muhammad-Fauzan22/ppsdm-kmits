@@ -23,7 +23,11 @@ import { ASSETS } from "@/config/assets";
 
 import { createClient } from "@/lib/supabase/client";
 
+
 import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
+import NewsWidget from "@/components/dashboard/NewsWidget";
+import OpportunitiesWidget from "@/components/dashboard/OpportunitiesWidget";
+
 
 export default function StudentDashboard() {
     const [dynamicResources, setDynamicResources] = React.useState<any[]>([]);
@@ -200,6 +204,7 @@ export default function StudentDashboard() {
                         {/* Right Column (Sidebar Widgets) */}
                         <div className="xl:col-span-4 flex flex-col gap-6">
 
+
                             {/* XP Tracker Widget */}
                             <div className="bg-white/60 dark:bg-[#161e2c]/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm">
                                 <div className="flex items-center gap-4 mb-4">
@@ -220,6 +225,10 @@ export default function StudentDashboard() {
                                 </div>
                                 <p className="text-xs text-center mt-3 text-slate-400 dark:text-slate-500 font-medium">Next: Level 5 Visionary</p>
                             </div>
+
+                            {/* Dynamic Widgets */}
+                            <NewsWidget />
+                            <OpportunitiesWidget />
 
                             {/* Mission Card */}
                             <div className="relative overflow-hidden rounded-2xl bg-[#0f172a] border border-slate-700 shadow-lg group">
@@ -251,6 +260,7 @@ export default function StudentDashboard() {
                                     </Link>
                                 </div>
                             </div>
+
 
                             {/* Physical Health Mission Card */}
                             <div className="relative overflow-hidden rounded-2xl bg-[#0f172a] border border-slate-700 shadow-lg group">

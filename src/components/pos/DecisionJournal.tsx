@@ -89,7 +89,7 @@ export default function DecisionJournal() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Context (The "Why")</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Context (The &quot;Why&quot;)</label>
                             <textarea
                                 value={form.context}
                                 onChange={(e) => setForm({ ...form, context: e.target.value })}

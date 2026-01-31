@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import HeroVideo from '@/components/HeroVideo';
+import { ITS_FACULTIES } from "@/lib/its_programs";
 
 export default function LandingPage() {
     return (
@@ -69,6 +70,7 @@ function LandingContent() {
 
                     {/* Desktop Nav */}
                     <nav className="hidden lg:flex items-center gap-10">
+                        <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors" href="/#programs">Program Studi</Link>
                         <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors" href="/#methodology">Metodologi</Link>
                         <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors" href="/#dimensions">9 Dimensi</Link>
                         <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors" href="/#demo">Mission Control</Link>
@@ -90,6 +92,7 @@ function LandingContent() {
                 {/* Mobile Nav */}
                 {isMenuOpen && (
                     <div className="lg:hidden absolute top-20 left-0 w-full bg-[#0A0F1A] border-b border-white/10 p-4 flex flex-col gap-4 shadow-2xl animate-fade-in-up">
+                        <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors p-2" href="/#programs" onClick={() => setIsMenuOpen(false)}>Program Studi</Link>
                         <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors p-2" href="/#methodology" onClick={() => setIsMenuOpen(false)}>Metodologi</Link>
                         <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors p-2" href="/#dimensions" onClick={() => setIsMenuOpen(false)}>9 Dimensi</Link>
                         <Link className="text-sm font-medium hover:text-[#00d4ff] transition-colors p-2" href="/#demo" onClick={() => setIsMenuOpen(false)}>Mission Control</Link>
@@ -186,6 +189,175 @@ function LandingContent() {
                     </div>
                 </section>
 
+                {/* ITS Academic Programs */}
+                <section className="py-24 px-6 lg:px-12 bg-[#05080F]" id="programs">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-16">
+                            <span className="text-[#00d4ff] font-bold tracking-widest text-xs uppercase mb-2 block">Institut Teknologi Sepuluh Nopember</span>
+                            <h2 className="text-3xl md:text-5xl font-bold font-heading text-white mb-4">37 Program Sarjana Unggulan</h2>
+                            <p className="text-slate-400 max-w-3xl mx-auto">Merupakan salah satu program sarjana terbaik di Indonesia dengan 7 Fakultas yang menyediakan pilihan program studi sesuai minat dan bakat mahasiswa.</p>
+                        </div>
+                        
+                        {/* Faculties Grid */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* FSAIN - Sains dan Analitika Data */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                        <GraduationCap className="w-5 h-5 text-blue-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Sains dan Analitika Data</h3>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Fisika</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Matematika (Analisis & Aljabar, Matematika Terapan, Ilmu Komputer)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Statistika (Industri, Komputasi, Ekonomi Finansial, Sosial, Lingkungan)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Kimia</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Biologi (Biosains & Bioteknologi)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Aktuaria</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#135bec] rounded-full"></span>Sains Analitik dan Instrumentasi Kimia</li>
+                                </ul>
+                            </div>
+
+                            {/* FTIRS - Teknologi Industri dan Rekayasa Sistem */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                                        <GraduationCap className="w-5 h-5 text-emerald-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Teknologi Industri dan Rekayasa Sistem</h3>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Teknik Mesin (Energi, Desain, Manufaktur, Metalurgi)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Teknik Kimia (Proses Industri, Material)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Teknik Fisika (Riset, Desain, Analisa Sistem Industri)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Teknik Sistem dan Industri (Manajemen Pabrik)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Teknik Material (Material Sintesis & Pengembangan)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Teknik Pangan (Desain Proses Industri)</li>
+                                </ul>
+                            </div>
+
+                            {/* FTSPK - Teknik Sipil, Perencanaan dan Kebumian */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                                        <Landmark className="w-5 h-5 text-orange-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Teknik Sipil, Perencanaan dan Kebumian</h3>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Teknik Sipil (Geoteknik, Struktur, MP, MRSA, MRT, Manajemen Aset)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Arsitektur (Perumahan, Teori & Sejarah, Perancangan Kota, Lingkungan, PPArs)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Teknik Lingkungan (Air Minum, Air Limbah, B3, Sampah, AMDAL)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Perencanaan Wilayah dan Kota (Pembentukan Lingkungan Hidup Ideal)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Teknik Geomatika (Geodesi, Geomatika, Pertanahan, Hidrografi)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>Teknik Geofisika (Eksplorasi Migas, Geothermal, Mitigasi Bencana)</li>
+                                </ul>
+                            </div>
+
+                            {/* FTK - Teknologi Kelautan */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                                        <Building2 className="w-5 h-5 text-cyan-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Teknologi Kelautan</h3>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>Teknik Perkapalan (Desain, Konstruksi, Operasi Bisnis Armada)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>Teknik Sistem Perkapalan (Instalasi, Manajerial, Perawatan) - Double Degree dengan Wismar University, Jerman</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>Teknik Kelautan (Struktur Pantai & Lepas Pantai, Energi & Lingkungan Laut)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>Teknik Transportasi Laut (Operasional Maritim, Managerial Kapal)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>Teknik Lepas Pantai (Pengembangan Perairan Marjinal & Laut Dalam)</li>
+                                </ul>
+                            </div>
+
+                            {/* FTEIC - Teknologi Elektro dan Informatika Cerdas */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20 lg:col-span-2">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                                        <Sparkles className="w-5 h-5 text-violet-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Teknologi Elektro dan Informatika Cerdas</h3>
+                                    <span className="ml-auto px-3 py-1 bg-violet-500/20 text-violet-400 text-xs font-bold rounded-full">8 Program Studi</span>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <ul className="space-y-2 text-sm text-slate-400">
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Teknik Elektro (Kedokteran, Energi, Lingkungan)</li>
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Teknik Biomedik (Instrumentasi, Sinyal, Biomekanika, Biomaterial)</li>
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Teknik Komputer (Software & Hardware, Sistem Komputasi, Jaringan)</li>
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Teknik Telekomunikasi (5G, IoT, Satelit, Cloud, Fiber Optik, Keamanan Komunikasi)</li>
+                                    </ul>
+                                    <ul className="space-y-2 text-sm text-slate-400">
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Informatika (Pemrograman, Struktur Data, Pemrograman Lanjut)</li>
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Sistem Informasi (Pengembangan SI, Pemodelan Bisnis, Integrasi SI)</li>
+                                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Teknologi Informasi (Bahasa Pemrograman, Algoritma, Jaringan, Citra Digital)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* FADBD - Desain Kreatif dan Bisnis Digital */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
+                                        <Flower2 className="w-5 h-5 text-pink-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Desain Kreatif dan Bisnis Digital</h3>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Desain Produk (Inovasi Produk untuk Ekonomi Kreatif)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Desain Interior (Tata Letak & Implementasi Desain Ruang Dalam)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Desain Komunikasi Visual (Periklanan, Branding, Desain Grafis, Animasi & Game, Film & TV)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Manajemen Bisnis (Strategis Berbasis Teknologi, Inovasi & Entrepreneurship)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Studi Pembangunan (Pembangunan Daerah & Pariwisata, Teknologi Maritim)</li>
+                                </ul>
+                            </div>
+
+                            {/* FKK - Kedokteran dan Kesehatan */}
+                            <div className="glass-card p-6 rounded-2xl border-[#135bec]/20">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                        <Activity className="w-5 h-5 text-red-400" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">Fakultas Kedokteran dan Kesehatan</h3>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Teknologi Kedokteran (Alat Medis, Perangkat Kesehatan Cerdas, Sistem Kesehatan Berbasis Teknologi)</li>
+                                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Kedokteran (Kompetensi Dokter Indonesia: Klinis, Manajemen Kesehatan, Darurat, Penelitian, Pengabdian)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div className="text-center p-6 rounded-2xl bg-[#135bec]/10 border border-[#135bec]/20">
+                                <div className="text-3xl font-bold text-[#00d4ff]">37</div>
+                                <div className="text-sm text-slate-400">Program Studi</div>
+                            </div>
+                            <div className="text-center p-6 rounded-2xl bg-[#135bec]/10 border border-[#135bec]/20">
+                                <div className="text-3xl font-bold text-[#00d4ff]">7</div>
+                                <div className="text-sm text-slate-400">Fakultas</div>
+                            </div>
+                            <div className="text-center p-6 rounded-2xl bg-[#135bec]/10 border border-[#135bec]/20">
+                                <div className="text-3xl font-bold text-[#00d4ff]">144</div>
+                                <div className="text-sm text-slate-400">SKS Minimum</div>
+                            </div>
+                            <div className="text-center p-6 rounded-2xl bg-[#135bec]/10 border border-[#135bec]/20">
+                                <div className="text-3xl font-bold text-[#00d4ff]">4</div>
+                                <div className="text-sm text-slate-400">Tahun Studi</div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 text-center">
+                            <p className="text-slate-500 text-sm mb-4">Program sarjana ITS telah terbukti menjadi salah satu program sarjana terbaik di Indonesia dengan kualitas yang memenuhi kebutuhan industri.</p>
+                            <a href="https://www.its.ac.id/id/kuliah-di-its/program-studi/program-sarjana/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#00d4ff] hover:text-[#00d4ff]/80 transition-colors text-sm font-medium">
+                                <span>Lihat Program Lengkap di ITS</span>
+                                <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
                 {/* 9 Dimensions */}
                 <section className="py-24 px-6 lg:px-12 relative overflow-hidden" id="dimensions">
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
@@ -231,6 +403,39 @@ function LandingContent() {
                                 number="09" title="Lingkungan" desc="Kesadaran ekologis, gaya hidup berkelanjutan, dan kontribusi sosial."
                                 icon={Leaf} color="lime" percent="40%"
                             />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Faculties & Programs */}
+                <section className="py-24 px-6 lg:px-12 bg-[#05080F] relative">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-16">
+                            <span className="text-[#00d4ff] font-bold tracking-widest text-xs uppercase mb-2 block">Academic Integration</span>
+                            <h2 className="text-3xl md:text-5xl font-bold font-heading text-white mb-6">Program Sarjana ITS</h2>
+                            <p className="text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                                ITS menyediakan 37 pilihan program studi yang dapat dipilih berdasarkan 7 bidang Fakultas.
+                                Sinergi antara keunggulan akademik dan pengembangan karakter PPSDM KMM memastikan lulusan siap memimpin di masa depan.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {ITS_FACULTIES.map((faculty, idx) => (
+                                <div key={idx} className="glass-card p-8 rounded-3xl border-t-4 border-t-[#135bec] hover:-translate-y-2 transition-all duration-300 group">
+                                    <div className="mb-6">
+                                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#00d4ff] transition-colors">{faculty.name}</h3>
+                                        <div className="h-1 w-12 bg-[#135bec] rounded-full group-hover:w-full transition-all duration-500"></div>
+                                    </div>
+                                    <ul className="space-y-3">
+                                        {faculty.programs.map((prog, pIdx) => (
+                                            <li key={pIdx} className="flex items-start gap-2 text-sm text-slate-400 group-hover:text-slate-300 transition-colors">
+                                                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#135bec] shrink-0"></span>
+                                                {prog}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
