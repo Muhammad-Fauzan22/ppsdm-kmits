@@ -1,6 +1,7 @@
 import { SimulationRunner } from "@/components/career/SimulationRunner";
 import { CAREER_SIMULATIONS } from "@/data/career/simulations";
 import { Briefcase, Trophy } from "lucide-react";
+import { SmartPortfolioUploader } from "@/components/career/SmartPortfolioUploader";
 
 export default function CareerPage() {
     return (
@@ -32,10 +33,13 @@ export default function CareerPage() {
             </div>
 
             {/* Placeholder for Portfolio Builder */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-8 text-center mt-12">
-                <Trophy className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-slate-500">Portfolio Builder Coming Soon</h3>
-                <p className="text-slate-600 mt-2">Complete 3 simulations to unlock your professional profile.</p>
+            {/* Smart Portfolio Builder */}
+            <div className="mt-12 space-y-4">
+                <div className="flex items-center gap-2">
+                    <Trophy className="w-6 h-6 text-yellow-500" />
+                    <h2 className="text-2xl font-bold text-white">Smart Portfolio Builder</h2>
+                </div>
+                <SmartPortfolioUploader />
             </div>
         </div>
     );
