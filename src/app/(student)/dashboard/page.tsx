@@ -245,10 +245,10 @@ export default function StudentDashboard() {
                                             <span>10 min</span>
                                         </div>
                                     </div>
-                                    <button className="w-full py-3 mt-2 rounded-xl bg-primary hover:bg-blue-600 text-white font-bold transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
+                                    <Link href="/assessment/spiritual" className="w-full py-3 mt-2 rounded-xl bg-primary hover:bg-blue-600 text-white font-bold transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
                                         <span>Start Mission</span>
                                         <ChevronRight className="w-4 h-4" />
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -277,6 +277,37 @@ export default function StudentDashboard() {
                                         </div>
                                     </div>
                                     <Link href="/assessment/physical-health" className="w-full py-3 mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2">
+                                        <span>Start Assessment</span>
+                                        <ChevronRight className="w-4 h-4" />
+                                    </Link>
+                                </div>
+                            </div>
+
+                            {/* Environmental Mission Card */}
+                            <div className="relative overflow-hidden rounded-2xl bg-[#0f172a] border border-slate-700 shadow-lg group">
+                                <div className="absolute inset-0 opacity-40 mix-blend-overlay bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/random/800x600?nature,forest')" }}></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+
+                                <div className="relative p-6 flex flex-col gap-4">
+                                    <div className="flex justify-between items-start">
+                                        <span className="px-2 py-1 rounded bg-green-500/20 backdrop-blur text-xs font-bold text-green-400 border border-green-500/20">New Available</span>
+                                        <Bookmark className="w-5 h-5 text-white/50" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold text-white mb-1">Environmental & Lifestyle</h3>
+                                        <p className="text-sm text-slate-300">Check your sustainable lifestyle score.</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 mt-2">
+                                        <div className="flex items-center gap-1 text-green-400 text-xs font-bold">
+                                            <Zap className="w-4 h-4" />
+                                            <span>+180 XP</span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                                            <Clock className="w-4 h-4" />
+                                            <span>8 min</span>
+                                        </div>
+                                    </div>
+                                    <Link href="/assessment/environmental" className="w-full py-3 mt-2 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold transition-all shadow-lg shadow-green-600/25 flex items-center justify-center gap-2">
                                         <span>Start Assessment</span>
                                         <ChevronRight className="w-4 h-4" />
                                     </Link>

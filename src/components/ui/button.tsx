@@ -36,13 +36,41 @@ export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
     asChild?: boolean
+    href?: string
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
-        const Comp = asChild ? Slot : "button"
+    ({ className, variant, size, asChild = false, href, ...props }, ref) => {
+        // Accessibility check (basic)
+        if (process.env.NODE_ENV === "development" && !props["aria-label"] && !props.children && !href) {
+            console.warn("Button component missing accessible label (aria-label) and has no visible content.");
+        }
+
+        if (asChild) {
+            return (
+                <Slot
+                    className={cn(buttonVariants({ variant, size, className }))}
+                    ref={ref}
+                    {...props}
+                />
+            )
+        }
+
+        if (href) {
+            return (
+                <a
+                    href={href}
+                    className={cn(buttonVariants({ variant, size, className }))}
+                    ref={ref as any} // Cast ref for anchor
+                    {...(props as any)}
+                >
+                    {props.children}
+                </a>
+            )
+        }
+
         return (
-            <Comp
+            <button
                 className={cn(buttonVariants({ variant, size, className }))}
                 ref={ref}
                 {...props}
@@ -53,3 +81,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+

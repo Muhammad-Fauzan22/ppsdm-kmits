@@ -1,0 +1,16 @@
+
+google-generativeai
+supabase
+python-dotenv
+google-api-python-client
+google-auth
+google-auth-httplib2
+google-auth-oauthlib
+openai
+edge-tts
+pydub
+requests
+google-auth
+google-auth-oauthlib
+edge-tts
+pydub

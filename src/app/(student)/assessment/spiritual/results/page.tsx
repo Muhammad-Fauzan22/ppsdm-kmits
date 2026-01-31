@@ -1,137 +1,196 @@
 "use client";
 
-import React, { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-export const dynamic = "force-dynamic";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Compass, Heart, Sun, Feather, Star } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { Loader2, RefreshCw, CheckCircle } from "lucide-react";
+import {
+    Radar,
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    ResponsiveContainer,
+} from "recharts";
 
-function SpiritualResultsContent() {
-    const searchParams = useSearchParams();
-    const id = searchParams.get('id');
-    const supabase = createClient();
-    const [result, setResult] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchResult = async () => {
-            if (!id) return;
-            const { data } = await supabase.from('spiritual_assessments').select('*').eq('assessment_id', id).single();
-            if (data) setResult(data);
-            setLoading(false);
-        };
-        fetchResult();
-    }, [id]);
-
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">Memroses Profil Spiritual...</div>;
-    if (!result) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">Data tidak ditemukan.</div>;
-
-    return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0c4a6e] p-6 lg:p-12 font-sans text-slate-900 dark:text-white">
-            <div className="max-w-5xl mx-auto space-y-10">
-
-                {/* Header */}
-                <div className="text-center space-y-2">
-                    <h1 className="text-3xl font-bold">Laporan Perkembangan Spiritual</h1>
-                    <p className="opacity-70">Indonesian Spiritual Development Scale (ISDS-8)</p>
-                </div>
-
-                {/* Stage Section */}
-                <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 lg:p-12 text-center shadow-xl border border-slate-100 dark:border-slate-800 relative overflow-hidden">
-                    <div className="relative z-10">
-                        <div className="inline-block px-4 py-1 rounded-full bg-sky-100 text-sky-800 text-sm font-bold uppercase tracking-widest mb-4">Developmental Stage</div>
-
-                        <h2 className="text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500 mb-6 pb-2">
-                            {result.developmental_stage}
-                        </h2>
-
-                        <p className="text-xl max-w-2xl mx-auto leading-relaxed opacity-80 mb-8">
-                            {result.developmental_stage === "Transcending" && "Anda memiliki kesadaran spiritual yang sangat mendalam dan terintegrasi secara holistik dalam kehidupan sehari-hari."}
-                            {result.developmental_stage === "Expressing" && "Anda secara konsisten mengekspresikan nilai-nilai spiritual Anda dalam tindakan nyata dan pelayanan."}
-                            {result.developmental_stage === "Integrating" && "Anda sedang aktif memadukan nilai-nilai spiritual ke dalam identitas dan pengambilan keputusan Anda."}
-                            {result.developmental_stage === "Exploring" && "Anda sedang dalam fase eksplorasi aktif, mencari makna dan kebenaran yang lebih dalam."}
-                            {(result.developmental_stage === "Awakening" || result.developmental_stage === "Beginning") && "Anda berada di tahap awal menyadari pentingnya dimensi spiritual dalam kehidupan."}
-                        </p>
-
-                        <div className="flex justify-center gap-12 text-center">
-                            <div>
-                                <div className="text-4xl font-bold">{result.standardized_score}</div>
-                                <div className="text-xs uppercase tracking-widest opacity-60">ISDS Score</div>
-                            </div>
-                            <div>
-                                <div className="text-4xl font-bold">{result.percentile_rank}%</div>
-                                <div className="text-xs uppercase tracking-widest opacity-60">Percentile</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-                        <Sparkles className="w-full h-full text-sky-500 opacity-20" />
-                    </div>
-                </div>
-
-                {/* Dimensions Grid */}
-                <h3 className="text-2xl font-bold text-center">4 Dimensi Spiritual</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <DimCard title="Purpose" score={result.purpose_meaning_score} icon={<Compass />} desc="Makna & Tujuan Hidup" />
-                    <DimCard title="Gratitude" score={result.gratitude_mindfulness_score} icon={<Sun />} desc="Syukur & Kesadaran" />
-                    <DimCard title="Connectedness" score={result.connectedness_score} icon={<Feather />} desc="Hubungan & Transendensi" />
-                    <DimCard title="Altruism" score={result.altruism_score} icon={<Heart />} desc="Kontribusi Tanpa Pamrih" />
-                </div>
-
-                {/* Recommendations Box */}
-                <div className="bg-sky-50 dark:bg-sky-900/20 rounded-2xl p-8 border border-sky-100 dark:border-sky-800">
-                    <h3 className="font-bold text-xl mb-6 flex items-center gap-2">
-                        <Star className="text-amber-500 fill-amber-500" /> Rekomendasi Praktik Spiritual
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <RecItem text="Jurnal Rasa Syukur: Tuliskan 3 hal yang Anda syukuri setiap pagi selama 5 menit." />
-                        <RecItem text="Mindful Walking: Berjalanlah di kampus tanpa gadget, perhatikan detail alam sekitar Anda." />
-                        <RecItem text="Volunteering: Luangkan 1 jam minggu ini untuk membantu teman tanpa mengharap balasan." />
-                        <RecItem text="Refleksi Nilai: Evaluasi apakah jurusan kuliah Anda sejalan dengan tujuan hidup jangka panjang." />
-                    </div>
-                </div>
-
-                <div className="flex justify-center pt-8">
-                    <Link href="/dashboard">
-                        <Button size="lg" variant="outline" className="rounded-full px-8 border-slate-300 dark:border-slate-600">Kembali ke Dashboard</Button>
-                    </Link>
-                </div>
-
-            </div>
-        </div>
-    );
-}
-
-function DimCard({ title, score, icon, desc }: any) {
-    return (
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 text-center">
-            <div className="w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-3 text-sky-500">
-                {icon}
-            </div>
-            <div className="text-3xl font-bold mb-1">{score}</div>
-            <div className="font-bold text-sm mb-1">{title}</div>
-            <div className="text-xs opacity-60">{desc}</div>
-        </div>
-    );
-}
-
-function RecItem({ text }: any) {
-    return (
-        <div className="flex items-start gap-3">
-            <div className="w-2 h-2 rounded-full bg-sky-500 mt-2 shrink-0" />
-            <p className="opacity-90 leading-relaxed">{text}</p>
-        </div>
-    );
+interface AssessmentData {
+    normalized_score: number;
+    developmental_stage: string;
+    percentile_rank: number;
+    purpose_meaning_score: number;
+    gratitude_mindfulness_score: number;
+    connectedness_transcendence_score: number;
+    altruism_contribution_score: number;
+    analysis_json: { recommendations: string[] };
+    created_at: string;
 }
 
 export default function SpiritualResultsPage() {
+    const router = useRouter();
+    const supabase = createClient();
+    const [user, setUser] = useState<any>(null);
+    const [result, setResult] = useState<AssessmentData | null>(null);
+    const [fetching, setFetching] = useState(true);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                router.push("/login");
+                return;
+            }
+            setUser(user);
+        };
+        checkUser();
+    }, []);
+
+    useEffect(() => {
+        const fetchResults = async () => {
+            if (!user) return;
+            try {
+                const { data, error } = await supabase
+                    .from("spiritual_assessments")
+                    .select("*")
+                    .eq("user_id", user.id)
+                    .order("created_at", { ascending: false })
+                    .limit(1)
+                    .single();
+
+                if (error) {
+                    console.error("Error fetching results:", error);
+                } else {
+                    setResult(data);
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        if (user) fetchResults();
+    }, [user]);
+
+    if (!user || fetching) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin" /></div>;
+
+    if (!result) {
+        return (
+            <div className="p-8 text-center">
+                <h2 className="text-xl font-bold mb-4">Belum ada data assessment.</h2>
+                <Button onClick={() => router.push("/assessment/spiritual")}>Mulai Assessment</Button>
+            </div>
+        );
+    }
+
+    const chartData = [
+        { subject: "Meaning", A: result.purpose_meaning_score, fullMark: 100 },
+        { subject: "Gratitude", A: result.gratitude_mindfulness_score, fullMark: 100 },
+        { subject: "Connectedness", A: result.connectedness_transcendence_score, fullMark: 100 },
+        { subject: "Altruism", A: result.altruism_contribution_score, fullMark: 100 },
+    ];
+
+    const getStageColor = (stage: string) => {
+        switch (stage) {
+            case 'Transcending': return 'text-purple-600 bg-purple-100';
+            case 'Expressing': return 'text-blue-600 bg-blue-100';
+            case 'Integrating': return 'text-green-600 bg-green-100';
+            case 'Exploring': return 'text-yellow-600 bg-yellow-100';
+            default: return 'text-gray-600 bg-gray-100';
+        }
+    };
+
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">Loading...</div>}>
-            <SpiritualResultsContent />
-        </Suspense>
+        <div className="min-h-screen bg-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto space-y-8">
+
+                <div className="bg-white rounded-3xl shadow-xl p-8 border-b-8 border-purple-500 text-center">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Profil Perkembangan Spiritual</h1>
+                    <p className="text-gray-500">Dimensi 8: Spiritual & Cultural Values</p>
+
+                    <div className="mt-8 flex flex-col items-center">
+                        <div className="text-6xl font-extrabold text-purple-600 mb-2">
+                            {result.normalized_score}
+                            <span className="text-2xl text-gray-400 font-normal">/100</span>
+                        </div>
+                        <span className={`px-4 py-2 rounded-full font-bold text-lg ${getStageColor(result.developmental_stage)}`}>
+                            {result.developmental_stage} Stage
+                        </span>
+                        <p className="mt-4 text-sm text-gray-500 max-w-md">
+                            Anda berada di persentil ke-{result.percentile_rank} mahasiswa Indonesia.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center">
+                        <h3 className="text-lg font-semibold mb-4">Peta Dimensi</h3>
+                        <div className="h-64 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+                                    <PolarGrid />
+                                    <PolarAngleAxis dataKey="subject" />
+                                    <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                                    <Radar
+                                        name="Score"
+                                        dataKey="A"
+                                        stroke="#8b5cf6"
+                                        fill="#8b5cf6"
+                                        fillOpacity={0.6}
+                                    />
+                                </RadarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 className="text-lg font-semibold mb-6">Detail Sub-Dimensi</h3>
+                        <div className="space-y-6">
+                            {chartData.map((item) => (
+                                <div key={item.subject}>
+                                    <div className="flex justify-between mb-1">
+                                        <span className="font-medium text-gray-700">{item.subject}</span>
+                                        <span className="font-bold text-purple-700">{item.A}</span>
+                                    </div>
+                                    <div className="w-full bg-gray-200 rounded-full h-2">
+                                        <div
+                                            className="bg-purple-600 h-2 rounded-full"
+                                            style={{ width: `${item.A}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                        <CheckCircle className="text-green-500" />
+                        Rekomendasi Pengembangan
+                    </h3>
+                    <div className="grid grid-cols-1 gap-4">
+                        {result.analysis_json.recommendations?.map((rec, idx) => (
+                            <div key={idx} className="p-4 bg-purple-50 rounded-lg border border-purple-100 flex gap-4 items-start">
+                                <div className="bg-purple-200 text-purple-800 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                                    {idx + 1}
+                                </div>
+                                <p className="text-gray-700 leading-relaxed">{rec}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="flex justify-center gap-4">
+                    <Button variant="outline" onClick={() => router.push("/dashboard")}>
+                        Kembali ke Dashboard
+                    </Button>
+                    <Button onClick={() => router.push("/assessment/spiritual")}>
+                        <RefreshCw className="mr-2 h-4 w-4" /> Ambil Ulang Assessment
+                    </Button>
+                </div>
+
+            </div>
+        </div>
     );
 }

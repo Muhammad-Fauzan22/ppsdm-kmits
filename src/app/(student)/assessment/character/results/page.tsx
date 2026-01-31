@@ -1,144 +1,200 @@
 "use client";
 
-import React, { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/client";
+import { Loader2, ShieldCheck, TrendingUp, Award, BookOpen, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Trophy, TrendingUp, BookOpen, Shield, Medal, Target, Star, Lock, Scale } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import {
+    Radar,
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    ResponsiveContainer,
+    Tooltip
+} from "recharts";
 
-function CharacterResultsContent() {
+interface CharacterResult {
+    overall_score: number;
+    integrity_score: number;
+    courage_score: number;
+    fairness_score: number;
+    responsibility_score: number;
+    humility_score: number;
+    compassion_score: number;
+    self_discipline_score: number;
+    ethical_decision_score: number;
+    risk_level: string;
+    percentile_rank: number;
+    recommendations: string[];
+    created_at: string;
+}
+
+export default function CharacterResultsPage() {
     const searchParams = useSearchParams();
-    const id = searchParams.get('id');
+    const id = searchParams.get("id"); // Optional: if we want specific result. Defaults to latest.
     const supabase = createClient();
-    const [result, setResult] = useState<any>(null);
+
+    const [result, setResult] = useState<CharacterResult | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchResult = async () => {
-            if (!id) return;
-            const { data } = await supabase.from('character_assessments').select('*').eq('assessment_id', id).single();
-            if (data) setResult(data);
-            setLoading(false);
-        };
-        fetchResult();
-    }, [id]);
+        async function fetchResult() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">Memroses Profil Karakter...</div>;
-    if (!result) return <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">Data tidak ditemukan.</div>;
+            let data, error;
+
+            if (id) {
+                const res = await supabase.from("character_assessments").select("*").eq("id", id).single();
+                data = res.data;
+                error = res.error;
+            } else {
+                const res = await supabase
+                    .from("character_assessments")
+                    .select("*")
+                    .eq("user_id", user.id)
+                    .order("created_at", { ascending: false })
+                    .limit(1);
+
+                data = res.data ? res.data[0] : null;
+                error = res.error;
+            }
+
+            if (data) {
+                setResult(data as any); // Cast to any to avoid strict type checks if table types are missing
+            }
+            setLoading(false);
+        }
+        fetchResult();
+    }, [id, supabase]);
+
+    if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin" /></div>;
+    if (!result) return <div className="p-8 text-center">Belum ada hasil assessment.</div>;
+
+    // Chart Data
+    const data = [
+        { subject: 'Integritas', A: result.integrity_score, fullMark: 100 },
+        { subject: 'Keberanian', A: result.courage_score, fullMark: 100 },
+        { subject: 'Keadilan', A: result.fairness_score, fullMark: 100 },
+        { subject: 'Tgg Jawab', A: result.responsibility_score, fullMark: 100 },
+        { subject: 'Kerendahan Hati', A: result.humility_score, fullMark: 100 },
+        { subject: 'Kasih Sayang', A: result.compassion_score, fullMark: 100 },
+        { subject: 'Disiplin', A: result.self_discipline_score, fullMark: 100 },
+        { subject: 'Keputusan Etis', A: result.ethical_decision_score, fullMark: 100 },
+    ];
 
     const getLevelColor = (level: string) => {
-        if (level === "Exceptional Character") return "text-emerald-500 bg-emerald-50 border-emerald-200";
-        if (level === "Strong Character") return "text-indigo-500 bg-indigo-50 border-indigo-200";
-        if (level === "Developing Character") return "text-amber-500 bg-amber-50 border-amber-200";
-        return "text-slate-500 bg-slate-100 border-slate-200";
+        switch (level) {
+            case 'Exceptional': return 'text-emerald-600 bg-emerald-50 border-emerald-200';
+            case 'Strong': return 'text-blue-600 bg-blue-50 border-blue-200';
+            case 'Developing': return 'text-amber-600 bg-amber-50 border-amber-200';
+            default: return 'text-red-600 bg-red-50 border-red-200';
+        }
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] p-6 lg:p-12 font-sans">
-            <div className="max-w-5xl mx-auto space-y-8">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+            <div className="max-w-4xl mx-auto space-y-8">
 
-                {/* Header */}
-                <div className="text-center md:text-left">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold uppercase tracking-wider mb-2">
-                        <Lock className="w-3 h-3" /> Privasi Dijamin - Hanya Anda yang melihat ini
-                    </div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Scientific Character Profile (CAS-8)</h1>
-                </div>
-
-                {/* Main Hero Card */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="md:col-span-2 bg-white dark:bg-[#1e293b] rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden">
-
-                        <div className="relative z-10">
-                            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-2">Character Maturity Level</h2>
-                            <div className={cn("text-4xl md:text-5xl font-black mb-4", getLevelColor(result.character_level).split(' ').find(c => c.startsWith('text-')))}>
-                                {result.character_level}
-                            </div>
-
-                            <div className="space-y-4 max-w-lg">
-                                <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-                                    Skor Komposit Anda: <strong>{result.composite_score}</strong> (Persentil ke-{result.percentile_rank}).
-                                </p>
-                                <p className="text-slate-500 dark:text-slate-400">
-                                    {result.character_level === "Exceptional Character" && "Anda termasuk dalam top 5% mahasiswa dengan integritas tertinggi. Anda memiliki potensi besar menjadi Ethical Leader."}
-                                    {result.character_level === "Strong Character" && "Profil karakter Anda sangat solid, menunjukkan konsistensi antara nilai dan tindakan."}
-                                    {result.character_level === "Developing Character" && "Anda memiliki dasar yang baik, namun ada peluang besar untuk meningkatkan keberanian moral dalam situasi sulit."}
-                                    {result.character_level === "Basic Character" && "Disarankan untuk melakukan refleksi mendalam mengenai nilai-nilai pribadi dan penerapannya."}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Background Decoration */}
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <Shield className="w-64 h-64" />
-                        </div>
-                    </div>
-
-                    {/* Stats Card */}
-                    <div className="bg-indigo-600 rounded-3xl p-8 text-white shadow-xl shadow-indigo-500/20 flex flex-col justify-between">
+                {/* Header Section */}
+                <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                         <div>
-                            <div className="flex items-center gap-2 font-bold opacity-80 mb-6">
-                                <TrendingUp className="w-5 h-5" /> Indeks Karakter Nasional
-                            </div>
-                            <div className="text-5xl font-black mb-2">{result.percentile_rank}<span className="text-2xl">%</span></div>
-                            <p className="text-indigo-100 text-sm">
-                                Skor Anda lebih tinggi dari {result.percentile_rank}% mahasiswa di database nasional.
-                            </p>
+                            <h1 className="text-3xl font-bold text-gray-900">Profil Karakter & Etika</h1>
+                            <p className="text-gray-500 mt-1">Hasil analisis detail kekuatan karakter Anda.</p>
                         </div>
-                        <div className="mt-8 pt-8 border-t border-indigo-500/50">
-                            <div className="text-xs font-bold uppercase opacity-60 mb-1">Rata-rata Nasional</div>
-                            <div className="text-2xl font-bold">68.4</div>
+                        <div className={`px-6 py-3 rounded-xl border-2 font-bold text-lg ${getLevelColor(result.risk_level)}`}>
+                            {result.risk_level} Character
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <div className="flex items-center gap-2 text-slate-500 mb-2 font-medium"><ShieldCheck className="w-5 h-5" /> Skor Keseluruhan</div>
+                            <div className="text-4xl font-bold text-slate-900">{result.overall_score}<span className="text-lg text-slate-400 font-normal">/100</span></div>
+                        </div>
+                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <div className="flex items-center gap-2 text-slate-500 mb-2 font-medium"><TrendingUp className="w-5 h-5" /> Peringkat Persentil</div>
+                            <div className="text-4xl font-bold text-blue-600">{result.percentile_rank}th<span className="text-sm text-slate-400 font-normal block mt-1">Lebih tinggi dari {result.percentile_rank}% mahasiswa</span></div>
+                        </div>
+                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <div className="flex items-center gap-2 text-slate-500 mb-2 font-medium"><Award className="w-5 h-5" /> Kekuatan Utama</div>
+                            <div className="text-lg font-semibold text-slate-900">
+                                {data.sort((a, b) => b.A - a.A)[0].subject}
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Dimensions Breakdown */}
-                <h3 className="font-bold text-xl text-slate-900 dark:text-white pt-4">Analisis Dimensi Psikometris</h3>
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <ScoreCard title="Integritas" score={result.integrity_score} icon={<Shield />} desc="Kejujuran & Autentisitas" />
-                    <ScoreCard title="Moral Courage" score={result.moral_courage_score} icon={<Medal />} desc="Berani karena Benar" />
-                    <ScoreCard title="Responsibility" score={result.responsibility_score} icon={<Target />} desc="Menuntaskan Amanah" />
-                    <ScoreCard title="Fairness" score={result.fairness_score} icon={<Scale />} desc="Keadilan Tanpa Bias" />
-                    <ScoreCard title="Humility" score={result.humility_score} icon={<Star />} desc="Terbuka & Tidak Sombong" />
+                {/* Detailed Analysis Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Radar Chart */}
+                    <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 flex flex-col items-center justify-center min-h-[400px]">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4 w-full text-left">Peta Dimensi Karakter</h3>
+                        <div className="w-full h-[350px]">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                                    <PolarGrid />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12 }} />
+                                    <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                                    <Radar name="Skor Anda" dataKey="A" stroke="#2563eb" fill="#3b82f6" fillOpacity={0.6} />
+                                    <Tooltip />
+                                </RadarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    {/* Sub-scores breakdown */}
+                    <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-6">Detail Sub-Dimensi</h3>
+                        <div className="space-y-4">
+                            {data.map((item) => (
+                                <div key={item.subject}>
+                                    <div className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                                        <span>{item.subject}</span>
+                                        <span>{item.A}/100</span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-full h-2">
+                                        <div
+                                            className={`h-2 rounded-full transition-all duration-500 ${item.A >= 80 ? 'bg-emerald-500' : item.A >= 60 ? 'bg-blue-500' : 'bg-amber-500'}`}
+                                            style={{ width: `${item.A}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Recommendations */}
-                <div className="bg-white dark:bg-[#1e293b] rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-lg">
-                    <h3 className="font-bold text-xl mb-6 flex items-center gap-2">
-                        <BookOpen className="w-6 h-6 text-indigo-500" /> Rekomendasi Pengembangan Diri
+                {/* Recommendations Section */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                    <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <BookOpen className="w-6 h-6 text-purple-600" /> Rekomendasi Pengembangan Diri
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <RecommendationCard
-                            title="Latihan Refleksi Harian"
-                            desc="Luangkan 5 menit sebelum tidur untuk menilai 1 keputusan etis yang Anda buat hari ini. Apakah sudah sesuai nilai Anda?"
-                        />
-                        <RecommendationCard
-                            title="Studi Kasus Etika"
-                            desc="Baca tentang 'Engineering Ethics Cases' (misal: Challenger Disaster) untuk memahami dampak etika profesi."
-                        />
-                        {result.moral_courage_score < 70 && (
-                            <RecommendationCard
-                                title="Challenge Yourself"
-                                desc="Cobalah untuk menyuarakan pendapat yang berbeda namun benar di dalam diskusi kelompok minggu ini."
-                                highlight
-                            />
-                        )}
-                        {result.humility_score < 70 && (
-                            <RecommendationCard
-                                title="Active Listening"
-                                desc="Praktikkan mendengarkan kritik tanpa defensif. Terima sebagai data untuk perbaikan."
-                                highlight
-                            />
+                    <div className="grid gap-4">
+                        {result.recommendations && result.recommendations.length > 0 ? (
+                            result.recommendations.map((rec, i) => (
+                                <div key={i} className="flex gap-4 p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
+                                        {i + 1}
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-800 font-medium">{rec}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500 italic">Tidak ada rekomendasi spesifik saat ini. Teruskan kerja bagus!</p>
                         )}
                     </div>
                 </div>
 
                 <div className="flex justify-center pt-8">
                     <Link href="/dashboard">
-                        <Button size="lg" variant="outline" className="rounded-full px-8 border-slate-300 dark:border-slate-700">Kembali ke Dashboard</Button>
+                        <Button variant="outline" size="lg">Kembali ke Dashboard</Button>
                     </Link>
                 </div>
 
@@ -146,41 +202,3 @@ function CharacterResultsContent() {
         </div>
     );
 }
-
-function ScoreCard({ title, score, icon, desc }: any) {
-    // Generate simple bar height
-    const h = Math.max(20, score);
-
-    return (
-        <div className="bg-white dark:bg-[#1e293b] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between h-48 group hover:shadow-lg transition-all">
-            <div>
-                <div className="flex items-center justify-between mb-2">
-                    <div className="text-slate-400 group-hover:text-indigo-500 transition-colors">{icon}</div>
-                    <div className="font-bold text-lg">{score}</div>
-                </div>
-                <div className="font-bold text-slate-800 dark:text-white text-sm">{title}</div>
-                <div className="text-xs text-slate-500 leading-tight mt-1">{desc}</div>
-            </div>
-            <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-4">
-                <div className="h-full bg-indigo-500 rounded-full transition-all duration-1000" style={{ width: `${score}%` }}></div>
-            </div>
-        </div>
-    );
-}
-
-function RecommendationCard({ title, desc, highlight }: any) {
-    return (
-        <div className={cn("p-5 rounded-xl border border-slate-100 dark:border-slate-700", highlight ? "bg-amber-50 dark:bg-amber-900/10 border-amber-200" : "bg-slate-50 dark:bg-[#0f172a]")}>
-            <h4 className="font-bold text-slate-900 dark:text-white mb-2">{title}</h4>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{desc}</p>
-        </div>
-    );
-}
-
-export default function CharacterResultsPage() {
-    return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">Loading Report...</div>}>
-            <CharacterResultsContent />
-        </Suspense>
-    );
-} 
