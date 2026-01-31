@@ -51,3 +51,15 @@ coverage/
 
 .vercel
 .env*.local
+
+# Generated Content
+public/demos/
+*.mp3
+*.wav
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+output/
