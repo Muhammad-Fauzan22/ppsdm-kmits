@@ -38,7 +38,7 @@ export function RealtimeListener({ userId }: { userId: string }) {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [userId, toast]);
+    }, [userId, toast, supabase]);
 
     return null; // Komponen ini tidak me-render UI, hanya logic background
 }

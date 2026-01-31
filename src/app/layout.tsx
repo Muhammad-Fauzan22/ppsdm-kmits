@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Work_Sans, Space_Grotesk, Noto_Sans, Manrope, Merriweather, Lexend, Inter, Poppins } from "next/font/google"; // Font resmi sesuai Brand Guideline
 import "./globals.css";
 
+
 const workSans = Work_Sans({
   subsets: ["latin"],
   variable: "--font-work-sans",

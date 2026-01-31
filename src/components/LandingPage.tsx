@@ -44,7 +44,7 @@ export default function LandingPage() {
                                         Bagaimana cara mendapatkan bimbingan mentor?
                                         <span className="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
                                     </summary>
-                                    <p className="mt-4 text-muted-foreground text-sm leading-relaxed">Anda perlu menyelesaikan assessment awal dan mencapai 'Roadmap Level 3' untuk membuka akses ke fitur penjadwalan mentor.</p>
+                                    <p className="mt-4 text-muted-foreground text-sm leading-relaxed">Anda perlu menyelesaikan assessment awal dan mencapai &apos;Roadmap Level 3&apos; untuk membuka akses ke fitur penjadwalan mentor.</p>
                                 </details>
                             </div>
                             <div className="mt-20 p-10 rounded-[2.5rem] bg-gradient-to-br from-primary/90 to-secondary/80 border border-white/10 text-center relative overflow-hidden group hover:scale-[1.01] transition-transform duration-500">

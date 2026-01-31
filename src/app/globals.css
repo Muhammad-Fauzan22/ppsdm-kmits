@@ -76,3 +76,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Minimal styles for code highlighting (avoid importing external css during build) */
+pre code.hljs { display:block; overflow-x:auto; padding:1em; }
+code.hljs { padding:3px 5px; }
+.hljs { color: #c9d1d9; background: #0d1117 }
+
+/* Minimal styles for audio player */
+.rhap_container { box-sizing: border-box; display:flex; flex-direction:column; width:100%; padding:8px; background:#fff; }
+.rhap_progress-bar { height:5px; background:#ddd; border-radius:2px; }
+.rhap_main-controls-button { font-size:20px; }

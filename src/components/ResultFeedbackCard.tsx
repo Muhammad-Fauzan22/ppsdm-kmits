@@ -34,14 +34,14 @@ export function ResultFeedbackCard({ isCorrect, userChoiceText, feedbackTag, rem
                 {/* Jawaban User */}
                 <div>
                     <p className="text-xs text-muted-foreground mb-1">Jawaban Anda:</p>
-                    <p className="font-medium italic">"{userChoiceText}"</p>
+                    <p className="font-medium italic">&quot;{userChoiceText}&quot;</p>
                 </div>
 
                 {/* Feedback Spesifik (Micro-Learning) */}
                 {!isCorrect && remedial && (
                     <div className="bg-amber-50 dark:bg-amber-950/30 p-3 rounded-md flex flex-col gap-2">
                         <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
-                            💡 Coach's Note:
+                            💡 Coach&apos;s Note:
                         </p>
                         <p className="text-sm text-amber-700 dark:text-amber-300">
                             {remedial.message}

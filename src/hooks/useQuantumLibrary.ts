@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 // Definisi Tipe Data sesuai Schema Database 'learning_resources'
@@ -25,7 +25,7 @@ export function useQuantumLibrary() {
     const supabase = createClient();
 
     // 1. Fungsi Fetch Data Utama
-    const fetchBooks = async () => {
+    const fetchBooks = useCallback(async () => {
         try {
             // setIsLoading(true); // Opsional: Jangan set loading true saat refresh realtime agar UX smooth
             const { data, error } = await supabase
@@ -41,7 +41,7 @@ export function useQuantumLibrary() {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [supabase]);
 
     // 2. Setup Realtime Subscription
     useEffect(() => {
@@ -67,7 +67,7 @@ export function useQuantumLibrary() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [fetchBooks, supabase]);
 
     // 3. Hitung Statistik secara Dinamis (Memoized)
     const stats = useMemo(() => {

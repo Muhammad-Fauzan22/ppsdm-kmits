@@ -3,7 +3,6 @@
 
 import React from "react";
 import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
 import { convertDriveToDirectLink } from "@/lib/utils";
 import { Mic, X } from "lucide-react";
 import { Button } from "@/components/ui/button";

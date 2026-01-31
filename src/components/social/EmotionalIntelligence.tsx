@@ -133,7 +133,7 @@ export default function EmotionalIntelligence() {
                     <div className="bg-indigo-50 rounded-xl p-6 border border-indigo-100">
                         <h3 className="font-bold text-indigo-900 mb-2">Pattern Insight</h3>
                         <p className="text-sm text-indigo-700 italic">
-                            "You tend to feel <b>Confident</b> when you log entries in the morning."
+                            &quot;You tend to feel <b>Confident</b> when you log entries in the morning.&quot;
                         </p>
                     </div>
 

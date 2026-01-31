@@ -39,7 +39,7 @@ export default function MeaningExplorer() {
             {activeTab === 'ikigai' ? (
                 <div className="flex-1 flex flex-col gap-6">
                     <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-sm text-indigo-800 italic text-center">
-                        "Your reason for being is found at the intersection of what you love, what you are good at, what the world needs, and what you can be paid for."
+                        &quot;Your reason for being is found at the intersection of what you love, what you are good at, what the world needs, and what you can be paid for.&quot;
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">

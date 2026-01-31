@@ -318,8 +318,8 @@ export function getNextLesson(
     course: Course,
     completedLessons: string[]
 ): Lesson | undefined {
-    for (const module of course.modules) {
-        for (const lesson of module.lessons) {
+    for (const mod of course.modules) {
+        for (const lesson of mod.lessons) {
             if (!completedLessons.includes(lesson.id)) {
                 return lesson;
             }
