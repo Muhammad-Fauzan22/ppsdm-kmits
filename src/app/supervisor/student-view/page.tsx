@@ -132,7 +132,7 @@ export default function SupervisorStudentView() {
                                 <h3 className="font-bold text-sm text-white">Competency Map</h3>
                                 <span className="material-symbols-outlined text-gray-600 text-sm">more_horiz</span>
                             </div>
-                            <div className="flex-1 -ml-4">
+                            <div className="flex-1 -ml-4 h-[200px]">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <RadarChart cx="50%" cy="50%" outerRadius="70%" data={competenceData}>
                                         <PolarGrid stroke="#30363D" />
@@ -151,7 +151,7 @@ export default function SupervisorStudentView() {
                                 <span className="bg-red-900/30 text-red-500 text-[10px] px-1.5 py-0.5 rounded font-bold">-0.12%</span>
                             </div>
                             <p className="text-2xl font-bold text-white mb-4">3.42</p>
-                            <div className="flex-1">
+                            <div className="flex-1 h-[150px]">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={gradeTrendData}>
                                         <defs>
@@ -178,7 +178,7 @@ export default function SupervisorStudentView() {
                                 <span className="bg-green-900/30 text-green-500 text-[10px] px-1.5 py-0.5 rounded font-bold">+5.2%</span>
                             </div>
                             <p className="text-2xl font-bold text-white mb-4">88.5 <span className="text-xs text-gray-500 font-normal">avg</span></p>
-                            <div className="flex-1">
+                            <div className="flex-1 h-[150px]">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={assignmentData}>
                                         <defs>
