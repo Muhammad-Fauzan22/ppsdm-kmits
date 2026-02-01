@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { 
-  BookOpen, 
-  Search, 
-  Filter, 
-  Clock, 
-  Users, 
+import {
+  BookOpen,
+  Search,
+  Filter,
+  Clock,
+  Users,
   Star,
   ChevronRight,
   GraduationCap
@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { supabase } from '@/lib/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface Course {
   id: string;
@@ -177,7 +177,7 @@ export default function CoursesPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card 
+                <Card
                   className="h-full cursor-pointer hover:shadow-lg transition-shadow overflow-hidden group"
                   onClick={() => router.push(`/courses/${course.slug}`)}
                 >

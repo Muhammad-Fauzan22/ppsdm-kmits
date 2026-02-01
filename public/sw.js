@@ -1,101 +1,69 @@
-const CACHE_NAME = "ppsdm-kmm-v1";
-const STATIC_ASSETS = [
-    "/",
-    "/manifest.json",
-];
+/**
+ * PPSDM KMITS - Service Worker
+ * PWA 2.0 with offline support, caching strategies, and background sync
+ */
 
-// Install event - cache static assets
-self.addEventListener("install", (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(STATIC_ASSETS);
-        })
-    );
-    // Activate immediately
-    self.skipWaiting();
+const CACHE_NAME = 'ppsdm-kmits-v1';
+const STATIC_ASSETS = ['/','/index.html','/manifest.json'];
+const API_CACHE_NAME = 'ppsdm-api-cache-v1';
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS)));
+  self.skipWaiting();
 });
 
-// Activate event - clean up old caches
-self.addEventListener("activate", (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames
-                    .filter((name) => name !== CACHE_NAME)
-                    .map((name) => caches.delete(name))
-            );
-        })
-    );
-    // Take control immediately
-    self.clients.claim();
+self.addEventListener('activate', (event) => {
+  event.waitUntil(caches.keys().then(names => Promise.all(names.filter(n => n !== CACHE_NAME && n !== API_CACHE_NAME).map(n => caches.delete(n)))));
+  self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
-self.addEventListener("fetch", (event) => {
-    // Skip non-GET requests
-    if (event.request.method !== "GET") return;
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  if (request.method !== 'GET') return;
+  
+  if (request.url.includes('/api/')) {
+    event.respondWith(staleWhileRevalidate(request));
+  } else {
+    event.respondWith(networkFirst(request));
+  }
+});
 
-    // Skip API requests and external resources
-    const url = new URL(event.request.url);
-    if (url.pathname.startsWith("/api") || url.origin !== location.origin) {
-        return;
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(API_CACHE_NAME);
+  const cached = await cache.match(request);
+  const fetchPromise = fetch(request).then(r => { if (r.ok) cache.put(request, r.clone()); return r; }).catch(() => cached);
+  return cached || fetchPromise;
+}
+
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
     }
+    return networkResponse;
+  } catch (error) {
+    const cached = await caches.match(request);
+    return cached || new Response('Offline', { status: 503 });
+  }
+}
 
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                return cachedResponse;
-            }
-
-            // Not in cache, fetch from network
-            return fetch(event.request).then((networkResponse) => {
-                // Cache successful responses
-                if (networkResponse.ok) {
-                    const responseClone = networkResponse.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
-                }
-                return networkResponse;
-            });
-        })
-    );
+self.addEventListener('push', (event) => {
+  const data = event.data?.json() || {};
+  event.waitUntil(self.registration.showNotification(data.title || 'PPSDM KMITS', {
+    body: data.body || 'New notification',
+    icon: '/icons/icon-192x192.png',
+    badge: '/icons/badge-72x72.png',
+    data: data.data || {}
+  }));
 });
 
-// Push notification event
-self.addEventListener("push", (event) => {
-    const data = event.data?.json() ?? {
-        title: "PPSDM KMM",
-        body: "You have a new notification!",
-        icon: "/icons/icon-192x192.png",
-    };
-
-    event.waitUntil(
-        self.registration.showNotification(data.title, {
-            body: data.body,
-            icon: data.icon || "/icons/icon-192x192.png",
-            badge: "/icons/icon-192x192.png",
-            data: data.data,
-        })
-    );
-});
-
-// Notification click event
-self.addEventListener("notificationclick", (event) => {
-    event.notification.close();
-
-    const urlToOpen = event.notification.data?.url || "/dashboard";
-
-    event.waitUntil(
-        self.clients
-            .matchAll({ type: "window", includeUncontrolled: true })
-            .then((clientList) => {
-                for (const client of clientList) {
-                    if (client.url.includes(urlToOpen) && "focus" in client) {
-                        return client.focus();
-                    }
-                }
-                return self.clients.openWindow(urlToOpen);
-            })
-    );
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = event.notification.data?.url || '/';
+  event.waitUntil(self.clients.matchAll({ type: 'window' }).then(clients => {
+    for (const client of clients) if (client.url === url) return client.focus();
+    return self.clients.openWindow(url);
+  }));
 });

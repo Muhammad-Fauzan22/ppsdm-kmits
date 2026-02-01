@@ -1,5 +1,4 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -22,9 +21,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = await createClient();
     const { id } = params;
-    
+
     // Get course with modules and lessons
     const { data: course, error } = await supabase
       .from('courses')
@@ -40,26 +39,26 @@ export async function GET(
       `)
       .eq('id', id)
       .single();
-    
+
     if (error || !course) {
       return NextResponse.json(
         { error: 'Course not found' },
         { status: 404 }
       );
     }
-    
+
     // Get enrollment count
     const { count: enrollmentCount } = await supabase
       .from('enrollments')
       .select('*', { count: 'exact', head: true })
       .eq('course_id', id)
       .eq('status', 'active');
-    
+
     // Get user's enrollment if logged in
     const { data: { session } } = await supabase.auth.getSession();
     let userEnrollment = null;
     let userProgress = null;
-    
+
     if (session) {
       const { data: enrollment } = await supabase
         .from('enrollments')
@@ -67,9 +66,9 @@ export async function GET(
         .eq('course_id', id)
         .eq('user_id', session.user.id)
         .single();
-      
+
       userEnrollment = enrollment;
-      
+
       if (enrollment) {
         // Get lesson progress
         const { data: progress } = await supabase
@@ -77,11 +76,11 @@ export async function GET(
           .select('*')
           .eq('course_id', id)
           .eq('user_id', session.user.id);
-        
+
         userProgress = progress;
       }
     }
-    
+
     return NextResponse.json({
       data: {
         ...course,
@@ -90,7 +89,7 @@ export async function GET(
         user_progress: userProgress
       }
     });
-    
+
   } catch (error) {
     console.error('Error fetching course:', error);
     return NextResponse.json(
@@ -106,9 +105,9 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = await createClient();
     const { id } = params;
-    
+
     // Check authentication
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -117,21 +116,21 @@ export async function PATCH(
         { status: 401 }
       );
     }
-    
+
     // Check if user is course creator or admin
     const { data: course } = await supabase
       .from('courses')
       .select('created_by')
       .eq('id', id)
       .single();
-    
+
     if (!course) {
       return NextResponse.json(
         { error: 'Course not found' },
         { status: 404 }
       );
     }
-    
+
     // Check permissions (simplified - should check admin role too)
     if (course.created_by !== session.user.id) {
       return NextResponse.json(
@@ -139,11 +138,11 @@ export async function PATCH(
         { status: 403 }
       );
     }
-    
+
     // Parse and validate request body
     const body = await request.json();
     const validatedData = courseUpdateSchema.parse(body);
-    
+
     // Update course
     const { data: updatedCourse, error } = await supabase
       .from('courses')
@@ -155,7 +154,7 @@ export async function PATCH(
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) {
       console.error('Error updating course:', error);
       return NextResponse.json(
@@ -163,12 +162,12 @@ export async function PATCH(
         { status: 500 }
       );
     }
-    
+
     return NextResponse.json({
       data: updatedCourse,
       message: 'Course updated successfully'
     });
-    
+
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -190,9 +189,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = await createClient();
     const { id } = params;
-    
+
     // Check authentication
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -201,13 +200,13 @@ export async function DELETE(
         { status: 401 }
       );
     }
-    
+
     // Delete course (cascades to modules, lessons, etc.)
     const { error } = await supabase
       .from('courses')
       .delete()
       .eq('id', id);
-    
+
     if (error) {
       console.error('Error deleting course:', error);
       return NextResponse.json(
@@ -215,11 +214,11 @@ export async function DELETE(
         { status: 500 }
       );
     }
-    
+
     return NextResponse.json({
       message: 'Course deleted successfully'
     });
-    
+
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(

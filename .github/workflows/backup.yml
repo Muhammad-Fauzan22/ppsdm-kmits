@@ -1,0 +1,111 @@
+# Automated Backups - GitHub Actions + rclone
+# Backs up Supabase database daily to Google Drive
+
+name: Daily Backup
+
+on:
+  schedule:
+    # Run at 2 AM UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+  SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+  
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          
+      - name: Setup rclone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone
+          echo "[gdrive]" > ~/.config/rclone/rclone.conf
+          echo "type = drive" >> ~/.config/rclone/rclone.conf
+          echo "client_id = ${{ secrets.GDRIVE_CLIENT_ID }}" >> ~/.config/rclone/rclone.conf
+          echo "client_secret = ${{ secrets.GDRIVE_CLIENT_SECRET }}" >> ~/.config/rclone/rclone.conf
+          echo "token = ${{ secrets.GDRIVE_TOKEN }}" >> ~/.config/rclone/rclone.conf
+          
+      - name: Create backup directory
+        run: mkdir -p backups
+        
+      - name: Backup Supabase database
+        run: |
+          DATE=$(date +%Y%m%d_%H%M%S)
+          BACKUP_FILE="backups/ppsdm_kmits_backup_${DATE}.sql"
+          
+          PGPASSWORD="${{ env.SUPABASE_DB_PASSWORD }}" pg_dump \
+            -h db.${{ env.SUPABASE_PROJECT_ID }}.supabase.co \
+            -U postgres \
+            -d postgres \
+            --clean \
+            --if-exists \
+            --verbose \
+            > "$BACKUP_FILE"
+          
+          # Compress backup
+          gzip "$BACKUP_FILE"
+          
+          echo "BACKUP_FILE=${BACKUP_FILE}.gz" >> $GITHUB_ENV
+          
+      - name: Upload to Google Drive
+        run: |
+          rclone copy "${{ env.BACKUP_FILE }}" gdrive:PPSDM_KMITS_Backups/
+          
+      - name: Cleanup old backups (keep last 30 days)
+        run: |
+          # This runs on Google Drive side - keep only last 30 backups
+          rclone delete --min-age 30d gdrive:PPSDM_KMITS_Backups/
+          
+      - name: Notify on success
+        if: success()
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "✅ PPSDM KMITS Backup Completed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Daily Backup Successful*\nBackup file: `${{ env.BACKUP_FILE }}`\nDate: $(date)"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          
+      - name: Notify on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "❌ PPSDM KMITS Backup Failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Daily Backup Failed*\nPlease check the logs.\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          
+      - name: Cleanup
+        run: rm -rf backups

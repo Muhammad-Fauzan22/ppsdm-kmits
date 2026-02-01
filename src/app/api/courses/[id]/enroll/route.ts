@@ -1,5 +1,4 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 // POST /api/courses/[id]/enroll - Enroll in a course
@@ -8,9 +7,9 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = await createClient();
     const courseId = params.id;
-    
+
     // Check authentication
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -19,30 +18,30 @@ export async function POST(
         { status: 401 }
       );
     }
-    
+
     const userId = session.user.id;
-    
+
     // Check if course exists and is published
     const { data: course, error: courseError } = await supabase
       .from('courses')
       .select('id, status, title')
       .eq('id', courseId)
       .single();
-    
+
     if (courseError || !course) {
       return NextResponse.json(
         { error: 'Course not found' },
         { status: 404 }
       );
     }
-    
+
     if (course.status !== 'published') {
       return NextResponse.json(
         { error: 'Course is not available for enrollment' },
         { status: 400 }
       );
     }
-    
+
     // Check if already enrolled
     const { data: existingEnrollment } = await supabase
       .from('enrollments')
@@ -50,7 +49,7 @@ export async function POST(
       .eq('course_id', courseId)
       .eq('user_id', userId)
       .single();
-    
+
     if (existingEnrollment) {
       if (existingEnrollment.status === 'active') {
         return NextResponse.json(
@@ -68,16 +67,16 @@ export async function POST(
           .eq('id', existingEnrollment.id)
           .select()
           .single();
-        
+
         if (error) throw error;
-        
+
         return NextResponse.json({
           data: updatedEnrollment,
           message: 'Enrollment reactivated'
         });
       }
     }
-    
+
     // Create enrollment
     const { data: enrollment, error } = await supabase
       .from('enrollments')
@@ -90,7 +89,7 @@ export async function POST(
       })
       .select()
       .single();
-    
+
     if (error) {
       console.error('Error creating enrollment:', error);
       return NextResponse.json(
@@ -98,12 +97,12 @@ export async function POST(
         { status: 500 }
       );
     }
-    
+
     return NextResponse.json({
       data: enrollment,
       message: 'Successfully enrolled in course'
     }, { status: 201 });
-    
+
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
