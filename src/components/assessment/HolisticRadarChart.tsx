@@ -127,7 +127,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
             Visualisasi 9 dimensi perkembangan holistik
           </p>
         </div>
-        
+
         {/* PDI Display */}
         <div className="flex items-center gap-4">
           <div className="text-center">
@@ -164,7 +164,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
               </div>
             </div>
           </div>
-          
+
           <div className="text-center">
             <div className="text-xs text-slate-400 mb-1">Balance Index</div>
             <div className="text-2xl font-bold text-[#2ecc71]">
@@ -178,7 +178,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Radar Chart */}
         <div className="lg:col-span-3 h-[500px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
               <PolarGrid stroke="#334155" />
               <PolarAngleAxis
@@ -192,7 +192,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
                 tick={{ fill: '#64748b', fontSize: 10 }}
                 tickCount={6}
               />
-              
+
               {activeLayer === 'all' && (
                 <>
                   {/* Faculty Average - Dotted */}
@@ -204,7 +204,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
                     strokeDasharray="4 4"
                     fill="transparent"
                   />
-                  
+
                   {/* Target - Shaded */}
                   <Radar
                     name="Target"
@@ -214,7 +214,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
                     fill="#FFD700"
                     fillOpacity={0.1}
                   />
-                  
+
                   {/* Previous - Dashed */}
                   <Radar
                     name="Periode Lalu"
@@ -226,7 +226,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
                   />
                 </>
               )}
-              
+
               {/* Current - Solid */}
               <Radar
                 name="Skor Saat Ini"
@@ -236,9 +236,9 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
                 fill="#135bec"
                 fillOpacity={0.25}
               />
-              
+
               <Tooltip content={<CustomTooltip />} />
-              <Legend 
+              <Legend
                 wrapperStyle={{ paddingTop: '20px' }}
                 iconType="circle"
               />
@@ -249,7 +249,7 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
         {/* Side Panel - Quadrant Analysis */}
         <div className="space-y-4">
           <h4 className="text-sm font-semibold text-white mb-3">Analisis Kuadran</h4>
-          
+
           {/* Cognitive Quadrant */}
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-2">

@@ -40,7 +40,7 @@ export default function CharacterTracker() {
                 <div className="flex flex-col md:flex-row h-full gap-6">
                     {/* Chart */}
                     <div className="flex-1 min-h-[300px] relative">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={strengths}>
                                 <PolarGrid stroke="#e5e7eb" />
                                 <PolarAngleAxis dataKey="name" tick={{ fontSize: 10, fill: '#6b7280' }} />

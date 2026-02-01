@@ -119,7 +119,7 @@ export default function CognitiveAssessment({ onComplete }: CognitiveAssessmentP
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Radar Chart */}
                     <div className="h-80 relative">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={[
                                 { subject: 'Critical Thinking', A: result.scores.subdimension_scores.critical_thinking, fullMark: 100 },
                                 { subject: 'Growth Mindset', A: result.scores.subdimension_scores.growth_mindset, fullMark: 100 },
@@ -281,14 +281,14 @@ export default function CognitiveAssessment({ onComplete }: CognitiveAssessmentP
                                     key={val}
                                     onClick={() => handleResponse(val)}
                                     className={`w-full p-4 rounded-xl border text-left transition-all duration-200 group relative overflow-hidden ${isSelected
-                                            ? selectedColors[val - 1] + ' shadow-lg scale-[1.02]'
-                                            : `border-slate-800 bg-slate-800/50 text-slate-400 ${colors[val - 1]}`
+                                        ? selectedColors[val - 1] + ' shadow-lg scale-[1.02]'
+                                        : `border-slate-800 bg-slate-800/50 text-slate-400 ${colors[val - 1]}`
                                         }`}
                                 >
                                     <div className="flex items-center gap-4 relative z-10">
                                         <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold transition-colors ${isSelected
-                                                ? 'border-current bg-current/20'
-                                                : 'border-slate-600 group-hover:border-current'
+                                            ? 'border-current bg-current/20'
+                                            : 'border-slate-600 group-hover:border-current'
                                             }`}>
                                             {val}
                                         </div>

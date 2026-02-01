@@ -111,7 +111,7 @@ export default function LearningEngine() {
             ) : (
                 <div className="h-full flex flex-col">
                     <div className="flex-1 min-h-[300px]">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={skillData}>
                                 <PolarGrid />
                                 <PolarAngleAxis dataKey="subject" />

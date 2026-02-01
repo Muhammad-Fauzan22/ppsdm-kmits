@@ -146,8 +146,8 @@ export default function GapAnalysisPage() {
                             key={type}
                             onClick={() => setCompareWith(type)}
                             className={`px-6 py-3 rounded-full font-medium transition ${compareWith === type
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-white text-gray-700 hover:bg-gray-100'
                                 }`}
                         >
                             {type === 'national' && '🇮🇩 Nasional'}
@@ -165,7 +165,7 @@ export default function GapAnalysisPage() {
                     {/* Radar Chart */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">🎯 Radar Comparison</h2>
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer width="100%" height={400} minWidth={300} minHeight={300}>
                             <RadarChart data={radarData}>
                                 <PolarGrid />
                                 <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11 }} />
@@ -218,15 +218,15 @@ export default function GapAnalysisPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                                 className={`p-6 rounded-xl ${index === 0 ? 'bg-red-50 border-2 border-red-200' :
-                                        index === 1 ? 'bg-orange-50 border-2 border-orange-200' :
-                                            'bg-yellow-50 border-2 border-yellow-200'
+                                    index === 1 ? 'bg-orange-50 border-2 border-orange-200' :
+                                        'bg-yellow-50 border-2 border-yellow-200'
                                     }`}
                             >
                                 <div className="flex items-center justify-between mb-2">
                                     <span className="text-3xl">{priority.icon}</span>
                                     <span className={`text-xs font-bold px-2 py-1 rounded ${index === 0 ? 'bg-red-200 text-red-700' :
-                                            index === 1 ? 'bg-orange-200 text-orange-700' :
-                                                'bg-yellow-200 text-yellow-700'
+                                        index === 1 ? 'bg-orange-200 text-orange-700' :
+                                            'bg-yellow-200 text-yellow-700'
                                         }`}>
                                         Priority #{index + 1}
                                     </span>

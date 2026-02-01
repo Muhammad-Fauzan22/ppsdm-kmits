@@ -37,7 +37,7 @@ const getHealthColor = (score: number) => {
 
 export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", description = "Analisis potensi diri mahasiswa" }: PsychometricRadarProps) {
     const mounted = useClientOnly();
-    
+
     // Calculate average score
     const averageScore = data.reduce((acc, curr) => acc + curr.value, 0) / (data.length || 1);
     // Determine color based on average (normalizing to 100 scale if needed, assuming data values are roughly 0-100 or 0-150 based on fullMark)
@@ -70,7 +70,7 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent className="h-[350px]">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                     <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                         <PolarGrid className="stroke-muted" />
                         <PolarAngleAxis dataKey="subject" className="text-xs font-medium fill-muted-foreground" />
