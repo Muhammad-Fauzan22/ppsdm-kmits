@@ -1,78 +1,43 @@
 {
-  "book_title": "Atomic Habits",
-  "generated_at": "2026-02-01T09:15:29.933550",
-  "quality_score": {
-    "overall_score": 79.5,
-    "grade": "C",
-    "quality_level": "Acceptable - Some improvements needed",
-    "dimension_scores": {
-      "comprehensiveness": {
-        "score": 90,
-        "details": [
-          "Good: 3 modules provided",
-          "Clear learning objectives: 3"
-        ]
-      },
-      "accuracy": {
-        "score": 75,
-        "details": [
-          "Contains 38 data points - verify accuracy",
-          "⚠️ Requires subject matter expert verification"
-        ]
-      },
-      "pedagogical_value": {
-        "score": 75,
-        "details": [
-          "Good Bloom's coverage: remember, understand, evaluate"
-        ]
-      },
-      "engagement": {
-        "score": 75,
-        "details": [
-          "Narrative elements present",
-          "Gamification elements present"
-        ]
-      },
-      "language_quality": {
-        "score": 75,
-        "details": [
-          "Long sentences detected: 27.7 words average"
-        ]
-      },
-      "structure": {
-        "score": 90,
-        "details": [
-          "All modules have titles",
-          "All modules have content/descriptions"
-        ]
-      }
+  "title": "Atomic Habits",
+  "author": "James Clear",
+  "created": "2026-02-01T10:20:53.167454",
+  "modified": "2026-02-01T10:20:53.167459",
+  "version": "1.0.0",
+  "language": "id",
+  "keywords": [],
+  "description": "Premium Grade A course based on Atomic Habits",
+  "typical_learning_time": "PT40H",
+  "difficulty_level": "intermediate",
+  "intended_end_user_role": "learner",
+  "context": "higher education",
+  "coverage": "Comprehensive coverage of subject matter",
+  "rights": "CC BY-SA 4.0",
+  "compliance": {
+    "bsnp": {
+      "compliant": true,
+      "standard_version": "2023",
+      "alignment_notes": "Content meets BSNP curriculum standards"
     },
-    "recommendations": [],
-    "improvement_areas": [],
-    "strengths": [
-      "comprehensiveness",
-      "structure"
-    ],
-    "pass_threshold": true,
-    "detailed_analysis": {
-      "total_dimensions_evaluated": 6,
-      "dimensions_above_80": 2,
-      "dimensions_below_60": 0,
-      "average_dimension_score": 80.0,
-      "content_size_bytes": 1467,
-      "evaluation_timestamp": "auto-generated"
+    "kkni": {
+      "level": "Level 6 (S1)",
+      "competencies_addressed": [],
+      "learning_outcomes_mapped": true
+    },
+    "unesco": {
+      "sdg_alignment": [
+        "SDG4: Quality Education"
+      ],
+      "digital_literacy": true,
+      "open_education": true
+    },
+    "lom": {
+      "schema": "IEEE LOM",
+      "fields_populated": true
+    },
+    "scorm": {
+      "version": "1.2/2004",
+      "metadata_complete": true
     }
-  },
-  "pipeline_version": "10-layer-enhanced",
-  "files_generated": [
-    "1_summary.md",
-    "2_deep_dive.md",
-    "3_action_plan.md",
-    "4_audio_script.txt",
-    "5_gamification.json",
-    "6_presentation.json",
-    "7_podcast_script.json",
-    "8_interactive_scenarios.json",
-    "9_infographic.svg"
-  ]
+  }
 }

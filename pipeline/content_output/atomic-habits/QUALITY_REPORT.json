@@ -1,0 +1,16 @@
+{
+  "quality_score": 45.00000000000001,
+  "grade": "F",
+  "metrics": {
+    "accuracy": 0.8500000000000001,
+    "completeness": 0.15000000000000002,
+    "coherence": 0.15000000000000002,
+    "engagement": 0.15000000000000002,
+    "pedagogical": 0.55,
+    "accessibility": 0.95,
+    "source_diversity": 0.0,
+    "citation_quality": 0.0
+  },
+  "generated_at": "2026-02-01T10:20:53.174991",
+  "grade_a_compliant": false
+}
