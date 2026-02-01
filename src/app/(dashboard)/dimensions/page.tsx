@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { dimensions, getDimensionStats, Dimension } from '@/lib/navigation';
+import { useDimensions, useDimensionStats } from '@/lib/hooks';
+import { DimensionsPageSkeleton, DimensionGridSkeleton } from '@/components/dashboard/LoadingSkeletons';
+import { ErrorDisplay, EmptyStateDisplay } from '@/components/dashboard/ErrorDisplay';
+import type { Dimension } from '@/lib/db/schema';
 
 // Animation variants
 const containerVariants = {
@@ -19,12 +22,96 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Dimension metadata
+const DIMENSION_META: Record<string, { 
+  name: string; 
+  description: string; 
+  color: string; 
+  icon: string;
+  category: 'hard' | 'soft';
+}> = {
+  cognitive: {
+    name: 'Cognitive Intelligence',
+    description: 'Critical thinking, problem-solving, and analytical abilities',
+    color: '#3b82f6',
+    icon: 'psychology',
+    category: 'hard',
+  },
+  emotional: {
+    name: 'Emotional Intelligence',
+    description: 'Self-awareness, empathy, and relationship management',
+    color: '#ec4899',
+    icon: 'favorite',
+    category: 'soft',
+  },
+  spiritual: {
+    name: 'Spiritual Intelligence',
+    description: 'Purpose, meaning, and values alignment',
+    color: '#8b5cf6',
+    icon: 'self_improvement',
+    category: 'soft',
+  },
+  physical: {
+    name: 'Physical Intelligence',
+    description: 'Health, fitness, and body awareness',
+    color: '#22c55e',
+    icon: 'fitness_center',
+    category: 'hard',
+  },
+  creative: {
+    name: 'Creative Intelligence',
+    description: 'Innovation, imagination, and artistic expression',
+    color: '#f59e0b',
+    icon: 'palette',
+    category: 'soft',
+  },
+  professional: {
+    name: 'Professional Intelligence',
+    description: 'Career skills, expertise, and work ethic',
+    color: '#0ea5e9',
+    icon: 'work',
+    category: 'hard',
+  },
+  leadership: {
+    name: 'Leadership Intelligence',
+    description: 'Vision, influence, and team development',
+    color: '#ef4444',
+    icon: 'groups',
+    category: 'soft',
+  },
+  financial: {
+    name: 'Financial Intelligence',
+    description: 'Money management, investment, and financial planning',
+    color: '#10b981',
+    icon: 'account_balance',
+    category: 'hard',
+  },
+  environmental: {
+    name: 'Environmental Intelligence',
+    description: 'Sustainability, eco-awareness, and social responsibility',
+    color: '#84cc16',
+    icon: 'nature',
+    category: 'hard',
+  },
+};
+
+// Dimension type for UI
+interface DimensionUI {
+  id: string;
+  name: string;
+  score: number;
+  description: string;
+  icon: string;
+  color: string;
+  category: 'hard' | 'soft';
+}
+
 // Radar Chart Component
 function RadarChart({ 
   data, 
   size = 300 
 }: { 
-  data: Dimension[]; 
+  data: DimensionUI[]; 
   size?: number;
 }) {
   const center = size / 2;
@@ -136,14 +223,11 @@ function RadarChart({
 // Dimension Card Component
 function DimensionCard({ 
   dimension, 
-  index 
 }: { 
-  dimension: Dimension; 
-  index: number;
+  dimension: DimensionUI;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const progressColor = dimension.score >= 70 ? 'bg-green-500' : dimension.score >= 50 ? 'bg-[#FFD700]' : 'bg-red-500';
-  const Icon = dimension.icon;
   
   return (
     <motion.div
@@ -159,7 +243,7 @@ function DimensionCard({
             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
             style={{ backgroundColor: `${dimension.color}20`, color: dimension.color }}
           >
-            <span className="material-symbols-outlined text-2xl">{Icon}</span>
+            <span className="material-symbols-outlined text-2xl">{dimension.icon}</span>
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">
@@ -185,19 +269,6 @@ function DimensionCard({
                 />
               </div>
             </div>
-            
-            {/* Previous score comparison */}
-            {dimension.previousScore && (
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-xs text-slate-500">Previous: {dimension.previousScore}</span>
-                <span className={`text-xs font-medium ${
-                  dimension.score > dimension.previousScore ? 'text-green-400' : 'text-red-400'
-                }`}>
-                  {dimension.score > dimension.previousScore ? '+' : ''}
-                  {dimension.score - dimension.previousScore}
-                </span>
-              </div>
-            )}
           </div>
           <button className="text-slate-400 hover:text-white transition-colors">
             <span className={`material-symbols-outlined transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
@@ -217,14 +288,14 @@ function DimensionCard({
         >
           <div className="space-y-2">
             <Link 
-              href={`/dashboard/dimensions/${dimension.id}`}
+              href={`/dimensions/${dimension.id}`}
               className="flex items-center gap-2 text-sm text-[#1A4D80] hover:text-white transition-colors"
             >
               <span className="material-symbols-outlined text-sm">analytics</span>
               View detailed analysis
             </Link>
             <Link 
-              href={`/dashboard/goals?dimension=${dimension.id}`}
+              href={`/goals?dimension=${dimension.id}`}
               className="flex items-center gap-2 text-sm text-[#1A4D80] hover:text-white transition-colors"
             >
               <span className="material-symbols-outlined text-sm">flag</span>
@@ -242,8 +313,8 @@ function DimensionCard({
 }
 
 // Stats Summary Component
-function StatsSummary() {
-  const stats = getDimensionStats(dimensions);
+function StatsSummary({ stats }: { stats: ReturnType<ReturnType<typeof useDimensionStats>['stats']> }) {
+  if (!stats) return null;
   
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -275,7 +346,59 @@ function StatsSummary() {
 // Main 9 Dimensions Page
 export default function DimensionsPage() {
   const [showComparison, setShowComparison] = useState(false);
-  const stats = getDimensionStats(dimensions);
+  const { data: dimensionScores, isLoading, error, errorMessage, refetch } = useDimensions();
+
+  // Transform API data to UI format
+  const dimensions: DimensionUI[] = useMemo(() => {
+    if (!dimensionScores) return [];
+    
+    return Object.entries(DIMENSION_META).map(([id, meta]) => ({
+      id,
+      name: meta.name,
+      score: dimensionScores[id as keyof typeof dimensionScores] as number || 0,
+      description: meta.description,
+      icon: meta.icon,
+      color: meta.color,
+      category: meta.category,
+    }));
+  }, [dimensionScores]);
+
+  const stats = useDimensionStats(dimensionScores || null).stats;
+
+  // Show loading skeleton
+  if (isLoading) {
+    return <DimensionsPageSkeleton />;
+  }
+
+  // Show error display
+  if (error) {
+    return (
+      <div className="p-4">
+        <ErrorDisplay
+          title="Failed to load dimensions"
+          message={errorMessage}
+          onRetry={refetch}
+          variant="fullscreen"
+        />
+      </div>
+    );
+  }
+
+  // Show empty state if no data
+  if (!dimensionScores || dimensions.length === 0) {
+    return (
+      <div className="p-4">
+        <EmptyStateDisplay
+          title="No Dimension Data"
+          description="Complete your first assessment to see your dimension scores."
+          action={{ 
+            label: 'Take Assessment', 
+            onClick: () => window.location.href = '/assessments'
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -316,7 +439,7 @@ export default function DimensionsPage() {
 
       {/* Stats Summary */}
       <motion.section variants={itemVariants}>
-        <StatsSummary />
+        <StatsSummary stats={stats} />
       </motion.section>
 
       {/* Radar Chart Section */}
@@ -331,7 +454,7 @@ export default function DimensionsPage() {
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="text-center">
                     <p className="text-xs text-slate-400 uppercase tracking-wider">Overall</p>
-                    <p className="text-3xl font-bold text-[#FFD700]">{stats.avgScore}</p>
+                    <p className="text-3xl font-bold text-[#FFD700]">{stats?.avgScore || 0}</p>
                   </div>
                 </div>
               </div>
@@ -349,13 +472,6 @@ export default function DimensionsPage() {
                     />
                     <span className="text-sm text-slate-300 flex-1">{dim.name}</span>
                     <span className="text-sm font-semibold text-white">{dim.score}</span>
-                    {showComparison && dim.previousScore && (
-                      <span className={`text-xs ${
-                        dim.score > dim.previousScore ? 'text-green-400' : 'text-red-400'
-                      }`}>
-                        {dim.score > dim.previousScore ? '+' : ''}{dim.score - dim.previousScore}
-                      </span>
-                    )}
                   </div>
                 ))}
               </div>
@@ -370,8 +486,8 @@ export default function DimensionsPage() {
           Detailed Breakdown
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {dimensions.map((dimension, index) => (
-            <DimensionCard key={dimension.id} dimension={dimension} index={index} />
+          {dimensions.map((dimension) => (
+            <DimensionCard key={dimension.id} dimension={dimension} />
           ))}
         </div>
       </section>
@@ -386,18 +502,22 @@ export default function DimensionsPage() {
             <div>
               <h3 className="text-white font-semibold mb-2">Improvement Recommendations</h3>
               <ul className="space-y-2 text-slate-300 text-sm">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FFD700] mt-0.5">•</span>
-                  Focus on <strong className="text-white">{stats.weakest.name}</strong> - your lowest scoring dimension at {stats.weakest.score}/100
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FFD700] mt-0.5">•</span>
-                  Maintain your strength in <strong className="text-white">{stats.strongest.name}</strong> - consider mentoring others
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FFD700] mt-0.5">•</span>
-                  Your hard skills average ({stats.hardAvg}) is {stats.hardAvg > stats.softAvg ? 'higher' : 'lower'} than soft skills ({stats.softAvg})
-                </li>
+                {stats && (
+                  <>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#FFD700] mt-0.5">•</span>
+                      Focus on <strong className="text-white">{stats.weakest.name}</strong> - your lowest scoring dimension at {stats.weakest.score}/100
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#FFD700] mt-0.5">•</span>
+                      Maintain your strength in <strong className="text-white">{stats.strongest.name}</strong> - consider mentoring others
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#FFD700] mt-0.5">•</span>
+                      Your hard skills average ({stats.hardAvg}) is {stats.hardAvg > stats.softAvg ? 'higher' : 'lower'} than soft skills ({stats.softAvg})
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

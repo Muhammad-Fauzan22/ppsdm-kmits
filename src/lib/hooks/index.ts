@@ -17,5 +17,24 @@ export type { UseGoalsReturn, UseGoalsOptions } from './useGoals';
 export { useProgress, calculateImprovement, getTrendDirection, formatChartData, getTimeRangeLabel, TIME_RANGE_OPTIONS } from './useProgress';
 export type { UseProgressReturn } from './useProgress';
 
+// Re-export types from API client
+export type { 
+  DimensionData, 
+  GoalsListResponse, 
+  ProgressData, 
+  DashboardData 
+} from '../api/client';
+
+// Re-export types from DB schema
+export type { 
+  Goal, 
+  GoalInput, 
+  GoalUpdate, 
+  Dimension,
+  TimeRange,
+  Activity,
+  UserAchievement
+} from '../db/schema';
+
 // Existing hooks
 export { useAuth } from './useAuth';
