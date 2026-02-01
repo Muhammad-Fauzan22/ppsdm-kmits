@@ -18,22 +18,23 @@ export { useProgress, calculateImprovement, getTrendDirection, formatChartData, 
 export type { UseProgressReturn } from './useProgress';
 
 // Re-export types from API client
-export type { 
-  DimensionData, 
-  GoalsListResponse, 
-  ProgressData, 
-  DashboardData 
+export type {
+  DimensionData,
+  GoalsListResponse,
+  ProgressData,
+  DashboardData
 } from '../api/client';
 
 // Re-export types from DB schema
-export type { 
-  Goal, 
-  GoalInput, 
-  GoalUpdate, 
+export type {
+  Goal,
+  GoalInput,
+  GoalUpdate,
   Dimension,
   TimeRange,
   Activity,
-  UserAchievement
+  UserAchievement,
+  Milestone
 } from '../db/schema';
 
 // Existing hooks
