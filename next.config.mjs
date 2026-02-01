@@ -34,8 +34,9 @@ const nextConfig = {
         optimizeCss: false,
         scrollRestoration: false,
     },
-    // Configure output for static export compatibility
-    output: 'standalone',
+    // Use default output - Vercel handles this automatically
+    // output: 'standalone' removed to fix route group manifest error
+    distDir: '.next',
     // Ensure trailing slashes are handled correctly
     trailingSlash: false,
     // Disable powered by header
