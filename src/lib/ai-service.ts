@@ -11,12 +11,21 @@ export enum AIModel {
   NEMOTRON = "nemotron",
   GLM4 = "glm4",
   QWEN = "qwen",
+  KIMI_K25 = "kimi-k25",
   AUTO = "auto",
 }
 
 export interface AIMessage {
   role: "user" | "assistant" | "system";
-  content: string;
+  content: string | AIMessageContent[];
+}
+
+export interface AIMessageContent {
+  type: "text" | "image_url";
+  text?: string;
+  image_url?: {
+    url: string;
+  };
 }
 
 export interface AIResponse {
@@ -47,6 +56,8 @@ function getApiKey(model: AIModel): string | null {
       return process.env.NVIDIA_API_KEY_GLM4 || null;
     case AIModel.QWEN:
       return process.env.QWEN_API_KEY || null;
+    case AIModel.KIMI_K25:
+      return process.env.NVIDIA_API_KEY || null;
     default:
       return null;
   }
@@ -272,8 +283,83 @@ async function queryQwen(
 }
 
 /**
+ * Query Kimi K2.5 model via NVIDIA NIM API
+ * Supports both text and image inputs with thinking mode enabled
+ */
+async function queryKimiK25(
+  messages: AIMessage[],
+  maxTokens: number = 16384
+): Promise<AIResponse> {
+  const apiKey = getApiKey(AIModel.KIMI_K25);
+
+  if (!apiKey) {
+    return {
+      success: false,
+      content: "",
+      model: "kimi-k25",
+      error: "NVIDIA_API_KEY not configured",
+      timestamp: Date.now(),
+    };
+  }
+
+  try {
+    const response = await fetch(
+      "https://integrate.api.nvidia.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "moonshotai/kimi-k2.5",
+          messages,
+          max_tokens: maxTokens,
+          temperature: 1.0,
+          top_p: 1.0,
+          stream: false,
+          chat_template_kwargs: { thinking: true },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`HTTP ${response.status}: ${error}`);
+    }
+
+    const data = await response.json();
+
+    if (
+      data.choices &&
+      data.choices[0] &&
+      data.choices[0].message &&
+      data.choices[0].message.content
+    ) {
+      return {
+        success: true,
+        content: data.choices[0].message.content,
+        model: "kimi-k25",
+        timestamp: Date.now(),
+      };
+    }
+
+    throw new Error("Unexpected response format from Kimi K2.5 API");
+  } catch (error) {
+    console.error("Kimi K2.5 query failed:", error);
+    return {
+      success: false,
+      content: "",
+      model: "kimi-k25",
+      error: `Kimi K2.5 error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      timestamp: Date.now(),
+    };
+  }
+}
+
+/**
  * Main AI Service - Unified interface
- * AUTO mode: Try Nemotron first, fallback to GLM4, then QWEN
+ * AUTO mode: Try Kimi K2.5 first, fallback to Nemotron, then GLM4, then QWEN
  */
 export async function queryAI(
   messages: AIMessage[],
@@ -292,8 +378,17 @@ export async function queryAI(
   }
 
   if (model === AIModel.AUTO) {
-    // Try Nemotron first (faster, cheaper)
-    console.log("[AI] Attempting Nemotron (primary)...");
+    // Try Kimi K2.5 first (primary - best reasoning with thinking mode)
+    console.log("[AI] Attempting Kimi K2.5 (primary)...");
+    const kimiResult = await queryKimiK25(messages, maxTokens);
+
+    if (kimiResult.success) {
+      console.log("[AI] ✅ Kimi K2.5 succeeded");
+      return kimiResult;
+    }
+
+    // Fallback to Nemotron
+    console.log("[AI] Kimi K2.5 failed, attempting Nemotron (fallback 1)...");
     const nemotronResult = await queryNemotron(messages, maxTokens);
 
     if (nemotronResult.success) {
@@ -302,7 +397,7 @@ export async function queryAI(
     }
 
     // Fallback to GLM4
-    console.log("[AI] Nemotron failed, attempting GLM4 (fallback)...");
+    console.log("[AI] Nemotron failed, attempting GLM4 (fallback 2)...");
     const glm4Result = await queryGLM4(messages, maxTokens);
 
     if (glm4Result.success) {
@@ -324,9 +419,11 @@ export async function queryAI(
       success: false,
       content: "",
       model: "auto",
-      error: `All models failed: Nemotron (${nemotronResult.error}), GLM4 (${glm4Result.error}), QWEN (${qwenResult.error})`,
+      error: `All models failed: Kimi K2.5 (${kimiResult.error}), Nemotron (${nemotronResult.error}), GLM4 (${glm4Result.error}), QWEN (${qwenResult.error})`,
       timestamp: Date.now(),
     };
+  } else if (model === AIModel.KIMI_K25) {
+    return queryKimiK25(messages, maxTokens);
   } else if (model === AIModel.NEMOTRON) {
     return queryNemotron(messages, maxTokens);
   } else if (model === AIModel.GLM4) {
@@ -462,6 +559,52 @@ Be constructive and encouraging.`;
   return chat(`Analyze these responses:\n${responsesText}`, systemPrompt);
 }
 
+/**
+ * Helper function to create a message with image support
+ * @param text - The text prompt/question about the image
+ * @param imageBase64 - Base64 encoded image data
+ * @param mimeType - MIME type of the image (e.g., "image/png", "image/jpeg")
+ * @returns AIMessage with image content
+ */
+export function createImageMessage(
+  text: string,
+  imageBase64: string,
+  mimeType: string = "image/png"
+): AIMessage {
+  return {
+    role: "user",
+    content: [
+      {
+        type: "text",
+        text: text,
+      },
+      {
+        type: "image_url",
+        image_url: {
+          url: `data:${mimeType};base64,${imageBase64}`,
+        },
+      },
+    ],
+  };
+}
+
+/**
+ * Query AI with image analysis using Kimi K2.5
+ * @param text - The question about the image
+ * @param imageBase64 - Base64 encoded image
+ * @param mimeType - Image MIME type
+ */
+export async function analyzeImage(
+  text: string,
+  imageBase64: string,
+  mimeType: string = "image/png"
+): Promise<AIResponse> {
+  const messages: AIMessage[] = [
+    createImageMessage(text, imageBase64, mimeType),
+  ];
+  return queryAI(messages, AIModel.KIMI_K25, 16384);
+}
+
 export default {
   queryAI,
   chat,
@@ -469,4 +612,6 @@ export default {
   generateQuizQuestions,
   generateCurriculum,
   analyzeAssessment,
+  createImageMessage,
+  analyzeImage,
 };

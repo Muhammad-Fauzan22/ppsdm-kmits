@@ -10,12 +10,43 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+				heading: ['var(--font-poppins)', 'Poppins', 'sans-serif'],
+				display: ['var(--font-lexend)', 'Lexend', 'sans-serif'],
+			},
 			borderRadius: {
 				'xl': '1rem',
 				'2xl': '1.5rem',
+				'3xl': '2rem',
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			animation: {
+				'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'glow': 'glow 2s ease-in-out infinite alternate',
+				'slide-up': 'slideUp 0.5s ease-out',
+				'fade-in': 'fadeIn 0.3s ease-out',
+			},
+			keyframes: {
+				float: {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' },
+				},
+				glow: {
+					'0%': { boxShadow: '0 0 5px rgba(0, 212, 255, 0.2)' },
+					'100%': { boxShadow: '0 0 20px rgba(0, 212, 255, 0.6)' },
+				},
+				slideUp: {
+					'0%': { transform: 'translateY(20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' },
+				},
+				fadeIn: {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' },
+				},
 			},
 			colors: {
 				border: 'hsl(var(--border))',
