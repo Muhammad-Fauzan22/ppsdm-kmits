@@ -29,10 +29,10 @@ export function Header({ variant = "light" }: HeaderProps) {
 
     // Auth State
     useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(session?.user ?? null);
+        supabase.auth.getSession().then((response: any) => {
+            setUser(response.data.session?.user ?? null);
         });
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
             setUser(session?.user ?? null);
         });
         return () => subscription.unsubscribe();

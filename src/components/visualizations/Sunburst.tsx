@@ -84,11 +84,11 @@ export const Sunburst: React.FC<SunburstProps> = ({
         while (d.depth > 1 && d.parent) d = d.parent;
         return defaultColor(d.data.name);
       })
-      .attr('fill-opacity', d =>
+      .attr('fill-opacity', (d: any) =>
         arcVisible(d.current) ? (d.children ? 0.8 : 0.6) : 0
       )
-      .attr('pointer-events', d => arcVisible(d.current) ? 'auto' : 'none')
-      .attr('d', d => arc(d.current));
+      .attr('pointer-events', (d: any) => arcVisible(d.current) ? 'auto' : 'none')
+      .attr('d', (d: any) => arc(d.current));
 
     // Add interactivity
     path.filter(d => !!d.children)
@@ -114,8 +114,8 @@ export const Sunburst: React.FC<SunburstProps> = ({
       .data(root.descendants().slice(1))
       .join('text')
       .attr('dy', '0.35em')
-      .attr('fill-opacity', d => +labelVisible(d.current))
-      .attr('transform', d => labelTransform(d.current))
+      .attr('fill-opacity', (d: any) => +labelVisible(d.current))
+      .attr('transform', (d: any) => labelTransform(d.current))
       .text(d => d.data.name)
       .style('fill', 'white')
       .style('font-size', '10px');
@@ -135,7 +135,7 @@ export const Sunburst: React.FC<SunburstProps> = ({
 
       parent.datum(p.parent || root);
 
-      root.each(d => d.target = {
+      root.each((d: any) => d.target = {
         x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
         x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
         y0: Math.max(0, d.y0 - p.depth),
@@ -144,23 +144,23 @@ export const Sunburst: React.FC<SunburstProps> = ({
 
       const t = g.transition().duration(750);
 
-      path.transition(t)
-        .tween('data', d => {
+      path.transition(t as any)
+        .tween('data', (d: any) => {
           const i = d3.interpolate(d.current, d.target);
           return t => d.current = i(t);
         })
-        .filter(function (d) {
-          return +this.getAttribute('fill-opacity') || arcVisible(d.target);
+        .filter(function (d: any) {
+          return !!(+(this as any).getAttribute('fill-opacity') || arcVisible(d.target));
         })
-        .attr('fill-opacity', d => arcVisible(d.target) ? (d.children ? 0.8 : 0.6) : 0)
-        .attr('pointer-events', d => arcVisible(d.target) ? 'auto' : 'none')
-        .attrTween('d', d => () => arc(d.current) || '');
+        .attr('fill-opacity', (d: any) => arcVisible(d.target) ? (d.children ? 0.8 : 0.6) : 0)
+        .attr('pointer-events', (d: any) => arcVisible(d.target) ? 'auto' : 'none')
+        .attrTween('d', (d: any) => () => arc(d.current) || '');
 
-      label.filter(function (d) {
-        return +this.getAttribute('fill-opacity') || labelVisible(d.target);
-      }).transition(t)
-        .attr('fill-opacity', d => +labelVisible(d.target))
-        .attrTween('transform', d => () => labelTransform(d.current));
+      label.filter(function (d: any) {
+        return !!(+(this as any).getAttribute('fill-opacity') || labelVisible(d.target));
+      }).transition(t as any)
+        .attr('fill-opacity', (d: any) => +labelVisible(d.target))
+        .attrTween('transform', (d: any) => () => labelTransform(d.current));
     }
 
     function arcVisible(d: any) {
@@ -178,7 +178,7 @@ export const Sunburst: React.FC<SunburstProps> = ({
     }
 
     // Initialize state
-    root.each(d => d.current = d);
+    root.each((d: any) => d.current = d);
 
   }, [data, width, height, colorScale, onNodeClick]);
 

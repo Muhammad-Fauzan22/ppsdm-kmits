@@ -43,7 +43,7 @@ export default function LibraryPage() {
 
             if (data) {
                 setBooks(data);
-                const uniqueCats = Array.from(new Set(data.map((b: Book) => b.category || 'Uncategorized')));
+                const uniqueCats = Array.from(new Set(data.map((b: Book) => b.category || 'Uncategorized'))) as string[];
                 setCategories(['All', ...uniqueCats]);
             }
         } catch (error) {

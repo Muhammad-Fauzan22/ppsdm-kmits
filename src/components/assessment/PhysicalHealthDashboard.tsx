@@ -14,7 +14,7 @@ interface HealthMetric {
   value: number;
   target: number;
   unit: string;
-  icon: React.ElementType;
+  icon: React.ElementType<{ className?: string; style?: React.CSSProperties }>;
   color: string;
 }
 

@@ -251,8 +251,8 @@ export default function OnboardingPage() {
                                                             {formData.faculty ? "Select Study Program" : "Select Faculty First"}
                                                         </option>
                                                         {formData.faculty && ITS_FACULTIES.find(f => f.name === formData.faculty)?.programs.map((prog) => (
-                                                            <option key={prog} value={prog} className="bg-its-dark">
-                                                                {prog}
+                                                            <option key={prog.name} value={prog.name} className="bg-its-dark">
+                                                                {prog.name}
                                                             </option>
                                                         ))}
                                                     </select>

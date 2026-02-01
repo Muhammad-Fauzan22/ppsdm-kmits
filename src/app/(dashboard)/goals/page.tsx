@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGoals, type Goal } from '@/lib/hooks';
+import { useGoals, type Goal, isGoalOverdue } from '@/lib/hooks';
 import { GoalsPageSkeleton } from '@/components/dashboard/LoadingSkeletons';
 import { ErrorDisplay, EmptyStateDisplay } from '@/components/dashboard/ErrorDisplay';
 import { Flag, CheckCircle, Clock, AlertTriangle, Plus, Edit2, Trash2, Target } from 'lucide-react';
@@ -21,14 +21,17 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Hard skills mapping
+const HARD_SKILLS = ['cognitive', 'physical', 'professional', 'financial', 'environmental'];
+
 // Goal Card Component
-function GoalCard({ 
-  goal, 
+function GoalCard({
+  goal,
   onUpdate,
   onDelete,
-  isMutating 
-}: { 
-  goal: Goal; 
+  isMutating
+}: {
+  goal: Goal;
   onUpdate: (goalId: string, updates: Partial<Goal>) => Promise<void>;
   onDelete: (goalId: string) => Promise<void>;
   isMutating: boolean;
@@ -36,16 +39,18 @@ function GoalCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const completedMilestones = goal.milestones?.filter(m => m.completed).length || 0;
   const totalMilestones = goal.milestones?.length || 0;
-  
+
   const isCompleted = goal.status === 'completed';
-  const isOverdue = goal.status === 'overdue';
-  
-  const borderClass = isCompleted 
-    ? 'border-green-500/20' 
-    : isOverdue 
-    ? 'border-red-500/20' 
-    : 'border-white/[0.08] hover:border-white/[0.12]';
-  
+  const isOverdue = isGoalOverdue(goal);
+
+  const isHardSkill = HARD_SKILLS.includes(goal.category);
+
+  const borderClass = isCompleted
+    ? 'border-green-500/20'
+    : isOverdue
+      ? 'border-red-500/20'
+      : 'border-white/[0.08] hover:border-white/[0.12]';
+
   const titleClass = isCompleted ? 'text-green-400 line-through' : 'text-white';
   const progressColor = isCompleted ? 'bg-green-500' : isOverdue ? 'bg-red-500' : 'bg-[#FFD700]';
 
@@ -53,13 +58,13 @@ function GoalCard({
     const updatedMilestones = goal.milestones?.map(m =>
       m.id === milestoneId ? { ...m, completed } : m
     ) || [];
-    
+
     const completedCount = updatedMilestones.filter(m => m.completed).length;
-    const newProgress = totalMilestones > 0 
-      ? Math.round((completedCount / totalMilestones) * 100) 
+    const newProgress = totalMilestones > 0
+      ? Math.round((completedCount / totalMilestones) * 100)
       : 0;
-    
-    await onUpdate(goal.id, { 
+
+    await onUpdate(goal.id, {
       milestones: updatedMilestones,
       progress: newProgress,
       status: newProgress === 100 ? 'completed' : 'active'
@@ -68,10 +73,10 @@ function GoalCard({
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'No deadline';
-    return new Date(dateString).toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
     });
   };
 
@@ -87,21 +92,19 @@ function GoalCard({
               <h3 className={`font-semibold truncate ${titleClass}`}>
                 {goal.title}
               </h3>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                goal.category === 'hard' ? 'bg-blue-500/10 text-blue-400' : 'bg-purple-500/10 text-purple-400'
-              }`}>
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${isHardSkill ? 'bg-blue-500/10 text-blue-400' : 'bg-purple-500/10 text-purple-400'
+                }`}>
                 {goal.category}
               </span>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
-                goal.status === 'active' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${goal.status === 'active' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
                 goal.status === 'completed' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                'bg-red-500/20 text-red-400 border-red-500/30'
-              }`}>
+                  'bg-red-500/20 text-red-400 border-red-500/30'
+                }`}>
                 {goal.status}
               </span>
             </div>
             <p className="text-slate-400 text-sm mt-1">{goal.description}</p>
-            
+
             {/* Progress bar */}
             <div className="mt-4">
               <div className="flex items-center justify-between text-xs mb-1.5">
@@ -109,13 +112,13 @@ function GoalCard({
                 <span className="text-white font-medium">{completedMilestones}/{totalMilestones} milestones</span>
               </div>
               <div className="h-2.5 bg-slate-700/50 rounded-full overflow-hidden">
-                <div 
+                <div
                   className={`h-full transition-all duration-500 rounded-full ${progressColor}`}
                   style={{ width: `${goal.progress || 0}%` }}
                 />
               </div>
             </div>
-            
+
             {/* Target date */}
             <div className="flex items-center gap-4 mt-3 text-xs">
               <div className="flex items-center gap-1.5 text-slate-400">
@@ -130,7 +133,7 @@ function GoalCard({
               )}
             </div>
           </div>
-          
+
           {/* Actions */}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -143,7 +146,7 @@ function GoalCard({
           </button>
         </div>
       </div>
-      
+
       {/* Expanded milestones */}
       <AnimatePresence>
         {isExpanded && (
@@ -159,12 +162,12 @@ function GoalCard({
               <div className="space-y-2">
                 {goal.milestones?.map((milestone) => {
                   const milestoneTextClass = milestone.completed ? 'text-slate-400 line-through' : 'text-slate-200';
-                  const buttonClass = milestone.completed 
-                    ? 'bg-green-500 border-green-500 text-white' 
+                  const buttonClass = milestone.completed
+                    ? 'bg-green-500 border-green-500 text-white'
                     : 'border-slate-500 hover:border-[#FFD700]';
-                  
+
                   return (
-                    <div 
+                    <div
                       key={milestone.id}
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors"
                     >
@@ -184,7 +187,7 @@ function GoalCard({
                   );
                 })}
               </div>
-              
+
               {/* Quick actions */}
               <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.08]">
                 <button className="flex items-center gap-2 px-3 py-1.5 bg-[#003366]/50 hover:bg-[#003366] text-white text-xs rounded-lg transition-colors">
@@ -195,7 +198,7 @@ function GoalCard({
                   <Edit2 className="w-3.5 h-3.5" />
                   Edit Goal
                 </button>
-                <button 
+                <button
                   onClick={() => onDelete(goal.id)}
                   disabled={isMutating}
                   className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs rounded-lg transition-colors ml-auto disabled:opacity-50"
@@ -213,15 +216,15 @@ function GoalCard({
 }
 
 // Stats Card Component
-function StatCard({ 
-  label, 
-  value, 
-  icon: Icon, 
-  color = 'blue' 
-}: { 
-  label: string; 
-  value: string | number; 
-  icon: React.ElementType;
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+  color = 'blue'
+}: {
+  label: string;
+  value: string | number;
+  icon: React.ElementType<{ className?: string }>;
   color?: 'blue' | 'green' | 'gold' | 'red';
 }) {
   const colorClasses = {
@@ -251,30 +254,40 @@ export default function GoalsPage() {
   const [filter, setFilter] = useState<'all' | 'active' | 'completed' | 'overdue'>('all');
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'hard' | 'soft'>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  
-  const { 
-    goals, 
+
+  const {
+    goals,
     totalCount,
-    isLoading, 
+    isLoading,
     isMutating,
-    error, 
-    errorMessage, 
+    error,
+    errorMessage,
     refetch,
     updateGoal,
-    deleteGoal 
+    deleteGoal
   } = useGoals();
 
   // Filter goals
   const filteredGoals = goals.filter(goal => {
-    const statusMatch = filter === 'all' || goal.status === filter;
-    const categoryMatch = categoryFilter === 'all' || goal.category === categoryFilter;
+    let statusMatch = true;
+    if (filter === 'overdue') {
+      statusMatch = isGoalOverdue(goal);
+    } else if (filter !== 'all') {
+      statusMatch = goal.status === filter;
+    }
+
+    let categoryMatch = true;
+    if (categoryFilter !== 'all') {
+      const isHard = HARD_SKILLS.includes(goal.category);
+      categoryMatch = categoryFilter === 'hard' ? isHard : !isHard;
+    }
     return statusMatch && categoryMatch;
   });
 
   // Calculate stats
   const activeGoals = goals.filter(g => g.status === 'active').length;
   const completedGoals = goals.filter(g => g.status === 'completed').length;
-  const overdueGoals = goals.filter(g => g.status === 'overdue').length;
+  const overdueGoals = goals.filter(g => isGoalOverdue(g)).length;
 
   const handleUpdateGoal = useCallback(async (goalId: string, updates: Partial<Goal>) => {
     await updateGoal(goalId, updates);
@@ -345,28 +358,26 @@ export default function GoalsPage() {
             <button
               key={status}
               onClick={() => setFilter(status)}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors capitalize ${
-                filter === status
-                  ? 'bg-[#003366] text-white'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors capitalize ${filter === status
+                ? 'bg-[#003366] text-white'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               {status}
             </button>
           ))}
         </div>
-        
+
         {/* Category Filter */}
         <div className="flex items-center gap-2 bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-lg p-1">
           {(['all', 'hard', 'soft'] as const).map((cat) => (
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors capitalize ${
-                categoryFilter === cat
-                  ? 'bg-[#003366] text-white'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors capitalize ${categoryFilter === cat
+                ? 'bg-[#003366] text-white'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               {cat} Skills
             </button>
@@ -379,9 +390,9 @@ export default function GoalsPage() {
         {filteredGoals.length > 0 ? (
           <div className="space-y-4">
             {filteredGoals.map((goal) => (
-              <GoalCard 
-                key={goal.id} 
-                goal={goal} 
+              <GoalCard
+                key={goal.id}
+                goal={goal}
                 onUpdate={handleUpdateGoal}
                 onDelete={handleDeleteGoal}
                 isMutating={isMutating}
@@ -393,9 +404,9 @@ export default function GoalsPage() {
             icon={<Target className="w-8 h-8 text-[#003366]" />}
             title="No goals yet"
             description="Start your personal development journey by setting your first goal. Track your progress and achieve your dreams."
-            action={{ 
-              label: 'Create Your First Goal', 
-              onClick: () => setShowCreateModal(true) 
+            action={{
+              label: 'Create Your First Goal',
+              onClick: () => setShowCreateModal(true)
             }}
           />
         )}

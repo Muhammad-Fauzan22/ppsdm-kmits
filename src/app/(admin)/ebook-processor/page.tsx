@@ -106,9 +106,9 @@ interface Course {
 }
 
 export default function EbookProcessorPage() {
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const { toast } = useToast();
-  
+
   // State
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
   const [batchJobs, setBatchJobs] = useState<BatchJob[]>([]);
@@ -201,13 +201,13 @@ export default function EbookProcessorPage() {
 
   // Filter ebooks
   const filteredEbooks = ebooks.filter(ebook => {
-    const matchesSearch = 
+    const matchesSearch =
       ebook.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ebook.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ebook.category.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesStatus = statusFilter === 'all' || ebook.processing_status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -220,8 +220,8 @@ export default function EbookProcessorPage() {
     failed: ebooks.filter(e => e.processing_status === 'failed').length,
     gradeA: ebooks.filter(e => e.quality_grade === 'A' || e.quality_grade === 'A+').length,
     avgQuality: ebooks.filter(e => e.quality_score).length > 0
-      ? ebooks.filter(e => e.quality_score).reduce((acc, e) => acc + (e.quality_score || 0), 0) / 
-        ebooks.filter(e => e.quality_score).length
+      ? ebooks.filter(e => e.quality_score).reduce((acc, e) => acc + (e.quality_score || 0), 0) /
+      ebooks.filter(e => e.quality_score).length
       : 0,
     // Drive stats
     driveCompleted: ebooks.filter(e => e.drive_upload_status === 'completed').length,
@@ -418,9 +418,9 @@ export default function EbookProcessorPage() {
       failed: { color: 'bg-red-100 text-red-700', icon: <XCircle className="w-3 h-3" /> },
       skipped: { color: 'bg-gray-100 text-gray-500', icon: <AlertCircle className="w-3 h-3" /> }
     };
-    
+
     const variant = variants[status] || variants.pending;
-    
+
     return (
       <Badge className={`${variant.color} flex items-center gap-1`}>
         {variant.icon}
@@ -432,7 +432,7 @@ export default function EbookProcessorPage() {
   // Get grade badge
   const getGradeBadge = (grade: string | null) => {
     if (!grade) return <Badge variant="outline">N/A</Badge>;
-    
+
     const colors: Record<string, string> = {
       'A+': 'bg-purple-100 text-purple-700',
       'A': 'bg-green-100 text-green-700',
@@ -444,7 +444,7 @@ export default function EbookProcessorPage() {
       'D': 'bg-red-100 text-red-700',
       'F': 'bg-red-200 text-red-800'
     };
-    
+
     return (
       <Badge className={colors[grade] || 'bg-gray-100'}>
         <Award className="w-3 h-3 mr-1" />
@@ -467,7 +467,7 @@ export default function EbookProcessorPage() {
               Batch process ebooks with Grade A 15-layer pipeline
             </p>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
@@ -517,7 +517,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -529,7 +529,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -541,7 +541,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -553,7 +553,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -565,7 +565,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -577,7 +577,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -589,7 +589,7 @@ export default function EbookProcessorPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white border-indigo-200">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -621,8 +621,8 @@ export default function EbookProcessorPage() {
                   {batchJobs.find(j => j.id === activeJobId)?.progress_percent.toFixed(1)}%
                 </Badge>
               </div>
-              <Progress 
-                value={batchJobs.find(j => j.id === activeJobId)?.progress_percent || 0} 
+              <Progress
+                value={batchJobs.find(j => j.id === activeJobId)?.progress_percent || 0}
                 className="h-2"
               />
               <div className="flex justify-between mt-2 text-sm text-blue-700">
@@ -660,7 +660,7 @@ export default function EbookProcessorPage() {
                       className="pl-10"
                     />
                   </div>
-                  
+
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-[180px]">
                       <Filter className="w-4 h-4 mr-2" />
@@ -674,7 +674,7 @@ export default function EbookProcessorPage() {
                       <SelectItem value="failed">Failed</SelectItem>
                     </SelectContent>
                   </Select>
-                  
+
                   <div className="flex items-center gap-2">
                     <Button
                       variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -725,7 +725,7 @@ export default function EbookProcessorPage() {
                             <ImageIcon className="w-16 h-16 text-slate-400" />
                           </div>
                         )}
-                        
+
                         {/* Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                           <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -742,12 +742,12 @@ export default function EbookProcessorPage() {
                             </Button>
                           </div>
                         </div>
-                        
+
                         {/* Status Badge */}
                         <div className="absolute top-2 right-2">
                           {getStatusBadge(ebook.processing_status)}
                         </div>
-                        
+
                         {/* Favorite */}
                         {ebook.is_favorite && (
                           <div className="absolute top-2 left-2">
@@ -755,14 +755,14 @@ export default function EbookProcessorPage() {
                           </div>
                         )}
                       </div>
-                      
+
                       {/* Content */}
                       <CardContent className="p-4">
                         <h3 className="font-semibold text-slate-900 line-clamp-2 mb-1">
                           {ebook.title}
                         </h3>
                         <p className="text-sm text-slate-600 mb-2">{ebook.author}</p>
-                        
+
                         <div className="flex items-center justify-between">
                           {getGradeBadge(ebook.quality_grade)}
                           {ebook.quality_score && (
@@ -771,12 +771,12 @@ export default function EbookProcessorPage() {
                             </span>
                           )}
                         </div>
-                        
+
                         {/* Drive Status */}
                         <div className="mt-2">
                           {getDriveStatusBadge(ebook.drive_upload_status)}
                         </div>
-                        
+
                         {ebook.processing_progress > 0 && ebook.processing_progress < 100 && (
                           <Progress value={ebook.processing_progress} className="h-1 mt-3" />
                         )}
@@ -810,7 +810,7 @@ export default function EbookProcessorPage() {
                             </div>
                           )}
                         </div>
-                        
+
                         {/* Info */}
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-slate-900 truncate">
@@ -826,12 +826,12 @@ export default function EbookProcessorPage() {
                             </span>
                           </div>
                         </div>
-                        
+
                         {/* Status & Actions */}
                         <div className="flex items-center gap-4">
                           {getStatusBadge(ebook.processing_status)}
                           {getGradeBadge(ebook.quality_grade)}
-                          
+
                           <div className="flex items-center gap-1">
                             <Button
                               size="icon"
@@ -939,16 +939,16 @@ export default function EbookProcessorPage() {
                         </div>
                         <Badge className={
                           job.status === 'completed' ? 'bg-green-100 text-green-700' :
-                          job.status === 'running' ? 'bg-blue-100 text-blue-700' :
-                          job.status === 'failed' ? 'bg-red-100 text-red-700' :
-                          'bg-gray-100 text-gray-700'
+                            job.status === 'running' ? 'bg-blue-100 text-blue-700' :
+                              job.status === 'failed' ? 'bg-red-100 text-red-700' :
+                                'bg-gray-100 text-gray-700'
                         }>
                           {job.status}
                         </Badge>
                       </div>
-                      
+
                       <Progress value={job.progress_percent} className="h-2 mb-2" />
-                      
+
                       <div className="flex justify-between text-sm text-slate-600">
                         <span>Progress: {job.progress_percent.toFixed(1)}%</span>
                         <span>
@@ -981,7 +981,7 @@ export default function EbookProcessorPage() {
                     by {selectedEbook.author}
                   </DialogDescription>
                 </DialogHeader>
-                
+
                 <div className="grid grid-cols-2 gap-4 mt-4">
                   <div>
                     <h4 className="font-semibold text-sm text-slate-600 mb-2">Status</h4>
@@ -990,27 +990,27 @@ export default function EbookProcessorPage() {
                       {getGradeBadge(selectedEbook.quality_grade)}
                     </div>
                   </div>
-                  
+
                   <div>
                     <h4 className="font-semibold text-sm text-slate-600 mb-2">Quality Score</h4>
                     <p className="text-2xl font-bold">
                       {selectedEbook.quality_score?.toFixed(1) || 'N/A'}
                     </p>
                   </div>
-                  
+
                   <div>
                     <h4 className="font-semibold text-sm text-slate-600 mb-2">Category</h4>
                     <p>{selectedEbook.category}</p>
                   </div>
-                  
+
                   <div>
                     <h4 className="font-semibold text-sm text-slate-600 mb-2">File Size</h4>
                     <p>{(selectedEbook.file_size_kb / 1024).toFixed(2)} MB</p>
                   </div>
                 </div>
-                
+
                 <Separator className="my-4" />
-                
+
                 <div className="flex gap-2">
                   <Button
                     onClick={() => processSingleEbook(selectedEbook.id)}
@@ -1027,13 +1027,13 @@ export default function EbookProcessorPage() {
                     Fetch Cover
                   </Button>
                   <Button variant="outline" asChild>
-                    <a href={selectedEbook.drive_url} target="_blank" rel="noopener noreferrer">
+                    <a href={selectedEbook.drive_url ?? undefined} target="_blank" rel="noopener noreferrer">
                       <Eye className="w-4 h-4 mr-2" />
                       View in Drive
                     </a>
                   </Button>
                 </div>
-                
+
                 {selectedEbook.last_error && (
                   <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
                     <h4 className="font-semibold text-red-700 flex items-center gap-2">
@@ -1057,7 +1057,7 @@ export default function EbookProcessorPage() {
                 Configure batch processing parameters
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="space-y-4 mt-4">
               <div>
                 <Label htmlFor="targetQuality">Target Quality Score</Label>
@@ -1073,7 +1073,7 @@ export default function EbookProcessorPage() {
                   }))}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="maxBooks">Max Books to Process</Label>
                 <Input
@@ -1088,7 +1088,7 @@ export default function EbookProcessorPage() {
                   }))}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <Label htmlFor="priorityOnly">Priority Books Only</Label>
                 <Switch
@@ -1100,7 +1100,7 @@ export default function EbookProcessorPage() {
                   }))}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <Label htmlFor="fetchCovers">Fetch Book Covers</Label>
                 <Switch
@@ -1112,7 +1112,7 @@ export default function EbookProcessorPage() {
                   }))}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <Label htmlFor="generateCourses">Generate Courses</Label>
                 <Switch

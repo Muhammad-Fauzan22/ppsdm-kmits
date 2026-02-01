@@ -23,10 +23,10 @@ const itemVariants = {
 };
 
 // Dimension metadata
-const DIMENSION_META: Record<string, { 
-  name: string; 
-  description: string; 
-  color: string; 
+const DIMENSION_META: Record<string, {
+  name: string;
+  description: string;
+  color: string;
   icon: string;
   category: 'hard' | 'soft';
 }> = {
@@ -107,17 +107,17 @@ interface DimensionUI {
 }
 
 // Radar Chart Component
-function RadarChart({ 
-  data, 
-  size = 300 
-}: { 
-  data: DimensionUI[]; 
+function RadarChart({
+  data,
+  size = 300
+}: {
+  data: DimensionUI[];
   size?: number;
 }) {
   const center = size / 2;
   const radius = (size / 2) - 40;
   const angleStep = (2 * Math.PI) / data.length;
-  
+
   // Calculate points for the data polygon
   const points = data.map((dim, i) => {
     const angle = i * angleStep - Math.PI / 2;
@@ -153,7 +153,7 @@ function RadarChart({
             className="text-slate-700"
           />
         ))}
-        
+
         {/* Spoke lines */}
         {data.map((_, i) => {
           const angle = i * angleStep - Math.PI / 2;
@@ -172,7 +172,7 @@ function RadarChart({
             />
           );
         })}
-        
+
         {/* Data polygon */}
         <polygon
           points={points}
@@ -181,7 +181,7 @@ function RadarChart({
           strokeWidth="2"
           className="opacity-90"
         />
-        
+
         {/* Data points */}
         {data.map((dim, i) => {
           const angle = i * angleStep - Math.PI / 2;
@@ -200,7 +200,7 @@ function RadarChart({
           );
         })}
       </svg>
-      
+
       {/* Labels */}
       {labels.map((label, i) => (
         <div
@@ -221,25 +221,25 @@ function RadarChart({
 }
 
 // Dimension Card Component
-function DimensionCard({ 
-  dimension, 
-}: { 
+function DimensionCard({
+  dimension,
+}: {
   dimension: DimensionUI;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const progressColor = dimension.score >= 70 ? 'bg-green-500' : dimension.score >= 50 ? 'bg-[#FFD700]' : 'bg-red-500';
-  
+
   return (
     <motion.div
       variants={itemVariants}
       className="bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-xl overflow-hidden hover:border-white/[0.12] transition-all"
     >
-      <div 
+      <div
         className="p-4 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-start gap-4">
-          <div 
+          <div
             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
             style={{ backgroundColor: `${dimension.color}20`, color: dimension.color }}
           >
@@ -248,14 +248,13 @@ function DimensionCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">
               <h3 className="text-white font-semibold text-sm truncate">{dimension.name}</h3>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                dimension.category === 'hard' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'
-              }`}>
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${dimension.category === 'hard' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'
+                }`}>
                 {dimension.category}
               </span>
             </div>
             <p className="text-slate-400 text-xs mt-1 line-clamp-2">{dimension.description}</p>
-            
+
             {/* Progress bar */}
             <div className="mt-3">
               <div className="flex items-center justify-between text-xs mb-1">
@@ -263,7 +262,7 @@ function DimensionCard({
                 <span className="text-white font-semibold">{dimension.score}/100</span>
               </div>
               <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
-                <div 
+                <div
                   className={`h-full ${progressColor} transition-all duration-500`}
                   style={{ width: `${dimension.score}%` }}
                 />
@@ -277,7 +276,7 @@ function DimensionCard({
           </button>
         </div>
       </div>
-      
+
       {/* Expanded content */}
       {isExpanded && (
         <motion.div
@@ -287,14 +286,14 @@ function DimensionCard({
           className="border-t border-white/[0.08] px-4 py-3"
         >
           <div className="space-y-2">
-            <Link 
+            <Link
               href={`/dimensions/${dimension.id}`}
               className="flex items-center gap-2 text-sm text-[#1A4D80] hover:text-white transition-colors"
             >
               <span className="material-symbols-outlined text-sm">analytics</span>
               View detailed analysis
             </Link>
-            <Link 
+            <Link
               href={`/goals?dimension=${dimension.id}`}
               className="flex items-center gap-2 text-sm text-[#1A4D80] hover:text-white transition-colors"
             >
@@ -313,9 +312,9 @@ function DimensionCard({
 }
 
 // Stats Summary Component
-function StatsSummary({ stats }: { stats: ReturnType<ReturnType<typeof useDimensionStats>['stats']> }) {
+function StatsSummary({ stats }: { stats: ReturnType<typeof useDimensionStats>['stats'] }) {
   if (!stats) return null;
-  
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div className="bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-xl p-4">
@@ -351,7 +350,7 @@ export default function DimensionsPage() {
   // Transform API data to UI format
   const dimensions: DimensionUI[] = useMemo(() => {
     if (!dimensionScores) return [];
-    
+
     return Object.entries(DIMENSION_META).map(([id, meta]) => ({
       id,
       name: meta.name,
@@ -391,8 +390,8 @@ export default function DimensionsPage() {
         <EmptyStateDisplay
           title="No Dimension Data"
           description="Complete your first assessment to see your dimension scores."
-          action={{ 
-            label: 'Take Assessment', 
+          action={{
+            label: 'Take Assessment',
             onClick: () => window.location.href = '/assessments'
           }}
         />
@@ -418,11 +417,10 @@ export default function DimensionsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowComparison(!showComparison)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
-              showComparison 
-                ? 'bg-[#003366] text-white' 
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${showComparison
+                ? 'bg-[#003366] text-white'
                 : 'bg-[#1e293b]/40 text-slate-300 hover:text-white border border-white/[0.08]'
-            }`}
+              }`}
           >
             <span className="material-symbols-outlined text-sm">compare_arrows</span>
             {showComparison ? 'Hide Comparison' : 'Compare with Previous'}
@@ -459,14 +457,14 @@ export default function DimensionsPage() {
                 </div>
               </div>
             </div>
-            
+
             {/* Dimension Legend */}
             <div className="flex-1 w-full">
               <h3 className="text-white font-semibold mb-4">Dimension Breakdown</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {dimensions.map((dim) => (
                   <div key={dim.id} className="flex items-center gap-3">
-                    <div 
+                    <div
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: dim.color }}
                     />
