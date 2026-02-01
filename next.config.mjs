@@ -30,7 +30,16 @@ const nextConfig = {
     },
     experimental: {
         missingSuspenseWithCSRBailout: false,
+        // Disable features that may cause manifest issues with route groups
+        optimizeCss: false,
+        scrollRestoration: false,
     },
+    // Configure output for static export compatibility
+    output: 'standalone',
+    // Ensure trailing slashes are handled correctly
+    trailingSlash: false,
+    // Disable powered by header
+    poweredByHeader: false,
 };
 
 export default nextConfig;

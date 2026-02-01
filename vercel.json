@@ -1,8 +1,14 @@
 {
+    "buildCommand": "next build",
+    "outputDirectory": ".next",
+    "cleanUrls": true,
     "crons": [
         {
             "path": "/api/cron/sync",
             "schedule": "0 4 * * *"
         }
-    ]
+    ],
+    "github": {
+        "silent": true
+    }
 }
