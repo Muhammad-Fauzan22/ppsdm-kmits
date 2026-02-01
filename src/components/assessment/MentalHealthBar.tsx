@@ -40,7 +40,7 @@ export const MentalHealthBar: React.FC<MentalHealthBarProps> = ({ data, classNam
                 </div>
             </div>
 
-            <div className="h-[400px]">
+            <div style={{ width: '100%', height: '400px' }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart layout="vertical" data={chartData} margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#334155" />

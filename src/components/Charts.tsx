@@ -23,8 +23,9 @@ export function GrowthLineChart({ data, color = "#330066" }: GrowthChartProps) {
     }
 
     return (
-        <ResponsiveContainer width="100%" height={200} minWidth={100} minHeight={100}>
-            <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+        <div style={{ width: '100%', height: '200px' }}>
+            <ResponsiveContainer width="100%" height="100%" minWidth={100} minHeight={100}>
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                     <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={color} stopOpacity={0.3} />
@@ -44,8 +45,9 @@ export function GrowthLineChart({ data, color = "#330066" }: GrowthChartProps) {
                     labelStyle={{ fontWeight: "bold", color: "#111" }}
                 />
                 <Area type="monotone" dataKey="score" stroke={color} strokeWidth={2} fillOpacity={1} fill="url(#colorGrowth)" />
-            </AreaChart>
-        </ResponsiveContainer>
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
     );
 }
 
@@ -68,14 +70,16 @@ export function DimensionRadarChart({ data, color = "#3B82F6" }: DimensionRadarP
     }
 
     return (
-        <ResponsiveContainer width="100%" height={280} minWidth={100} minHeight={100}>
-            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
+        <div style={{ width: '100%', height: '280px' }}>
+            <ResponsiveContainer width="100%" height="100%" minWidth={100} minHeight={100}>
+                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
                 <PolarGrid stroke="#e5e7eb" strokeOpacity={0.2} />
                 <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#94a3b8" }} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                 <Radar name="Score" dataKey="score" stroke={color} fill={color} fillOpacity={0.3} strokeWidth={2} />
-            </RadarChart>
-        </ResponsiveContainer>
+                </RadarChart>
+            </ResponsiveContainer>
+        </div>
     );
 }
 

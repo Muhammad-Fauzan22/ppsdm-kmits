@@ -125,7 +125,7 @@ export default function SpiritualResultsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center">
                         <h3 className="text-lg font-semibold mb-4">Peta Dimensi</h3>
-                        <div className="h-64 w-full">
+                        <div className="w-full" style={{ height: '256px' }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
                                     <PolarGrid />

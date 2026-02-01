@@ -158,7 +158,7 @@ export default function WellbeingPage() {
                     </div>
                     <p className="text-xs text-slate-400 mb-4">Stress vs. Energy</p>
 
-                    <div className="flex-1 w-full h-48">
+                    <div className="flex-1 w-full" style={{ height: '192px' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={weeklyData}>
                                 <Tooltip

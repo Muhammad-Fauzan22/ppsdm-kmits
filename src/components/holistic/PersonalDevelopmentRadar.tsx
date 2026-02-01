@@ -13,7 +13,7 @@ export default function PersonalDevelopmentRadar() {
     }
 
     return (
-        <div className="w-full h-[400px] relative">
+        <div className="w-full relative" style={{ height: '400px' }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                     <PolarGrid stroke="#334155" />

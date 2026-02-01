@@ -56,8 +56,8 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
                     <CardTitle>{title}</CardTitle>
                     <CardDescription>{description}</CardDescription>
                 </CardHeader>
-                <CardContent className="h-[350px]">
-                    <div className="h-full w-full bg-gray-100 animate-pulse rounded-lg" />
+                <CardContent>
+                    <div style={{ width: '100%', height: '350px' }} className="bg-gray-100 animate-pulse rounded-lg" />
                 </CardContent>
             </Card>
         );
@@ -69,8 +69,9 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
                 <CardTitle>{title}</CardTitle>
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
-            <CardContent className="h-[350px]">
-                <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
+            <CardContent>
+                <div style={{ width: '100%', height: '350px' }}>
+                    <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                     <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                         <PolarGrid className="stroke-muted" />
                         <PolarAngleAxis dataKey="subject" className="text-xs font-medium fill-muted-foreground" />
@@ -90,7 +91,8 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
                             animationEasing="ease-out"
                         />
                     </RadarChart>
-                </ResponsiveContainer>
+                    </ResponsiveContainer>
+                </div>
             </CardContent>
         </Card>
     );

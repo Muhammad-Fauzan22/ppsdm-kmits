@@ -36,7 +36,7 @@ export default function LifestyleMonitor() {
 
             <div className="flex flex-col md:flex-row h-full gap-6">
                 {/* Chart */}
-                <div className="w-full md:w-1/2 h-[250px] relative">
+                <div className="w-full md:w-1/2 relative" style={{ height: '250px' }}>
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                             <Pie

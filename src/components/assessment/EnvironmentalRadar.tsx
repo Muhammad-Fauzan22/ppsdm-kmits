@@ -36,7 +36,7 @@ export const EnvironmentalRadar: React.FC<EnvironmentalRadarProps> = ({ data, cl
                 </div>
             </div>
 
-            <div className="h-[400px]">
+            <div style={{ width: '100%', height: '400px' }}>
                 <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                     <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
                         <PolarGrid stroke="#334155" />

@@ -63,7 +63,7 @@ export const PhysicalHealthGauge: React.FC<PhysicalHealthGaugeProps> = ({ data, 
                 </div>
             </div>
 
-            <div className="h-[400px] relative">
+            <div className="relative" style={{ width: '100%', height: '400px' }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <RadialBarChart
                         innerRadius="20%"

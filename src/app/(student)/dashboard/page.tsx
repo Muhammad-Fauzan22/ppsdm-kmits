@@ -131,7 +131,7 @@ export default function StudentDashboard() {
                                 </div>
 
                                 {/* Chart Area */}
-                                <div className="relative w-full h-[250px] md:h-[300px] flex items-center justify-center py-2 md:py-4">
+                                <div className="relative w-full flex items-center justify-center py-2 md:py-4" style={{ height: '300px' }}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <RadarChart cx="50%" cy="50%" outerRadius="75%" data={[
                                             { subject: 'Intellectual', A: 85, fullMark: 100 },

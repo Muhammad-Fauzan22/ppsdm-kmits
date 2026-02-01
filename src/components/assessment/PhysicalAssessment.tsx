@@ -233,7 +233,7 @@ export default function PhysicalAssessment() {
 
                         <div className="p-6 bg-white flex flex-col justify-center items-center">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4 self-start w-full text-center">Profil Kesehatan</h3>
-                            <div className="h-[250px] w-full">
+                            <div className="w-full" style={{ width: '100%', height: '250px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
                                     <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                                         <PolarGrid stroke="#e5e7eb" />

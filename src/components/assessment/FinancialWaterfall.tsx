@@ -142,7 +142,7 @@ export const FinancialWaterfall: React.FC<FinancialWaterfallProps> = ({
       {view === 'waterfall' ? (
         <>
           {/* Waterfall Chart */}
-          <div className="h-[300px] mb-6">
+          <div className="mb-6" style={{ width: '100%', height: '300px' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.waterfall} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" />

@@ -111,7 +111,7 @@ export default function FinanceSimulator() {
                             </div>
                         </div>
 
-                        <div className="flex-1 h-[300px] relative">
+                        <div className="flex-1 relative" style={{ width: '100%', height: '300px' }}>
                             <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200}>
                                 <PieChart>
                                     <Pie

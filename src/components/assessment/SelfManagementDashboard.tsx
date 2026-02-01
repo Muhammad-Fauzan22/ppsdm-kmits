@@ -144,7 +144,7 @@ export const SelfManagementDashboard: React.FC<SelfManagementDashboardProps> = (
               <TrendingUp className="w-4 h-4" />
               Productivity Timeline
             </h4>
-            <div className="h-[250px]">
+            <div style={{ width: '100%', height: '250px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={data.timeline}>
                   <defs>

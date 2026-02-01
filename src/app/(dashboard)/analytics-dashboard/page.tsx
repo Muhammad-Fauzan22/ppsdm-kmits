@@ -149,8 +149,9 @@ export default function AnalyticsDashboardPage() {
                     {/* Progress Over Time */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">📈 Progress Over Time</h2>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <AreaChart data={weeklyProgress}>
+                        <div style={{ width: '100%', height: '300px' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={weeklyProgress}>
                                 <defs>
                                     <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
@@ -171,14 +172,16 @@ export default function AnalyticsDashboardPage() {
                                     name="Avg Score"
                                 />
                             </AreaChart>
-                        </ResponsiveContainer>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                     {/* Dimension Progress */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">🎯 Dimension Progress vs Target</h2>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={dimensionScores} layout="vertical">
+                        <div style={{ width: '100%', height: '300px' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={dimensionScores} layout="vertical">
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis type="number" domain={[0, 100]} />
                                 <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 11 }} />
@@ -187,7 +190,8 @@ export default function AnalyticsDashboardPage() {
                                 <Bar dataKey="current" fill="#6366f1" name="Current" />
                                 <Bar dataKey="target" fill="#10b981" name="Target" />
                             </BarChart>
-                        </ResponsiveContainer>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
 
@@ -196,8 +200,9 @@ export default function AnalyticsDashboardPage() {
                     {/* Activity Breakdown */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">🎨 Activity Breakdown</h2>
-                        <ResponsiveContainer width="100%" height={250}>
-                            <PieChart>
+                        <div style={{ width: '100%', height: '250px' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <PieChart>
                                 <Pie
                                     data={activityBreakdown}
                                     cx="50%"
@@ -214,14 +219,16 @@ export default function AnalyticsDashboardPage() {
                                 </Pie>
                                 <Tooltip />
                             </PieChart>
-                        </ResponsiveContainer>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                     {/* Daily Engagement */}
                     <div className="bg-white rounded-2xl shadow-lg p-6 lg:col-span-2">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">⏱️ Daily Engagement</h2>
-                        <ResponsiveContainer width="100%" height={250}>
-                            <LineChart data={dailyEngagement}>
+                        <div style={{ width: '100%', height: '250px' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={dailyEngagement}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="day" />
                                 <YAxis yAxisId="left" />
@@ -245,7 +252,8 @@ export default function AnalyticsDashboardPage() {
                                     name="Sessions"
                                 />
                             </LineChart>
-                        </ResponsiveContainer>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
 

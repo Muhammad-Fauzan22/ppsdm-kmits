@@ -107,7 +107,7 @@ export default function BiometricSyncPage() {
                         <p className="text-xs text-gray-400 mb-6">Contribution to 9-Axis Profile</p>
 
                         <div className="flex items-center gap-6">
-                            <div className="size-24 relative">
+                            <div className="relative" style={{ width: '96px', height: '96px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
                                     <RadialBarChart innerRadius="70%" outerRadius="100%" barSize={10} data={physicalImpactData} startAngle={90} endAngle={-270}>
                                         <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />

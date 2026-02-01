@@ -230,7 +230,7 @@ export default function EmotionalAssessment() {
                             </CardHeader>
                             <CardContent>
                                 <div className="grid md:grid-cols-2 gap-8">
-                                    <div className="h-[250px]">
+                                    <div style={{ width: '100%', height: '250px' }}>
                                         <ResponsiveContainer width="100%" height="100%">
                                             <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
                                                 <PolarGrid gridType="circle" stroke="#e9d5ff" />

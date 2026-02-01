@@ -111,7 +111,7 @@ export default function EnvironmentalResultsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="md:col-span-2 bg-white rounded-2xl shadow-md p-6">
                         <h3 className="text-lg font-bold mb-4 text-center">8 Dimensi Gaya Hidup</h3>
-                        <div className="h-80 w-full">
+                        <div className="w-full" style={{ height: '320px' }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                                     <PolarGrid />
@@ -126,7 +126,7 @@ export default function EnvironmentalResultsPage() {
 
                     <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center">
                         <h3 className="text-lg font-bold mb-4">Komparasi</h3>
-                        <div className="h-64 w-full">
+                        <div className="w-full" style={{ height: '256px' }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={comparisonData}>
                                     <XAxis dataKey="name" />

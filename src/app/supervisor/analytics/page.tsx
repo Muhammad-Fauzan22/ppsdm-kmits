@@ -117,7 +117,7 @@ export default function CohortAnalytics() {
                             <span className="flex items-center gap-2 text-gray-400"><span className="size-3 bg-gray-600 rounded-sm"></span> Dept Avg</span>
                         </div>
                     </div>
-                    <div className="h-64">
+                    <div style={{ width: '100%', height: '256px' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={subjectData} barGap={8}>
                                 <XAxis dataKey="subject" tick={{ fill: '#6B7280', fontSize: 12 }} axisLine={false} tickLine={false} />

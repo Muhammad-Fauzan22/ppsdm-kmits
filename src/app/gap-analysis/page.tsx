@@ -165,7 +165,8 @@ export default function GapAnalysisPage() {
                     {/* Radar Chart */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">🎯 Radar Comparison</h2>
-                        <ResponsiveContainer width="100%" height={400} minWidth={300} minHeight={300}>
+                        <div style={{ width: '100%', height: '400px' }}>
+                            <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                             <RadarChart data={radarData}>
                                 <PolarGrid />
                                 <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11 }} />
@@ -186,14 +187,16 @@ export default function GapAnalysisPage() {
                                 />
                                 <Legend />
                             </RadarChart>
-                        </ResponsiveContainer>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                     {/* Gap Bar Chart */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <h2 className="text-lg font-bold text-gray-800 mb-4">📈 Gap per Dimensi</h2>
-                        <ResponsiveContainer width="100%" height={400}>
-                            <BarChart data={barData} layout="vertical">
+                        <div style={{ width: '100%', height: '400px' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={barData} layout="vertical">
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis type="number" domain={[0, 100]} />
                                 <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 11 }} />
@@ -203,7 +206,8 @@ export default function GapAnalysisPage() {
                                 <Bar dataKey="Gap" stackId="a" fill="#f87171" />
                                 <Bar dataKey="Di Atas" stackId="a" fill="#10b981" />
                             </BarChart>
-                        </ResponsiveContainer>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
 

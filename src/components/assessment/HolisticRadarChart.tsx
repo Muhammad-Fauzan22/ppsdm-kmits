@@ -177,8 +177,9 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
       {/* Main Chart Area */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Radar Chart */}
-        <div className="lg:col-span-3 h-[500px]">
-          <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
+        <div className="lg:col-span-3">
+          <div style={{ width: '100%', height: '500px' }}>
+            <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
               <PolarGrid stroke="#334155" />
               <PolarAngleAxis
@@ -243,7 +244,8 @@ export const HolisticRadarChart: React.FC<HolisticRadarChartProps> = ({
                 iconType="circle"
               />
             </RadarChart>
-          </ResponsiveContainer>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Side Panel - Quadrant Analysis */}

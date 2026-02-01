@@ -118,7 +118,7 @@ export default function CognitiveAssessment({ onComplete }: CognitiveAssessmentP
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Radar Chart */}
-                    <div className="h-80 relative">
+                    <div className="relative" style={{ width: '100%', height: '320px' }}>
                         <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={300}>
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={[
                                 { subject: 'Critical Thinking', A: result.scores.subdimension_scores.critical_thinking, fullMark: 100 },

@@ -142,7 +142,7 @@ function CharacterResultsContent() {
                     {/* Radar Chart */}
                     <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 flex flex-col items-center justify-center min-h-[400px]">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4 w-full text-left">Peta Dimensi Karakter</h3>
-                        <div className="w-full h-[350px]">
+                        <div className="w-full" style={{ height: '350px' }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                                     <PolarGrid />
