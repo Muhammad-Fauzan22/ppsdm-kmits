@@ -56,7 +56,7 @@ export function useQuantumLibrary() {
                     schema: "public",
                     table: "learning_resources",
                 },
-                (payload) => {
+                (payload: any) => {
                     console.log("⚡ Realtime Update Detected:", payload);
                     // Strategi sederhana: Refetch ulang untuk konsistensi data
                     fetchBooks();

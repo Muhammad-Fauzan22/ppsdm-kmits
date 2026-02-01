@@ -10,11 +10,7 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
-			fontFamily: {
-				sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
-				heading: ['var(--font-poppins)', 'Poppins', 'sans-serif'],
-				display: ['var(--font-lexend)', 'Lexend', 'sans-serif'],
-			},
+
 			borderRadius: {
 				'xl': '1rem',
 				'2xl': '1.5rem',
@@ -27,8 +23,16 @@ const config: Config = {
 				'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
 				'float': 'float 6s ease-in-out infinite',
 				'glow': 'glow 2s ease-in-out infinite alternate',
+				'fade-in': 'fadeIn 0.5s ease-in-out',
+				'fade-out': 'fadeOut 0.5s ease-in-out',
+				'scale-up': 'scaleUp 0.5s ease-out',
+				'fade-in-up': 'fadeInUp 0.6s ease-out',
 				'slide-up': 'slideUp 0.5s ease-out',
-				'fade-in': 'fadeIn 0.3s ease-out',
+				'slide-right': 'slideInRight 0.5s ease-out',
+				ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+				marquee: 'marquee 25s linear infinite',
+				bounce: 'bounce 1s infinite',
+				'spin-slow': 'spin 3s linear infinite'
 			},
 			keyframes: {
 				float: {
@@ -47,6 +51,33 @@ const config: Config = {
 					'0%': { opacity: '0' },
 					'100%': { opacity: '1' },
 				},
+				fadeOut: {
+					'0%': { opacity: '1' },
+					'100%': { opacity: '0' }
+				},
+				scaleUp: {
+					'0%': { transform: 'scale(0.8)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
+				},
+				fadeInUp: {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				slideInRight: {
+					'0%': { opacity: '0', transform: 'translateX(20px)' },
+					'100%': { opacity: '1', transform: 'translateX(0)' }
+				},
+				marquee: {
+					'0%': { transform: 'translateX(0%)' },
+					'100%': { transform: 'translateX(-100%)' }
+				},
+				bounce: {
+					'0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8,0,1,1)' },
+					'50%': { transform: 'none', animationTimingFunction: 'cubic-bezier(0,0,0.2,1)' }
+				},
+				ping: {
+					'75%, 100%': { transform: 'scale(2)', opacity: '0' }
+				}
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -174,100 +205,7 @@ const config: Config = {
 				glow: '0 0 15px rgba(1, 56, 128, 0.15)',
 				nav: '0 -4px 20px -5px rgba(0, 0, 0, 0.1)'
 			},
-			animation: {
-				'fade-in': 'fadeIn 0.5s ease-in-out',
-				'fade-out': 'fadeOut 0.5s ease-in-out',
-				'scale-up': 'scaleUp 0.5s ease-out',
-				'fade-in-up': 'fadeInUp 0.6s ease-out',
-				'slide-up': 'slideUp 0.5s ease-out',
-				'slide-right': 'slideInRight 0.5s ease-out',
-				ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
-				marquee: 'marquee 25s linear infinite',
-				bounce: 'bounce 1s infinite',
-				'spin-slow': 'spin 3s linear infinite'
-			},
-			keyframes: {
-				fadeIn: {
-					'0%': {
-						opacity: '0'
-					},
-					'100%': {
-						opacity: '1'
-					}
-				},
-				fadeOut: {
-					'0%': {
-						opacity: '1'
-					},
-					'100%': {
-						opacity: '0'
-					}
-				},
-				scaleUp: {
-					'0%': {
-						transform: 'scale(0.8)',
-						opacity: '0'
-					},
-					'100%': {
-						transform: 'scale(1)',
-						opacity: '1'
-					}
-				},
-				fadeInUp: {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
-				},
-				slideUp: {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
-				},
-				slideInRight: {
-					'0%': {
-						opacity: '0',
-						transform: 'translateX(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateX(0)'
-					}
-				},
-				marquee: {
-					'0%': {
-						transform: 'translateX(0%)'
-					},
-					'100%': {
-						transform: 'translateX(-100%)'
-					}
-				},
-				bounce: {
-					'0%, 100%': {
-						transform: 'translateY(-25%)',
-						animationTimingFunction: 'cubic-bezier(0.8,0,1,1)'
-					},
-					'50%': {
-						transform: 'none',
-						animationTimingFunction: 'cubic-bezier(0,0,0.2,1)'
-					}
-				},
-				ping: {
-					'75%, 100%': {
-						transform: 'scale(2)',
-						opacity: '0'
-					}
-				}
-			}
+
 		},
 	},
 	plugins: [

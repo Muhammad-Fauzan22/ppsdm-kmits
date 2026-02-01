@@ -63,7 +63,7 @@ export async function getAssetConfig(): Promise<AssetConfig> {
 
     const configMap: Record<string, string> = {};
 
-    data?.forEach(item => {
+    data?.forEach((item: any) => {
         configMap[item.key] = getDirectLink(item.value);
     });
 
