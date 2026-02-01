@@ -3,13 +3,16 @@ import { createClient } from "@supabase/supabase-js";
 // import { generateJSON } from "@/lib/ai/groq"; // OLD SINGLE PROVIDER
 import { swarm } from "@/lib/ai/swarm"; // NEW SWARM ENGINE
 
-// Bypass RLS dengan Service Role Key
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Bypass RLS dengan Service Role Key - Init inside handler for build safety
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function POST(req: NextRequest) {
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
   try {
     const authHeader = req.headers.get("authorization");
     if (authHeader !== "Bearer internal-system") {

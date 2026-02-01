@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Line, LineChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from "recharts";
 
 interface GrowthChartProps {
@@ -7,7 +8,20 @@ interface GrowthChartProps {
     color?: string;
 }
 
+// Hook to handle client-side only rendering for charts
+function useClientOnly() {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    return mounted;
+}
+
 export function GrowthLineChart({ data, color = "#330066" }: GrowthChartProps) {
+    const mounted = useClientOnly();
+    
+    if (!mounted) {
+        return <div style={{ height: 200, width: '100%' }} className="bg-gray-100 animate-pulse rounded-lg" />;
+    }
+    
     return (
         <ResponsiveContainer width="100%" height={200} minWidth={0} minHeight={0}>
             <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -47,6 +61,12 @@ interface DimensionRadarProps {
 }
 
 export function DimensionRadarChart({ data, color = "#3B82F6" }: DimensionRadarProps) {
+    const mounted = useClientOnly();
+    
+    if (!mounted) {
+        return <div style={{ height: 280, width: '100%' }} className="bg-gray-100 animate-pulse rounded-lg" />;
+    }
+    
     return (
         <ResponsiveContainer width="100%" height={280} minWidth={0} minHeight={0}>
             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>

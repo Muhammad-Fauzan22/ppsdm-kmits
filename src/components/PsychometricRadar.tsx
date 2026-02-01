@@ -1,7 +1,15 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+// Hook to handle client-side only rendering for charts
+function useClientOnly() {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    return mounted;
+}
 
 const data = [
     { subject: 'Cognitive', A: 0, fullMark: 100 },
@@ -28,6 +36,8 @@ const getHealthColor = (score: number) => {
 };
 
 export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", description = "Analisis potensi diri mahasiswa" }: PsychometricRadarProps) {
+    const mounted = useClientOnly();
+    
     // Calculate average score
     const averageScore = data.reduce((acc, curr) => acc + curr.value, 0) / (data.length || 1);
     // Determine color based on average (normalizing to 100 scale if needed, assuming data values are roughly 0-100 or 0-150 based on fullMark)
@@ -38,6 +48,20 @@ export function PsychometricRadar({ data, title = "9 Dimensi Kecerdasan", descri
     // If values are ~100, then <40 is very low. 
     // Let's use the code provided by the user as a base.
     const radarColor = getHealthColor(averageScore);
+
+    if (!mounted) {
+        return (
+            <Card className="w-full h-full min-h-[400px]">
+                <CardHeader>
+                    <CardTitle>{title}</CardTitle>
+                    <CardDescription>{description}</CardDescription>
+                </CardHeader>
+                <CardContent className="h-[350px]">
+                    <div className="h-full w-full bg-gray-100 animate-pulse rounded-lg" />
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card className="w-full h-full min-h-[400px]">

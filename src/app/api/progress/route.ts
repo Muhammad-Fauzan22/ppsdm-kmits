@@ -5,6 +5,9 @@
  * Query params: timeRange (3m, 6m, 1y, all)
  */
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, requireAuth, handleSupabaseError } from '@/lib/supabase/server'
 import { progressQuerySchema, TIME_RANGES, type TimeRange, type Dimension } from '@/lib/db/schema'

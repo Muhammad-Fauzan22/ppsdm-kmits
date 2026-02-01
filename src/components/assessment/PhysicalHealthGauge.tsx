@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import { RadialBarChart, RadialBar, Legend, ResponsiveContainer, Tooltip, PolarAngleAxis } from 'recharts';
 import { Activity, Moon, Apple, Heart } from 'lucide-react';
 
@@ -12,13 +14,40 @@ interface PhysicalHealthGaugeProps {
     className?: string;
 }
 
+// Hook to handle client-side only rendering for charts
+function useClientOnly() {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    return mounted;
+}
+
 export const PhysicalHealthGauge: React.FC<PhysicalHealthGaugeProps> = ({ data, className }) => {
+    const mounted = useClientOnly();
     const chartData = [
         { name: 'Physical Activity', value: data.physicalActivity, fill: '#ef4444' },
         { name: 'Sleep Quality', value: data.sleepQuality, fill: '#8b5cf6' },
         { name: 'Nutrition', value: data.nutrition, fill: '#10b981' },
         { name: 'Vitality', value: data.vitality, fill: '#f59e0b' },
     ];
+
+    if (!mounted) {
+        return (
+            <div className={`bg-slate-900/50 border border-slate-700/50 rounded-2xl p-6 ${className}`}>
+                <div className="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                            <Heart className="w-6 h-6 text-red-500" />
+                            Physical Health Gauge
+                        </h3>
+                        <p className="text-sm text-slate-400 mt-1">
+                            Indikator vitalitas dan kesehatan fisik
+                        </p>
+                    </div>
+                </div>
+                <div className="h-[400px] bg-gray-800/50 animate-pulse rounded-lg" />
+            </div>
+        );
+    }
 
     return (
         <div className={`bg-slate-900/50 border border-slate-700/50 rounded-2xl p-6 ${className}`}>

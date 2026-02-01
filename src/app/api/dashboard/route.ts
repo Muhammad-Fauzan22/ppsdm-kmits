@@ -9,6 +9,9 @@
  * - Recent achievements
  */
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { NextResponse } from 'next/server'
 import { createClient, requireAuth, handleSupabaseError } from '@/lib/supabase/server'
 import { subDays, startOfDay } from 'date-fns'
