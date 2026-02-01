@@ -33,7 +33,11 @@ import {
   Settings,
   Zap,
   Award,
-  TrendingUp
+  TrendingUp,
+  Cloud,
+  CloudOff,
+  FolderOpen,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,6 +73,12 @@ interface Ebook {
   error_count: number;
   last_error: string | null;
   drive_url: string | null;
+  // Google Drive upload fields
+  drive_folder_id: string | null;
+  drive_folder_url: string | null;
+  drive_upload_status: 'pending' | 'uploading' | 'completed' | 'failed' | null;
+  drive_upload_progress: number | null;
+  drive_uploaded_at: string | null;
 }
 
 interface BatchJob {
@@ -212,7 +222,11 @@ export default function EbookProcessorPage() {
     avgQuality: ebooks.filter(e => e.quality_score).length > 0
       ? ebooks.filter(e => e.quality_score).reduce((acc, e) => acc + (e.quality_score || 0), 0) / 
         ebooks.filter(e => e.quality_score).length
-      : 0
+      : 0,
+    // Drive stats
+    driveCompleted: ebooks.filter(e => e.drive_upload_status === 'completed').length,
+    drivePending: ebooks.filter(e => !e.drive_upload_status || e.drive_upload_status === 'pending').length,
+    driveFailed: ebooks.filter(e => e.drive_upload_status === 'failed').length
   };
 
   // Start batch processing
@@ -304,7 +318,7 @@ export default function EbookProcessorPage() {
 
       toast({
         title: 'Success',
-        description: 'Cover fetch initiated'
+        description: 'Cover fetch started'
       });
 
     } catch (error) {
@@ -313,6 +327,84 @@ export default function EbookProcessorPage() {
         description: 'Failed to fetch cover',
         variant: 'destructive'
       });
+    }
+  };
+
+  // Sync ebook to Google Drive
+  const syncToDrive = async (ebookId: string) => {
+    try {
+      toast({
+        title: 'Syncing',
+        description: 'Starting Google Drive upload...'
+      });
+
+      const response = await fetch('/api/admin/sync-to-drive', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookId: ebookId })
+      });
+
+      if (!response.ok) throw new Error('Failed to sync to Drive');
+
+      const data = await response.json();
+
+      toast({
+        title: 'Success',
+        description: data.message || 'Drive sync started'
+      });
+
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to sync to Google Drive',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  // Batch sync all pending books to Drive
+  const batchSyncToDrive = async () => {
+    try {
+      toast({
+        title: 'Batch Sync',
+        description: 'Starting batch sync to Google Drive...'
+      });
+
+      const response = await fetch('/api/admin/sync-to-drive', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syncAll: true })
+      });
+
+      if (!response.ok) throw new Error('Failed to start batch sync');
+
+      const data = await response.json();
+
+      toast({
+        title: 'Success',
+        description: `Queued ${data.booksQueued} books for Drive sync`
+      });
+
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to start batch sync',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  // Get Drive status badge
+  const getDriveStatusBadge = (status: string | null) => {
+    switch (status) {
+      case 'completed':
+        return <Badge className="bg-green-100 text-green-700"><Cloud className="w-3 h-3 mr-1" /> Synced</Badge>;
+      case 'uploading':
+        return <Badge className="bg-blue-100 text-blue-700"><RotateCcw className="w-3 h-3 mr-1 animate-spin" /> Uploading</Badge>;
+      case 'failed':
+        return <Badge className="bg-red-100 text-red-700"><CloudOff className="w-3 h-3 mr-1" /> Failed</Badge>;
+      default:
+        return <Badge variant="outline" className="text-slate-500"><Cloud className="w-3 h-3 mr-1" /> Not Synced</Badge>;
     }
   };
 
@@ -383,6 +475,14 @@ export default function EbookProcessorPage() {
             >
               <Settings className="w-4 h-4 mr-2" />
               Settings
+            </Button>
+            <Button
+              variant="outline"
+              onClick={batchSyncToDrive}
+              className="border-indigo-300 text-indigo-700 hover:bg-indigo-50"
+            >
+              <Cloud className="w-4 h-4 mr-2" />
+              Sync to Drive
             </Button>
             <Button
               onClick={startBatchProcessing}
@@ -486,6 +586,21 @@ export default function EbookProcessorPage() {
                   <p className="text-2xl font-bold text-blue-600">{stats.avgQuality.toFixed(1)}</p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-blue-400" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-white border-indigo-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Drive Synced</p>
+                  <p className="text-2xl font-bold text-indigo-600">{stats.driveCompleted}</p>
+                  <p className="text-xs text-slate-500">
+                    {stats.drivePending} pending · {stats.driveFailed} failed
+                  </p>
+                </div>
+                <Cloud className="w-8 h-8 text-indigo-400" />
               </div>
             </CardContent>
           </Card>
@@ -657,6 +772,11 @@ export default function EbookProcessorPage() {
                           )}
                         </div>
                         
+                        {/* Drive Status */}
+                        <div className="mt-2">
+                          {getDriveStatusBadge(ebook.drive_upload_status)}
+                        </div>
+                        
                         {ebook.processing_progress > 0 && ebook.processing_progress < 100 && (
                           <Progress value={ebook.processing_progress} className="h-1 mt-3" />
                         )}
@@ -732,6 +852,25 @@ export default function EbookProcessorPage() {
                               }}
                             >
                               <ImageIcon className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className={ebook.drive_upload_status === 'completed' ? 'text-green-600' : 'text-slate-400'}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (ebook.drive_folder_url) {
+                                  window.open(ebook.drive_folder_url, '_blank');
+                                } else {
+                                  syncToDrive(ebook.id);
+                                }
+                              }}
+                            >
+                              {ebook.drive_upload_status === 'completed' ? (
+                                <FolderOpen className="w-4 h-4" />
+                              ) : (
+                                <Cloud className="w-4 h-4" />
+                              )}
                             </Button>
                           </div>
                         </div>

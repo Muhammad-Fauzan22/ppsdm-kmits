@@ -120,16 +120,33 @@ class EbookRecord:
 class BatchEbookProcessor:
     """
     Batch processor for ebooks using Grade A 15-layer pipeline
+    with Google Drive upload integration
     """
     
-    def __init__(self, target_quality: float = 90.0, max_workers: int = 3):
+    def __init__(self, target_quality: float = 90.0, max_workers: int = 3,
+                 enable_drive_upload: bool = True):
         self.target_quality = target_quality
         self.max_workers = max_workers
+        self.enable_drive_upload = enable_drive_upload
         self.books: List[EbookRecord] = []
         self.processed_count = 0
         self.failed_count = 0
         self.total_count = 0
         self.current_job_id: Optional[str] = None
+        
+        # Drive uploader instance
+        self.drive_uploader = None
+        if enable_drive_upload:
+            try:
+                from drive_uploader import DriveUploader
+                self.drive_uploader = DriveUploader()
+                if self.drive_uploader.service:
+                    logger.info("✓ Google Drive uploader initialized")
+                else:
+                    logger.warning("⚠ Google Drive authentication failed, uploads disabled")
+                    self.drive_uploader = None
+            except ImportError as e:
+                logger.warning(f"⚠ Drive uploader not available: {e}")
         
         # Track batch processing job
         self.job_stats = {
@@ -138,7 +155,9 @@ class BatchEbookProcessor:
             'books_processed': 0,
             'books_failed': 0,
             'average_quality_score': 0.0,
-            'total_processing_time': 0
+            'total_processing_time': 0,
+            'drive_uploads_completed': 0,
+            'drive_uploads_failed': 0
         }
         
     def load_csv(self) -> List[EbookRecord]:
@@ -270,6 +289,17 @@ class BatchEbookProcessor:
             result['processing_time'] = time.time() - start_time
             
             logger.info(f"✓ Completed: {book.title} (Score: {result['quality_score']:.1f}, Grade: {result['grade']})")
+            
+            # Step 5: Upload to Google Drive (if enabled)
+            if self.drive_uploader and self.enable_drive_upload:
+                logger.info(f"[Drive] Starting upload for: {book.title}")
+                drive_result = await self.upload_to_drive(book, book_output_dir, result)
+                result['drive_upload'] = drive_result
+                
+                if drive_result.get('success'):
+                    logger.info(f"✓ Drive upload complete: {drive_result.get('folder_url')}")
+                else:
+                    logger.warning(f"⚠ Drive upload failed: {drive_result.get('error')}")
             
         except Exception as e:
             logger.error(f"✗ Failed: {book.title} - {str(e)}")
@@ -420,6 +450,138 @@ class BatchEbookProcessor:
             logger.warning("Course generator not available")
             return {'success': False}
     
+    async def upload_to_drive(self, book: EbookRecord, output_dir: Path,
+                              process_result: Dict) -> Dict[str, Any]:
+        """
+        Upload processed book content to Google Drive
+        
+        Args:
+            book: Ebook record
+            output_dir: Local output directory
+            process_result: Processing result data
+            
+        Returns:
+            dict: Upload result with folder URL and file list
+        """
+        if not self.drive_uploader:
+            return {'success': False, 'error': 'Drive uploader not available'}
+        
+        try:
+            from drive_uploader import BookFolderStructure
+            
+            # Step 1: Create folder structure
+            folder_structure = self.drive_uploader.create_book_folder(
+                book_title=book.title,
+                book_id=book.id,
+                book_slug=book.slug
+            )
+            
+            if not folder_structure:
+                return {'success': False, 'error': 'Failed to create folder structure'}
+            
+            logger.info(f"  Created Drive folder: {folder_structure.root_folder_url}")
+            
+            # Step 2: Prepare content files
+            content_files = {
+                'lessons': [],
+                'quizzes': [],
+                'assignments': [],
+                'images': [],
+                'audio': [],
+                'videos': [],
+                'scorm': [],
+                'xapi': []
+            }
+            
+            # Scan output directory for content files
+            if output_dir.exists():
+                for file_path in output_dir.rglob('*'):
+                    if not file_path.is_file():
+                        continue
+                    
+                    # Categorize files
+                    file_str = str(file_path).lower()
+                    if 'lesson' in file_str and file_str.endswith('.md'):
+                        content_files['lessons'].append(str(file_path))
+                    elif 'quiz' in file_str and file_str.endswith('.json'):
+                        content_files['quizzes'].append(str(file_path))
+                    elif 'assignment' in file_str and file_str.endswith('.md'):
+                        content_files['assignments'].append(str(file_path))
+                    elif file_str.endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
+                        content_files['images'].append(str(file_path))
+                    elif file_str.endswith(('.mp3', '.wav', '.ogg', '.m4a')):
+                        content_files['audio'].append(str(file_path))
+                    elif file_str.endswith(('.mp4', '.webm', '.mov')):
+                        content_files['videos'].append(str(file_path))
+                    elif 'scorm' in file_str and file_str.endswith('.zip'):
+                        content_files['scorm'].append(str(file_path))
+                    elif 'xapi' in file_str and file_str.endswith('.json'):
+                        content_files['xapi'].append(str(file_path))
+            
+            # Step 3: Prepare book data
+            book_data = {
+                'id': book.id,
+                'title': book.title,
+                'author': book.author,
+                'category': book.category,
+                'cover_image_path': process_result.get('cover_image'),
+                'course': {},
+                'modules': [],
+                'quizzes': []
+            }
+            
+            # Load course.json if exists
+            course_json_path = output_dir / 'course.json'
+            if course_json_path.exists():
+                with open(course_json_path, 'r', encoding='utf-8') as f:
+                    book_data['course'] = json.load(f)
+            
+            # Load modules.json if exists
+            modules_json_path = output_dir / 'modules.json'
+            if modules_json_path.exists():
+                with open(modules_json_path, 'r', encoding='utf-8') as f:
+                    book_data['modules'] = json.load(f)
+            
+            # Step 4: Upload course package
+            upload_result = self.drive_uploader.upload_course_package(
+                book_data=book_data,
+                content_files=content_files,
+                folder_structure=folder_structure
+            )
+            
+            # Step 5: Save drive metadata to local file
+            drive_metadata = {
+                'book_id': book.id,
+                'book_title': book.title,
+                'folder_structure': folder_structure.to_dict(),
+                'upload_result': upload_result,
+                'uploaded_at': datetime.now().isoformat()
+            }
+            
+            metadata_path = output_dir / 'drive_metadata.json'
+            with open(metadata_path, 'w', encoding='utf-8') as f:
+                json.dump(drive_metadata, f, indent=2, ensure_ascii=False)
+            
+            # Update stats
+            if upload_result.get('error'):
+                self.job_stats['drive_uploads_failed'] += 1
+            else:
+                self.job_stats['drive_uploads_completed'] += 1
+            
+            return {
+                'success': True,
+                'folder_id': folder_structure.root_folder_id,
+                'folder_url': folder_structure.root_folder_url,
+                'files_uploaded': len(upload_result.get('uploaded_files', [])),
+                'total_size': upload_result.get('total_size', 0),
+                'metadata_path': str(metadata_path)
+            }
+            
+        except Exception as e:
+            logger.error(f"Drive upload error: {e}")
+            self.job_stats['drive_uploads_failed'] += 1
+            return {'success': False, 'error': str(e)}
+    
     async def process_batch(self, limit: Optional[int] = None, priority_only: bool = False) -> Dict[str, Any]:
         """
         Process batch of ebooks
@@ -513,15 +675,20 @@ async def main():
     """Main entry point"""
     import argparse
     
-    parser = argparse.ArgumentParser(description='Batch Process Ebooks')
+    parser = argparse.ArgumentParser(description='Batch Process Ebooks with Drive Upload')
     parser.add_argument('--limit', type=int, help='Limit number of books to process')
     parser.add_argument('--priority-only', action='store_true', help='Process only priority books')
     parser.add_argument('--target-quality', type=float, default=90.0, help='Target quality score')
     parser.add_argument('--status', action='store_true', help='Show current status')
+    parser.add_argument('--disable-drive-upload', action='store_true',
+                        help='Disable Google Drive upload')
     
     args = parser.parse_args()
     
-    processor = BatchEbookProcessor(target_quality=args.target_quality)
+    processor = BatchEbookProcessor(
+        target_quality=args.target_quality,
+        enable_drive_upload=not args.disable_drive_upload
+    )
     
     if args.status:
         processor.load_csv()
@@ -535,11 +702,24 @@ async def main():
         priority_only=args.priority_only
     )
     
-    print(f"\n✅ Batch processing complete!")
-    print(f"📚 Total: {result['total']}")
-    print(f"✓ Processed: {result['processed']}")
+    print(f"\n{'='*60}")
+    print(f"✅ BATCH PROCESSING COMPLETE")
+    print(f"{'='*60}")
+    print(f"📚 Total Books: {result['total']}")
+    print(f"✓ Successfully Processed: {result['processed']}")
     print(f"✗ Failed: {result['failed']}")
-    print(f"⭐ Average Quality: {result['average_quality']:.1f}")
+    print(f"⭐ Average Quality Score: {result['average_quality']:.1f}")
+    
+    # Show Drive upload stats if enabled
+    if processor.enable_drive_upload and processor.drive_uploader:
+        drive_completed = processor.job_stats.get('drive_uploads_completed', 0)
+        drive_failed = processor.job_stats.get('drive_uploads_failed', 0)
+        print(f"\n☁️  Google Drive Uploads:")
+        print(f"   ✓ Completed: {drive_completed}")
+        if drive_failed > 0:
+            print(f"   ✗ Failed: {drive_failed}")
+    
+    print(f"{'='*60}")
 
 
 if __name__ == "__main__":

@@ -8,6 +8,8 @@ lxml>=4.9.3
 
 # APIs
 google-api-python-client>=2.108.0
+google-auth>=2.22.0
+google-auth-oauthlib>=1.0.0
 
 # Database
 supabase>=2.0.0

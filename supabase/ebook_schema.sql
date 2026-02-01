@@ -504,6 +504,68 @@ ALTER PUBLICATION supabase_realtime ADD TABLE batch_processing_jobs;
 ALTER PUBLICATION supabase_realtime ADD TABLE courses_from_ebooks;
 
 -- ============================================================
+-- GOOGLE DRIVE INTEGRATION
+-- ============================================================
+
+-- Add Drive columns to ebooks table
+ALTER TABLE ebooks 
+    ADD COLUMN IF NOT EXISTS drive_folder_id TEXT,
+    ADD COLUMN IF NOT EXISTS drive_folder_url TEXT,
+    ADD COLUMN IF NOT EXISTS drive_upload_status TEXT DEFAULT 'pending',
+    ADD COLUMN IF NOT EXISTS drive_uploaded_at TIMESTAMPTZ,
+    ADD COLUMN IF NOT EXISTS drive_upload_progress INTEGER DEFAULT 0;
+
+-- Add Drive content URL to courses_from_ebooks table
+ALTER TABLE courses_from_ebooks
+    ADD COLUMN IF NOT EXISTS drive_content_url TEXT,
+    ADD COLUMN IF NOT EXISTS drive_folder_id TEXT,
+    ADD COLUMN IF NOT EXISTS drive_sync_status TEXT DEFAULT 'not_synced',
+    ADD COLUMN IF NOT EXISTS drive_last_sync_at TIMESTAMPTZ;
+
+-- Create upload tracking table
+CREATE TABLE IF NOT EXISTS ebook_upload_tracking (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    book_id UUID REFERENCES ebooks(id) ON DELETE CASCADE,
+    
+    -- File info
+    file_name TEXT NOT NULL,
+    file_path TEXT,
+    file_size BIGINT,
+    mime_type TEXT,
+    
+    -- Upload status
+    status TEXT DEFAULT 'pending', -- pending, uploading, completed, failed, skipped
+    progress INTEGER DEFAULT 0, -- 0-100
+    
+    -- Drive info
+    drive_file_id TEXT,
+    drive_file_url TEXT,
+    drive_folder_id TEXT,
+    
+    -- Error tracking
+    error_message TEXT,
+    attempts INTEGER DEFAULT 0,
+    max_attempts INTEGER DEFAULT 3,
+    
+    -- Timestamps
+    started_at TIMESTAMPTZ,
+    completed_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Create index on book_id for faster queries
+CREATE INDEX IF NOT EXISTS idx_upload_tracking_book_id ON ebook_upload_tracking(book_id);
+CREATE INDEX IF NOT EXISTS idx_upload_tracking_status ON ebook_upload_tracking(status);
+
+-- Trigger for updated_at on upload tracking
+CREATE TRIGGER update_upload_tracking_updated_at BEFORE UPDATE ON ebook_upload_tracking
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Add to realtime
+ALTER PUBLICATION supabase_realtime ADD TABLE ebook_upload_tracking;
+
+-- ============================================================
 -- ROW LEVEL SECURITY POLICIES
 -- ============================================================
 
