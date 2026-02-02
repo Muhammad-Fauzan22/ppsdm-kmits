@@ -28,6 +28,8 @@ export const ANIMATION_CONFIG = {
   easeAtEnds: true, // Slow down at endpoints for smooth reversal
   easeDuration: 3, // Number of frames to ease at start/end
   autoPlay: true, // Auto-start animation
+  midPoint: 40, // Pivot frame for complex boomerang pattern
+  pattern: "complex" as const, // 'simple' | 'wave' | 'complex'
 };
 
 // Priority frames for initial loading (every 10th frame for quick preview)

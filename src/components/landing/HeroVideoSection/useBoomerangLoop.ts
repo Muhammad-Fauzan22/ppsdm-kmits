@@ -5,14 +5,17 @@ import { useState, useEffect, useRef, useCallback } from "react";
 interface BoomerangLoopConfig {
   totalFrames: number;
   fps?: number;
+  midPoint?: number; // Frame 40 (pivot point)
   easeAtEnds?: boolean;
   easeDuration?: number;
   autoPlay?: boolean;
+  pattern?: "simple" | "wave" | "complex";
 }
 
 interface BoomerangLoopReturn {
   currentFrame: number;
-  direction: "forward" | "reverse";
+  phase: "forward-1" | "forward-2" | "backward-1" | "backward-2" | "forward" | "reverse";
+  progress: number;
   isPlaying: boolean;
   play: () => void;
   pause: () => void;
@@ -21,47 +24,28 @@ interface BoomerangLoopReturn {
 }
 
 /**
- * Custom hook for boomerang loop animation
- * Creates seamless forward-reverse-loop animation for image sequences
+ * Enhanced boomerang loop with multiple patterns:
+ * - simple: 1→80→1 (basic forward-reverse)
+ * - wave: 1→40→80→40 (stop at mid, oscillate)
+ * - complex: 1→40→80→40→1 (full pattern with restart) - DEFAULT
  */
 export function useBoomerangLoop({
   totalFrames,
-  fps = 30,
+  fps = 24,
+  midPoint = 40,
   easeAtEnds = true,
-  easeDuration = 5,
+  easeDuration = 3,
   autoPlay = true,
+  pattern = "complex",
 }: BoomerangLoopConfig): BoomerangLoopReturn {
   const [currentFrame, setCurrentFrame] = useState(0);
-  const [direction, setDirection] = useState<"forward" | "reverse">("forward");
+  const [phase, setPhase] = useState<"forward-1" | "forward-2" | "backward-1" | "backward-2" | "forward" | "reverse">("forward-1");
+  const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoPlay);
-  
+
   const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
   const baseFrameInterval = 1000 / fps;
-
-  // Calculate eased frame interval for smoother endpoints
-  const getFrameInterval = useCallback(
-    (frame: number) => {
-      if (!easeAtEnds) return baseFrameInterval;
-
-      // Ease at start (frames 0 to easeDuration)
-      if (frame < easeDuration) {
-        const progress = frame / easeDuration;
-        const easeMultiplier = 1 + (1 - progress) * 0.5; // Slow down by up to 50%
-        return baseFrameInterval * easeMultiplier;
-      }
-
-      // Ease at end (frames totalFrames - easeDuration to totalFrames)
-      if (frame > totalFrames - easeDuration) {
-        const progress = (totalFrames - frame) / easeDuration;
-        const easeMultiplier = 1 + (1 - progress) * 0.5;
-        return baseFrameInterval * easeMultiplier;
-      }
-
-      return baseFrameInterval;
-    },
-    [baseFrameInterval, easeAtEnds, easeDuration, totalFrames]
-  );
 
   const animate = useCallback(
     (timestamp: number) => {
@@ -70,30 +54,92 @@ export function useBoomerangLoop({
       }
 
       const delta = timestamp - lastTimeRef.current;
-      const frameInterval = getFrameInterval(currentFrame);
+      const frameInterval = baseFrameInterval;
 
       if (delta >= frameInterval) {
         setCurrentFrame((prev) => {
-          if (direction === "forward") {
-            if (prev >= totalFrames - 1) {
-              setDirection("reverse");
-              return prev - 1;
+          let nextFrame = prev;
+          let nextPhase = phase;
+
+          if (pattern === "complex") {
+            // Pattern: 1→40→80→40→1
+            switch (phase) {
+              case "forward-1": // 1 → 40
+                nextFrame = prev + 1;
+                if (prev >= midPoint - 1) {
+                  nextPhase = "forward-2";
+                }
+                break;
+              case "forward-2": // 40 → 80
+                nextFrame = prev + 1;
+                if (prev >= totalFrames - 1) {
+                  nextPhase = "backward-1";
+                }
+                break;
+              case "backward-1": // 80 → 40
+                nextFrame = prev - 1;
+                if (prev <= midPoint) {
+                  nextPhase = "backward-2";
+                }
+                break;
+              case "backward-2": // 40 → 1
+                nextFrame = prev - 1;
+                if (prev <= 0) {
+                  nextPhase = "forward-1";
+                  nextFrame = 0;
+                }
+                break;
             }
-            return prev + 1;
+          } else if (pattern === "wave") {
+            // Pattern: 1→40→80→40→1 (continuous wave)
+            switch (phase) {
+              case "forward-1": // 1 → 40
+                nextFrame = prev + 1;
+                if (prev >= midPoint - 1) {
+                  nextPhase = "forward-2";
+                }
+                break;
+              case "forward-2": // 40 → 80
+                nextFrame = prev + 1;
+                if (prev >= totalFrames - 1) {
+                  nextPhase = "backward-2";
+                }
+                break;
+              case "backward-2": // 80 → 40
+                nextFrame = prev - 1;
+                if (prev <= midPoint) {
+                  nextPhase = "forward-1";
+                }
+                break;
+              default:
+                nextPhase = "forward-1";
+            }
           } else {
-            if (prev <= 0) {
-              setDirection("forward");
-              return prev + 1;
+            // Simple pattern: 1→80→1
+            if (phase === "forward") {
+              nextFrame = prev + 1;
+              if (prev >= totalFrames - 1) {
+                nextPhase = "reverse";
+              }
+            } else {
+              nextFrame = prev - 1;
+              if (prev <= 0) {
+                nextPhase = "forward";
+                nextFrame = 0;
+              }
             }
-            return prev - 1;
           }
+
+          setPhase(nextPhase);
+          setProgress((nextFrame / totalFrames) * 100);
+          return nextFrame;
         });
         lastTimeRef.current = timestamp;
       }
 
       rafRef.current = requestAnimationFrame(animate);
     },
-    [direction, totalFrames, currentFrame, getFrameInterval]
+    [phase, totalFrames, midPoint, pattern, baseFrameInterval]
   );
 
   useEffect(() => {
@@ -121,7 +167,7 @@ export function useBoomerangLoop({
 
   const reset = useCallback(() => {
     setCurrentFrame(0);
-    setDirection("forward");
+    setPhase("forward-1");
     lastTimeRef.current = 0;
   }, []);
 
@@ -131,7 +177,8 @@ export function useBoomerangLoop({
 
   return {
     currentFrame,
-    direction,
+    phase,
+    progress,
     isPlaying,
     play,
     pause,

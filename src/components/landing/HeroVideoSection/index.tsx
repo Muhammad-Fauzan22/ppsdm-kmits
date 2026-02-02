@@ -57,12 +57,14 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
     }, []),
   });
 
-  // Boomerang animation loop
-  const { currentFrame, direction, isPlaying, pause, play } = useBoomerangLoop({
+  // Boomerang animation loop with complex pattern: 1→40→80→40→1
+  const { currentFrame, phase, progress: animationProgress, isPlaying, pause, play } = useBoomerangLoop({
     totalFrames: TOTAL_FRAMES,
     fps: ANIMATION_CONFIG.fps,
+    midPoint: ANIMATION_CONFIG.midPoint,
     easeAtEnds: ANIMATION_CONFIG.easeAtEnds,
     easeDuration: ANIMATION_CONFIG.easeDuration,
+    pattern: ANIMATION_CONFIG.pattern,
     autoPlay: !isReducedMotion && priorityLoaded,
   });
 
@@ -145,6 +147,27 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#070B14] via-[#070B14]/40 to-transparent z-[5]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#070B14]/60 via-transparent to-transparent z-[5]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070B14_80%)] z-[5]" />
+        
+        {/* Phase indicator visualization */}
+        {priorityLoaded && (
+          <div className="absolute top-24 left-1/2 -translate-x-1/2 z-[6] flex items-center gap-1">
+            {["forward-1", "forward-2", "backward-1", "backward-2"].map((p, i) => (
+              <motion.div
+                key={p}
+                initial={false}
+                animate={{ 
+                  scale: phase === p ? 1.2 : 0.8,
+                  opacity: phase === p ? 1 : 0.3,
+                }}
+                className={`w-2 h-2 rounded-full ${
+                  p.startsWith("forward") 
+                    ? "bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]" 
+                    : "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Content Overlay */}
@@ -269,9 +292,25 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
 
       {/* Debug info (development only) */}
       {process.env.NODE_ENV === "development" && (
-        <div className="absolute bottom-4 right-4 z-50 text-xs font-mono text-white/30 bg-black/50 px-2 py-1 rounded">
-          Frame: {currentFrame + 1}/{TOTAL_FRAMES} | Dir: {direction} |
-          Loaded: {loadedCount}/{totalCount}
+        <div className="absolute bottom-4 right-4 z-50 text-xs font-mono text-white/30 bg-black/50 px-3 py-2 rounded backdrop-blur-md">
+          <div className="flex items-center gap-2">
+            <span>Frame: {currentFrame + 1}/{TOTAL_FRAMES}</span>
+            <span className={`px-2 py-0.5 rounded text-[10px] ${
+              phase.startsWith("forward") ? "bg-cyan-500/30 text-cyan-300" : "bg-amber-500/30 text-amber-300"
+            }`}>
+              {phase.replace("-", " ").toUpperCase()}
+            </span>
+          </div>
+          <div className="mt-1 text-[10px]">
+            Loaded: {loadedCount}/{totalCount}
+          </div>
+          {/* Phase progress bar */}
+          <div className="mt-1 w-24 h-1 bg-white/10 rounded overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-cyan-500 to-amber-500"
+              style={{ width: `${animationProgress}%` }}
+            />
+          </div>
         </div>
       )}
     </section>
