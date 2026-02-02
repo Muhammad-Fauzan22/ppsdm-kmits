@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { HeroVideoSection } from "@/components/landing/HeroVideoSection";
 
 const navLinks = [
   { href: "#methodology", label: "Metodologi" },
@@ -76,56 +77,6 @@ function Header() {
         )}
       </AnimatePresence>
     </header>
-  );
-}
-
-function HeroSection() {
-  return (
-    <section className="relative min-h-[92vh] flex flex-col items-center justify-center px-6 py-20 text-center overflow-hidden its-gradient">
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-its-blue/30 rounded-full blur-[150px] pointer-events-none"></div>
-      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-blue/10 px-4 py-1.5 text-xs font-semibold text-brand-accent backdrop-blur-md mb-8 animate-float">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
-          </span>
-          Join 12,450+ ITS Students Shaping the Future
-        </motion.div>
-        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-black font-heading tracking-tighter text-white leading-[1.05] mb-6 drop-shadow-2xl">
-          Elevate Your <br /><span className="gradient-text">Human Capital</span>
-        </motion.h1>
-        <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed mb-10">
-          Platform pengembangan terpadu berbasis data untuk mahasiswa ITS. Bangun portofolio kompetensi melalui asesmen presisi, roadmap terukur, dan bimbingan mentor eksklusif.
-        </motion.p>
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
-          <Link href="/try-assessment" className="w-full sm:w-auto px-8 py-4 bg-white text-its-blue font-bold rounded-2xl hover:bg-brand-accent hover:text-its-dark transition-all hover:scale-105 shadow-2xl shadow-brand-accent/20 flex items-center justify-center gap-2 text-lg group">
-            Mulai Assessment Gratis
-            <span className="material-symbols-outlined group-hover:rotate-12 transition-transform">bolt</span>
-          </Link>
-          <button className="w-full sm:w-auto px-8 py-4 glass-card text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-lg border-white/20 hover:border-brand-accent/50 group">
-            <span className="material-symbols-outlined group-hover:text-brand-accent transition-colors">play_circle</span>
-            Tonton Demo
-          </button>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mt-24 grid grid-cols-3 gap-8 md:gap-20 border-t border-white/5 pt-12 px-8 rounded-3xl bg-white/[0.02] backdrop-blur-sm">
-          <div className="flex flex-col items-center gap-1 group">
-            <span className="text-3xl md:text-4xl font-bold text-white group-hover:text-brand-accent transition-colors">9</span>
-            <span className="text-[10px] md:text-xs uppercase tracking-widest font-bold text-slate-500">Dimensi Utama</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 group relative">
-            <div className="absolute -left-4 md:-left-10 top-1/2 -translate-y-1/2 w-px h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-            <div className="absolute -right-4 md:-right-10 top-1/2 -translate-y-1/2 w-px h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-            <span className="text-3xl md:text-4xl font-bold text-white group-hover:text-its-gold transition-colors">50+</span>
-            <span className="text-[10px] md:text-xs uppercase tracking-widest font-bold text-slate-500">Mentors</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 group">
-            <span className="text-3xl md:text-4xl font-bold text-white group-hover:text-brand-accent transition-colors">100%</span>
-            <span className="text-[10px] md:text-xs uppercase tracking-widest font-bold text-slate-500">Kurikulum ITS</span>
-          </div>
-        </motion.div>
-      </div>
-    </section>
   );
 }
 
@@ -361,7 +312,7 @@ export default function LandingPage() {
       <div className="relative flex min-h-screen w-full flex-col">
         <Header />
         <main className="flex-1 pt-20">
-          <HeroSection />
+          <HeroVideoSection />
           <MethodologySection />
           <DimensionsSection />
           <MissionControlSection />
