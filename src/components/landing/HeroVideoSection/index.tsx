@@ -102,25 +102,10 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
                   "radial-gradient(ellipse at center, #0a1628 0%, #070B14 100%)",
               }}
             >
-              {/* Animated loading orb */}
+            {/* Simple loading indicator */}
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 animate-pulse shadow-2xl shadow-amber-500/50" />
-                <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-tr from-cyan-500 to-cyan-300 animate-ping opacity-30" />
-                
-                {/* Loading progress */}
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-center">
-                  <div className="text-xs text-cyan-400 font-mono mb-2">
-                    {Math.round(progress)}%
-                  </div>
-                  <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-cyan-500 to-amber-500"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${progress}%` }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </div>
-                </div>
+                <div className="w-16 h-16 rounded-full bg-cyan-500/20 animate-pulse" />
+                <div className="absolute inset-0 w-16 h-16 rounded-full border-2 border-cyan-500/30 border-t-cyan-500 animate-spin" />
               </div>
             </motion.div>
           )}
@@ -147,27 +132,6 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#070B14] via-[#070B14]/40 to-transparent z-[5]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#070B14]/60 via-transparent to-transparent z-[5]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070B14_80%)] z-[5]" />
-        
-        {/* Phase indicator visualization */}
-        {priorityLoaded && (
-          <div className="absolute top-24 left-1/2 -translate-x-1/2 z-[6] flex items-center gap-1">
-            {["forward-1", "forward-2", "backward-1", "backward-2"].map((p, i) => (
-              <motion.div
-                key={p}
-                initial={false}
-                animate={{ 
-                  scale: phase === p ? 1.2 : 0.8,
-                  opacity: phase === p ? 1 : 0.3,
-                }}
-                className={`w-2 h-2 rounded-full ${
-                  p.startsWith("forward") 
-                    ? "bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]" 
-                    : "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
-                }`}
-              />
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Content Overlay */}
