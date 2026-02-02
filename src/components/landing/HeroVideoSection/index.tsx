@@ -128,13 +128,17 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
           </motion.div>
         )}
 
-        {/* Gradient overlays for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#070B14] via-[#070B14]/40 to-transparent z-[5]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#070B14]/60 via-transparent to-transparent z-[5]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070B14_80%)] z-[5]" />
-      </div>
+        {/* Gradient overlays container */}
+        <div className="absolute inset-0 z-[5]">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#070B14] via-[#070B14]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#070B14]/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070B14_80%)]" />
+        </div>
+        
+        </div>
+        {/* End Video Background Layer */}
 
-      {/* Content Overlay */}
+        {/* Content Overlay */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
         {/* Badge */}
         <motion.div
