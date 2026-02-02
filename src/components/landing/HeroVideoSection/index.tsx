@@ -1,21 +1,15 @@
 "use client";
 
-import { useMemo, useCallback, useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ImageSequencePlayer } from "./ImageSequencePlayer";
 import { useBoomerangLoop } from "./useBoomerangLoop";
 import { useImagePreloader } from "./useImagePreloader";
-import { useScrollAnimation, NARRATIVE_PHASES } from "./useScrollAnimation";
-import { InteractiveHotspots } from "./InteractiveHotspots";
-import { VideoOverlay } from "./VideoOverlay";
-import { ParticleSystem } from "./ParticleSystem";
 import {
   getAllFramePaths,
   TOTAL_FRAMES,
   ANIMATION_CONFIG,
-  PRIORITY_FRAME_INDICES,
-  PERFORMANCE_PRESETS,
 } from "./constants";
 
 interface HeroVideoSectionProps {
@@ -29,9 +23,6 @@ interface HeroVideoSectionProps {
 export function HeroVideoSection({ className }: HeroVideoSectionProps) {
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [showLoadingIndicator, setShowLoadingIndicator] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const [performanceMode, setPerformanceMode] = useState<"low" | "medium" | "high">("medium");
-  const sectionRef = useRef<HTMLElement>(null);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -43,82 +34,34 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  // Detect mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Detect performance mode based on device capabilities
-  useEffect(() => {
-    const detectPerformance = () => {
-      const connection = (navigator as any).connection;
-      const memory = (navigator as any).deviceMemory;
-      
-      if (connection) {
-        if (connection.effectiveType === '2g' || connection.effectiveType === '3g') {
-          setPerformanceMode("low");
-          return;
-        }
-      }
-      
-      if (memory && memory < 4) {
-        setPerformanceMode("low");
-        return;
-      }
-      
-      setPerformanceMode("high");
-    };
-    
-    detectPerformance();
-  }, []);
-
-  // Scroll animation hook
-  const scrollAnimation = useScrollAnimation({
-    sectionRef,
-    totalHeight: isMobile ? 3000 : 4000,
-    smoothFactor: 0.08,
-  });
-
   // Generate frame paths
-  const framePaths = useMemo(() => getAllFramePaths(), []);
-
-  // Get performance config
-  const perfConfig = PERFORMANCE_PRESETS[performanceMode];
+  const framePaths = getAllFramePaths();
 
   // Preload images with priority frames first
   const {
     images,
     loadedCount,
-    totalCount,
-    isLoading,
-    progress,
-    priorityLoaded,
   } = useImagePreloader({
     imagePaths: framePaths,
-    priorityIndices: PRIORITY_FRAME_INDICES,
-    skipFrames: perfConfig.skipFrames,
-    onProgress: useCallback((loaded: number, total: number) => {
+    priorityIndices: [], // Disabled priority loading
+    skipFrames: 0, // Disabled performance-based skipping
+    onProgress: (loaded: number, total: number) => {
       // Hide loading indicator once enough frames loaded
       if (loaded > 5) {
         setShowLoadingIndicator(false);
       }
-    }, []),
+    },
   });
 
   // Boomerang animation loop with complex pattern: 1→40→80→40→1
-  const { currentFrame, phase, progress: animationProgress, isPlaying, pause, play } = useBoomerangLoop({
+  const { currentFrame, phase, pause, play } = useBoomerangLoop({
     totalFrames: TOTAL_FRAMES,
     fps: ANIMATION_CONFIG.fps,
     midPoint: ANIMATION_CONFIG.midPoint,
     easeAtEnds: ANIMATION_CONFIG.easeAtEnds,
     easeDuration: ANIMATION_CONFIG.easeDuration,
     pattern: ANIMATION_CONFIG.pattern,
-    autoPlay: !isReducedMotion && priorityLoaded,
+    autoPlay: !isReducedMotion, // Always autoplay
   });
 
   // Handle visibility change (pause when tab hidden)
@@ -138,72 +81,57 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
 
   return (
     <section
-      ref={sectionRef}
       className={`relative min-h-screen flex flex-col items-center justify-center overflow-hidden ${className}`}
-      style={{
-        height: isMobile ? "400vh" : "500vh",
-      }}
     >
-      {/* Sticky container for scroll-based animation */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      {/* Container for video background */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
         {/* Video Background Layer */}
         <div className="absolute inset-0 z-0">
-          {/* Loading Placeholder */}
-          <AnimatePresence>
-            {(showLoadingIndicator || !priorityLoaded) && (
-              <motion.div
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8 }}
-                className="absolute inset-0 z-10 flex items-center justify-center"
-                style={{
-                  background:
-                    "radial-gradient(ellipse at center, #0a1628 0%, #070B14 100%)",
-                }}
-              >
-                {/* Loading spinner with phase indicator */}
-                <div className="relative flex flex-col items-center gap-4">
-                  <div className="relative">
-                    <div 
-                      className="w-20 h-20 rounded-full animate-pulse"
-                      style={{
-                        background: `radial-gradient(circle, ${NARRATIVE_PHASES[0].color}30 0%, transparent 70%)`,
-                      }}
-                    />
-                    <div 
-                      className="absolute inset-0 w-20 h-20 rounded-full border-4 border-white/10 border-t-current animate-spin"
-                      style={{ color: NARRATIVE_PHASES[0].color }}
-                    />
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <p className="text-sm text-slate-400">Memuat pengalaman...</p>
-                    <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full"
-                        style={{
-                          background: `linear-gradient(90deg, ${NARRATIVE_PHASES[0].color}, ${NARRATIVE_PHASES[1].color})`,
-                        }}
-                        animate={{ x: ["-100%", "100%"] }}
-                        transition={{ duration: 1, repeat: Infinity }}
-                      />
-                    </div>
-                  </div>
+        {/* Loading Placeholder */}
+        {showLoadingIndicator && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 z-10 flex items-center justify-center"
+            style={{
+              background:
+                  "radial-gradient(ellipse at center, #0a1628 0%, #070B14 100%)",
+            }}
+          >
+            {/* Loading spinner with phase indicator */}
+            <div className="relative flex flex-col items-center gap-4">
+              <div className="relative">
+                <div 
+                  className="w-20 h-20 rounded-full animate-pulse"
+                  style={{
+                    background: `radial-gradient(circle, #06b6d430 0%, transparent 70%)`,
+                  }}
+                />
+                <div 
+                  className="absolute inset-0 w-20 h-20 rounded-full border-4 border-white/10 border-t-current animate-spin"
+                  style={{ color: "#06b6d4" }}
+                />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-sm text-slate-400">Memuat pengalaman...</p>
+                <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full"
+                    style={{
+                      background: `linear-gradient(90deg, #06b6d4, #3b82f6)`,
+                    }}
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{ duration: 1, repeat: Infinity }}
+                  />
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Particle System Background */}
-          {!isReducedMotion && (
-            <ParticleSystem
-              currentPhase={scrollAnimation.currentPhase.id}
-              scrollProgress={scrollAnimation.scrollProgress}
-              isMobile={isMobile}
-            />
-          )}
+              </div>
+            </div>
+          </motion.div>
+        )}
 
           {/* Image Sequence Player */}
-          {priorityLoaded && (
+          {images.length > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -226,23 +154,8 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
         </div>
         {/* End Video Background Layer */}
 
-        {/* Interactive Hotspots Layer */}
-        <InteractiveHotspots
-          currentPhase={scrollAnimation.currentPhase.id}
-          scrollProgress={scrollAnimation.scrollProgress}
-          isMobile={isMobile}
-        />
-
-        {/* Video Overlay Layer */}
-        <VideoOverlay
-          currentPhase={scrollAnimation.currentPhase.id}
-          scrollProgress={scrollAnimation.scrollProgress}
-          phaseProgress={scrollAnimation.phaseProgress}
-          isMobile={isMobile}
-        />
-
         {/* Content Overlay */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
+      <div className="relative z-20 max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -342,26 +255,6 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-        style={{ opacity: 1 - scrollAnimation.scrollProgress * 2 }}
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center gap-2 text-white/50"
-        >
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <span className="material-symbols-outlined text-xl">
-            keyboard_arrow_down
-          </span>
-        </motion.div>
-      </motion.div>
-
       {/* Debug info (development only) */}
       {process.env.NODE_ENV === "development" && (
         <div className="absolute bottom-4 right-4 z-50 text-xs font-mono text-white/30 bg-black/50 px-3 py-2 rounded backdrop-blur-md">
@@ -372,34 +265,6 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
             }`}>
               {phase.replace("-", " ").toUpperCase()}
             </span>
-            <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/30 text-emerald-300">
-              {scrollAnimation.currentPhase.name}
-            </span>
-          </div>
-          <div className="mt-1 text-[10px] flex gap-2">
-            <span>Scroll: {(scrollAnimation.scrollProgress * 100).toFixed(1)}%</span>
-            <span>Phase: {(scrollAnimation.phaseProgress * 100).toFixed(1)}%</span>
-            <span>Perf: {performanceMode}</span>
-          </div>
-          {/* Phase progress bar */}
-          <div className="mt-1 w-24 h-1 bg-white/10 rounded overflow-hidden flex">
-            {NARRATIVE_PHASES.map((phase) => (
-              <div
-                key={phase.id}
-                className="flex-1 h-full border-r border-white/5"
-                style={{
-                  backgroundColor: scrollAnimation.currentPhase.id === phase.id 
-                    ? phase.color 
-                    : scrollAnimation.scrollProgress > phase.endProgress 
-                      ? phase.color 
-                      : "transparent",
-                  opacity: scrollAnimation.currentPhase.id === phase.id ? 1 : 0.3,
-                }}
-              />
-            ))}
-          </div>
-          <div className="mt-1 text-[10px]">
-            Loaded: {loadedCount}/{totalCount}
           </div>
         </div>
       )}
