@@ -11,7 +11,7 @@ interface PreloaderConfig {
 }
 
 interface PreloaderReturn {
-  images: (HTMLImageElement | null)[];
+  images: (ImageBitmap | null)[];
   loadedCount: number;
   totalCount: number;
   isLoading: boolean;
@@ -21,8 +21,8 @@ interface PreloaderReturn {
 }
 
 /**
- * Custom hook for preloading image sequences with priority support
- * Loads critical frames first for faster initial display
+ * Custom hook for preloading image sequences with ImageBitmap support
+ * ImageBitmap provides better performance than HTMLImageElement for canvas rendering
  */
 export function useImagePreloader({
   imagePaths,
@@ -31,7 +31,7 @@ export function useImagePreloader({
   onProgress,
   onComplete,
 }: PreloaderConfig): PreloaderReturn {
-  const [images, setImages] = useState<(HTMLImageElement | null)[]>([]);
+  const [images, setImages] = useState<(ImageBitmap | null)[]>([]);
   const [loadedCount, setLoadedCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [priorityLoaded, setPriorityLoaded] = useState(false);
@@ -39,22 +39,28 @@ export function useImagePreloader({
   
   const loadedCountRef = useRef(0);
   const priorityLoadedRef = useRef(0);
+  const imageCacheRef = useRef<Map<string, ImageBitmap>>(new Map());
 
   const loadImage = useCallback(
-    (src: string, index: number): Promise<HTMLImageElement> => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        
-        img.onload = () => {
-          resolve(img);
-        };
-        
-        img.onerror = () => {
-          reject(new Error(`Failed to load image: ${src}`));
-        };
-        
-        img.src = src;
+    async (src: string, index: number): Promise<ImageBitmap> => {
+      // Check cache first
+      if (imageCacheRef.current.has(src)) {
+        return imageCacheRef.current.get(src)!;
+      }
+
+      // Load image and convert to ImageBitmap
+      const response = await fetch(src);
+      const blob = await response.blob();
+      const bitmap = await createImageBitmap(blob, {
+        imageOrientation: "from-image",
+        premultiplyAlpha: "premultiply",
+        colorSpaceConversion: "default",
       });
+
+      // Cache the bitmap
+      imageCacheRef.current.set(src, bitmap);
+      
+      return bitmap;
     },
     []
   );
@@ -62,7 +68,7 @@ export function useImagePreloader({
   useEffect(() => {
     if (imagePaths.length === 0) return;
 
-    const imageArray: (HTMLImageElement | null)[] = new Array(imagePaths.length).fill(null);
+    const imageArray: (ImageBitmap | null)[] = new Array(imagePaths.length).fill(null);
     let cancelled = false;
 
     const loadImages = async () => {
@@ -71,16 +77,21 @@ export function useImagePreloader({
         if (priorityIndices.length > 0) {
           const priorityPromises = priorityIndices.map(async (index) => {
             if (index >= 0 && index < imagePaths.length) {
-              const img = await loadImage(imagePaths[index], index);
-              if (!cancelled) {
-                imageArray[index] = img;
-                priorityLoadedRef.current++;
-                
-                if (priorityLoadedRef.current === priorityIndices.length) {
-                  setPriorityLoaded(true);
+              try {
+                const bitmap = await loadImage(imagePaths[index], index);
+                if (!cancelled) {
+                  imageArray[index] = bitmap;
+                  priorityLoadedRef.current++;
+                  
+                  if (priorityLoadedRef.current === priorityIndices.length) {
+                    setPriorityLoaded(true);
+                  }
                 }
+                return bitmap;
+              } catch (err) {
+                console.warn(`Failed to load priority frame ${index}:`, err);
+                return null;
               }
-              return img;
             }
             return null;
           });
@@ -103,7 +114,7 @@ export function useImagePreloader({
         }
 
         // Load in batches to avoid overwhelming the browser
-        const batchSize = 10;
+        const batchSize = 15; // Increased batch size for faster loading
         for (let i = 0; i < remainingIndices.length; i += batchSize) {
           if (cancelled) break;
 
@@ -112,9 +123,9 @@ export function useImagePreloader({
           await Promise.all(
             batch.map(async (index) => {
               try {
-                const img = await loadImage(imagePaths[index], index);
+                const bitmap = await loadImage(imagePaths[index], index);
                 if (!cancelled) {
-                  imageArray[index] = img;
+                  imageArray[index] = bitmap;
                   loadedCountRef.current++;
                   
                   setLoadedCount(loadedCountRef.current + priorityIndices.length);
@@ -152,6 +163,11 @@ export function useImagePreloader({
 
     return () => {
       cancelled = true;
+      // Clean up ImageBitmaps to free memory
+      imageCacheRef.current.forEach((bitmap) => {
+        bitmap.close();
+      });
+      imageCacheRef.current.clear();
     };
   }, [imagePaths, priorityIndices, loadImage, onProgress, onComplete]);
 
