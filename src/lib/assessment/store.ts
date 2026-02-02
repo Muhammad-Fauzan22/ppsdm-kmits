@@ -179,8 +179,11 @@ export const useAssessmentStore = create<AssessmentState>()(
         if (currentQ > 0) {
           set((state) => ({
             dimensions: {
-              ...state.dimensions[dimension],
-              currentQuestion: currentQ - 1,
+              ...state.dimensions,
+              [dimension]: {
+                ...state.dimensions[dimension],
+                currentQuestion: currentQ - 1,
+              },
             },
             questionStartTime: Date.now(),
           }));

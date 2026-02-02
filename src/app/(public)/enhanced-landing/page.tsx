@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { 
   HeroBoomerangVideo, 
-  ProblemSolution, 
+  ProblemSolutionSection, 
   FAQSection, 
   AssessmentEngineShowcase,
   CTASection,
@@ -23,7 +23,7 @@ export default function EnhancedLandingPage() {
         <HeroBoomerangVideo />
         
         {/* Problem/Solution Section */}
-        <ProblemSolution />
+        <ProblemSolutionSection />
         
         {/* 9 Dimensions Grid */}
         <DimensionsGrid />
