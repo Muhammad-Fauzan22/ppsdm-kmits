@@ -10,256 +10,100 @@
 
 'use client';
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { Clock, Target, Zap, Calendar, TrendingUp } from 'lucide-react';
-
-interface TimelineData {
-  date: string;
-  deepWork: number;
-  taskCompletion: number;
-  focusDuration: number;
-  distractions: number;
-}
-
-interface GaugeProps {
-  value: number;
-  max: number;
-  label: string;
-  color: string;
-  size?: number;
-}
-
-const CircularGauge: React.FC<GaugeProps> = ({ value, max, label, color, size = 120 }) => {
-  const percentage = (value / max) * 100;
-  const strokeWidth = 8;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (percentage / 100) * circumference;
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
-          {/* Background circle */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#1e293b"
-            strokeWidth={strokeWidth}
-            fill="none"
-          />
-          {/* Progress circle */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            fill="none"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            className="transition-all duration-1000 ease-out"
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-bold text-white">{Math.round(value)}</span>
-          <span className="text-xs text-slate-400">%</span>
-        </div>
-      </div>
-      <span className="mt-2 text-sm text-slate-300 text-center">{label}</span>
-    </div>
-  );
-};
+import { useMemo } from 'react';
 
 interface SelfManagementDashboardProps {
   data: {
-    timeline: TimelineData[];
-    gauges: {
-      timeManagement: number;
-      procrastinationControl: number;
-      selfControl: number;
-      energyManagement: number;
-      prioritization: number;
-      goalAchievement: number;
-    };
-    heatmapData: number[][];
+    overallScore: number;
+    timeManagement: number;
+    procrastination: number;
+    deepWork: number;
+    timeline: { month: string; score: number }[];
   };
-  className?: string;
 }
 
-export const SelfManagementDashboard: React.FC<SelfManagementDashboardProps> = ({
-  data,
-  className = '',
-}) => {
-  const [timeRange, setTimeRange] = useState<'week' | 'month' | 'quarter'>('week');
-
-  const gaugeData = [
-    { key: 'timeManagement', label: 'Time Management', value: data.gauges.timeManagement, color: '#3498db' },
-    { key: 'procrastinationControl', label: 'Procrastination Control', value: data.gauges.procrastinationControl, color: '#e74c3c' },
-    { key: 'selfControl', label: 'Self-Control', value: data.gauges.selfControl, color: '#2ecc71' },
-    { key: 'energyManagement', label: 'Energy Management', value: data.gauges.energyManagement, color: '#f39c12' },
-    { key: 'prioritization', label: 'Prioritization', value: data.gauges.prioritization, color: '#9b59b6' },
-    { key: 'goalAchievement', label: 'Goal Achievement', value: data.gauges.goalAchievement, color: '#1abc9c' },
-  ];
-
+export function SelfManagementDashboard({ data }: SelfManagementDashboardProps) {
+  const gaugeRotation = useMemo(() => {
+    return (data.overallScore / 100) * 180 - 90;
+  }, [data.overallScore]);
+  
   return (
-    <div className={`bg-slate-900/50 border border-slate-700/50 rounded-2xl p-6 ${className}`}>
+    <div className="bg-slate-900/50 border border-slate-700/50 rounded-2xl p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            <Clock className="w-6 h-6 text-green-500" />
+            <span className="text-emerald-500">📊</span>
             Self-Management Dashboard
           </h3>
           <p className="text-sm text-slate-400 mt-1">
-            Timeline produktivitas & gauge manajemen diri
+            Timeline & Gauge untuk produktivitas
           </p>
         </div>
-        <div className="flex bg-slate-800 rounded-lg p-1">
-          {(['week', 'month', 'quarter'] as const).map((range) => (
-            <button
-              key={range}
-              onClick={() => setTimeRange(range)}
-              className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                timeRange === range
-                  ? 'bg-[#135bec] text-white'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {range.charAt(0).toUpperCase() + range.slice(1)}
-            </button>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Gauge Chart */}
+        <div className="flex flex-col items-center">
+          <div className="relative w-48 h-24">
+            <div className="absolute inset-0 rounded-t-full bg-slate-700 overflow-hidden">
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-24">
+                <svg viewBox="0 0 192 96" className="w-full h-full">
+                  <path d="M 16 96 A 80 80 0 0 1 176 96" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="16" />
+                </svg>
+              </div>
+            </div>
+            <motion.div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-24 overflow-hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <svg viewBox="0 0 192 96" className="w-full h-full">
+                <motion.path d="M 16 96 A 80 80 0 0 1 176 96" fill="none" stroke="url(#gaugeGradient)" strokeWidth="16" strokeLinecap="round" initial={{ strokeDashoffset: 502 }} animate={{ strokeDashoffset: 502 - (data.overallScore / 100) * 502 }} transition={{ duration: 1, ease: 'easeOut' }} />
+                <defs><linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#EF4444" /><stop offset="50%" stopColor="#F59E0B" /><stop offset="100%" stopColor="#10B981" /></linearGradient></defs>
+              </svg>
+            </motion.div>
+            <motion.div className="absolute bottom-0 left-1/2 w-1 h-20 bg-white origin-bottom" initial={{ rotate: -90 }} animate={{ rotate: gaugeRotation }} transition={{ duration: 1, ease: 'easeOut' }} style={{ transformOrigin: 'center bottom', left: 'calc(50% - 2px)', bottom: '0' }}>
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rounded-full" />
+            </motion.div>
+          </div>
+          <div className="text-center mt-2">
+            <div className="text-3xl font-bold text-white">{data.overallScore}</div>
+            <div className="text-sm text-slate-400">Overall Score</div>
+          </div>
+        </div>
+        
+        {/* Sub-dimensions */}
+        <div className="space-y-4">
+          {[
+            { name: 'Time Management', value: data.timeManagement, color: 'bg-emerald-500' },
+            { name: 'Procrastination Control', value: data.procrastination, color: 'bg-blue-500' },
+            { name: 'Deep Work', value: data.deepWork, color: 'bg-purple-500' },
+          ].map((item) => (
+            <div key={item.name} className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-300">{item.name}</span>
+                <span className="text-white font-bold">{item.value}%</span>
+              </div>
+              <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                <motion.div className={`h-full ${item.color}`} initial={{ width: 0 }} animate={{ width: `${item.value}%` }} transition={{ duration: 0.5 }} />
+              </div>
+            </div>
           ))}
         </div>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left Panel - Timeline */}
-        <div className="space-y-4">
-          <div className="bg-slate-800/50 rounded-xl p-4">
-            <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              Productivity Timeline
-            </h4>
-            <div style={{ width: '100%', height: '250px' }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data.timeline}>
-                  <defs>
-                    <linearGradient id="colorDeepWork" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3498db" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#3498db" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorFocus" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#2ecc71" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#2ecc71" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                  <XAxis dataKey="date" stroke="#64748b" fontSize={12} />
-                  <YAxis stroke="#64748b" fontSize={12} domain={[0, 100]} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#0f172a',
-                      border: '1px solid #334155',
-                      borderRadius: '8px',
-                    }}
-                    labelStyle={{ color: '#94a3b8' }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="deepWork"
-                    stroke="#3498db"
-                    fillOpacity={1}
-                    fill="url(#colorDeepWork)"
-                    name="Deep Work"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="focusDuration"
-                    stroke="#2ecc71"
-                    fillOpacity={1}
-                    fill="url(#colorFocus)"
-                    name="Focus Duration"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+      
+      {/* Timeline */}
+      <div className="mt-6">
+        <h4 className="text-sm font-semibold text-white mb-4">Progress Timeline</h4>
+        <div className="flex items-end gap-2 h-24">
+          {data.timeline.map((item, i) => (
+            <div key={item.month} className="flex-1 flex flex-col items-center gap-2">
+              <motion.div className="w-full bg-gradient-to-t from-emerald-500/50 to-emerald-500/20 rounded-t" initial={{ height: 0 }} animate={{ height: `${item.score}%` }} transition={{ delay: i * 0.1 }} />
+              <span className="text-xs text-slate-500">{item.month}</span>
             </div>
-          </div>
-
-          {/* Stats Summary */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-slate-800/50 rounded-lg p-3">
-              <div className="text-xs text-slate-400 mb-1">Avg Deep Work</div>
-              <div className="text-2xl font-bold text-blue-400">
-                {Math.round(data.timeline.reduce((sum, d) => sum + d.deepWork, 0) / data.timeline.length)}%
-              </div>
-            </div>
-            <div className="bg-slate-800/50 rounded-lg p-3">
-              <div className="text-xs text-slate-400 mb-1">Task Completion</div>
-              <div className="text-2xl font-bold text-green-400">
-                {Math.round(data.timeline.reduce((sum, d) => sum + d.taskCompletion, 0) / data.timeline.length)}%
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Panel - Gauges */}
-        <div className="space-y-4">
-          <div className="bg-slate-800/50 rounded-xl p-4">
-            <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-              <Target className="w-4 h-4" />
-              Self-Management Gauges
-            </h4>
-            <div className="grid grid-cols-3 gap-4">
-              {gaugeData.map((gauge, index) => (
-                <motion.div
-                  key={gauge.key}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <CircularGauge
-                    value={gauge.value}
-                    max={100}
-                    label={gauge.label}
-                    color={gauge.color}
-                    size={100}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="bg-slate-800/50 rounded-xl p-4">
-            <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-yellow-400" />
-              Improvement Tips
-            </h4>
-            <ul className="space-y-2 text-sm text-slate-300">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-400">•</span>
-                Gunakan teknik Pomodoro untuk meningkatkan fokus
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-400">•</span>
-                Tetapkan prioritas dengan Eisenhower Matrix
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-purple-400">•</span>
-                Blok waktu untuk deep work tanpa distraksi
-              </li>
-            </ul>
-          </div>
+          ))}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default SelfManagementDashboard;

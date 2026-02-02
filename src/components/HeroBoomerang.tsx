@@ -100,9 +100,11 @@ export default function BoomerangHero() {
     }
 
     return (
-        <canvas
-            ref={canvasRef}
-            className="w-full h-full object-cover"
-        />
+        <div className="w-full h-full boomerang-container">
+            <canvas
+                ref={canvasRef}
+                className="w-full h-full object-cover hero-boomerang-canvas"
+            />
+        </div>
     );
 }
