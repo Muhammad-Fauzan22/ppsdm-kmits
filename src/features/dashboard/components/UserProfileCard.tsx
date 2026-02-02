@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { Edit2, Sparkles } from "lucide-react";
+import { Edit2, Sparkles, Trophy, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,31 +14,31 @@ interface UserProfileCardProps {
 
 export function UserProfileCard({ user, loading }: UserProfileCardProps) {
     if (loading || !user) {
-        return <Skeleton className="h-[320px] w-full rounded-2xl bg-surface-100" />;
+        return <Skeleton className="h-[320px] w-full rounded-2xl bg-white/5" />;
     }
 
     return (
-        <Card className="relative overflow-hidden border border-slate-100 rounded-2xl bg-white/80 shadow-soft backdrop-blur-sm transition-shadow hover:shadow-lg dark:bg-slate-900/80 dark:border-slate-800">
+        <div className="relative overflow-hidden border border-white/5 rounded-2xl bg-[#0A0F1A] shadow-xl backdrop-blur-sm group">
 
-            {/* 1. Header Gradient yang "Menyatu" */}
-            <div className="h-28 bg-gradient-to-br from-its-DEFAULT via-blue-700 to-indigo-800 relative">
-                {/* Pattern Overlay tipis agar tidak flat */}
-                <div className="absolute inset-0 bg-its-pattern opacity-10"></div>
+            {/* 1. Header Gradient */}
+            <div className="h-32 bg-gradient-to-r from-[#00C6FF] to-[#0072FF] relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
+                <div className="absolute top-0 right-0 p-8 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10"></div>
 
                 <Button
                     size="icon"
                     variant="ghost"
-                    className="absolute top-3 right-3 text-white/90 hover:bg-white/20 hover:text-white rounded-xl transition-colors"
+                    className="absolute top-3 right-3 text-white/90 hover:bg-black/20 hover:text-white rounded-xl transition-colors backdrop-blur-md"
                     aria-label="Edit Profile"
                 >
                     <Edit2 className="size-4" />
                 </Button>
             </div>
 
-            <div className="flex flex-col items-center -mt-14 px-6 pb-8">
-                {/* 2. Avatar dengan Hover Zoom Effect */}
-                <div className="group relative mb-4">
-                    <div className="relative size-28 overflow-hidden rounded-full border-[4px] border-white shadow-md transition-transform duration-300 ease-out group-hover:scale-105 group-hover:shadow-glow dark:border-slate-900">
+            <div className="flex flex-col items-center -mt-16 px-6 pb-8 relative z-10">
+                {/* 2. Avatar with Glow */}
+                <div className="group/avatar relative mb-4">
+                    <div className="relative size-32 overflow-hidden rounded-full border-[6px] border-[#0A0F1A] shadow-2xl transition-transform duration-500 ease-out group-hover/avatar:scale-105 group-hover/avatar:shadow-cyan-500/20">
                         <Image
                             src={user.avatarUrl}
                             alt={user.name}
@@ -46,35 +48,44 @@ export function UserProfileCard({ user, loading }: UserProfileCardProps) {
                             priority
                         />
                     </div>
-                    {/* Status Badge Kecil */}
-                    <div className="absolute bottom-1 right-1 size-6 rounded-full bg-emerald-500 border-[3px] border-white dark:border-slate-900" title="Online" />
+                    {/* Status Badge */}
+                    <div className="absolute bottom-2 right-2 size-6 rounded-full bg-emerald-500 border-[4px] border-[#0A0F1A]" title="Online" />
                 </div>
 
                 {/* Typography Hierarchy */}
-                <h3 className="text-xl font-bold text-its-dark tracking-tight">{user.name}</h3>
-                <p className="text-sm text-slate-500 font-medium mb-6">{user.role}</p>
+                <h3 className="text-2xl font-bold text-white tracking-tight mb-1">{user.name}</h3>
+                <div className="flex items-center gap-2 mb-6">
+                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-slate-300 backdrop-blur-md">
+                        {user.role}
+                    </span>
+                    <span className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full text-xs font-medium text-amber-500 backdrop-blur-md flex items-center gap-1">
+                        <Trophy className="w-3 h-3" />
+                        Rank #{user.cohortRank}
+                    </span>
+                </div>
 
                 {/* Score Section Modern */}
-                <div className="w-full bg-surface-50 p-4 rounded-xl border border-slate-100 dark:bg-slate-800/50 dark:border-slate-700">
-                    <div className="flex justify-between items-end mb-2">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                            <Sparkles className="size-3 text-its-gold" /> Holistic Score
+                <div className="w-full bg-gradient-to-b from-white/[0.03] to-transparent p-5 rounded-2xl border border-white/5 group-hover:border-white/10 transition-colors">
+                    <div className="flex justify-between items-end mb-3">
+                        <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2">
+                            <Sparkles className="size-3" /> Holistic Score
                         </span>
-                        <span className="text-2xl font-bold text-its-DEFAULT">{user.holisticScore}<span className="text-sm text-slate-400 font-normal">/100</span></span>
+                        <span className="text-3xl font-bold text-white tracking-tight">{user.holisticScore}</span>
                     </div>
 
                     {/* Custom Progress Bar */}
-                    <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden dark:bg-slate-700">
+                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden mb-3">
                         <div
-                            className="bg-gradient-to-r from-its-light to-its-DEFAULT h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(0,85,204,0.5)]"
+                            className="bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(6,182,212,0.5)]"
                             style={{ width: `${user.holisticScore}%` }}
                         />
                     </div>
-                    <p className="text-xs text-slate-500 mt-3 text-center">
-                        You are in the <span className="font-bold text-its-DEFAULT">Top {user.cohortRank}%</span> of your cohort.
-                    </p>
+                    <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+                        <span>Cohort Average: 72</span>
+                        <span className="text-emerald-400">+12% vs avg</span>
+                    </div>
                 </div>
             </div>
-        </Card>
+        </div>
     );
 }

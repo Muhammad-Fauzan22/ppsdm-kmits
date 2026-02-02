@@ -6,7 +6,6 @@ import { useDashboardData } from "@/features/dashboard/hooks/useDashboardData";
 import { AssetConfig } from "@/lib/dynamicAssets";
 
 // Components
-import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
 import { UserProfileCard } from "@/features/dashboard/components/UserProfileCard";
 import { WelcomeBanner } from "@/features/dashboard/components/WelcomeBanner";
 import { DimensionGrid } from "@/features/dashboard/components/DimensionGrid";
@@ -18,7 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const PsychometricRadar = dynamic(
     () => import('@/components/PsychometricRadar').then(mod => mod.PsychometricRadar),
     {
-        loading: () => <Skeleton className="h-[400px] w-full rounded-2xl bg-muted" />,
+        loading: () => <Skeleton className="h-[400px] w-full rounded-2xl bg-white/5" />,
         ssr: false
     }
 );
@@ -31,74 +30,72 @@ export function DashboardClient({ assets }: DashboardClientProps) {
     const { user, loading, radarData, greeting } = useDashboardData();
 
     return (
-        <div className="min-h-screen bg-background font-sans text-foreground pb-20">
+        <div className="w-full max-w-[1600px] mx-auto pb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
-            {/* Header Sticky - Pass assets */}
-            <DashboardHeader assets={assets} />
+                {/* === LEFT COLUMN (Sidebar Profile) === */}
+                <aside className="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
+                    <FadeIn delay={0.1}>
+                        <UserProfileCard user={user} loading={loading} />
+                    </FadeIn>
 
-            {/* Container Utama: Responsive Padding */}
-            <main className="w-full max-w-[1440px] mx-auto px-4 py-6 md:px-6 lg:px-8 lg:py-8">
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-
-                    {/* === LEFT COLUMN (Sidebar Profile) === */}
-                    <aside className="lg:col-span-4 flex flex-col gap-6">
-                        <FadeIn delay={0.1}>
-                            <UserProfileCard user={user} loading={loading} />
-                        </FadeIn>
-
-                        {/* Radar Chart Card */}
-                        <FadeIn delay={0.2}>
-                            <div className="rounded-2xl bg-card p-4 shadow-soft border border-border">
-                                <h3 className="text-sm font-bold text-card-foreground mb-4 px-2 uppercase tracking-wide">
-                                    Holistic Balance
-                                </h3>
-                                <div className="h-[350px] w-full">
-                                    <PsychometricRadar
-                                        data={radarData}
-                                        title=""
-                                        description=""
-                                    />
-                                </div>
+                    {/* Radar Chart Card */}
+                    <FadeIn delay={0.2}>
+                        <div className="rounded-2xl bg-[#0A0F1A]/50 p-6 shadow-xl border border-white/5 backdrop-blur-sm">
+                            <h3 className="text-sm font-bold text-slate-400 mb-6 px-2 uppercase tracking-wide flex items-center justify-between">
+                                <span>Holistic Balance</span>
+                                <span className="text-[10px] bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-full">LIVE</span>
+                            </h3>
+                            <div className="h-[300px] w-full">
+                                <PsychometricRadar
+                                    data={radarData}
+                                    title=""
+                                    description=""
+                                />
                             </div>
-                        </FadeIn>
-                    </aside>
+                        </div>
+                    </FadeIn>
+                </aside>
 
-                    {/* === RIGHT COLUMN (Main Content) === */}
-                    <section className="lg:col-span-8 flex flex-col gap-8">
+                {/* === RIGHT COLUMN (Main Content) === */}
+                <section className="lg:col-span-8 xl:col-span-9 flex flex-col gap-8">
 
-                        {/* 1. Welcome Banner */}
-                        <FadeIn delay={0.3}>
-                            <WelcomeBanner
-                                greeting={greeting}
-                                name={user?.name || "Mahasiswa"}
-                                suggestion="Tingkatkan Literasi Finansial Anda minggu ini."
-                            />
-                        </FadeIn>
+                    {/* 1. Welcome Banner */}
+                    <FadeIn delay={0.3}>
+                        <WelcomeBanner
+                            greeting={greeting}
+                            name={user?.name || "Mahasiswa"}
+                            suggestion="Tingkatkan Literasi Finansial Anda minggu ini."
+                        />
+                    </FadeIn>
 
-                        {/* 2. Live Feed (Optional) */}
-                        <FadeIn delay={0.4}>
+                    {/* 2. Live Feed (Hidden on mobile maybe, or reduced) */}
+                    <FadeIn delay={0.4}>
+                        <div className="bg-[#0A0F1A]/30 border border-white/5 rounded-2xl p-6">
                             <LiveProcessingFeed />
-                        </FadeIn>
+                        </div>
+                    </FadeIn>
 
-                        {/* 3. Dimension Grid */}
-                        <FadeIn delay={0.5}>
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between px-1">
-                                    <h2 className="text-xl font-bold text-foreground">
+                    {/* 3. Dimension Grid */}
+                    <FadeIn delay={0.5}>
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between px-1">
+                                <div>
+                                    <h2 className="text-xl font-bold text-white">
                                         The 9 Dimensions
                                     </h2>
-                                    <button className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                                        View All Metrics &rarr;
-                                    </button>
+                                    <p className="text-sm text-slate-500">Track your holistic growth progress</p>
                                 </div>
-                                <DimensionGrid />
+                                <button className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors bg-cyan-500/10 px-4 py-2 rounded-lg">
+                                    View All Metrics &rarr;
+                                </button>
                             </div>
-                        </FadeIn>
+                            <DimensionGrid />
+                        </div>
+                    </FadeIn>
 
-                    </section>
-                </div>
-            </main>
+                </section>
+            </div>
         </div>
     );
 }
