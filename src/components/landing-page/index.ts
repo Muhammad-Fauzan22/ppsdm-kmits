@@ -1,6 +1,6 @@
 // Landing Page Components - New Enhanced Components
 export { HeroBoomerangVideo } from "../HeroBoomerangVideo";
-export { ProblemSolution } from "./ProblemSolution";
+export { ProblemSolutionSection } from "./ProblemSolution";
 export { FAQSection } from "./FAQSection";
 export { AssessmentEngineShowcase } from "./AssessmentEngineShowcase";
 export { CTASection } from "./CTASection";

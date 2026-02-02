@@ -36,7 +36,10 @@ export function AssessmentQuestion({
 }: AssessmentQuestionProps) {
   const [localSelected, setLocalSelected] = useState<number | null>(null);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2 minutes per question
-  const { answers, setAnswer, nextQuestion, prevQuestion } = useAssessmentStore();
+  const { dimensions, currentDimension, setAnswer, nextQuestion, prevQuestion } = useAssessmentStore();
+  
+  // Get answers for current dimension
+  const answers = dimensions[currentDimension || '']?.answers || {};
   
   // Load existing answer
   useEffect(() => {
@@ -172,7 +175,7 @@ export function AssessmentQuestion({
           <button
             onClick={handleSubmit}
             disabled={localSelected === null}
-            className="flex items-center gap-2 px-8 py-4 bg-white text-[#0A0F1A] font-bold rounded-xl hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-8 py-4 bg-[#0A0F1A] text-white font-bold rounded-xl hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {questionNumber >= totalQuestions - 1 ? 'Selesai' : 'Selanjutnya'}
             <span className="material-symbols-outlined">
