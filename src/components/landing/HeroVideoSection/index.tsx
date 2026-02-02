@@ -1,16 +1,21 @@
 "use client";
 
-import { useMemo, useCallback, useState, useEffect } from "react";
+import { useMemo, useCallback, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageSequencePlayer } from "./ImageSequencePlayer";
 import { useBoomerangLoop } from "./useBoomerangLoop";
 import { useImagePreloader } from "./useImagePreloader";
+import { useScrollAnimation, NARRATIVE_PHASES } from "./useScrollAnimation";
+import { InteractiveHotspots } from "./InteractiveHotspots";
+import { VideoOverlay } from "./VideoOverlay";
+import { ParticleSystem } from "./ParticleSystem";
 import {
   getAllFramePaths,
   TOTAL_FRAMES,
   ANIMATION_CONFIG,
   PRIORITY_FRAME_INDICES,
+  PERFORMANCE_PRESETS,
 } from "./constants";
 
 interface HeroVideoSectionProps {
@@ -24,6 +29,9 @@ interface HeroVideoSectionProps {
 export function HeroVideoSection({ className }: HeroVideoSectionProps) {
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [showLoadingIndicator, setShowLoadingIndicator] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [performanceMode, setPerformanceMode] = useState<"low" | "medium" | "high">("medium");
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -35,8 +43,52 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Detect performance mode based on device capabilities
+  useEffect(() => {
+    const detectPerformance = () => {
+      const connection = (navigator as any).connection;
+      const memory = (navigator as any).deviceMemory;
+      
+      if (connection) {
+        if (connection.effectiveType === '2g' || connection.effectiveType === '3g') {
+          setPerformanceMode("low");
+          return;
+        }
+      }
+      
+      if (memory && memory < 4) {
+        setPerformanceMode("low");
+        return;
+      }
+      
+      setPerformanceMode("high");
+    };
+    
+    detectPerformance();
+  }, []);
+
+  // Scroll animation hook
+  const scrollAnimation = useScrollAnimation({
+    sectionRef,
+    totalHeight: isMobile ? 3000 : 4000,
+    smoothFactor: 0.08,
+  });
+
   // Generate frame paths
   const framePaths = useMemo(() => getAllFramePaths(), []);
+
+  // Get performance config
+  const perfConfig = PERFORMANCE_PRESETS[performanceMode];
 
   // Preload images with priority frames first
   const {
@@ -49,9 +101,10 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
   } = useImagePreloader({
     imagePaths: framePaths,
     priorityIndices: PRIORITY_FRAME_INDICES,
+    skipFrames: perfConfig.skipFrames,
     onProgress: useCallback((loaded: number, total: number) => {
       // Hide loading indicator once enough frames loaded
-      if (loaded > 10) {
+      if (loaded > 5) {
         setShowLoadingIndicator(false);
       }
     }, []),
@@ -85,58 +138,108 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
 
   return (
     <section
-      className={`relative min-h-[92vh] flex flex-col items-center justify-center overflow-hidden ${className}`}
+      ref={sectionRef}
+      className={`relative min-h-screen flex flex-col items-center justify-center overflow-hidden ${className}`}
+      style={{
+        height: isMobile ? "400vh" : "500vh",
+      }}
     >
-      {/* Video Background Layer */}
-      <div className="absolute inset-0 z-0">
-        {/* Loading Placeholder */}
-        <AnimatePresence>
-          {(showLoadingIndicator || !priorityLoaded) && (
+      {/* Sticky container for scroll-based animation */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Video Background Layer */}
+        <div className="absolute inset-0 z-0">
+          {/* Loading Placeholder */}
+          <AnimatePresence>
+            {(showLoadingIndicator || !priorityLoaded) && (
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+                className="absolute inset-0 z-10 flex items-center justify-center"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, #0a1628 0%, #070B14 100%)",
+                }}
+              >
+                {/* Loading spinner with phase indicator */}
+                <div className="relative flex flex-col items-center gap-4">
+                  <div className="relative">
+                    <div 
+                      className="w-20 h-20 rounded-full animate-pulse"
+                      style={{
+                        background: `radial-gradient(circle, ${NARRATIVE_PHASES[0].color}30 0%, transparent 70%)`,
+                      }}
+                    />
+                    <div 
+                      className="absolute inset-0 w-20 h-20 rounded-full border-4 border-white/10 border-t-current animate-spin"
+                      style={{ color: NARRATIVE_PHASES[0].color }}
+                    />
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <p className="text-sm text-slate-400">Memuat pengalaman...</p>
+                    <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full"
+                        style={{
+                          background: `linear-gradient(90deg, ${NARRATIVE_PHASES[0].color}, ${NARRATIVE_PHASES[1].color})`,
+                        }}
+                        animate={{ x: ["-100%", "100%"] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Particle System Background */}
+          {!isReducedMotion && (
+            <ParticleSystem
+              currentPhase={scrollAnimation.currentPhase.id}
+              scrollProgress={scrollAnimation.scrollProgress}
+              isMobile={isMobile}
+            />
+          )}
+
+          {/* Image Sequence Player */}
+          {priorityLoaded && (
             <motion.div
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0 z-10 flex items-center justify-center"
-              style={{
-                background:
-                  "radial-gradient(ellipse at center, #0a1628 0%, #070B14 100%)",
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2 }}
+              className="absolute inset-0"
             >
-            {/* Simple loading indicator */}
-              <div className="relative">
-                <div className="w-16 h-16 rounded-full bg-cyan-500/20 animate-pulse" />
-                <div className="absolute inset-0 w-16 h-16 rounded-full border-2 border-cyan-500/30 border-t-cyan-500 animate-spin" />
-              </div>
+              <ImageSequencePlayer
+                images={images}
+                currentFrame={currentFrame}
+                objectFit="cover"
+                className="w-full h-full"
+              />
             </motion.div>
           )}
-        </AnimatePresence>
 
-        {/* Image Sequence Player */}
-        {priorityLoaded && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-            className="absolute inset-0"
-          >
-            <ImageSequencePlayer
-              images={images}
-              currentFrame={currentFrame}
-              objectFit="cover"
-              className="w-full h-full"
-            />
-          </motion.div>
-        )}
-
-        {/* Gradient overlays container */}
-        <div className="absolute inset-0 z-[5]">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#070B14] via-[#070B14]/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#070B14]/60 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070B14_80%)]" />
-        </div>
-        
+          {/* Gradient overlays container */}
+          <div className="absolute inset-0 z-[5]">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#070B14] via-[#070B14]/40 to-transparent" />
+          </div>
         </div>
         {/* End Video Background Layer */}
+
+        {/* Interactive Hotspots Layer */}
+        <InteractiveHotspots
+          currentPhase={scrollAnimation.currentPhase.id}
+          scrollProgress={scrollAnimation.scrollProgress}
+          isMobile={isMobile}
+        />
+
+        {/* Video Overlay Layer */}
+        <VideoOverlay
+          currentPhase={scrollAnimation.currentPhase.id}
+          scrollProgress={scrollAnimation.scrollProgress}
+          phaseProgress={scrollAnimation.phaseProgress}
+          isMobile={isMobile}
+        />
 
         {/* Content Overlay */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
@@ -245,6 +348,7 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        style={{ opacity: 1 - scrollAnimation.scrollProgress * 2 }}
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
@@ -261,26 +365,45 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
       {/* Debug info (development only) */}
       {process.env.NODE_ENV === "development" && (
         <div className="absolute bottom-4 right-4 z-50 text-xs font-mono text-white/30 bg-black/50 px-3 py-2 rounded backdrop-blur-md">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span>Frame: {currentFrame + 1}/{TOTAL_FRAMES}</span>
             <span className={`px-2 py-0.5 rounded text-[10px] ${
               phase.startsWith("forward") ? "bg-cyan-500/30 text-cyan-300" : "bg-amber-500/30 text-amber-300"
             }`}>
               {phase.replace("-", " ").toUpperCase()}
             </span>
+            <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/30 text-emerald-300">
+              {scrollAnimation.currentPhase.name}
+            </span>
+          </div>
+          <div className="mt-1 text-[10px] flex gap-2">
+            <span>Scroll: {(scrollAnimation.scrollProgress * 100).toFixed(1)}%</span>
+            <span>Phase: {(scrollAnimation.phaseProgress * 100).toFixed(1)}%</span>
+            <span>Perf: {performanceMode}</span>
+          </div>
+          {/* Phase progress bar */}
+          <div className="mt-1 w-24 h-1 bg-white/10 rounded overflow-hidden flex">
+            {NARRATIVE_PHASES.map((phase) => (
+              <div
+                key={phase.id}
+                className="flex-1 h-full border-r border-white/5"
+                style={{
+                  backgroundColor: scrollAnimation.currentPhase.id === phase.id 
+                    ? phase.color 
+                    : scrollAnimation.scrollProgress > phase.endProgress 
+                      ? phase.color 
+                      : "transparent",
+                  opacity: scrollAnimation.currentPhase.id === phase.id ? 1 : 0.3,
+                }}
+              />
+            ))}
           </div>
           <div className="mt-1 text-[10px]">
             Loaded: {loadedCount}/{totalCount}
           </div>
-          {/* Phase progress bar */}
-          <div className="mt-1 w-24 h-1 bg-white/10 rounded overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-cyan-500 to-amber-500"
-              style={{ width: `${animationProgress}%` }}
-            />
-          </div>
         </div>
       )}
+      </div>
     </section>
   );
 }

@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 interface PreloaderConfig {
   imagePaths: string[];
   priorityIndices?: number[];
+  skipFrames?: number; // Load every Nth frame for performance
   onProgress?: (loaded: number, total: number) => void;
   onComplete?: () => void;
 }
@@ -26,6 +27,7 @@ interface PreloaderReturn {
 export function useImagePreloader({
   imagePaths,
   priorityIndices = [],
+  skipFrames = 0,
   onProgress,
   onComplete,
 }: PreloaderConfig): PreloaderReturn {
@@ -91,9 +93,14 @@ export function useImagePreloader({
         }
 
         // Phase 2: Load remaining frames in background
-        const remainingIndices = imagePaths
+        let remainingIndices = imagePaths
           .map((_, index) => index)
           .filter((index) => !priorityIndices.includes(index));
+        
+        // Apply skipFrames for performance optimization
+        if (skipFrames > 1) {
+          remainingIndices = remainingIndices.filter(index => index % skipFrames === 0 || priorityIndices.includes(index));
+        }
 
         // Load in batches to avoid overwhelming the browser
         const batchSize = 10;
