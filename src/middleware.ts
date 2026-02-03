@@ -1,308 +1,193 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { 
-  checkRateLimit, 
-  authRateLimiter, 
-  apiRateLimiter, 
-  publicRateLimiter,
-  RateLimitError,
-  getClientIP,
-  getRateLimitIdentifier
-} from "./middleware/rateLimiter";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { logger, loggingMiddleware } from '@/lib/logger';
+import { validateCSRF } from '@/lib/csrf';
 
-// ============================================================================
-// PPSDM KMM MIDDLEWARE - SECURITY & AUTHENTICATION
-// ============================================================================
-// Purpose: Centralized authentication and authorization for PPSDM KMM platform
-// Security Level: HIGH - Implements RBAC, session validation, and route protection
-// Last Updated: 2026-02-03
-// ============================================================================
+// Rate limiting store (in production, use Redis)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
-// 1. ROUTE CONFIGURATION
-// ============================================================================
-
-/**
- * Public routes that don't require authentication
- * These are accessible to all users (logged in or not)
- */
-const PUBLIC_ROUTES = new Set([
-    '/',
-    '/auth/login',
-    '/auth/register',
-    '/auth/callback',
-    '/auth/recovery',
-    '/help',
-    '/privacy',
-    '/terms',
-    '/research/findings',
-    '/community/stories',
-    '/resources',
-    '/about',
-]);
-
-/**
- * Public route patterns using regex for dynamic routes
- * These patterns match routes that should be publicly accessible
- */
-const PUBLIC_PATTERNS = [
-    /^\/api\/public\/.*/,           // Public API endpoints
-    /^\/assessment\/.*/,              // Assessment pages (public access for demo)
-    /^\/try-assessment\/.*/,          // Try assessment demo
-    /^\/auth\/callback.*/,            // OAuth callbacks
-    /^\/baca\/.*/,                   // Public reading pages
-    /^\/perpustakaan\/.*/,          // Public library pages
-];
-
-/**
- * Protected route patterns by role
- * These define which routes require specific role access
- */
-const PROTECTED_ROUTES = {
-    admin: /^\/admin(\/|$)/,
-    supervisor: /^\/(supervisor|mentorship)(\/|$)/,
-    student: /^\/(dashboard|pos|wellbeing|roadmap|habit-forge|library|courses|assessment|profile|settings|activities|employability|co-create|global-exchange|simulation|vision|verifier|passport|tutor)(\/|$)/,
+// Rate limiting configuration
+const RATE_LIMITS = {
+  auth: { max: 5, window: 15 * 60 * 1000 }, // 5 requests per 15 minutes
+  api: { max: 100, window: 60 * 1000 }, // 100 requests per minute
+  general: { max: 1000, window: 60 * 1000 }, // 1000 requests per minute
 };
 
-/**
- * API routes that require strict rate limiting
- */
-const AUTH_API_ROUTES = [
-    '/api/auth/login',
-    '/api/auth/signup',
-    '/api/auth/register',
-    '/api/auth/reset-password',
-];
+// Check rate limit
+function checkRateLimit(
+  key: string,
+  maxRequests: number,
+  windowMs: number
+): { allowed: boolean; remaining: number; resetTime: number } {
+  const now = Date.now();
+  const record = rateLimitStore.get(key);
 
-/**
- * Check if a route is public (no auth required)
- * @param pathname - The route path to check
- * @returns true if route is public, false otherwise
- */
-const isPublicRoute = (pathname: string): boolean => {
-    // Exact match first (more efficient)
-    if (PUBLIC_ROUTES.has(pathname)) return true;
-    
-    // Pattern match for dynamic routes
-    return PUBLIC_PATTERNS.some(pattern => pattern.test(pathname));
-};
-
-/**
- * Check if route requires specific role
- * @param pathname - The route path to check
- * @returns The required role or null if no specific role required
- */
-const getRequiredRole = (pathname: string): 'admin' | 'supervisor' | 'student' | null => {
-    if (PROTECTED_ROUTES.admin.test(pathname)) return 'admin';
-    if (PROTECTED_ROUTES.supervisor.test(pathname)) return 'supervisor';
-    if (PROTECTED_ROUTES.student.test(pathname)) return 'student';
-    return null;
-};
-
-/**
- * Validate user role and metadata
- * @param user - The user object from Supabase
- * @returns Validated role or defaults to 'student'
- */
-const validateUserRole = (user: any): 'admin' | 'supervisor' | 'student' => {
-    if (!user || !user.user_metadata) return 'student';
-    
-    const role = user.user_metadata.role;
-    
-    // Validate role is one of allowed values
-    if (role === 'admin' || role === 'superadmin') return 'admin';
-    if (role === 'lecturer' || role === 'supervisor') return 'supervisor';
-    
-    return 'student'; // Default fallback
-};
-
-/**
- * Get redirect URL based on user role
- * @param role - The user's role
- * @param request - The NextRequest object
- * @returns URL object with pathname
- */
-const getDashboardUrl = (role: string, request: NextRequest): URL => {
-    const url = request.nextUrl.clone();
-    
-    switch (role) {
-        case 'admin':
-            url.pathname = '/admin';
-            break;
-        case 'supervisor':
-            url.pathname = '/supervisor';
-            break;
-        default:
-            url.pathname = '/dashboard';
-    }
-    
-    return url;
-};
-
-// 2. MAIN MIDDLEWARE FUNCTION
-// ============================================================================
-
-/**
- * Main middleware function for authentication and authorization
- * Implements:
- * - Session validation via Supabase
- * - Public route detection
- * - Role-based access control (RBAC)
- * - Secure redirects
- * - Rate limiting for API routes
- * 
- * @param request - Next.js request object
- * @returns NextResponse or redirect
- */
-export async function middleware(request: NextRequest) {
-    const { pathname } = request.nextUrl;
-    
-    // Initialize response with security headers
-    let response = NextResponse.next({
-        request: {
-            headers: request.headers,
-        },
+  if (!record || now > record.resetTime) {
+    // First request or window expired
+    rateLimitStore.set(key, {
+      count: 1,
+      resetTime: now + windowMs,
     });
-    
-    // 2.0 RATE LIMITING CHECK (Before auth for performance)
-    // Only apply rate limiting to API routes
-    if (pathname.startsWith('/api/')) {
-        try {
-            // Get identifier (IP or user ID)
-            const identifier = getRateLimitIdentifier(request);
-            
-            // Apply different rate limits based on route
-            if (AUTH_API_ROUTES.some(route => pathname.startsWith(route))) {
-                // Strict rate limiting for auth endpoints
-                checkRateLimit(
-                    authRateLimiter,
-                    identifier,
-                    'Terlalu banyak percobaan login. Akun dikunci sementara.'
-                );
-            } else if (pathname.startsWith('/api/public/')) {
-                // Lenient rate limiting for public endpoints
-                checkRateLimit(
-                    publicRateLimiter,
-                    identifier,
-                    'Terlalu banyak permintaan. Silakan coba lagi nanti.'
-                );
-            } else {
-                // Standard rate limiting for other API endpoints
-                checkRateLimit(
-                    apiRateLimiter,
-                    identifier,
-                    'Terlalu banyak permintaan. Silakan coba lagi nanti.'
-                );
-            }
-        } catch (error) {
-            if (error instanceof RateLimitError) {
-                // Return rate limit error response
-                return NextResponse.json(
-                    {
-                        error: error.message,
-                        remaining: error.metadata.remaining,
-                        reset: new Date(error.metadata.reset).toISOString(),
-                    },
-                    {
-                        status: 429,
-                        headers: {
-                            'X-RateLimit-Remaining': error.metadata.remaining.toString(),
-                            'X-RateLimit-Reset': new Date(error.metadata.reset).toISOString(),
-                            'Retry-After': error.metadata.retryAfter.toString(),
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                );
-            }
-            // If it's not a RateLimitError, let it fall through
-        }
-    }
-    
-    // 2.1 Setup Supabase Client with cookie handling
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return request.cookies.getAll();
-                },
-                setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) => {
-                        request.cookies.set(name, value);
-                    });
-                    
-                    // Update response with new cookies
-                    response = NextResponse.next({
-                        request: {
-                            headers: request.headers,
-                        },
-                    });
-                    
-                    cookiesToSet.forEach(({ name, value, options }) =>
-                        response.cookies.set(name, value, options)
-                    );
-                },
-            },
-        }
-    );
-    
-    // 2.2 Check Session
-    const { data: { user }, error } = await supabase.auth.getUser();
-    
-    // 2.3 Determine if route is public
-    const isPublic = isPublicRoute(pathname);
-    
-    // 2.4 Case A: User accessing login/register but already authenticated
-    // Redirect to appropriate dashboard based on role
-    if (user && !isPublic && (pathname.startsWith("/auth/login") || pathname.startsWith("/auth/register"))) {
-        const role = validateUserRole(user);
-        const redirectUrl = getDashboardUrl(role, request);
-        return NextResponse.redirect(redirectUrl);
-    }
-    
-    // 2.5 Case B: Protected route without authentication
-    // Redirect to login with return URL
-    if (!user && !isPublic) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/auth/login";
-        url.searchParams.set("next", pathname);
-        url.searchParams.set("redirect_reason", "auth_required");
-        return NextResponse.redirect(url);
-    }
-    
-    // 2.6 Case C: Role-Based Access Control (RBAC)
-    // Ensure users can only access routes appropriate to their role
-    if (user && !isPublic) {
-        const userRole = validateUserRole(user);
-        const requiredRole = getRequiredRole(pathname);
-        
-        // If route requires specific role and user doesn't have it
-        if (requiredRole && requiredRole !== userRole) {
-            const url = getDashboardUrl(userRole, request);
-            url.searchParams.set("access_denied", "true");
-            url.searchParams.set("required_role", requiredRole);
-            return NextResponse.redirect(url);
-        }
-    }
-    
-    // 2.7 Case D: Allow access
-    // User is authenticated and has appropriate role, or route is public
-    return response;
+    return { allowed: true, remaining: maxRequests - 1, resetTime: now + windowMs };
+  }
+
+  if (record.count >= maxRequests) {
+    return { allowed: false, remaining: 0, resetTime: record.resetTime };
+  }
+
+  // Increment counter
+  record.count++;
+  rateLimitStore.set(key, record);
+
+  return {
+    allowed: true,
+    remaining: maxRequests - record.count,
+    resetTime: record.resetTime,
+  };
 }
 
-// 3. MIDDLEWARE CONFIGURATION
-// ============================================================================
+// Clean up expired rate limit records periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, record] of rateLimitStore.entries()) {
+    if (now > record.resetTime) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 60000); // Clean up every minute
 
-/**
- * Middleware configuration
- * - matcher: Defines which routes middleware should run on
- * - Excludes: static files, images, API routes, and Next.js internals
- */
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+
+  // Skip middleware for static files and Next.js internals
+  if (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/') && pathname.includes('/_next/') ||
+    pathname.includes('.')
+  ) {
+    return NextResponse.next();
+  }
+
+  try {
+    // Apply rate limiting based on route type
+    let rateLimitConfig = RATE_LIMITS.general;
+
+    if (pathname.startsWith('/api/auth/')) {
+      rateLimitConfig = RATE_LIMITS.auth;
+    } else if (pathname.startsWith('/api/')) {
+      rateLimitConfig = RATE_LIMITS.api;
+    }
+
+    const rateLimitKey = `${ip}:${pathname}`;
+    const rateLimitResult = checkRateLimit(
+      rateLimitKey,
+      rateLimitConfig.max,
+      rateLimitConfig.window
+    );
+
+    if (!rateLimitResult.allowed) {
+      logger.warn('RATE_LIMIT_EXCEEDED', {
+        ip,
+        pathname,
+        userAgent,
+        limit: rateLimitConfig.max,
+        window: rateLimitConfig.window,
+      });
+
+      return new NextResponse(
+        JSON.stringify({
+          error: 'Too many requests',
+          message: 'Rate limit exceeded. Please try again later.',
+          retryAfter: Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000),
+        }),
+        {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString(),
+            'X-RateLimit-Limit': rateLimitConfig.max.toString(),
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': Math.ceil(rateLimitResult.resetTime / 1000).toString(),
+          },
+        }
+      );
+    }
+
+    // Add rate limit headers to response
+    const response = NextResponse.next();
+    response.headers.set('X-RateLimit-Limit', rateLimitConfig.max.toString());
+    response.headers.set('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
+    response.headers.set('X-RateLimit-Reset', Math.ceil(rateLimitResult.resetTime / 1000).toString());
+
+    // Security headers
+    response.headers.set('X-Frame-Options', 'DENY');
+    response.headers.set('X-Content-Type-Options', 'nosniff');
+    response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    response.headers.set('Permissions-Policy', 'geolocation=(), camera=(), microphone=()');
+    response.headers.set('X-DNS-Prefetch-Control', 'on');
+
+    // Content Security Policy
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https:",
+      "font-src 'self'",
+      "connect-src 'self'",
+      "media-src 'self'",
+      "object-src 'none'",
+      "frame-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join('; ');
+
+    response.headers.set('Content-Security-Policy', csp);
+
+    // Log the request
+    logger.info('REQUEST', {
+      method: request.method,
+      pathname,
+      ip,
+      userAgent,
+      rateLimitRemaining: rateLimitResult.remaining,
+    });
+
+    return response;
+
+  } catch (error) {
+    logger.error('MIDDLEWARE_ERROR', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      pathname,
+      ip,
+      userAgent,
+    });
+
+    return new NextResponse(
+      JSON.stringify({
+        error: 'Internal server error',
+        message: 'Something went wrong. Please try again later.',
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+}
+
 export const config = {
-    // Match all routes except:
-    // - Static files (_next/static)
-    // - Images (_next/image)
-    // - Favicon
-    // - Static assets (svg, png, jpg, jpeg, gif, webp)
-    matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files with extensions
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.).*)',
+  ],
 };
