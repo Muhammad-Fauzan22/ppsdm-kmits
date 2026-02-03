@@ -46,7 +46,7 @@ const QUIZ_QUESTIONS = [
     },
 ];
 
-export default function ResourceViewerPage({ params }: { params: { id: string } }) {
+export default function ResourceViewerPage({ params }: { params: Promise<{ id: string }> }) {
     // --- STATE ---
     const [activeTab, setActiveTab] = useState("microlearning");
     const [isBookmarked, setIsBookmarked] = useState(false);

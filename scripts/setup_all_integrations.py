@@ -65,7 +65,7 @@ class IntegrationTester:
     
     def test_supabase(self) -> TestResult:
         """Test Supabase connection"""
-        print("\n🗄️  Testing Supabase connection...")
+        print("\n[DB] Testing Supabase connection...")
         
         try:
             url = self.env_vars.get('NEXT_PUBLIC_SUPABASE_URL')
@@ -126,9 +126,113 @@ class IntegrationTester:
                 error=str(e)
             )
     
+    
+    def test_supabase_platform(self) -> TestResult:
+        """Test Supabase Platform API (MCP Token)"""
+        print("\n[MCP] Testing Supabase Platform API (MCP Token)...")
+        
+        try:
+            token = self.env_vars.get('SUPABASE_ACCESS_TOKEN')
+            
+            if not token:
+                return TestResult(
+                    name='Supabase Platform',
+                    success=False,
+                    message='Access token not configured',
+                    error='SUPABASE_ACCESS_TOKEN not set'
+                )
+            
+            import requests
+            headers = {
+                'Authorization': f'Bearer {token}',
+                'Content-Type': 'application/json'
+            }
+            
+            # Use small delay to avoid rate limiting
+            response = requests.get(
+                'https://api.supabase.com/v1/projects',
+                headers=headers,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                projects = response.json()
+                return TestResult(
+                    name='Supabase Platform',
+                    success=True,
+                    message=f'API accessible. Found {len(projects)} projects.',
+                    details={'project_count': len(projects)}
+                )
+            else:
+                return TestResult(
+                    name='Supabase Platform',
+                    success=False,
+                    message=f'API returned {response.status_code}',
+                    error=response.text
+                )
+                
+        except Exception as e:
+            return TestResult(
+                name='Supabase Platform',
+                success=False,
+                message='API test failed',
+                error=str(e)
+            )
+
+    def test_github(self) -> TestResult:
+        """Test GitHub API access"""
+        print("\n[GIT] Testing GitHub API...")
+        
+        try:
+            token = self.env_vars.get('GITHUB_TOKEN')
+            
+            if not token:
+                return TestResult(
+                    name='GitHub',
+                    success=False,
+                    message='GitHub token not configured',
+                    error='GITHUB_TOKEN not set'
+                )
+            
+            import requests
+            headers = {
+                'Authorization': f'token {token}',
+                'Accept': 'application/vnd.github.v3+json'
+            }
+            
+            response = requests.get(
+                'https://api.github.com/user',
+                headers=headers,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                user_data = response.json()
+                return TestResult(
+                    name='GitHub',
+                    success=True,
+                    message=f'Logged in as {user_data.get("login")}',
+                    details={'user': user_data.get('login'), 'scopes': response.headers.get('X-OAuth-Scopes')}
+                )
+            else:
+                return TestResult(
+                    name='GitHub',
+                    success=False,
+                    message=f'API returned {response.status_code}',
+                    error=response.text
+                )
+                
+        except Exception as e:
+            return TestResult(
+                name='GitHub',
+                success=False,
+                message='API test failed',
+                error=str(e)
+            )
+
     def test_groq(self) -> TestResult:
         """Test Groq API"""
-        print("\n⚡ Testing Groq API...")
+        print("\n[GROQ] Testing Groq API...")
         
         try:
             api_key = self.env_vars.get('GROQ_API_KEY')
@@ -187,7 +291,7 @@ class IntegrationTester:
     
     def test_openai(self) -> TestResult:
         """Test OpenAI API"""
-        print("\n🤖 Testing OpenAI API...")
+        print("\n[OAI] Testing OpenAI API...")
         
         try:
             api_key = self.env_vars.get('OPENAI_API_KEY')
@@ -246,7 +350,7 @@ class IntegrationTester:
     
     def test_openrouter(self) -> TestResult:
         """Test OpenRouter API"""
-        print("\n🌐 Testing OpenRouter API...")
+        print("\n[OR] Testing OpenRouter API...")
         
         try:
             api_key = self.env_vars.get('OPENROUTER_API_KEY')
@@ -305,7 +409,7 @@ class IntegrationTester:
     
     def test_google_ai(self) -> TestResult:
         """Test Google AI (Gemini) API"""
-        print("\n🔮 Testing Google AI API...")
+        print("\n[G-AI] Testing Google AI API...")
         
         try:
             api_key = self.env_vars.get('GOOGLE_AI_API_KEY')
@@ -359,7 +463,7 @@ class IntegrationTester:
     
     def test_huggingface(self) -> TestResult:
         """Test Hugging Face API"""
-        print("\n🤗 Testing Hugging Face API...")
+        print("\n[HF] Testing Hugging Face API...")
         
         try:
             api_key = self.env_vars.get('HUGGINGFACE_API_KEY')
@@ -409,7 +513,7 @@ class IntegrationTester:
     
     def test_qstash(self) -> TestResult:
         """Test Upstash QStash"""
-        print("\n📬 Testing Upstash QStash...")
+        print("\n[QS] Testing Upstash QStash...")
         
         try:
             token = self.env_vars.get('UPSTASH_QSTASH_TOKEN')
@@ -457,7 +561,7 @@ class IntegrationTester:
     
     def test_serpapi(self) -> TestResult:
         """Test SerpAPI"""
-        print("\n🔍 Testing SerpAPI...")
+        print("\n[SERP] Testing SerpAPI...")
         
         try:
             api_key = self.env_vars.get('SERPAPI_KEY')
@@ -510,7 +614,7 @@ class IntegrationTester:
     
     def test_replicate(self) -> TestResult:
         """Test Replicate API"""
-        print("\n🎨 Testing Replicate API...")
+        print("\n[REP] Testing Replicate API...")
         
         try:
             api_token = self.env_vars.get('REPLICATE_API_TOKEN')
@@ -560,7 +664,7 @@ class IntegrationTester:
     def run_all_tests(self) -> List[TestResult]:
         """Run all integration tests"""
         print("\n" + "="*60)
-        print("🧪 RUNNING ALL INTEGRATION TESTS")
+        print("RUNNING ALL INTEGRATION TESTS")
         print("="*60)
         
         tests = [
@@ -573,6 +677,8 @@ class IntegrationTester:
             self.test_qstash,
             self.test_serpapi,
             self.test_replicate,
+            self.test_supabase_platform,
+            self.test_github,
         ]
         
         self.results = []
@@ -593,14 +699,14 @@ class IntegrationTester:
     def print_report(self):
         """Print test report"""
         print("\n" + "="*60)
-        print("📊 INTEGRATION TEST REPORT")
+        print("INTEGRATION TEST REPORT")
         print("="*60)
         
         passed = sum(1 for r in self.results if r.success)
         failed = len(self.results) - passed
         
         for result in self.results:
-            status = "✅" if result.success else "❌"
+            status = "[OK]" if result.success else "[FAIL]"
             print(f"\n{status} {result.name}")
             print(f"   {result.message}")
             if result.error:
@@ -627,17 +733,17 @@ class IntegrationTester:
         with open(filename, 'w') as f:
             json.dump(report, f, indent=2)
         
-        print(f"\n💾 Report saved to {filename}")
+        print(f"\nReport saved to {filename}")
 
 
 def setup_supabase():
     """Setup Supabase database schema"""
-    print("\n🗄️  Setting up Supabase database...")
+    print("\n[DB] Setting up Supabase database...")
     
     # Check if supabase CLI is available
     result = subprocess.run(['supabase', '--version'], capture_output=True, text=True)
     if result.returncode != 0:
-        print("⚠️  Supabase CLI not found. Please install it:")
+        print("[!] Supabase CLI not found. Please install it:")
         print("   npm install -g supabase")
         return False
     
@@ -646,10 +752,10 @@ def setup_supabase():
     result = subprocess.run(['supabase', 'db', 'push'], capture_output=True, text=True)
     
     if result.returncode == 0:
-        print("✅ Database setup complete")
+        print("[OK] Database setup complete")
         return True
     else:
-        print(f"❌ Database setup failed: {result.stderr}")
+        print(f"[FAIL] Database setup failed: {result.stderr}")
         return False
 
 
@@ -662,14 +768,14 @@ def main():
     args = parser.parse_args()
     
     print("\n" + "="*60)
-    print("🔧 PPSDM KMM - MASTER INTEGRATION SETUP")
+    print("PPSDM KMM - MASTER INTEGRATION SETUP")
     print("="*60)
     
     success = True
     
     if not args.test_only:
         # Run setup
-        print("\n📦 Setting up integrations...")
+        print("\n[SETUP] Setting up integrations...")
         # setup_supabase()  # Uncomment when ready
         print("Setup complete (skipped - run manually if needed)")
     
@@ -680,7 +786,7 @@ def main():
         success = tester.print_report()
         tester.save_report(args.report)
     
-    print("\n✨ Done!")
+    print("\nDone!")
     
     return 0 if success else 1
 

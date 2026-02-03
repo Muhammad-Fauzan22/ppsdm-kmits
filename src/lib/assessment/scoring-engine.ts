@@ -65,7 +65,7 @@ export function calculateCognitiveScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (COGNITIVE_WEIGHTS[dim as keyof typeof COGNITIVE_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(COGNITIVE_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
@@ -133,7 +133,7 @@ export function calculateSelfManagementScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (SELF_MANAGEMENT_WEIGHTS[dim as keyof typeof SELF_MANAGEMENT_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(SELF_MANAGEMENT_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
@@ -199,7 +199,7 @@ export function calculateFinancialScore(
     self_efficacy: efficacyScore
   };
 
-  const weightedSum = 
+  const weightedSum =
     knowledgeScore * FINANCIAL_WEIGHTS.knowledge +
     behaviorScore * FINANCIAL_WEIGHTS.behavior +
     efficacyScore * FINANCIAL_WEIGHTS.self_efficacy;
@@ -264,7 +264,7 @@ export function calculatePhysicalScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (PHYSICAL_WEIGHTS[dim as keyof typeof PHYSICAL_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(PHYSICAL_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
@@ -322,7 +322,7 @@ export function calculateEmotionalScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (EMOTIONAL_WEIGHTS[dim as keyof typeof EMOTIONAL_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(EMOTIONAL_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
@@ -389,7 +389,7 @@ export function calculateMentalScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (MENTAL_WEIGHTS[dim as keyof typeof MENTAL_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(MENTAL_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
@@ -456,7 +456,7 @@ export function calculateCharacterScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (CHARACTER_WEIGHTS[dim as keyof typeof CHARACTER_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(CHARACTER_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
@@ -511,11 +511,11 @@ export function calculateSpiritualScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (SPIRITUAL_WEIGHTS[dim as keyof typeof SPIRITUAL_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(SPIRITUAL_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
-  const adjustedScore = userContext?.religion 
+  const adjustedScore = userContext?.religion
     ? adjustForReligiousContext(compositeRaw, userContext.religion)
     : compositeRaw;
 
@@ -578,11 +578,11 @@ export function calculateEnvironmentalScore(
   const weightedSum = Object.entries(subdimensionScores).reduce((sum, [dim, score]) => {
     return sum + score * (ENVIRONMENTAL_WEIGHTS[dim as keyof typeof ENVIRONMENTAL_WEIGHTS] || 1);
   }, 0);
-  
+
   const totalWeight = Object.values(ENVIRONMENTAL_WEIGHTS).reduce((sum, w) => sum + w, 0);
   const compositeRaw = weightedSum / totalWeight;
 
-  const adjustedScore = userContext 
+  const adjustedScore = userContext
     ? adjustForContext(compositeRaw, userContext)
     : compositeRaw;
 
@@ -670,30 +670,30 @@ function applyIRTAdjustment(score: number, theta: number, se: number): number {
 
 function applyContextualAdjustments(score: number, context?: any): number {
   if (!context) return score;
-  
+
   let adjusted = score;
-  
+
   // Faculty adjustment
   if (context.faculty === 'Engineering') {
     adjusted += 2;
   } else if (context.faculty === 'Social Sciences') {
     adjusted -= 1;
   }
-  
+
   // Year level adjustment
   if (context.yearLevel === 4) {
     adjusted += 3;
   } else if (context.yearLevel === 1) {
     adjusted -= 2;
   }
-  
+
   return Math.min(100, Math.max(0, adjusted));
 }
 
 function applyCulturalAdjustment(score: number, context?: any): number {
   // Indonesian cultural adjustment for emotional intelligence
   if (!context) return score;
-  
+
   // Collectivist culture adjustment
   const adjustment = context.gender === 'female' ? 2 : 0;
   return Math.min(100, Math.max(0, score + adjustment));
@@ -702,12 +702,12 @@ function applyCulturalAdjustment(score: number, context?: any): number {
 function adjustForSocialDesirability(score: number, responses: Record<string, number>): number {
   // Adjust for social desirability bias
   const avgResponse = Object.values(responses).reduce((sum, val) => sum + val, 0) / Object.keys(responses).length;
-  
+
   if (avgResponse > 4.5) {
     // Likely social desirability bias
     return score * 0.95;
   }
-  
+
   return score;
 }
 
@@ -720,27 +720,27 @@ function adjustForReligiousContext(score: number, religion: string): number {
     'Buddhist': 1,
     'Other': 0
   };
-  
+
   return Math.min(100, Math.max(0, score + (religiousAdjustments[religion] || 0)));
 }
 
 function adjustForContext(score: number, context: any): number {
   if (!context) return score;
-  
+
   let adjusted = score;
-  
+
   // Faculty adjustment
   if (context.faculty === 'Environmental Studies') {
     adjusted += 5;
   } else if (context.faculty === 'STEM') {
     adjusted -= 2;
   }
-  
+
   // Living situation adjustment
   if (context.livingSituation === 'dorm') {
     adjusted += 2;
   }
-  
+
   return Math.min(100, Math.max(0, adjusted));
 }
 
@@ -757,7 +757,7 @@ function calculateReliabilityIndex(responses: Record<string, number>, alpha: num
   const values = Object.values(responses);
   const variance = calculateVariance(values);
   const consistency = 1 - (variance / 4); // Max variance for 1-5 scale is 4
-  
+
   return Math.round((alpha * 0.7 + consistency * 0.3) * 100) / 100;
 }
 
@@ -779,10 +779,10 @@ export interface HolisticAssessmentInput {
 
 export function scoreDimension(input: HolisticAssessmentInput): AssessmentResponse {
   const { dimensionId, responses, userContext } = input;
-  
+
   let scoring: ScoringResult;
   let dimensionSlug: string;
-  
+
   switch (dimensionId) {
     case 1:
       scoring = calculateCognitiveScore(responses, userContext);
@@ -823,9 +823,9 @@ export function scoreDimension(input: HolisticAssessmentInput): AssessmentRespon
     default:
       throw new Error(`Invalid dimension ID: ${dimensionId}`);
   }
-  
+
   const feedback = generateFeedback(dimensionId, scoring, responses);
-  
+
   return {
     dimensionId,
     dimensionSlug,
@@ -845,12 +845,12 @@ function generateFeedback(
   responses: Record<string, number>
 ): FeedbackResult {
   const { subdimensionScores, compositeScore } = scoring;
-  
+
   const strengths: string[] = [];
   const growthAreas: string[] = [];
   const recommendations: string[] = [];
   const developmentPath: string[] = [];
-  
+
   // Identify strengths (score >= 70)
   Object.entries(subdimensionScores).forEach(([dim, score]) => {
     if (score >= 70) {
@@ -860,10 +860,10 @@ function generateFeedback(
       recommendations.push(getRecommendation(dimensionId, dim, score));
     }
   });
-  
+
   // Generate development path
   developmentPath.push(...generateDevelopmentPath(dimensionId, compositeScore, subdimensionScores));
-  
+
   return {
     strengths,
     growthAreas,
@@ -945,7 +945,7 @@ function getStrengthDescription(dimensionId: number, subdimension: string, score
       carbon_footprint_awareness: 'Kesadaran jejak karbon'
     }
   };
-  
+
   return strengthMap[dimensionId]?.[subdimension] || `${subdimension} yang kuat`;
 }
 
@@ -1022,7 +1022,7 @@ function getGrowthAreaDescription(dimensionId: number, subdimension: string, sco
       carbon_footprint_awareness: 'Perlu memahami jejak karbon'
     }
   };
-  
+
   return growthMap[dimensionId]?.[subdimension] || `${subdimension} perlu pengembangan`;
 }
 
@@ -1099,7 +1099,7 @@ function getRecommendation(dimensionId: number, subdimension: string, score: num
       carbon_footprint_awareness: 'Gunakan kalkulator jejak karbon online'
     }
   };
-  
+
   return recommendationMap[dimensionId]?.[subdimension] || 'Konsultasi dengan mentor atau dosen';
 }
 
@@ -1109,7 +1109,7 @@ function generateDevelopmentPath(
   subdimensionScores: Record<string, number>
 ): string[] {
   const path: string[] = [];
-  
+
   if (compositeScore < 50) {
     path.push('Fase 1: Foundation Building - Fokus pada pemahaman dasar');
     path.push('Fase 2: Skill Development - Latih keterampilan inti');
@@ -1126,23 +1126,8 @@ function generateDevelopmentPath(
     path.push('Fase 3: Leadership - Bagikan pengetahuan dengan orang lain');
     path.push('Fase 4: Legacy - Buat kontribusi berkelanjutan');
   }
-  
+
   return path;
 }
 
-// ============================================================================
-// EXPORT ALL FUNCTIONS
-// ============================================================================
 
-export {
-  calculateCognitiveScore,
-  calculateSelfManagementScore,
-  calculateFinancialScore,
-  calculatePhysicalScore,
-  calculateEmotionalScore,
-  calculateMentalScore,
-  calculateCharacterScore,
-  calculateSpiritualScore,
-  calculateEnvironmentalScore,
-  scoreDimension
-};
