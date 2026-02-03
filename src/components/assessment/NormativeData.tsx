@@ -31,6 +31,7 @@ import {
   Globe,
   Info,
   ChevronRight,
+  ArrowUp,
   ArrowDown,
   Minus,
   Equal,
