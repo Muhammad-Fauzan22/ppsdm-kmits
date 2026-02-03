@@ -493,7 +493,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
         {/* Items Tab */}
         {activeTab === 'items' && (
           <div className="space-y-6">
-            {dimension.items.map((item, index) => (
+            {dimension.items?.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -599,7 +599,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-blue-50 p-6 rounded-xl">
                   <h3 className="font-bold text-blue-900 mb-3">Bobot Sub-dimensi</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.scoring.weights).map(([key, value]) => (
+                    {Object.entries(dimension.scoring.weights || {}).map(([key, value]) => (
                       <div key={key} className="flex justify-between">
                         <span className="text-gray-700 capitalize">{key.replace(/_/g, ' ')}</span>
                         <span className="font-bold text-blue-700">{value}</span>
@@ -704,7 +704,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Referensi Ilmiah</h2>
             <div className="space-y-4">
-              {dimension.references.map((ref, index) => (
+              {dimension.references?.map((ref, index) => (
                 <div key={index} className="p-4 bg-gray-50 rounded-xl">
                   <p className="text-gray-700 text-sm">{ref}</p>
                 </div>
