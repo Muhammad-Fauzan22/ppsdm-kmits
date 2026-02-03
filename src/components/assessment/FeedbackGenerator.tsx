@@ -70,7 +70,7 @@ interface OverallFeedbackProps {
 // DIMENSION FEEDBACK COMPONENT
 // ============================================================================
 
-export function DimensionFeedback({
+export function DimensionFeedbackCard({
   dimensionId,
   dimensionName,
   dimensionSlug,
@@ -101,15 +101,8 @@ export function DimensionFeedback({
       'BELOW_AVERAGE': 'bg-orange-500',
       'NEEDS_IMPROVEMENT': 'bg-red-500',
       'EXCEPTIONAL': 'bg-green-500',
-      'PROFICIENT': 'bg-blue-500',
-      'AVERAGE': 'bg-yellow-500',
-      'DEVELOPING': 'bg-orange-500',
-      'LIMITED': 'bg-red-500',
       'EXEMPLARY': 'bg-green-500',
       'STRONG': 'bg-blue-500',
-      'GOOD': 'bg-green-500',
-      'DEVELOPING': 'bg-yellow-500',
-      'BASIC': 'bg-orange-500',
       'EMERGING': 'bg-red-500',
       'TRANSCENDENT': 'bg-green-500',
       'INTEGRATED': 'bg-blue-500',
@@ -144,15 +137,8 @@ export function DimensionFeedback({
       'BELOW_AVERAGE': 'Di Bawah Rata-rata',
       'NEEDS_IMPROVEMENT': 'Perlu Peningkatan',
       'EXCEPTIONAL': 'Luar Biasa',
-      'PROFICIENT': 'Mahir',
-      'AVERAGE': 'Rata-rata',
-      'DEVELOPING': 'Berkembang',
-      'LIMITED': 'Terbatas',
       'EXEMPLARY': 'Teladan',
       'STRONG': 'Kuat',
-      'GOOD': 'Baik',
-      'DEVELOPING': 'Berkembang',
-      'BASIC': 'Dasar',
       'EMERGING': 'Muncul',
       'TRANSCENDENT': 'Transenden',
       'INTEGRATED': 'Terintegrasi',
@@ -680,8 +666,8 @@ export function DevelopmentPath({
               <div
                 key={index}
                 className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all hover:shadow-lg ${phase.status === 'in_progress' ? 'border-blue-500 bg-blue-50' :
-                    phase.status === 'completed' ? 'border-green-500 bg-green-50' :
-                      'border-gray-300 bg-gray-50'
+                  phase.status === 'completed' ? 'border-green-500 bg-green-50' :
+                    'border-gray-300 bg-gray-50'
                   }`}
                 onClick={() => onPhaseClick?.(index)}
               >
@@ -818,14 +804,4 @@ export function WeeklyPlan({ weeklyPlan, onActivityComplete }: WeeklyPlanProps) 
   );
 }
 
-// ============================================================================
-// EXPORT ALL COMPONENTS
-// ============================================================================
 
-export {
-  DimensionFeedback,
-  OverallFeedback,
-  RecommendationCard,
-  DevelopmentPath,
-  WeeklyPlan
-};
