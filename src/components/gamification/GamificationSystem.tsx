@@ -14,12 +14,12 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Award, 
-  Trophy, 
-  Star, 
-  Flame, 
-  Zap, 
+import {
+  Award,
+  Trophy,
+  Star,
+  Flame,
+  Zap,
   Target,
   TrendingUp,
   Lock,
@@ -58,7 +58,7 @@ interface GamificationState {
   unlockedAchievements: string[];
   weeklyXP: number;
   monthlyXP: number;
-  rank: string;
+  rank: number;
   percentile: number;
 }
 
@@ -149,7 +149,7 @@ const BADGE_DEFINITIONS: Badge[] = [
     xpReward: 300,
     unlocked: false
   },
-  
+
   // Learning Badges
   {
     id: 'first_lesson',
@@ -191,7 +191,7 @@ const BADGE_DEFINITIONS: Badge[] = [
     xpReward: 150,
     unlocked: false
   },
-  
+
   // Streak Badges
   {
     id: 'streak_3',
@@ -223,7 +223,7 @@ const BADGE_DEFINITIONS: Badge[] = [
     xpReward: 1000,
     unlocked: false
   },
-  
+
   // Achievement Badges
   {
     id: 'improvement_10',
@@ -255,7 +255,7 @@ const BADGE_DEFINITIONS: Badge[] = [
     xpReward: 200,
     unlocked: false
   },
-  
+
   // Special Badges
   {
     id: 'early_adopter',
@@ -407,11 +407,11 @@ const LEVEL_DEFINITIONS = [
 // XP PROGRESS BAR COMPONENT
 // ============================================================================
 
-export function XPProgressBar({ 
-  currentXP, 
-  level, 
+export function XPProgressBar({
+  currentXP,
+  level,
   nextLevelXP,
-  showLabel = true 
+  showLabel = true
 }: {
   currentXP: number;
   level: number;
@@ -480,10 +480,9 @@ export function BadgeCard({ badge, onClick }: { badge: Badge; onClick?: () => vo
   };
 
   return (
-    <Card 
-      className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
-        badge.unlocked ? getRarityColor(badge.rarity) : 'bg-gray-50 border-gray-200 opacity-60'
-      }`}
+    <Card
+      className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${badge.unlocked ? getRarityColor(badge.rarity) : 'bg-gray-50 border-gray-200 opacity-60'
+        }`}
       onClick={onClick}
     >
       <CardContent className="p-4">
@@ -497,10 +496,10 @@ export function BadgeCard({ badge, onClick }: { badge: Badge; onClick?: () => vo
             <Lock className="w-6 h-6 text-gray-400" />
           )}
         </div>
-        
+
         <h3 className="font-semibold mb-1">{badge.name}</h3>
         <p className="text-sm text-gray-600 mb-3">{badge.description}</p>
-        
+
         <div className="flex items-center justify-between">
           <Badge className={getRarityColor(badge.rarity)}>
             {getRarityLabel(badge.rarity)}
@@ -535,10 +534,10 @@ export function BadgeCard({ badge, onClick }: { badge: Badge; onClick?: () => vo
 // STREAK DISPLAY COMPONENT
 // ============================================================================
 
-export function StreakDisplay({ 
-  currentStreak, 
+export function StreakDisplay({
+  currentStreak,
   longestStreak,
-  lastLoginDate 
+  lastLoginDate
 }: {
   currentStreak: number;
   longestStreak: number;
@@ -581,18 +580,18 @@ export function StreakDisplay({
             <div className="text-sm text-gray-600">Streak Terpanjang</div>
           </div>
         </div>
-        
+
         <div className="mt-4 p-3 bg-blue-50 rounded-lg text-center">
           <p className="text-sm text-gray-700">{getStreakMessage(currentStreak)}</p>
         </div>
 
         {lastLoginDate && (
           <div className="mt-3 text-center text-sm text-gray-500">
-            Login terakhir: {lastLoginDate.toLocaleDateString('id-ID', { 
-              weekday: 'long', 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
+            Login terakhir: {lastLoginDate.toLocaleDateString('id-ID', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
             })}
           </div>
         )}
@@ -641,7 +640,7 @@ export function XPHistory({ events }: { events: XPEvent[] }) {
       <CardContent>
         <div className="space-y-3 max-h-96 overflow-y-auto">
           {events.map((event, index) => (
-            <div 
+            <div
               key={event.id}
               className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
             >
@@ -652,9 +651,9 @@ export function XPHistory({ events }: { events: XPEvent[] }) {
                 <div>
                   <p className="font-medium">{event.description}</p>
                   <p className="text-xs text-gray-500">
-                    {event.timestamp.toLocaleDateString('id-ID', { 
-                      day: 'numeric', 
-                      month: 'short', 
+                    {event.timestamp.toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
                       year: 'numeric',
                       hour: '2-digit',
                       minute: '2-digit'
@@ -678,9 +677,9 @@ export function XPHistory({ events }: { events: XPEvent[] }) {
 // LEADERBOARD COMPONENT
 // ============================================================================
 
-export function Leaderboard({ 
-  currentUserRank, 
-  topUsers 
+export function Leaderboard({
+  currentUserRank,
+  topUsers
 }: {
   currentUserRank: number;
   topUsers: Array<{
@@ -724,9 +723,9 @@ export function Leaderboard({
               <div>
                 <div className="font-semibold">Peringkat Anda</div>
                 <div className="text-sm text-gray-600">
-                  {currentUserRank <= 10 ? 'Top 10!' : 
-                   currentUserRank <= 100 ? 'Top 100!' : 
-                   'Terus tingkatkan!'}
+                  {currentUserRank <= 10 ? 'Top 10!' :
+                    currentUserRank <= 100 ? 'Top 100!' :
+                      'Terus tingkatkan!'}
                 </div>
               </div>
             </div>
@@ -737,11 +736,10 @@ export function Leaderboard({
         {/* Top Users */}
         <div className="space-y-2">
           {topUsers.map((user) => (
-            <div 
+            <div
               key={user.rank}
-              className={`flex items-center justify-between p-3 rounded-lg ${
-                user.rank <= 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50' : 'bg-gray-50'
-              }`}
+              className={`flex items-center justify-between p-3 rounded-lg ${user.rank <= 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50' : 'bg-gray-50'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className={`text-2xl font-bold ${getRankColor(user.rank)}`}>
@@ -871,7 +869,7 @@ export function GamificationSystem({
         {/* Overview Tab */}
         <TabsContent value="overview" className="mt-6 space-y-6">
           {/* XP Progress */}
-          <XPProgressBar 
+          <XPProgressBar
             currentXP={state.xp}
             level={state.level}
             nextLevelXP={state.nextLevelXP}
@@ -902,7 +900,7 @@ export function GamificationSystem({
           </div>
 
           {/* Streak */}
-          <StreakDisplay 
+          <StreakDisplay
             currentStreak={state.streak}
             longestStreak={state.longestStreak}
             lastLoginDate={new Date()}
@@ -921,7 +919,7 @@ export function GamificationSystem({
                 {unlockedBadges.length}/{mockBadges.length} Dibuka
               </Badge>
             </div>
-            
+
             {/* Filter by category */}
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm">Semua</Button>
@@ -935,7 +933,7 @@ export function GamificationSystem({
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {mockBadges.map((badge) => (
-              <BadgeCard 
+              <BadgeCard
                 key={badge.id}
                 badge={badge}
                 onClick={() => setSelectedBadge(badge)}
@@ -948,20 +946,18 @@ export function GamificationSystem({
         <TabsContent value="achievements" className="mt-6">
           <div className="space-y-3">
             {mockAchievements.map((achievement) => (
-              <Card 
+              <Card
                 key={achievement.id}
-                className={`${
-                  achievement.unlocked 
-                    ? 'bg-green-50 border-green-200' 
-                    : 'bg-gray-50 border-gray-200 opacity-60'
-                }`}
+                className={`${achievement.unlocked
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-gray-50 border-gray-200 opacity-60'
+                  }`}
               >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        achievement.unlocked ? 'bg-green-200' : 'bg-gray-200'
-                      }`}>
+                      <div className={`p-2 rounded-lg ${achievement.unlocked ? 'bg-green-200' : 'bg-gray-200'
+                        }`}>
                         {achievement.unlocked ? (
                           <CheckCircle2 className="w-6 h-6 text-green-600" />
                         ) : (
@@ -983,7 +979,7 @@ export function GamificationSystem({
                       </div>
                     </div>
                   </div>
-                  
+
                   {achievement.unlockedAt && (
                     <div className="mt-3 text-xs text-gray-500">
                       Dicapai: {achievement.unlockedAt.toLocaleDateString('id-ID')}
@@ -1011,7 +1007,7 @@ export function GamificationSystem({
 
         {/* Leaderboard Tab */}
         <TabsContent value="leaderboard" className="mt-6">
-          <Leaderboard 
+          <Leaderboard
             currentUserRank={state.rank}
             topUsers={mockTopUsers}
           />
@@ -1037,18 +1033,4 @@ export function GamificationSystem({
   );
 }
 
-// ============================================================================
-// EXPORT ALL COMPONENTS
-// ============================================================================
 
-export {
-  GamificationSystem,
-  XPProgressBar,
-  BadgeCard,
-  StreakDisplay,
-  XPHistory,
-  Leaderboard,
-  BADGE_DEFINITIONS,
-  ACHIEVEMENT_DEFINITIONS,
-  LEVEL_DEFINITIONS
-};

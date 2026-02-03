@@ -12,11 +12,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Smartphone, 
-  Tablet, 
-  Monitor, 
-  ChevronLeft, 
+import {
+  Smartphone,
+  Tablet,
+  Monitor,
+  ChevronLeft,
   ChevronRight,
   Menu,
   X,
@@ -149,10 +149,10 @@ interface InfiniteScrollProps {
 // RESPONSIVE CONTAINER COMPONENT
 // ============================================================================
 
-export function ResponsiveContainer({ 
-  children, 
+export function ResponsiveContainer({
+  children,
   className = '',
-  maxWidth = 'lg' 
+  maxWidth = 'lg'
 }: ResponsiveContainerProps) {
   const maxWidthClasses = {
     sm: 'max-w-sm',
@@ -186,10 +186,10 @@ export function MobileNavigation({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -200,11 +200,10 @@ export function MobileNavigation({
           <button
             key={item.id}
             onClick={() => onItemClick?.(item.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-              activeItem === item.id
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeItem === item.id
                 ? 'bg-blue-600 text-white'
                 : 'hover:bg-gray-100'
-            }`}
+              }`}
           >
             {item.icon}
             <span className="font-medium">{item.label}</span>
@@ -237,7 +236,7 @@ export function MobileNavigation({
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-50 md:hidden"
           onClick={() => setIsMenuOpen(false)}
         >
@@ -253,7 +252,7 @@ export function MobileNavigation({
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              
+
               <div className="space-y-2">
                 {items.map((item) => (
                   <button
@@ -262,11 +261,10 @@ export function MobileNavigation({
                       onItemClick?.(item.id);
                       setIsMenuOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeItem === item.id
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeItem === item.id
                         ? 'bg-blue-600 text-white'
                         : 'hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     {item.icon}
                     <span className="font-medium flex-1 text-left">{item.label}</span>
@@ -301,10 +299,9 @@ export function MobileCard({
   compact = false
 }: MobileCardProps) {
   return (
-    <Card 
-      className={`cursor-pointer transition-all hover:shadow-lg active:scale-95 ${
-        compact ? 'p-3' : 'p-4'
-      }`}
+    <Card
+      className={`cursor-pointer transition-all hover:shadow-lg active:scale-95 ${compact ? 'p-3' : 'p-4'
+        }`}
       onClick={onClick}
     >
       <CardContent className="p-0">
@@ -374,18 +371,18 @@ export function SwipeableCard({
 
   const handleTouchEnd = () => {
     setIsSwiping(false);
-    
+
     if (swipeOffset > 50 && onSwipeRight) {
       onSwipeRight();
     } else if (swipeOffset < -50 && onSwipeLeft) {
       onSwipeLeft();
     }
-    
+
     setSwipeOffset(0);
   };
 
   return (
-    <div 
+    <div
       className="relative overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -393,7 +390,7 @@ export function SwipeableCard({
     >
       {/* Left Action Background */}
       {leftAction && (
-        <div 
+        <div
           className={`absolute inset-y-0 left-0 w-24 flex items-center justify-center ${leftAction.color}`}
           style={{ transform: `translateX(${swipeOffset + 100}px)` }}
         >
@@ -406,7 +403,7 @@ export function SwipeableCard({
 
       {/* Right Action Background */}
       {rightAction && (
-        <div 
+        <div
           className={`absolute inset-y-0 right-0 w-24 flex items-center justify-center ${rightAction.color}`}
           style={{ transform: `translateX(${swipeOffset - 100}px)` }}
         >
@@ -418,7 +415,7 @@ export function SwipeableCard({
       )}
 
       {/* Card Content */}
-      <div 
+      <div
         className="relative bg-white transition-transform"
         style={{ transform: `translateX(${swipeOffset}px)` }}
       >
@@ -444,17 +441,16 @@ export function BottomNavigation({
           <button
             key={item.id}
             onClick={() => onItemClick?.(item.id)}
-            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors ${
-              activeItem === item.id
+            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors ${activeItem === item.id
                 ? 'text-blue-600'
                 : 'text-gray-600 hover:text-gray-900'
-            }`}
+              }`}
           >
             <div className="relative">
               {item.icon}
               {item.badge && (
-                <Badge 
-                  variant="destructive" 
+                <Badge
+                  variant="destructive"
                   className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs"
                 >
                   {item.badge}
@@ -491,11 +487,11 @@ export function MobileModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div 
+      <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
       />
-      <div 
+      <div
         className={`relative w-full ${sizeClasses[size]} bg-white rounded-t-2xl sm:rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto`}
       >
         {/* Header */}
@@ -509,7 +505,7 @@ export function MobileModal({
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         {/* Content */}
         <div className="p-4">
           {children}
@@ -539,7 +535,7 @@ export function PullToRefresh({
   const handleTouchMove = (e: React.TouchEvent) => {
     const currentY = e.touches[0].clientY;
     const diff = currentY - touchStart;
-    
+
     if (diff > 0) {
       setIsPulling(true);
       setPullDistance(Math.min(100, diff));
@@ -548,11 +544,11 @@ export function PullToRefresh({
 
   const handleTouchEnd = () => {
     setIsPulling(false);
-    
+
     if (pullDistance > 80) {
       onRefresh();
     }
-    
+
     setPullDistance(0);
   };
 
@@ -565,7 +561,7 @@ export function PullToRefresh({
     >
       {/* Pull Indicator */}
       {isPulling && (
-        <div 
+        <div
           className="absolute inset-x-0 top-0 flex items-center justify-center bg-white border-b transition-all"
           style={{ transform: `translateY(${Math.min(pullDistance, 60)}px)` }}
         >
@@ -584,7 +580,7 @@ export function PullToRefresh({
       )}
 
       {/* Content */}
-      <div 
+      <div
         className="transition-transform"
         style={{ transform: `translateY(${Math.min(pullDistance, 60)}px)` }}
       >
@@ -611,7 +607,7 @@ export function InfiniteScroll({
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollTop = document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
-      
+
       setIsNearBottom(scrollTop + clientHeight >= scrollHeight - 200);
     };
 
@@ -757,7 +753,7 @@ export function MobileVideoPlayer({
             <Play className="w-16 h-16 mx-auto mb-2 opacity-50" />
             <p className="text-sm opacity-75">Video Player</p>
           </div>
-          
+
           {/* Play Button Overlay */}
           <button
             onClick={onPlayPause}
@@ -849,26 +845,24 @@ export function MobileQuiz({
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-gray-700">{question}</p>
-        
+
         <div className="space-y-3">
           {options.map((option) => (
             <button
               key={option.id}
               onClick={() => onAnswerSelect(option.id)}
               disabled={isSubmitting}
-              className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
-                selectedAnswer === option.id
+              className={`w-full p-4 rounded-lg border-2 text-left transition-all ${selectedAnswer === option.id
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-200 hover:border-blue-300'
-              } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="flex items-center gap-3">
                 {option.icon && (
-                  <div className={`p-2 rounded-lg ${
-                    selectedAnswer === option.id
+                  <div className={`p-2 rounded-lg ${selectedAnswer === option.id
                       ? 'bg-blue-200'
                       : 'bg-gray-200'
-                  }`}>
+                    }`}>
                     {option.icon}
                   </div>
                 )}
@@ -919,11 +913,10 @@ export function MobileStatsGrid({
                 {stat.icon}
               </div>
               {stat.trend && (
-                <div className={`flex items-center gap-1 text-xs ${
-                  stat.trend === 'up' ? 'text-green-600' :
-                  stat.trend === 'down' ? 'text-red-600' :
-                  'text-gray-600'
-                }`}>
+                <div className={`flex items-center gap-1 text-xs ${stat.trend === 'up' ? 'text-green-600' :
+                    stat.trend === 'down' ? 'text-red-600' :
+                      'text-gray-600'
+                  }`}>
                   {stat.trend === 'up' && <TrendingUp className="w-3 h-3" />}
                   {stat.trend === 'down' && <ArrowDown className="w-3 h-3" />}
                   {stat.trendValue}
@@ -968,7 +961,7 @@ export function MobileActionSheet({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div 
+      <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
       />
@@ -983,7 +976,7 @@ export function MobileActionSheet({
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         {/* Actions */}
         <div className="p-2">
           {actions.map((action) => (
@@ -993,13 +986,12 @@ export function MobileActionSheet({
                 // Handle action
                 onClose();
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                action.destructive
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${action.destructive
                   ? 'text-red-600 hover:bg-red-50'
                   : action.color
-                  ? action.color
-                  : 'text-gray-900 hover:bg-gray-100'
-              }`}
+                    ? action.color
+                    : 'text-gray-900 hover:bg-gray-100'
+                }`}
             >
               {action.icon}
               <span className="font-medium">{action.label}</span>
@@ -1011,22 +1003,4 @@ export function MobileActionSheet({
   );
 }
 
-// ============================================================================
-// EXPORT ALL COMPONENTS
-// ============================================================================
 
-export {
-  ResponsiveContainer,
-  MobileNavigation,
-  MobileCard,
-  SwipeableCard,
-  BottomNavigation,
-  MobileModal,
-  PullToRefresh,
-  InfiniteScroll,
-  MobileAssessmentCard,
-  MobileVideoPlayer,
-  MobileQuiz,
-  MobileStatsGrid,
-  MobileActionSheet
-};

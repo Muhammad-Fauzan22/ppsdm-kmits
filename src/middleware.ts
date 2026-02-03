@@ -1,12 +1,21 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { 
+  checkRateLimit, 
+  authRateLimiter, 
+  apiRateLimiter, 
+  publicRateLimiter,
+  RateLimitError,
+  getClientIP,
+  getRateLimitIdentifier
+} from "./middleware/rateLimiter";
 
 // ============================================================================
 // PPSDM KMM MIDDLEWARE - SECURITY & AUTHENTICATION
 // ============================================================================
 // Purpose: Centralized authentication and authorization for PPSDM KMM platform
 // Security Level: HIGH - Implements RBAC, session validation, and route protection
-// Last Updated: 2026-02-02
+// Last Updated: 2026-02-03
 // ============================================================================
 
 // 1. ROUTE CONFIGURATION
@@ -53,6 +62,16 @@ const PROTECTED_ROUTES = {
     supervisor: /^\/(supervisor|mentorship)(\/|$)/,
     student: /^\/(dashboard|pos|wellbeing|roadmap|habit-forge|library|courses|assessment|profile|settings|activities|employability|co-create|global-exchange|simulation|vision|verifier|passport|tutor)(\/|$)/,
 };
+
+/**
+ * API routes that require strict rate limiting
+ */
+const AUTH_API_ROUTES = [
+    '/api/auth/login',
+    '/api/auth/signup',
+    '/api/auth/register',
+    '/api/auth/reset-password',
+];
 
 /**
  * Check if a route is public (no auth required)
@@ -129,6 +148,7 @@ const getDashboardUrl = (role: string, request: NextRequest): URL => {
  * - Public route detection
  * - Role-based access control (RBAC)
  * - Secure redirects
+ * - Rate limiting for API routes
  * 
  * @param request - Next.js request object
  * @returns NextResponse or redirect
@@ -142,6 +162,60 @@ export async function middleware(request: NextRequest) {
             headers: request.headers,
         },
     });
+    
+    // 2.0 RATE LIMITING CHECK (Before auth for performance)
+    // Only apply rate limiting to API routes
+    if (pathname.startsWith('/api/')) {
+        try {
+            // Get identifier (IP or user ID)
+            const identifier = getRateLimitIdentifier(request);
+            
+            // Apply different rate limits based on route
+            if (AUTH_API_ROUTES.some(route => pathname.startsWith(route))) {
+                // Strict rate limiting for auth endpoints
+                checkRateLimit(
+                    authRateLimiter,
+                    identifier,
+                    'Terlalu banyak percobaan login. Akun dikunci sementara.'
+                );
+            } else if (pathname.startsWith('/api/public/')) {
+                // Lenient rate limiting for public endpoints
+                checkRateLimit(
+                    publicRateLimiter,
+                    identifier,
+                    'Terlalu banyak permintaan. Silakan coba lagi nanti.'
+                );
+            } else {
+                // Standard rate limiting for other API endpoints
+                checkRateLimit(
+                    apiRateLimiter,
+                    identifier,
+                    'Terlalu banyak permintaan. Silakan coba lagi nanti.'
+                );
+            }
+        } catch (error) {
+            if (error instanceof RateLimitError) {
+                // Return rate limit error response
+                return NextResponse.json(
+                    {
+                        error: error.message,
+                        remaining: error.metadata.remaining,
+                        reset: new Date(error.metadata.reset).toISOString(),
+                    },
+                    {
+                        status: 429,
+                        headers: {
+                            'X-RateLimit-Remaining': error.metadata.remaining.toString(),
+                            'X-RateLimit-Reset': new Date(error.metadata.reset).toISOString(),
+                            'Retry-After': error.metadata.retryAfter.toString(),
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+            }
+            // If it's not a RateLimitError, let it fall through
+        }
+    }
     
     // 2.1 Setup Supabase Client with cookie handling
     const supabase = createServerClient(
