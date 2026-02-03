@@ -16,11 +16,23 @@ import { createHash, randomBytes } from 'crypto';
 /**
  * CSRF secret from environment
  * Must be at least 32 characters long
+ * CRITICAL: This MUST be set in production environment
  */
-const CSRF_SECRET = process.env.CSRF_SECRET || 'default-csrf-secret-change-in-production';
+const CSRF_SECRET = process.env.CSRF_SECRET;
+
+if (!CSRF_SECRET) {
+  throw new Error(
+    'CSRF_SECRET environment variable is required. ' +
+    'Please set it in your .env.local file or deployment environment. ' +
+    'Generate a secure secret using: openssl rand -base64 32'
+  );
+}
 
 if (CSRF_SECRET.length < 32) {
-  console.warn('CSRF_SECRET should be at least 32 characters long for security');
+  throw new Error(
+    'CSRF_SECRET must be at least 32 characters long for security. ' +
+    'Generate a secure secret using: openssl rand -base64 32'
+  );
 }
 
 /**
