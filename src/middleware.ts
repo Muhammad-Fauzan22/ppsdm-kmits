@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { logger, loggingMiddleware } from '@/lib/logger';
 import { validateCSRF } from '@/lib/csrf';
 
 // Rate limiting store (in production, use Redis)
@@ -58,7 +57,7 @@ setInterval(() => {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+  const ip = request.headers.get('x-forwarded-for') || 'unknown';
   const userAgent = request.headers.get('user-agent') || 'unknown';
 
   // Skip middleware for static files and Next.js internals
@@ -88,7 +87,7 @@ export function middleware(request: NextRequest) {
     );
 
     if (!rateLimitResult.allowed) {
-      logger.warn('RATE_LIMIT_EXCEEDED', {
+      console.warn('RATE_LIMIT_EXCEEDED', {
         ip,
         pathname,
         userAgent,
@@ -146,7 +145,7 @@ export function middleware(request: NextRequest) {
     response.headers.set('Content-Security-Policy', csp);
 
     // Log the request
-    logger.info('REQUEST', {
+    console.log('REQUEST', {
       method: request.method,
       pathname,
       ip,
@@ -157,7 +156,7 @@ export function middleware(request: NextRequest) {
     return response;
 
   } catch (error) {
-    logger.error('MIDDLEWARE_ERROR', {
+    console.error('MIDDLEWARE_ERROR', {
       error: error instanceof Error ? error.message : 'Unknown error',
       pathname,
       ip,
