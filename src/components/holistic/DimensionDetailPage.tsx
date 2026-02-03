@@ -410,7 +410,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                       </tr>
                     </thead>
                     <tbody>
-                      {dimension.research.psychometricProperties.itemAnalysis?.map((item, index) => (
+                      {dimension.research.psychometricProperties.itemAnalysis?.map((item: any, index: number) => (
                         <tr key={index} className="border-b border-green-100">
                           <td className="py-2 px-4">{item.item}</td>
                           <td className="text-center py-2 px-4">{item.mean}</td>
@@ -447,7 +447,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                         </tr>
                       </thead>
                       <tbody>
-                        {dimension.research.validityEvidence?.convergent?.map((evidence, index) => (
+                        {dimension.research.validityEvidence?.convergent?.map((evidence: any, index: number) => (
                           <tr key={index} className="border-b border-gray-100">
                             <td className="py-2 px-4">{evidence.measure}</td>
                             <td className="text-center py-2 px-4">{evidence.r}</td>
@@ -473,7 +473,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                         </tr>
                       </thead>
                       <tbody>
-                        {dimension.research.validityEvidence?.incremental?.map((evidence, index) => (
+                        {dimension.research.validityEvidence?.incremental?.map((evidence: any, index: number) => (
                           <tr key={index} className="border-b border-gray-100">
                             <td className="py-2 px-4">{evidence.model}</td>
                             <td className="text-center py-2 px-4">{evidence.deltaR2}</td>
@@ -654,7 +654,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                     </tr>
                   </thead>
                   <tbody>
-                    {dimension.research.normativeData?.normativeData?.map((norm, index) => (
+                    {dimension.research.normativeData?.normativeData?.map((norm: any, index: number) => (
                       <tr key={index} className="border-b border-gray-100">
                         <td className="py-2 px-4 font-semibold">{norm.percentile}</td>
                         <td className="text-center py-2 px-4">{norm.scoreRange}</td>
@@ -669,7 +669,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-purple-50 p-6 rounded-xl">
                   <h3 className="font-bold text-purple-900 mb-3">Per Fakultas</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.research.normativeData.facultyNorms || {}).map(([faculty, data]) => (
+                    {Object.entries(dimension.research.normativeData?.facultyNorms || {}).map(([faculty, data]: [string, any]) => (
                       <div key={faculty} className="flex justify-between">
                         <span className="text-gray-700">{faculty}</span>
                         <span className="font-bold text-purple-700">Mean: {data.mean}, SD: {data.sd}</span>
@@ -681,7 +681,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-blue-50 p-6 rounded-xl">
                   <h3 className="font-bold text-blue-900 mb-3">Per Gender</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.research.normativeData.genderNorms || {}).map(([gender, data]) => (
+                    {Object.entries(dimension.research.normativeData?.genderNorms || {}).map(([gender, data]: [string, any]) => (
                       <div key={gender} className="flex justify-between">
                         <span className="text-gray-700 capitalize">{gender}</span>
                         <span className="font-bold text-blue-700">Mean: {data.mean}, SD: {data.sd}</span>
