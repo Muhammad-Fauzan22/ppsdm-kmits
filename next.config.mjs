@@ -86,15 +86,3 @@ const nextConfig = {
   },
 
   // Build optimization
-  swcMinify: true,
-
-  // Output configuration
-  output: 'standalone',
-
-  // Environment variables
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
-};
-
-export default nextConfig;

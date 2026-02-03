@@ -63,7 +63,7 @@ const configureDOMPurify = () => {
 export function sanitizeHtml(dirty: string, options: any = {}): string {
   try {
     const config = { ...configureDOMPurify(), ...options };
-    return DOMPurifyServer.sanitize(dirty, config);
+    return DOMPurifyServer.sanitize(dirty, config) as string;
   } catch (error) {
     console.error('HTML sanitization error:', error);
     // Return safe fallback
@@ -399,15 +399,4 @@ export const securityHeaders = {
 
     return response;
   },
-};
-
-// Export utilities
-export {
-  XSS_CONFIG,
-  configureDOMPurify,
-  sanitizeInput,
-  xssDetection,
-  cspUtils,
-  validateAndSanitize,
-  securityHeaders,
 };

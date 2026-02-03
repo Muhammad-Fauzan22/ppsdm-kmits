@@ -630,7 +630,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                     </tr>
                   </thead>
                   <tbody>
-                    {dimension.research.normativeData?.percentiles?.map((norm, index) => (
+                    {dimension.research.normativeData?.normativeData?.map((norm, index) => (
                       <tr key={index} className="border-b border-gray-100">
                         <td className="py-2 px-4 font-semibold">{norm.percentile}</td>
                         <td className="text-center py-2 px-4">{norm.scoreRange}</td>

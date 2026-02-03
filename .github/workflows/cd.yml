@@ -9,9 +9,9 @@ jobs:
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://staging.ppsdm-kmits.its.ac.id
+    # environment:
+    #   name: staging
+    #   url: https://staging.ppsdm-kmits.its.ac.id
     
     steps:
       - name: Checkout code
@@ -48,9 +48,9 @@ jobs:
   deploy-production:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://ppsdm-kmits.its.ac.id
+    # environment:
+    #   name: production
+    #   url: https://ppsdm-kmits.its.ac.id
     needs: deploy-staging
     
     steps:
@@ -101,20 +101,26 @@ jobs:
           working-directory: ./
 
       - name: Notify deployment success
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v1
         if: success()
         with:
-          status: ${{ job.status }}
-          text: 'Production deployment successful! 🚀'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "Production deployment successful! 🚀"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify deployment failure
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v1
         if: failure()
         with:
-          status: ${{ job.status }}
-          text: 'Production deployment failed! ❌'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "Production deployment failed! ❌"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   database-migration:
     name: Database Migration
@@ -199,8 +205,11 @@ jobs:
           working-directory: ./
 
       - name: Notify rollback
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v1
         with:
-          status: failure
-          text: 'Production deployment failed. Rolled back to previous version. 🔄'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "Production deployment failed. Rolled back to previous version. 🔄"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

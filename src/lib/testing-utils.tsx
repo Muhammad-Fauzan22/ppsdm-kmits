@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// Mock implementations for testing
+// Import jest types\nimport { jest } from "@jest/globals";\n\n// Mock implementations for testing
 export const mockDatabase = {
   // Mock database operations
   users: {
@@ -475,18 +475,4 @@ export const integrationTestUtils = {
       await page.click('[data-testid="submit-button"]');
     },
   },
-};
-
-// Export all utilities
-export {
-  mockDatabase,
-  mockApiResponses,
-  testDataGenerators,
-  componentTestUtils,
-  accessibilityTestUtils,
-  performanceTestUtils,
-  securityTestUtils,
-  apiTestUtils,
-  databaseTestUtils,
-  integrationTestUtils,
 };

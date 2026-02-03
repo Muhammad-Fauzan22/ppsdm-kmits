@@ -115,7 +115,7 @@ export const HolisticRadarChart: React.FC<RadarChartProps> = ({
     };
 
     // Handle mouse move for tooltip
-    const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>, dimension: string) => {
+    const handleMouseMove = (e: React.MouseEvent<SVGCircleElement>, dimension: string) => {
         if (svgRef.current) {
             const rect = svgRef.current.getBoundingClientRect();
             setTooltipPosition({

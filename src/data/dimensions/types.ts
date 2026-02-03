@@ -56,9 +56,9 @@ export interface NormativeData {
     mean: number;
     sd: number;
     interpretation: string;
-    percentiles: Record<string, number>;
-    facultySpecific?: Record<string, { mean: number; sd: number }>;
-    genderSpecific?: Record<string, { mean: number; sd: number }>;
+    percentiles: Array<{ percentile: string; scoreRange: string; interpretation: string }>;
+    facultyNorms?: Record<string, { mean: number; sd: number }>;
+    genderNorms?: Record<string, { mean: number; sd: number }>;
     yearLevelSpecific?: Record<string, { mean: number; sd: number }>;
 }
 

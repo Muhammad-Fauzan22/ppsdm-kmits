@@ -1,9 +1,10 @@
 import { NextConfig } from 'next';
+import React from 'react';
 
 // Bundle optimization configuration
 export const bundleOptimizationConfig: Partial<NextConfig> = {
-  // Enable SWC minification
-  swcMinify: true,
+  // SWC minification is enabled by default in Next.js 16+
+  // swcMinify: true, // Removed - not needed in Next.js 16+
 
   // Optimize CSS
   experimental: {
@@ -339,13 +340,3 @@ export const webpackBundleAnalyzer = {
   statsFilename: './bundle-stats.json',
 };
 
-// Export utilities
-export {
-  lazyLoadUtils,
-  codeSplittingStrategies,
-  performanceMonitoring,
-  resourceHints,
-  serviceWorkerConfig,
-  bundleSizeLimits,
-  webpackBundleAnalyzer,
-};
