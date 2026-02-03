@@ -497,9 +497,9 @@ export function OverallFeedback({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {growthAreas.length > 0 ? (
+            {growthAreas?.length > 0 ? (
               <div className="space-y-4">
-                {growthAreas.map((dimension) => (
+                {growthAreas?.map((dimension) => (
                   <div
                     key={dimension.id}
                     className="flex items-center justify-between p-4 bg-orange-50 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors"
@@ -658,7 +658,7 @@ export function DevelopmentPath({
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {phases.map((phase, index) => {
+          {phases?.map((phase, index) => {
             const status = getPhaseStatus(phase.status);
             const StatusIcon = status.icon;
 
@@ -693,7 +693,7 @@ export function DevelopmentPath({
 
                     {/* Dimension Progress */}
                     <div className="space-y-2">
-                      {phase.dimensions.slice(0, 3).map((dim) => (
+                      {phase.dimensions?.slice(0, 3).map((dim) => (
                         <div key={dim.id} className="flex items-center space-x-3">
                           <span className="text-sm text-gray-600 w-32">
                             Dimensi {dim.id}
@@ -761,7 +761,7 @@ export function WeeklyPlan({ weeklyPlan, onActivityComplete }: WeeklyPlanProps) 
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {weeklyPlan.map((day, dayIndex) => (
+          {weeklyPlan?.map((day, dayIndex) => (
             <div key={dayIndex} className="border rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-lg">{day.day}</h3>
@@ -774,7 +774,7 @@ export function WeeklyPlan({ weeklyPlan, onActivityComplete }: WeeklyPlanProps) 
               </div>
 
               <div className="space-y-2">
-                {day.activities.map((activity, activityIndex) => {
+                {day.activities?.map((activity, activityIndex) => {
                   const key = `${dayIndex}-${activityIndex}`;
                   const isCompleted = completedActivities.has(key);
 

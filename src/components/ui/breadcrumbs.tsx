@@ -1,50 +1,85 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChevronRight, Home } from "lucide-react";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-export function Breadcrumbs({ className }: { className?: string }) {
-    const pathname = usePathname();
-    const segments = pathname.split("/").filter(Boolean);
+export interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
 
-    // Don't show on dashboard root as it's the home
-    if (pathname === "/dashboard") return null;
+interface BreadcrumbsProps {
+  items: BreadcrumbItem[];
+  className?: string;
+}
 
-    return (
-        <nav aria-label="Breadcrumb" className={cn("flex items-center text-sm text-slate-500 dark:text-slate-400 mb-4", className)}>
-            <div className="flex items-center hover:text-slate-900 dark:hover:text-white transition-colors">
-                <Link href="/dashboard" aria-label="Home">
-                    <Home className="w-4 h-4" />
-                </Link>
-            </div>
-            {segments.map((segment, index) => {
-                const isLast = index === segments.length - 1;
-                // Build the path up to this segment. 
-                // Note: This simple logic assumes route structure matches URL structure.
-                const href = `/${segments.slice(0, index + 1).join("/")}`;
+export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
+  const pathname = usePathname();
 
-                // Format label: "my-course" -> "My Course"
-                const label = segment
-                    .replace(/-/g, " ")
-                    .replace(/\b\w/g, (char) => char.toUpperCase());
+  return (
+    <nav 
+      aria-label="Breadcrumb navigation"
+      className={`flex items-center gap-2 text-sm ${className}`}
+    >
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
-                return (
-                    <div key={href} className="flex items-center">
-                        <ChevronRight className="w-4 h-4 mx-1 text-slate-400" />
-                        {isLast ? (
-                            <span className="font-medium text-slate-900 dark:text-white" aria-current="page">
-                                {label}
-                            </span>
-                        ) : (
-                            <Link href={href} className="hover:text-slate-900 dark:hover:text-white transition-colors">
-                                {label}
-                            </Link>
-                        )}
-                    </div>
-                );
-            })}
-        </nav>
-    );
+        return (
+          <div key={item.href} className="flex items-center gap-2">
+            {index > 0 && (
+              <span 
+                className="text-slate-400" 
+                aria-hidden="true"
+              >
+                /
+              </span>
+            )}
+            {isLast ? (
+              <span className="text-slate-600 dark:text-slate-400 font-medium">
+                {item.label}
+              </span>
+            ) : (
+              <Link
+                href={item.href}
+                className={`text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${
+                  isActive ? 'text-blue-600 dark:text-blue-400 font-medium' : ''
+                }`}
+              >
+                {item.label}
+              </Link>
+            )}
+          </div>
+        );
+      })}
+    </nav>
+  );
+}
+
+// Helper function to generate breadcrumbs from pathname
+export function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
+  const segments = pathname.split('/').filter(Boolean);
+  
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Home', href: '/dashboard' }
+  ];
+
+  let currentPath = '';
+  
+  segments.forEach((segment, index) => {
+    currentPath += `/${segment}`;
+    
+    // Convert segment to readable label
+    const label = segment
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    
+    breadcrumbs.push({
+      label,
+      href: currentPath
+    });
+  });
+
+  return breadcrumbs;
 }
