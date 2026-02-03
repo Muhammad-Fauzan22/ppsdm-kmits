@@ -11,6 +11,13 @@ import {
   HolisticAssessmentInput,
   AssessmentResponse
 } from '@/lib/assessment/scoring-engine';
+import { z } from 'zod';
+
+const holisticAssessmentSchema = z.object({
+  dimensionId: z.number().int().min(1).max(9, 'Dimension ID must be between 1 and 9'),
+  responses: z.any().refine((val) => val !== null && val !== undefined, 'Responses is required'),
+  userContext: z.any().optional(),
+});
 
 // ============================================================================
 // POST /api/assessment/holistic/submit
@@ -32,22 +39,20 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { dimensionId, responses, userContext } = body;
 
-    // Validate input
-    if (!dimensionId || !responses) {
+    // Validate input with Zod schema
+    const validationResult = holisticAssessmentSchema.safeParse(body);
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Missing required fields: dimensionId, responses' },
+        {
+          error: 'Validation failed',
+          details: validationResult.error.issues
+        },
         { status: 400 }
       );
     }
 
-    if (dimensionId < 1 || dimensionId > 9) {
-      return NextResponse.json(
-        { error: 'Invalid dimension ID. Must be between 1 and 9' },
-        { status: 400 }
-      );
-    }
+    const { dimensionId, responses, userContext } = validationResult.data;
 
     // Score the dimension
     const result: AssessmentResponse = scoreDimension({
