@@ -1,0 +1,42 @@
+# robots.txt untuk PPSDM KMITS
+# Mengontrol akses crawler ke website
+
+User-agent: *
+Allow: /
+
+# Disallow admin dan API routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://ppsdm-kmits.its.ac.id/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Request rate
+Request-rate: 1
+
+# Allow specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Block bad bots
+User-agent: *
+Disallow: /search
+Disallow: /login
+Disallow: /register
+Disallow: /admin
+
+# End of file

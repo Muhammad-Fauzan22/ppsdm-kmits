@@ -358,7 +358,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-700">CFI</span>
-                      [{}, "div>"]
+                      <span className="font-bold text-blue-700">{dimension.research.psychometrics.validity.cfi}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-700">RMSEA</span>
