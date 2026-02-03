@@ -358,15 +358,15 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-700">CFI</span>
-                      <span className="font-bold text-blue-700">{dimension.research.psychometrics.validity.cfi}</span>
+                      <span className="font-bold text-blue-700">{dimension.research.psychometricProperties.cfi}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-700">RMSEA</span>
-                      <span className="font-bold text-blue-700">{dimension.research.psychometrics.validity.rmsea}</span>
+                      <span className="font-bold text-blue-700">{dimension.research.psychometricProperties.rmsea}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-700">TLI</span>
-                      <span className="font-bold text-blue-700">{dimension.research.psychometrics.validity.tli}</span>
+                      <span className="font-bold text-blue-700">{dimension.research.psychometricProperties.tli}</span>
                     </div>
                   </div>
                 </div>
@@ -386,7 +386,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                       </tr>
                     </thead>
                     <tbody>
-                      {dimension.research.psychometrics.itemAnalysis.map((item, index) => (
+                      {dimension.research.psychometricProperties.itemAnalysis?.map((item, index) => (
                         <tr key={index} className="border-b border-green-100">
                           <td className="py-2 px-4">{item.item}</td>
                           <td className="text-center py-2 px-4">{item.mean}</td>
@@ -423,7 +423,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                         </tr>
                       </thead>
                       <tbody>
-                        {dimension.research.validityEvidence.convergent.map((evidence, index) => (
+                        {dimension.research.validityEvidence?.convergent?.map((evidence, index) => (
                           <tr key={index} className="border-b border-gray-100">
                             <td className="py-2 px-4">{evidence.measure}</td>
                             <td className="text-center py-2 px-4">{evidence.r}</td>
@@ -449,7 +449,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                         </tr>
                       </thead>
                       <tbody>
-                        {dimension.research.validityEvidence.incremental.map((evidence, index) => (
+                        {dimension.research.validityEvidence?.incremental?.map((evidence, index) => (
                           <tr key={index} className="border-b border-gray-100">
                             <td className="py-2 px-4">{evidence.model}</td>
                             <td className="text-center py-2 px-4">{evidence.deltaR2}</td>
@@ -520,19 +520,19 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
                       <span className="text-gray-600">α</span>
-                      <span className="font-bold text-purple-700 ml-2">{item.parameters.alpha}</span>
+                      <span className="font-bold text-purple-700 ml-2">{item.psychometrics.alpha}</span>
                     </div>
                     <div>
                       <span className="text-gray-600">Factor Loading</span>
-                      <span className="font-bold text-purple-700 ml-2">{item.parameters.factorLoading}</span>
+                      <span className="font-bold text-purple-700 ml-2">{item.psychometrics.factorLoading}</span>
                     </div>
                     <div>
                       <span className="text-gray-600">Item-Total r</span>
-                      <span className="font-bold text-purple-700 ml-2">{item.parameters.itemTotalR}</span>
+                      <span className="font-bold text-purple-700 ml-2">{item.psychometrics.itemTotalCorrelation}</span>
                     </div>
                     <div>
                       <span className="text-gray-600">Difficulty</span>
-                      <span className="font-bold text-purple-700 ml-2">{item.parameters.difficulty}</span>
+                      <span className="font-bold text-purple-700 ml-2">{item.psychometrics.difficulty}</span>
                     </div>
                   </div>
                 </div>

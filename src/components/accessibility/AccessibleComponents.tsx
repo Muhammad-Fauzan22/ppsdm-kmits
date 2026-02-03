@@ -254,7 +254,7 @@ export function AccessibleModal({
     };
   }, []);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {
       onClose();
     }

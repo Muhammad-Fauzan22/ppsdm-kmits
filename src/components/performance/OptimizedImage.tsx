@@ -117,7 +117,7 @@ export function OptimizedImage({
         sizes={sizes}
         quality={quality}
         placeholder={placeholder}
-        blurDataURL={blurDataURL || (width && height ? generateBlurDataURL(width, height) : undefined}
+        blurDataURL={blurDataURL || (width && height ? generateBlurDataURL(width, height) : undefined)}
         className={cn(
           'transition-opacity duration-300',
           isLoading ? 'opacity-0' : 'opacity-100'

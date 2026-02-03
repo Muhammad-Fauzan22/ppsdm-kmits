@@ -23,7 +23,16 @@ export interface DimensionResearch {
     psychometricProperties: {
         alpha: string;
         cfi?: string;
+        rmsea?: string;
+        tli?: string;
         itemCount: number;
+        itemAnalysis?: Array<{
+            item: string;
+            mean: number;
+            sd: number;
+            itemTotalR: number;
+            factorLoading: number;
+        }>;
     };
 }
 
@@ -136,6 +145,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.87",
                 cfi: "0.89",
+                rmsea: "0.07",
+                tli: "0.88",
                 itemCount: 10
             }
         },
@@ -178,6 +189,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.85",
                 cfi: "0.88",
+                rmsea: "0.08",
+                tli: "0.87",
                 itemCount: 8
             }
         },
@@ -220,6 +233,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.84",
                 cfi: "0.86",
+                rmsea: "0.09",
+                tli: "0.85",
                 itemCount: 8
             }
         },
@@ -262,6 +277,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.84",
                 cfi: "0.87",
+                rmsea: "0.08",
+                tli: "0.86",
                 itemCount: 12
             }
         },
@@ -304,6 +321,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.86",
                 cfi: "0.88",
+                rmsea: "0.07",
+                tli: "0.87",
                 itemCount: 10
             }
         },
@@ -346,6 +365,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.84",
                 cfi: "0.94",
+                rmsea: "0.05",
+                tli: "0.93",
                 itemCount: 8
             }
         },
@@ -388,6 +409,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.85",
                 cfi: "0.94",
+                rmsea: "0.05",
+                tli: "0.93",
                 itemCount: 8
             }
         },
@@ -430,6 +453,8 @@ export const dimensions: DimensionData[] = [
             psychometricProperties: {
                 alpha: "0.83",
                 cfi: "0.91",
+                rmsea: "0.06",
+                tli: "0.90",
                 itemCount: 8
             }
         },

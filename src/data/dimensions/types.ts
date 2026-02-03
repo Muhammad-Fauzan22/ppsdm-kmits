@@ -36,6 +36,20 @@ export interface DimensionResearch {
     normativeData: NormativeData;
     psychometricProperties: PsychometricProperties;
     methodology: ResearchMethodology;
+    validityEvidence?: {
+        convergent: Array<{
+            measure: string;
+            r: number;
+            n: number;
+            pValue: number;
+        }>;
+        incremental: Array<{
+            model: string;
+            deltaR2: number;
+            fChange: number;
+            pValue: number;
+        }>;
+    };
 }
 
 export interface NormativeData {
@@ -60,6 +74,13 @@ export interface PsychometricProperties {
         max: number;
         mean: number;
     };
+    itemAnalysis?: Array<{
+        item: string;
+        mean: number;
+        sd: number;
+        itemTotalR: number;
+        factorLoading: number;
+    }>;
 }
 
 export interface ResearchMethodology {
@@ -90,6 +111,7 @@ export interface AssessmentItem {
     dimension: string;
     subdimension: string;
     type: 'likert' | 'multiple-choice' | 'frequency' | 'scale';
+    format: string;
     scale?: number;
     options?: string[];
     weight: number;
@@ -119,6 +141,11 @@ export interface ScoringConfig {
     weights: Record<string, number>;
     algorithm: string;
     interpretation: InterpretationLevel[];
+    irtParameters?: {
+        thetaEstimation: string;
+        standardError: string;
+        adjustment: string;
+    };
 }
 
 export interface InterpretationLevel {
