@@ -89,7 +89,7 @@ interface FacultyComparisonProps {
 // PERCENTILE CHART COMPONENT
 // ============================================================================
 
-export function PercentileChart({ userPercentile, dimensionName }: PercentileChartProps) {
+export function PercentileChartCard({ userPercentile, dimensionName }: PercentileChartProps) {
   const getPercentileColor = (percentile: number) => {
     if (percentile >= 90) return 'bg-green-500';
     if (percentile >= 75) return 'bg-blue-500';
@@ -269,8 +269,8 @@ export function FacultyComparison({ userScore, userFaculty, facultyData }: Facul
                 <div
                   key={faculty.faculty}
                   className={`flex items-center justify-between p-4 rounded-lg border-2 ${isUserFaculty
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 bg-white'
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-200 bg-white'
                     }`}
                 >
                   <div className="flex items-center gap-3">
@@ -569,7 +569,7 @@ export function NormativeDataOverview({
         {/* Percentile Tab */}
         <TabsContent value="percentile" className="mt-6">
           {currentData && (
-            <PercentileChart
+            <PercentileChartCard
               userPercentile={currentData.userPercentile}
               dimensionName={currentData.dimensionName}
             />
@@ -796,12 +796,4 @@ export function NormativeDataOverview({
   );
 }
 
-// ============================================================================
-// EXPORT ALL COMPONENTS
-// ============================================================================
 
-export {
-  NormativeDataOverview,
-  PercentileChart,
-  FacultyComparison
-};
