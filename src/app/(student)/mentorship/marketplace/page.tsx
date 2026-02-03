@@ -50,7 +50,7 @@ export default function MentorshipMarketplace() {
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="size-12 rounded-full bg-yellow-200 overflow-hidden border-2 border-[#2D303E]">
-                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" className="w-full h-full" />
+                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" alt="Avatar of Sarah Jenkins" className="w-full h-full" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-white text-sm">Sarah Jenkins</h3>
@@ -91,7 +91,7 @@ export default function MentorshipMarketplace() {
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="size-12 rounded-full bg-blue-200 overflow-hidden border-2 border-[#2D303E]">
-                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=David" className="w-full h-full" />
+                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=David" alt="Avatar of David Kim" className="w-full h-full" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-white text-sm">David Kim</h3>
@@ -131,7 +131,7 @@ export default function MentorshipMarketplace() {
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="size-12 rounded-full bg-pink-200 overflow-hidden border-2 border-[#2D303E]">
-                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Maria" className="w-full h-full" />
+                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Maria" alt="Avatar of Maria Garcia" className="w-full h-full" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-white text-sm">Maria Garcia</h3>
@@ -208,7 +208,7 @@ export default function MentorshipMarketplace() {
                                 <div key={m.rank} className="flex items-center gap-3">
                                     <span className={`font-bold text-sm w-4 ${m.rank === 1 ? 'text-yellow-500' : 'text-gray-500'}`}>{m.rank}</span>
                                     <div className="size-8 rounded-full bg-gray-700 overflow-hidden">
-                                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${m.img}`} className="w-full h-full" />
+                                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${m.img}`} alt={`Avatar of ${m.name}`} className="w-full h-full" />
                                     </div>
                                     <div className="flex-1">
                                         <p className="text-xs font-bold text-white">{m.name}</p>

@@ -54,7 +54,7 @@ export default function NewsWidget() {
                         >
                             <div className="w-20 h-14 bg-gray-200 rounded-lg overflow-hidden shrink-0 relative">
                                 {item.image_url ? (
-                                    <img src={item.image_url} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src={item.image_url} alt={`Thumbnail for ${item.title}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-200">
                                         <Newspaper className="w-6 h-6" />

@@ -99,8 +99,8 @@ export function LearningModuleCard({
   onExerciseComplete?: (exerciseId: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const completedLessons = module.lessons.filter(l => l.completed).length;
-  const progress = (completedLessons / module.lessons.length) * 100;
+  const completedLessons = module.lessons?.filter(l => l.completed).length || 0;
+  const progress = module.lessons?.length ? (completedLessons / module.lessons.length) * 100 : 0;
 
   const getDifficultyColor = (difficulty: string) => {
     const colors = {
@@ -148,7 +148,7 @@ export function LearningModuleCard({
         <div className="mt-4">
           <div className="flex justify-between text-sm mb-2">
             <span>Progress</span>
-            <span className="font-semibold">{completedLessons}/{module.lessons.length} Selesai</span>
+            <span className="font-semibold">{completedLessons}/{module.lessons?.length || 0} Selesai</span>
           </div>
           <Progress value={progress} className="h-2" />
         </div>
@@ -163,7 +163,7 @@ export function LearningModuleCard({
               Pelajaran
             </h3>
             <div className="space-y-3">
-              {module.lessons.map((lesson, index) => (
+              {module.lessons?.map((lesson, index) => (
                 <div
                   key={lesson.id}
                   className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-colors ${lesson.completed
@@ -210,7 +210,7 @@ export function LearningModuleCard({
               Sumber Daya Tambahan
             </h3>
             <div className="grid md:grid-cols-2 gap-3">
-              {module.resources.map((resource) => (
+              {module.resources?.map((resource) => (
                 <a
                   key={resource.id}
                   href={resource.url}
@@ -249,7 +249,7 @@ export function LearningModuleCard({
               Latihan & Tugas
             </h3>
             <div className="space-y-3">
-              {module.exercises.map((exercise) => (
+              {module.exercises?.map((exercise) => (
                 <div
                   key={exercise.id}
                   className={`flex items-center justify-between p-4 rounded-lg border-2 ${exercise.completed
@@ -310,10 +310,10 @@ export function EducationalContent({
   const modules: LearningModule[] = getModulesForDimension(dimensionId);
   const stats = {
     totalModules: modules.length,
-    completedModules: modules.filter(m => m.lessons.every(l => l.completed)).length,
-    totalLessons: modules.reduce((sum, m) => sum + m.lessons.length, 0),
-    completedLessons: modules.reduce((sum, m) => sum + m.lessons.filter(l => l.completed).length, 0),
-    totalXP: modules.reduce((sum, m) => sum + m.exercises.filter(e => e.completed).reduce((xpSum, e) => xpSum + e.xp, 0), 0)
+    completedModules: modules.filter(m => m.lessons?.every(l => l.completed) ?? false).length,
+    totalLessons: modules.reduce((sum, m) => sum + (m.lessons?.length || 0), 0),
+    completedLessons: modules.reduce((sum, m) => sum + (m.lessons?.filter(l => l.completed).length || 0), 0),
+    totalXP: modules.reduce((sum, m) => sum + (m.exercises?.filter(e => e.completed).reduce((xpSum, e) => xpSum + e.xp, 0) || 0), 0)
   };
 
   const getRecommendedModules = () => {
@@ -373,11 +373,11 @@ export function EducationalContent({
             <div className="flex justify-between text-sm mb-2">
               <span>Progress Keseluruhan</span>
               <span className="font-semibold">
-                {Math.round((stats.completedLessons / stats.totalLessons) * 100)}%
+                {stats.totalLessons > 0 ? Math.round((stats.completedLessons / stats.totalLessons) * 100) : 0}%
               </span>
             </div>
             <Progress
-              value={(stats.completedLessons / stats.totalLessons) * 100}
+              value={stats.totalLessons > 0 ? (stats.completedLessons / stats.totalLessons) * 100 : 0}
               className="h-3"
             />
           </div>
@@ -404,7 +404,7 @@ export function EducationalContent({
         {/* All Modules Tab */}
         <TabsContent value="modules" className="mt-6">
           <div className="space-y-6">
-            {modules.map((module) => (
+            {modules?.map((module) => (
               <LearningModuleCard
                 key={module.id}
                 module={module}
@@ -429,7 +429,7 @@ export function EducationalContent({
                   Berdasarkan skor assessment Anda ({userLevel}), kami merekomendasikan modul berikut:
                 </p>
               </div>
-              {recommendedModules.map((module) => (
+              {recommendedModules?.map((module) => (
                 <LearningModuleCard
                   key={module.id}
                   module={module}
@@ -450,7 +450,7 @@ export function EducationalContent({
         {/* Resources Tab */}
         <TabsContent value="resources" className="mt-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {modules.flatMap(m => m.resources).map((resource) => (
+            {modules?.flatMap(m => m.resources || []).map((resource) => (
               <Card key={resource.id} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-4">
                   <div className={`p-3 rounded-lg mb-3 ${resource.type === 'pdf' ? 'bg-red-100 text-red-600' :

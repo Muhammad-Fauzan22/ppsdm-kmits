@@ -40,7 +40,7 @@ export default function SupervisorApprovals() {
                             <div className="flex justify-between items-start mb-1">
                                 <div className="flex items-center gap-3">
                                     <div className="size-10 rounded-full bg-gray-700 overflow-hidden">
-                                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${req.avatar}`} />
+                                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${req.avatar}`} alt={`Avatar of ${req.user}`} />
                                     </div>
                                     <div>
                                         <h3 className={`text-sm font-bold ${selectedRequest === req.id ? 'text-white' : 'text-gray-300'}`}>{req.user}</h3>
@@ -78,7 +78,7 @@ export default function SupervisorApprovals() {
                 <div className="bg-[#151921] border border-[#2D303E] rounded-xl p-4 flex items-center justify-between mb-8">
                     <div className="flex items-center gap-4">
                         <div className="size-12 rounded-full bg-gray-700 overflow-hidden">
-                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentRequest.avatar}`} />
+                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentRequest.avatar}`} alt={`Avatar of ${currentRequest.user}`} />
                         </div>
                         <div>
                             <h3 className="font-bold text-white text-lg">{currentRequest.user}</h3>

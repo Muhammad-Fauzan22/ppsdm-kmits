@@ -53,7 +53,7 @@ export default function SupervisorLayout({
                         <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full"></span>
                     </button>
                     <div className="size-9 rounded-full bg-orange-100 border border-[#2D303E] overflow-hidden">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof" className="w-full h-full" />
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof" className="w-full h-full" alt="Supervisor profile picture" />
                     </div>
                 </div>
             </nav>

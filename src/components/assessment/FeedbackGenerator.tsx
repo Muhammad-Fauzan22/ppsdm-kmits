@@ -177,7 +177,7 @@ export function DimensionFeedbackCard({
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-4">Skor Sub-dimensi</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {Object.entries(subdimensionScores).map(([subdim, score]) => (
+            {Object.entries(subdimensionScores || {}).map(([subdim, score]) => (
               <div key={subdim} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600 capitalize">
@@ -216,9 +216,9 @@ export function DimensionFeedbackCard({
 
           {/* Strengths Tab */}
           <TabsContent value="strengths" className="mt-6">
-            {feedback.strengths.length > 0 ? (
+            {feedback.strengths?.length > 0 ? (
               <div className="space-y-3">
-                {feedback.strengths.map((strength, index) => (
+                {feedback.strengths?.map((strength, index) => (
                   <div key={index} className="flex items-start space-x-3 p-4 bg-green-50 rounded-lg">
                     <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <p className="text-gray-700">{strength}</p>
@@ -236,9 +236,9 @@ export function DimensionFeedbackCard({
 
           {/* Growth Areas Tab */}
           <TabsContent value="growth" className="mt-6">
-            {feedback.growthAreas.length > 0 ? (
+            {feedback.growthAreas?.length > 0 ? (
               <div className="space-y-3">
-                {feedback.growthAreas.map((area, index) => (
+                {feedback.growthAreas?.map((area, index) => (
                   <div key={index} className="flex items-start space-x-3 p-4 bg-orange-50 rounded-lg">
                     <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
@@ -266,7 +266,7 @@ export function DimensionFeedbackCard({
           {/* Recommendations Tab */}
           <TabsContent value="recommendations" className="mt-6">
             <div className="space-y-4">
-              {feedback.recommendations.map((recommendation, index) => (
+              {feedback.recommendations?.map((recommendation, index) => (
                 <div key={index} className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
                   <div className="flex items-start space-x-3">
                     <Lightbulb className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -297,7 +297,7 @@ export function DimensionFeedbackCard({
           {/* Development Path Tab */}
           <TabsContent value="path" className="mt-6">
             <div className="space-y-4">
-              {feedback.developmentPath.map((phase, index) => (
+              {feedback.developmentPath?.map((phase, index) => (
                 <div key={index} className="relative">
                   <div className="flex items-start space-x-4">
                     <div className="flex flex-col items-center">
@@ -352,8 +352,8 @@ export function OverallFeedback({
   const overallLevel = getOverallLevel(overallScore);
   const balanceLevel = getBalanceLevel(balanceIndex);
 
-  const strengths = dimensions.filter(d => d.score >= 70);
-  const growthAreas = dimensions.filter(d => d.score < 55);
+  const strengths = dimensions?.filter(d => d.score >= 70) || [];
+  const growthAreas = dimensions?.filter(d => d.score < 55) || [];
 
   return (
     <div className="space-y-6">
@@ -429,7 +429,7 @@ export function OverallFeedback({
       {/* Overview View */}
       {selectedView === 'overview' && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {dimensions.map((dimension) => (
+          {dimensions?.map((dimension) => (
             <Card
               key={dimension.id}
               className="cursor-pointer hover:shadow-lg transition-shadow"
@@ -460,9 +460,9 @@ export function OverallFeedback({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {strengths.length > 0 ? (
+            {strengths?.length > 0 ? (
               <div className="space-y-4">
-                {strengths.map((dimension) => (
+                {strengths?.map((dimension) => (
                   <div
                     key={dimension.id}
                     className="flex items-center justify-between p-4 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100 transition-colors"

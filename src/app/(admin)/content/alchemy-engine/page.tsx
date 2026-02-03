@@ -23,7 +23,7 @@ export default function AlchemyEnginePage() {
                         <p className="text-[10px] text-gray-500">Lead Archivist</p>
                     </div>
                     <div className="size-10 rounded-full overflow-hidden border border-[#2D303E]">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alara" className="w-full h-full" />
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alara" alt="Avatar of Dr. Alara K." className="w-full h-full" />
                     </div>
                 </div>
             </div>

@@ -153,7 +153,7 @@ export default function TransformationGallery() {
                         <div key={i} className="bg-white rounded-3xl p-8 border border-gray-100 hover:shadow-xl transition-shadow group cursor-pointer">
                             <div className="flex items-center gap-4 mb-8">
                                 <div className="size-16 rounded-full bg-gray-200 overflow-hidden">
-                                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${story.name}`} className="w-full h-full" />
+                                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${story.name}`} alt={`Avatar of ${story.name}`} className="w-full h-full" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-lg text-gray-900">{story.name}</h3>

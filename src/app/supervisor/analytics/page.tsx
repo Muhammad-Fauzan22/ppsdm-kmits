@@ -183,7 +183,7 @@ export default function CohortAnalytics() {
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">
                                         <div className="size-8 rounded-full bg-gray-700 overflow-hidden">
-                                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${student.name}`} />
+                                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${student.name}`} alt={`Avatar of ${student.name}`} />
                                         </div>
                                         <div>
                                             <p className="font-bold text-white">{student.name}</p>

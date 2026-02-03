@@ -38,7 +38,7 @@ export default function ResearchFindingsPage() {
                     </div>
                     <button className="text-gray-400 hover:text-white"><span className="material-symbols-outlined">notifications</span></button>
                     <div className="size-8 rounded-full bg-orange-200 overflow-hidden border border-[#2D303E]">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof" className="w-full h-full" />
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof" alt="Researcher profile picture" className="w-full h-full" />
                     </div>
                 </div>
             </nav>
