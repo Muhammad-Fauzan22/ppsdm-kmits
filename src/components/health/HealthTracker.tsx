@@ -115,7 +115,7 @@ export default function HealthTracker() {
 
                     {/* Recent Logs */}
                     <div className="flex-1 overflow-y-auto pr-1">
-                        <h3 className="font-bold text-gray-800 mb-3 text-sm">Today's Meals</h3>
+                        <h3 className="font-bold text-gray-800 mb-3 text-sm">Today&apos;s Meals</h3>
                         <div className="space-y-2">
                             {nutritionLogs.slice(0, 10).map((log) => (
                                 <div key={log.id} className="flex justify-between items-center p-3 bg-white border rounded-xl">

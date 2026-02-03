@@ -160,7 +160,7 @@ export function calculateLevelProgress(totalXp: number): {
 }
 
 // Export default
-export default {
+const db = {
     TABLES,
     DIMENSION_METADATA,
     ACTIVITY_METADATA,
@@ -170,4 +170,6 @@ export default {
     getScoreStatus,
     formatXP,
     calculateLevelProgress,
-}
+};
+
+export default db;

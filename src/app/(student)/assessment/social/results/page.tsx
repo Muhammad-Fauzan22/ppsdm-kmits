@@ -101,7 +101,7 @@ function SocialResultsContent() {
                         <div>
                             <h3 className="font-bold text-xl mb-4 text-white">Engineering Leadership</h3>
                             <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-                                Di ITS, kami percaya "Engineer yang hebat bukan yang paling pintar menghitung, tapi yang paling efektif bekerja dalam tim kompleks."
+                                Di ITS, kami percaya &quot;Engineer yang hebat bukan yang paling pintar menghitung, tapi yang paling efektif bekerja dalam tim kompleks.&quot;
                             </p>
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between text-sm">

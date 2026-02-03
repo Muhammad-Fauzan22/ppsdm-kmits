@@ -115,7 +115,7 @@ export default function SupervisorStudentView() {
                             <span className="text-[10px] text-gray-600">2 days ago</span>
                         </div>
                         <p className="text-xs text-gray-400 italic leading-relaxed mb-4">
-                            "Discussed the drop in Data Structures grades. Student mentioned health issues last month. Agreed to submit make-up..."
+                            &quot;Discussed the drop in Data Structures grades. Student mentioned health issues last month. Agreed to submit make-up...&quot;
                         </p>
                         <button className="text-blue-500 text-[10px] font-bold hover:underline">View all notes</button>
                     </div>

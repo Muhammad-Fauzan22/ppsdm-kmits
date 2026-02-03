@@ -220,3 +220,100 @@ code.hljs { padding:3px 5px; }
     animation: none;
   }
 }
+
+/* Dimension Detail Page Styles */
+@keyframes gradient-border {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.holographic-border {
+  position: relative;
+  background: linear-gradient(90deg, #135bec, #06b6d4, #8b5cf6, #135bec);
+  background-size: 300% 300%;
+  animation: gradient-border 3s ease infinite;
+}
+
+.holographic-border::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: rgba(10, 15, 26, 0.9);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.holographic-border > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-dim {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(19, 91, 236, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(19, 91, 236, 0.6);
+  }
+}
+
+.pulse-glow-dim {
+  animation: pulse-glow-dim 2s ease-in-out infinite;
+}
+
+/* Dimension Card Hover Effects */
+.dimension-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dimension-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Module Card Hover */
+.module-card {
+  transition: all 0.3s ease;
+}
+
+.module-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(19, 91, 236, 0.3);
+}
+
+/* Finding Card Hover */
+.finding-card {
+  transition: all 0.3s ease;
+}
+
+.finding-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+/* Stat Card Hover */
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}

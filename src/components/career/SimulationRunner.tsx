@@ -85,7 +85,7 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({ module, onCo
 
                         {/* Scenario Text */}
                         <div className="text-xl md:text-2xl text-slate-200 leading-relaxed font-light">
-                            "{currentNode.text}"
+                            &quot;{currentNode.text}&quot;
                         </div>
 
                         {/* Options */}

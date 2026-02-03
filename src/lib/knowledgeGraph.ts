@@ -213,7 +213,7 @@ export function createPPSDMKnowledgeGraph(): KnowledgeGraph {
     return graph;
 }
 
-export default {
+const knowledgeGraph = {
     createKnowledgeGraph,
     addNode,
     addEdge,
@@ -223,3 +223,5 @@ export default {
     searchNodes,
     createPPSDMKnowledgeGraph,
 };
+
+export default knowledgeGraph;

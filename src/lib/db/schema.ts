@@ -397,7 +397,7 @@ export function createMilestone(
 }
 
 // Default export for convenience
-export default {
+const schemaUtils = {
   DIMENSIONS,
   GOAL_STATUS,
   GOAL_CATEGORIES,
@@ -411,3 +411,5 @@ export default {
   validateMilestones,
   createMilestone,
 };
+
+export default schemaUtils;

@@ -281,7 +281,7 @@ export function classifyFeedback(content: string): FeedbackCategory {
     return 'other';
 }
 
-export default {
+const betaTesting = {
     BETA_COHORTS,
     FEATURE_FLAGS,
     hasFeatureAccess,
@@ -289,3 +289,5 @@ export default {
     calculateBetaMetrics,
     classifyFeedback,
 };
+
+export default betaTesting;

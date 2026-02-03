@@ -185,7 +185,7 @@ export default function MentalPulsePage() {
                                     </div>
                                     <div className="flex-1 z-10">
                                         <p className="text-[#111814] dark:text-gray-200 font-medium leading-relaxed mb-4">
-                                            "I noticed your stress levels were elevated yesterday. A balanced approach works best."
+                                            &quot;I noticed your stress levels were elevated yesterday. A balanced approach works best.&quot;
                                         </p>
                                         <div className="bg-white/60 dark:bg-black/20 backdrop-blur-sm rounded-xl p-4 border border-white/50 dark:border-white/10">
                                             <p className="text-sm text-[#111814] dark:text-white font-bold mb-2">Seno suggests:</p>

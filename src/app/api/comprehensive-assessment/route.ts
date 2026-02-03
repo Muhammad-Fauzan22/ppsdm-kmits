@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
         const supabase = await createClient();
 
         const { searchParams } = new URL(request.url);
-        const module = searchParams.get("module");
+        const moduleId = searchParams.get("module");
         const all = searchParams.get("all") === "true";
 
         let query = supabase
@@ -57,8 +57,8 @@ export async function GET(request: NextRequest) {
             .order("module_number", { ascending: true })
             .order("question_order", { ascending: true });
 
-        if (!all && module) {
-            query = query.eq("module_number", parseInt(module));
+        if (!all && moduleId) {
+            query = query.eq("module_number", parseInt(moduleId));
         }
 
         const { data: questions, error } = await query;

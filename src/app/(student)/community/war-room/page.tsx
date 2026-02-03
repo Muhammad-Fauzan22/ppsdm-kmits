@@ -331,7 +331,7 @@ export default function WarRoomPage() {
                                         <span className="material-symbols-outlined text-sm">school</span>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-white leading-snug"><span className="font-bold">User123 (Civil Eng)</span> completed 'Structure Challenge'</p>
+                                        <p className="text-sm text-white leading-snug"><span className="font-bold">User123 (Civil Eng)</span> completed &apos;Structure Challenge&apos;</p>
                                         <p className="text-[10px] text-slate-400 mt-1">5 mins ago</p>
                                     </div>
                                 </div>
@@ -341,7 +341,7 @@ export default function WarRoomPage() {
                                         <span className="material-symbols-outlined text-sm">palette</span>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-white leading-snug"><span className="font-bold">Architecture</span> just leveled up their 'Design Dimension'!</p>
+                                        <p className="text-sm text-white leading-snug"><span className="font-bold">Architecture</span> just leveled up their &apos;Design Dimension&apos;!</p>
                                         <p className="text-[10px] text-slate-400 mt-1">12 mins ago</p>
                                     </div>
                                 </div>

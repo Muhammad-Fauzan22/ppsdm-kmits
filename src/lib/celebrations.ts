@@ -218,7 +218,7 @@ export function animateXPGain(
     setTimeout(() => xpPopup.remove(), 1500);
 }
 
-export default {
+const celebrations = {
     celebrate,
     celebrateBig,
     celebrateStars,
@@ -233,3 +233,5 @@ export default {
     onPerfectScore,
     animateXPGain,
 };
+
+export default celebrations;

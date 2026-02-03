@@ -255,7 +255,7 @@ export default function CognitiveAssessment({ onComplete }: CognitiveAssessmentP
                     </div>
 
                     <h3 className="text-xl md:text-2xl font-medium text-white mb-8 leading-relaxed flex-grow">
-                        "{currentItem.text}"
+                        &quot;{currentItem.text}&quot;
                     </h3>
 
                     <div className="space-y-3">

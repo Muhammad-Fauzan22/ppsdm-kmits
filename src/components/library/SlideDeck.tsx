@@ -45,7 +45,7 @@ export function SlideDeck({ slides }: { slides: any[] }) {
                         <Presentation size={14} /> Speaker Notes:
                     </h4>
                     <p className="text-slate-800 text-base leading-relaxed font-medium">
-                        "{slides[current].speaker_notes}"
+                        &quot;{slides[current].speaker_notes}&quot;
                     </p>
                 </div>
 

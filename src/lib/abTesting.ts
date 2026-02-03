@@ -247,7 +247,7 @@ export function useExperiment(experimentId: string, userId: string): {
     };
 }
 
-export default {
+const abTesting = {
     EXPERIMENTS,
     getVariant,
     getUserExperiments,
@@ -256,3 +256,5 @@ export default {
     isInExperiment,
     useExperiment,
 };
+
+export default abTesting;

@@ -1,4 +1,15 @@
 
+// Import assessment data for each dimension
+import { COGNITIVE_ASSESSMENT_ITEMS, COGNITIVE_WEIGHTS, COGNITIVE_NORMS, COGNITIVE_INTERPRETATION } from './assessment/dimension1-cognitive';
+import { SELF_MANAGEMENT_ASSESSMENT_ITEMS, SELF_MANAGEMENT_WEIGHTS, SELF_MANAGEMENT_NORMS, SELF_MANAGEMENT_INTERPRETATION } from './assessment/dimension2-selfmanagement';
+import { FINANCIAL_ASSESSMENT_ITEMS, FINANCIAL_WEIGHTS, FINANCIAL_NORMS, FINANCIAL_INTERPRETATION } from './assessment/dimension3-financial';
+import { PHYSICAL_HEALTH_ASSESSMENT_ITEMS, PHYSICAL_HEALTH_WEIGHTS, PHYSICAL_HEALTH_NORMS, PHYSICAL_HEALTH_INTERPRETATION } from './assessment/dimension4-physicalhealth';
+import { EMOTIONAL_INTELLIGENCE_ASSESSMENT_ITEMS, EMOTIONAL_INTELLIGENCE_WEIGHTS, EMOTIONAL_INTELLIGENCE_NORMS, EMOTIONAL_INTELLIGENCE_INTERPRETATION } from './assessment/dimension5-emotional';
+import { MENTAL_HEALTH_ASSESSMENT_ITEMS, MENTAL_HEALTH_WEIGHTS, MENTAL_HEALTH_NORMS, MENTAL_HEALTH_INTERPRETATION } from './assessment/dimension6-mentalhealth';
+import { CHARACTER_ASSESSMENT_ITEMS, CHARACTER_WEIGHTS, CHARACTER_NORMS, CHARACTER_INTERPRETATION } from './assessment/dimension7-character';
+import { SPIRITUAL_ASSESSMENT_ITEMS, SPIRITUAL_WEIGHTS, SPIRITUAL_NORMS, SPIRITUAL_INTERPRETATION } from './assessment/dimension8-spiritual';
+import { ENVIRONMENTAL_ASSESSMENT_ITEMS, ENVIRONMENTAL_WEIGHTS, ENVIRONMENTAL_NORMS, ENVIRONMENTAL_INTERPRETATION } from './assessment/dimension9-environmental';
+
 export interface DimensionResearch {
     reliability: number;
     validity: string;
@@ -13,6 +24,21 @@ export interface DimensionResearch {
         alpha: string;
         cfi?: string;
         itemCount: number;
+    };
+}
+
+export interface DimensionAssessmentData {
+    items: any[];
+    weights: Record<string, number>;
+    norms: {
+        general: { mean: number; sd: number; n: number; distribution: string };
+        byFaculty?: Record<string, { mean: number; sd: number }>;
+        byGender?: Record<string, { mean: number; sd: number }>;
+        byYear?: Record<string, { mean: number; sd: number }>;
+    };
+    interpretation: {
+        levels: Array<{ range: string; label: string; description: string }>;
+        profiles?: Record<string, string>;
     };
 }
 
@@ -32,6 +58,7 @@ export interface DimensionData {
     modules: string[];
     progress: number;
     research: DimensionResearch;
+    assessmentData?: DimensionAssessmentData;
 }
 
 export const dimensions: DimensionData[] = [
@@ -69,6 +96,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.92",
                 itemCount: 12
             }
+        },
+        assessmentData: {
+            items: COGNITIVE_ASSESSMENT_ITEMS,
+            weights: COGNITIVE_WEIGHTS,
+            norms: COGNITIVE_NORMS,
+            interpretation: COGNITIVE_INTERPRETATION
         }
     },
     {
@@ -105,6 +138,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.89",
                 itemCount: 10
             }
+        },
+        assessmentData: {
+            items: SELF_MANAGEMENT_ASSESSMENT_ITEMS,
+            weights: SELF_MANAGEMENT_WEIGHTS,
+            norms: SELF_MANAGEMENT_NORMS,
+            interpretation: SELF_MANAGEMENT_INTERPRETATION
         }
     },
     {
@@ -141,6 +180,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.88",
                 itemCount: 8
             }
+        },
+        assessmentData: {
+            items: FINANCIAL_ASSESSMENT_ITEMS,
+            weights: FINANCIAL_WEIGHTS,
+            norms: FINANCIAL_NORMS,
+            interpretation: FINANCIAL_INTERPRETATION
         }
     },
     {
@@ -177,6 +222,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.86",
                 itemCount: 8
             }
+        },
+        assessmentData: {
+            items: PHYSICAL_HEALTH_ASSESSMENT_ITEMS,
+            weights: PHYSICAL_HEALTH_WEIGHTS,
+            norms: PHYSICAL_HEALTH_NORMS,
+            interpretation: PHYSICAL_HEALTH_INTERPRETATION
         }
     },
     {
@@ -213,6 +264,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.87",
                 itemCount: 12
             }
+        },
+        assessmentData: {
+            items: EMOTIONAL_INTELLIGENCE_ASSESSMENT_ITEMS,
+            weights: EMOTIONAL_INTELLIGENCE_WEIGHTS,
+            norms: EMOTIONAL_INTELLIGENCE_NORMS,
+            interpretation: EMOTIONAL_INTELLIGENCE_INTERPRETATION
         }
     },
     {
@@ -249,6 +306,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.88",
                 itemCount: 10
             }
+        },
+        assessmentData: {
+            items: MENTAL_HEALTH_ASSESSMENT_ITEMS,
+            weights: MENTAL_HEALTH_WEIGHTS,
+            norms: MENTAL_HEALTH_NORMS,
+            interpretation: MENTAL_HEALTH_INTERPRETATION
         }
     },
     {
@@ -285,6 +348,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.94",
                 itemCount: 8
             }
+        },
+        assessmentData: {
+            items: CHARACTER_ASSESSMENT_ITEMS,
+            weights: CHARACTER_WEIGHTS,
+            norms: CHARACTER_NORMS,
+            interpretation: CHARACTER_INTERPRETATION
         }
     },
     {
@@ -321,6 +390,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.94",
                 itemCount: 8
             }
+        },
+        assessmentData: {
+            items: SPIRITUAL_ASSESSMENT_ITEMS,
+            weights: SPIRITUAL_WEIGHTS,
+            norms: SPIRITUAL_NORMS,
+            interpretation: SPIRITUAL_INTERPRETATION
         }
     },
     {
@@ -357,6 +432,12 @@ export const dimensions: DimensionData[] = [
                 cfi: "0.91",
                 itemCount: 8
             }
+        },
+        assessmentData: {
+            items: ENVIRONMENTAL_ASSESSMENT_ITEMS,
+            weights: ENVIRONMENTAL_WEIGHTS,
+            norms: ENVIRONMENTAL_NORMS,
+            interpretation: ENVIRONMENTAL_INTERPRETATION
         }
     }
 ];

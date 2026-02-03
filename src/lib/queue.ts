@@ -21,7 +21,7 @@ export interface QueueMessage {
   delay?: number;
 }
 
-export type JobType = 
+export type JobType =
   | 'process_book'
   | 'generate_content'
   | 'create_assessment'
@@ -51,7 +51,7 @@ export async function enqueueBookProcessing(
   }
 ): Promise<{ messageId: string }> {
   const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
-  
+
   const result = await qstash.publishJSON({
     url: `${baseUrl}/api/process-book`,
     body: {
@@ -64,7 +64,7 @@ export async function enqueueBookProcessing(
   });
 
   console.log(`Enqueued book ${bookId} for processing, messageId: ${result.messageId}`);
-  
+
   return { messageId: result.messageId };
 }
 
@@ -81,7 +81,7 @@ export async function enqueueContentGeneration(
   }
 ): Promise<{ messageId: string }> {
   const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
-  
+
   const result = await qstash.publishJSON({
     url: `${baseUrl}/api/generate-content`,
     body: {
@@ -108,7 +108,7 @@ export async function enqueueDriveSync(
   }
 ): Promise<{ messageId: string }> {
   const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
-  
+
   const result = await qstash.publishJSON({
     url: `${baseUrl}/api/sync-drive`,
     body: {
@@ -138,22 +138,22 @@ export async function enqueueBatchProcessing(
 
   for (let i = 0; i < bookIds.length; i += batchSize) {
     const batch = bookIds.slice(i, i + batchSize);
-    
+
     // Process batch in parallel
     const batchResults = await Promise.all(
-      batch.map((bookId, index) => 
+      batch.map((bookId, index) =>
         enqueueBookProcessing(bookId, {
           priority: 5,
           delay: (i + index) * delayBetween,
         })
       )
     );
-    
+
     messageIds.push(...batchResults.map(r => r.messageId));
   }
 
   console.log(`Enqueued ${bookIds.length} books in batches, total messages: ${messageIds.length}`);
-  
+
   return { messageIds };
 }
 
@@ -166,7 +166,7 @@ export async function scheduleRecurringJob(
   payload?: Record<string, unknown>
 ): Promise<{ scheduleId: string }> {
   const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
-  
+
   const result = await qstash.schedules.create({
     destination: `${baseUrl}/api/jobs/${jobType}`,
     cron: cronExpression,
@@ -174,7 +174,7 @@ export async function scheduleRecurringJob(
   });
 
   console.log(`Scheduled recurring job ${jobType} with cron: ${cronExpression}`);
-  
+
   return { scheduleId: result.scheduleId };
 }
 
@@ -198,7 +198,7 @@ export async function listScheduledJobs(): Promise<
   }>
 > {
   const schedules = await qstash.schedules.list();
-  
+
   return schedules.map(schedule => ({
     scheduleId: schedule.scheduleId,
     destination: schedule.destination,
@@ -208,7 +208,7 @@ export async function listScheduledJobs(): Promise<
 }
 
 // Export default
-export default {
+const queue = {
   enqueueBook: enqueueBookProcessing,
   enqueueContent: enqueueContentGeneration,
   enqueueDriveSync,
@@ -218,3 +218,5 @@ export default {
   listSchedules: listScheduledJobs,
   qstash,
 };
+
+export default queue;

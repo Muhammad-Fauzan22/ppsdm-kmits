@@ -195,7 +195,7 @@ export default function MentalAssessment() {
                             </div>
 
                             <p className="text-sm text-gray-600 leading-relaxed italic">
-                                "{result.interpretation}"
+                                &quot;{result.interpretation}&quot;
                             </p>
                         </CardContent>
                     </Card>

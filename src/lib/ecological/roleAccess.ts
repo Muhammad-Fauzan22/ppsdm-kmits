@@ -500,7 +500,7 @@ export const ANONYMIZATION_RULES: Record<string, {
     },
 };
 
-export default {
+const roleAccess = {
     ROLE_CONFIGS,
     PROTECTED_ROUTES,
     RATE_LIMITS,
@@ -516,3 +516,5 @@ export default {
     getDataScope,
     getRateLimit,
 };
+
+export default roleAccess;

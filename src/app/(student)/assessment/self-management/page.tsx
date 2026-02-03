@@ -86,7 +86,7 @@ export default function SelfManagementAssessmentPage() {
                             Menguasai Seni <span className="text-emerald-600">Produktivitas.</span>
                         </h1>
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-                            Bukan sekadar "sibuk", tapi "efektif". Pelajari sains di balik manajemen waktu dan fokus sebelum mengukur kemampuan Anda.
+                            Bukan sekadar &quot;sibuk&quot;, tapi &quot;efektif&quot;. Pelajari sains di balik manajemen waktu dan fokus sebelum mengukur kemampuan Anda.
                         </p>
                     </div>
 
@@ -122,7 +122,7 @@ export default function SelfManagementAssessmentPage() {
                             </CardHeader>
                             <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Baumeister (1998) mengusulkan bahwa 'willpower' adalah sumber daya terbatas. Assessment ini mengukur seberapa efisien Anda menggunakan 'baterai fokus' Anda setiap hari.
+                                    Baumeister (1998) mengusulkan bahwa &apos;willpower&apos; adalah sumber daya terbatas. Assessment ini mengukur seberapa efisien Anda menggunakan &apos;baterai fokus&apos; Anda setiap hari.
                                 </p>
                             </CardContent>
                         </Card>

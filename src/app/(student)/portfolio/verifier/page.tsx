@@ -204,7 +204,7 @@ export default function VerifierPage() {
                         Scan Event Code
                     </button>
                     <p className="text-[10px] text-slate-500 text-center mt-4 max-w-xs mx-auto leading-relaxed relative z-10">
-                        Use this button to scan an event organizer's code instead of showing yours.
+                        Use this button to scan an event organizer&apos;s code instead of showing yours.
                     </p>
 
                 </motion.div>

@@ -311,7 +311,7 @@ export function initPerformanceMonitoring(): void {
     });
 }
 
-export default {
+const performanceMonitor = {
     collectWebVitals,
     observePerformance,
     trackMetric,
@@ -322,3 +322,5 @@ export default {
     trackError,
     initPerformanceMonitoring,
 };
+
+export default performanceMonitor;

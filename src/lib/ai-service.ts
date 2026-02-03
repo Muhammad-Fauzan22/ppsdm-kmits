@@ -605,7 +605,7 @@ export async function analyzeImage(
   return queryAI(messages, AIModel.KIMI_K25, 16384);
 }
 
-export default {
+const aiService = {
   queryAI,
   chat,
   generateLearningContent,
@@ -615,3 +615,5 @@ export default {
   createImageMessage,
   analyzeImage,
 };
+
+export default aiService;

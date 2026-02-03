@@ -125,7 +125,7 @@ export default function CognitiveDashboardPage() {
                                                 <span className="text-[#1313ec] font-bold uppercase tracking-widest text-xs">Seno Insight</span>
                                             </div>
                                             <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
-                                                "You've studied 6 hours straight. My analysis suggests diminishing returns."
+                                                &quot;You&apos;ve studied 6 hours straight. My analysis suggests diminishing returns.&quot;
                                             </h2>
                                             <p className="text-gray-300 text-sm md:text-base font-medium">
                                                 Seno recommends a 15-min walk to reset your cortisol levels and restore focus.

@@ -87,15 +87,15 @@ export const WellnessCheckIn: React.FC<WellnessCheckInProps> = ({ isOpen, onClos
                                         onClick={() => handleSelection('struggling')}
                                         className="p-4 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 hover:bg-orange-500/20 text-left transition-all group"
                                     >
-                                        <div className="font-bold group-hover:text-orange-300">I'm struggling</div>
-                                        <div className="text-sm opacity-80 mt-1">I'm overwhelmed and need someone to talk to</div>
+                                        <div className="font-bold group-hover:text-orange-300">I&apos;m struggling</div>
+                                        <div className="text-sm opacity-80 mt-1">I&apos;m overwhelmed and need someone to talk to</div>
                                     </button>
 
                                     <button
                                         onClick={() => handleSelection('stressed')}
                                         className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 text-left transition-all group"
                                     >
-                                        <div className="font-bold group-hover:text-blue-300">I'm just stressed</div>
+                                        <div className="font-bold group-hover:text-blue-300">I&apos;m just stressed</div>
                                         <div className="text-sm opacity-80 mt-1">Need tips to relax and focus</div>
                                     </button>
 
@@ -103,7 +103,7 @@ export const WellnessCheckIn: React.FC<WellnessCheckInProps> = ({ isOpen, onClos
                                         onClick={() => onClose()}
                                         className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 text-left transition-all group"
                                     >
-                                        <div className="font-bold group-hover:text-emerald-300">I'm okay</div>
+                                        <div className="font-bold group-hover:text-emerald-300">I&apos;m okay</div>
                                         <div className="text-sm opacity-80 mt-1">Just browsing</div>
                                     </button>
                                 </div>
@@ -171,7 +171,7 @@ export const WellnessCheckIn: React.FC<WellnessCheckInProps> = ({ isOpen, onClos
 
                         {step === 'counseling' && (
                             <div className="space-y-4 text-center">
-                                <h4 className="text-lg font-bold text-white">Let's connect you with a Counselor</h4>
+                                <h4 className="text-lg font-bold text-white">Let&apos;s connect you with a Counselor</h4>
                                 <p className="text-slate-400 text-sm">ITS Counseling Unit is free and confidential.</p>
 
                                 <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 text-left">

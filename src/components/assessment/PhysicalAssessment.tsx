@@ -176,7 +176,7 @@ export default function PhysicalAssessment() {
                         <AlertTitle className="text-rose-800 font-semibold">Scientific Validation</AlertTitle>
                         <AlertDescription className="text-rose-700">
                             Instrumen ini mengadaptasi IPAQ-SF (WHO), PSQI (Sleep Quality), dan Subjective Vitality Scale.
-                            Divalidasi pada 2,347 mahasiswa Indonesia (Cronbach's α = 0.84).
+                            Divalidasi pada 2,347 mahasiswa Indonesia (Cronbach&apos;s α = 0.84).
                         </AlertDescription>
                     </Alert>
 

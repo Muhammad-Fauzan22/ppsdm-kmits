@@ -269,7 +269,7 @@ export default function PassportPage() {
                                 </div>
                                 <div className="space-y-2 font-mono text-xs">
                                     <div className="flex justify-between text-slate-500">
-                                        <span>Minted "Advanced Python" (ERC-721)</span>
+                                        <span>Minted &quot;Advanced Python&quot; (ERC-721)</span>
                                         <span>Tx: 0x8a...92b1 • 2 hrs ago</span>
                                     </div>
                                     <div className="flex justify-between text-slate-500">

@@ -133,7 +133,7 @@ export default function CognitiveAssessmentPage() {
                             </CardHeader>
                             <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Berasal dari konsep <em>"Thinking about thinking"</em> (Flavell, 1979). Metakognisi bukan hanya tentang seberapa pintar Anda, tapi seberapa sadar Anda akan proses berpikir Anda sendiri. Ini adalah prediktor utama kesuksesan akademik jangka panjang.
+                                    Berasal dari konsep <em>&quot;Thinking about thinking&quot;</em> (Flavell, 1979). Metakognisi bukan hanya tentang seberapa pintar Anda, tapi seberapa sadar Anda akan proses berpikir Anda sendiri. Ini adalah prediktor utama kesuksesan akademik jangka panjang.
                                 </p>
                             </CardContent>
                         </Card>
@@ -145,7 +145,7 @@ export default function CognitiveAssessmentPage() {
                             </CardHeader>
                             <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Menurut Facione (1990), berpikir kritid adalah proses disiplin aktif untuk mengkonseptualisasikan, menerapkan, dan mengevaluasi informasi. Ini berbeda dengan sekadar menghafal; ini adalah seni "mempertanyakan asumsi".
+                                    Menurut Facione (1990), berpikir kritid adalah proses disiplin aktif untuk mengkonseptualisasikan, menerapkan, dan mengevaluasi informasi. Ini berbeda dengan sekadar menghafal; ini adalah seni &quot;mempertanyakan asumsi&quot;.
                                 </p>
                             </CardContent>
                         </Card>

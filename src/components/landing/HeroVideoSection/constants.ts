@@ -2,7 +2,7 @@
  * Configuration constants for Hero Video Section
  */
 
-// Base path to the image sequence folder
+// Base path to be image sequence folder
 export const SEQUENCE_BASE_PATH = "/hero-sequence";
 
 // File naming pattern
@@ -34,8 +34,8 @@ export const ANIMATION_CONFIG = {
 
 // Priority frames for initial loading (every 10th frame for quick preview)
 export const PRIORITY_FRAME_INDICES = [
-  0,  // First frame - gold sphere intro
-  8,  // Early animation
+  0, // First frame - gold sphere intro
+  8, // Early animation
   16, // Building up
   24, // ~1/3 through
   32, // Midpoint approaching

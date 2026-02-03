@@ -171,7 +171,7 @@ export default function StudentPersonalOSPage() {
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start">
-                                            <h4 className="text-white font-medium text-sm leading-snug">Review 'Data Structures'</h4>
+                                            <h4 className="text-white font-medium text-sm leading-snug">Review &apos;Data Structures&apos;</h4>
                                             <span className="text-[10px] font-bold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded border border-green-400/20">Suggest</span>
                                         </div>
                                         <p className="text-xs text-slate-400 mt-1">Chapter 4 - Linked Lists</p>
@@ -202,7 +202,7 @@ export default function StudentPersonalOSPage() {
                             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
                             <div className="flex-1 z-10">
                                 <div className="bg-white/10 backdrop-blur-sm border border-white/10 p-4 rounded-xl rounded-bl-none mb-2 shadow-lg">
-                                    <p className="text-white text-sm italic">"Don't forget to hydrate! You've been coding for 2 hours straight."</p>
+                                    <p className="text-white text-sm italic">&quot;Don&apos;t forget to hydrate! You&apos;ve been coding for 2 hours straight.&quot;</p>
                                 </div>
                                 <p className="text-brand-accent font-bold text-xs uppercase tracking-wider pl-2">- Seno, Your Assistant</p>
                             </div>

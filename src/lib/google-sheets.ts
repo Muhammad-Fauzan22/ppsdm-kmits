@@ -26,12 +26,12 @@ export interface ProcessingLog {
 }
 
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'retrying';
-export type ProcessingStage = 
-  | 'downloaded' 
-  | 'parsed' 
-  | 'summarized' 
-  | 'modules_generated' 
-  | 'assessments_created' 
+export type ProcessingStage =
+  | 'downloaded'
+  | 'parsed'
+  | 'summarized'
+  | 'modules_generated'
+  | 'assessments_created'
   | 'published';
 
 /**
@@ -69,7 +69,7 @@ export async function logProcessingStatus(
 ): Promise<void> {
   try {
     const sheets = getSheetsClient();
-    
+
     const row = [
       new Date().toISOString(),
       bookId,
@@ -104,14 +104,14 @@ export async function logProcessingStatus(
 export async function getBookProcessingLogs(bookId: string): Promise<ProcessingLog[]> {
   try {
     const sheets = getSheetsClient();
-    
+
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
       range: `${DEFAULT_SHEET_NAME}!A:I`,
     });
 
     const rows = response.data.values || [];
-    
+
     // Filter by bookId (skip header row)
     return rows
       .slice(1)
@@ -139,7 +139,7 @@ export async function getBookProcessingLogs(bookId: string): Promise<ProcessingL
 export async function getAllBookStatuses(): Promise<Record<string, ProcessingLog>> {
   try {
     const sheets = getSheetsClient();
-    
+
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
       range: `${DEFAULT_SHEET_NAME}!A:I`,
@@ -147,12 +147,12 @@ export async function getAllBookStatuses(): Promise<Record<string, ProcessingLog
 
     const rows = response.data.values || [];
     const statuses: Record<string, ProcessingLog> = {};
-    
+
     // Get latest entry for each book (skip header)
     for (let i = rows.length - 1; i > 0; i--) {
       const row = rows[i];
       const bookId = row[1];
-      
+
       if (!statuses[bookId]) {
         statuses[bookId] = {
           timestamp: new Date(row[0]),
@@ -167,7 +167,7 @@ export async function getAllBookStatuses(): Promise<Record<string, ProcessingLog
         };
       }
     }
-    
+
     return statuses;
   } catch (error) {
     console.error('Error getting all statuses:', error);
@@ -181,7 +181,7 @@ export async function getAllBookStatuses(): Promise<Record<string, ProcessingLog
 export async function initializeSpreadsheet(): Promise<void> {
   try {
     const sheets = getSheetsClient();
-    
+
     // Check if sheet exists
     const response = await sheets.spreadsheets.get({
       spreadsheetId: SPREADSHEET_ID,
@@ -247,7 +247,7 @@ export async function updateBookStatus(
 ): Promise<void> {
   try {
     const sheets = getSheetsClient();
-    
+
     // Find the row for this book
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
@@ -256,7 +256,7 @@ export async function updateBookStatus(
 
     const rows = response.data.values || [];
     let rowIndex = -1;
-    
+
     for (let i = 1; i < rows.length; i++) {
       if (rows[i][1] === bookId) {
         rowIndex = i;
@@ -271,14 +271,14 @@ export async function updateBookStatus(
 
     // Update specific cells
     const updates_array: { range: string; values: string[][] }[] = [];
-    
+
     if (updates.status) {
       updates_array.push({
         range: `${DEFAULT_SHEET_NAME}!D${rowIndex + 1}`,
         values: [[updates.status]],
       });
     }
-    
+
     if (updates.stage) {
       updates_array.push({
         range: `${DEFAULT_SHEET_NAME}!E${rowIndex + 1}`,
@@ -315,16 +315,16 @@ export async function getProcessingStats(): Promise<{
   try {
     const statuses = await getAllBookStatuses();
     const logs = Object.values(statuses);
-    
+
     const completed = logs.filter(l => l.status === 'completed').length;
     const failed = logs.filter(l => l.status === 'failed').length;
     const processing = logs.filter(l => l.status === 'processing').length;
     const pending = logs.filter(l => l.status === 'pending').length;
-    
+
     const durations = logs
       .filter(l => l.duration)
       .map(l => l.duration!);
-    
+
     const averageDuration = durations.length > 0
       ? durations.reduce((a, b) => a + b, 0) / durations.length
       : 0;
@@ -351,7 +351,7 @@ export async function getProcessingStats(): Promise<{
 }
 
 // Export default
-export default {
+const googleSheets = {
   logStatus: logProcessingStatus,
   getBookLogs: getBookProcessingLogs,
   getAllStatuses: getAllBookStatuses,
@@ -360,3 +360,5 @@ export default {
   getStats: getProcessingStats,
   SPREADSHEET_ID,
 };
+
+export default googleSheets;

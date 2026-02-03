@@ -30,7 +30,7 @@ export default function Testimonials() {
                                     <p className="text-xs text-slate-400">{item.prodi}</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-300 leading-relaxed">"{item.text}"</p>
+                            <p className="text-sm text-slate-300 leading-relaxed">&quot;{item.text}&quot;</p>
                         </div>
                     ))}
                 </div>

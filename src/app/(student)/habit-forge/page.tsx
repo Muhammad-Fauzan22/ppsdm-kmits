@@ -74,8 +74,8 @@ export default function HabitForgePage() {
                                 <div
                                     key={i}
                                     className={`rounded-sm w-full h-full ${d.level === 0 ? 'bg-[#1C2028]' :
-                                            d.level === 1 ? 'bg-blue-900' :
-                                                d.level === 2 ? 'bg-blue-700' : 'bg-blue-500'
+                                        d.level === 1 ? 'bg-blue-900' :
+                                            d.level === 2 ? 'bg-blue-700' : 'bg-blue-500'
                                         }`}
                                 ></div>
                             ))}
@@ -88,7 +88,7 @@ export default function HabitForgePage() {
                     {/* Today's Habits */}
                     <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="font-bold text-white">Today's Habits</h3>
+                            <h3 className="font-bold text-white">Today&apos;s Habits</h3>
                             <button className="text-blue-500 text-xs font-bold flex items-center gap-1 hover:text-blue-400">
                                 <span className="material-symbols-outlined text-[16px]">add</span> Add Habit
                             </button>
@@ -120,7 +120,7 @@ export default function HabitForgePage() {
                     {/* Logging Panel */}
                     <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6">
                         <h3 className="font-bold text-white mb-6 flex items-center gap-2">
-                            <span className="material-symbols-outlined text-blue-500">edit_note</span> Log Today's Stats
+                            <span className="material-symbols-outlined text-blue-500">edit_note</span> Log Today&apos;s Stats
                         </h3>
 
                         <div className="space-y-6">

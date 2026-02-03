@@ -620,7 +620,7 @@ function generateProfileDescription(dimensions: DimensionScore[], overallScore: 
   return 'Profil holistik yang memerlukan perhatian dan pengembangan di berbagai dimensi.';
 }
 
-export default {
+const assessmentEngine = {
   processHolisticAssessment,
   calculateCognitiveScore,
   calculateSelfManagementScore,
@@ -632,6 +632,8 @@ export default {
   calculateSpiritualScore,
   calculateEnvironmentalScore,
 };
+
+export default assessmentEngine;
 
 // ============================================================================
 // DIMENSI 5: KECERDASAN EMOSIONAL & SOSIAL

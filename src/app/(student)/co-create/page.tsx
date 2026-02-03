@@ -136,7 +136,7 @@ export default function CoCreatePage() {
                         transition={{ delay: 0.5 }}
                         className="absolute top-[500px] left-[350px] bg-yellow-100 text-black w-48 p-3 rounded-lg shadow-xl -rotate-2 font-handwriting text-xs leading-5"
                     >
-                        Don't forget to include the recent case study from East Java!
+                        Don&apos;t forget to include the recent case study from East Java!
                     </motion.div>
 
                 </div>
@@ -184,7 +184,7 @@ export default function CoCreatePage() {
                         </div>
                         <div className="bg-white/5 p-3 rounded-2xl rounded-tl-none border border-white/10">
                             <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                                Hello! I'm ready to help you brainstorm on <span className="text-white font-bold">Renewable Energy</span>. Would you like to generate a mind map or draft an outline first?
+                                Hello! I&apos;m ready to help you brainstorm on <span className="text-white font-bold">Renewable Energy</span>. Would you like to generate a mind map or draft an outline first?
                             </p>
                             <p className="text-[10px] text-slate-500 mt-2">10:42 AM</p>
                         </div>
@@ -204,7 +204,7 @@ export default function CoCreatePage() {
                             <button className="text-slate-500 hover:text-white"><span className="material-symbols-outlined text-xs">close</span></button>
                         </div>
                         <p className="text-xs text-slate-300 mb-3">
-                            Since you added "Wind Energy", consider including a section on <span className="text-white font-bold">noise pollution impact</span> and mitigation strategies.
+                            Since you added &quot;Wind Energy&quot;, consider including a section on <span className="text-white font-bold">noise pollution impact</span> and mitigation strategies.
                         </p>
                         <button className="w-full bg-brand-blue hover:bg-blue-600 text-white text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-brand-blue/20">
                             <span className="material-symbols-outlined text-sm">add_circle</span> Add Node
@@ -218,7 +218,7 @@ export default function CoCreatePage() {
                         </div>
                         <div className="bg-brand-blue p-3 rounded-2xl rounded-tr-none text-white shadow-lg shadow-brand-blue/10">
                             <p className="text-xs leading-relaxed font-medium">
-                                Create a sub-branch for "Micro-Hydro" systems in rural Indonesia.
+                                Create a sub-branch for &quot;Micro-Hydro&quot; systems in rural Indonesia.
                             </p>
                             <p className="text-[10px] text-blue-200 mt-2">10:45 AM</p>
                         </div>

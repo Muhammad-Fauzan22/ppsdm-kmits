@@ -212,7 +212,7 @@ export function getDimensionAvatar(dimension: string, seed: string): string {
     return getDiceBearAvatar({ seed: `${dimension}-${seed}`, style });
 }
 
-export default {
+const avatarGenerator = {
     getDiceBearAvatar,
     getRandomAvatar,
     getTextAvatar,
@@ -225,3 +225,5 @@ export default {
     generateProfileCard,
     getDimensionAvatar,
 };
+
+export default avatarGenerator;

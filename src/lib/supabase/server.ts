@@ -83,11 +83,11 @@ export function createAdminClient() {
 export const getCurrentUser = cache(async () => {
     const supabase = await createClient()
     const { data: { user }, error } = await supabase.auth.getUser()
-    
+
     if (error || !user) {
         return null
     }
-    
+
     return user
 })
 
@@ -97,11 +97,11 @@ export const getCurrentUser = cache(async () => {
 export const getSession = cache(async () => {
     const supabase = await createClient()
     const { data: { session }, error } = await supabase.auth.getSession()
-    
+
     if (error || !session) {
         return null
     }
-    
+
     return session
 })
 
@@ -110,11 +110,11 @@ export const getSession = cache(async () => {
  */
 export async function requireAuth() {
     const user = await getCurrentUser()
-    
+
     if (!user) {
         throw new Error('Unauthorized')
     }
-    
+
     return user
 }
 
@@ -124,23 +124,23 @@ export async function requireAuth() {
 export const getUserProfileWithScores = cache(async () => {
     const supabase = await createClient()
     const user = await requireAuth()
-    
+
     const { data: profile, error: profileError } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('id', user.id)
         .single()
-    
+
     if (profileError) {
         return null
     }
-    
+
     const { data: scores, error: scoresError } = await supabase
         .from('dimension_scores')
         .select('*')
         .eq('user_id', user.id)
         .single()
-    
+
     return {
         profile,
         scores: scores || null,
@@ -152,11 +152,11 @@ export const getUserProfileWithScores = cache(async () => {
  */
 export async function isAdmin() {
     const user = await getCurrentUser()
-    
+
     if (!user) {
         return false
     }
-    
+
     // Check for admin role in user metadata
     const appMetadata = user.app_metadata || {}
     return appMetadata.role === 'admin' || appMetadata.role === 'service_role'
@@ -168,7 +168,7 @@ export async function isAdmin() {
 export function handleSupabaseError(error: unknown): { error: string; status: number } {
     if (typeof error === 'object' && error !== null) {
         const supabaseError = error as { message?: string; code?: string; details?: string }
-        
+
         // Handle specific error codes
         switch (supabaseError.code) {
             case '23505':
@@ -180,20 +180,20 @@ export function handleSupabaseError(error: unknown): { error: string; status: nu
             case 'PGRST116':
                 return { error: 'Record not found', status: 404 }
             default:
-                return { 
-                    error: supabaseError.message || 'An unexpected error occurred', 
-                    status: 500 
+                return {
+                    error: supabaseError.message || 'An unexpected error occurred',
+                    status: 500
                 }
         }
     }
-    
+
     return { error: 'An unexpected error occurred', status: 500 }
 }
 
 /**
  * Type for API response
  */
-export type ApiResponse<T> = 
+export type ApiResponse<T> =
     | { success: true; data: T }
     | { success: false; error: string; status: number }
 
@@ -212,7 +212,7 @@ export function createErrorResponse(error: string, status = 500): ApiResponse<ne
 }
 
 // Default export
-export default {
+const supabaseServer = {
     createClient,
     createActionClient,
     createAdminClient,

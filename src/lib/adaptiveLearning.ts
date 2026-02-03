@@ -388,10 +388,12 @@ export function getNextActivity(
     return null;
 }
 
-export default {
+const adaptiveLearning = {
     detectLearningStyle,
     generateAdaptivePath,
     adaptPath,
     calculateSkillDecay,
     getNextActivity,
 };
+
+export default adaptiveLearning;

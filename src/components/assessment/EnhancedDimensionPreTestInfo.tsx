@@ -106,14 +106,14 @@ const SAMPLE_QUESTIONS: Record<string, Array<{
   // Dimensi lainnya dapat ditambahkan sesuai kebutuhan
 };
 
-function PsychometricCard({ 
-  label, 
-  value, 
-  description, 
-  status 
-}: { 
-  label: string; 
-  value: string; 
+function PsychometricCard({
+  label,
+  value,
+  description,
+  status
+}: {
+  label: string;
+  value: string;
   description: string;
   status: "excellent" | "good" | "verified" | "info";
 }) {
@@ -123,7 +123,7 @@ function PsychometricCard({
     verified: "from-violet-500 to-purple-500",
     info: "from-amber-500 to-orange-500"
   };
-  
+
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -209,16 +209,16 @@ function SubDimensionCard({ sub, color }: { sub: SubDimension; color: string }) 
   );
 }
 
-export function EnhancedDimensionPreTestInfo({ 
-  dimensionId, 
-  onStart, 
+export function EnhancedDimensionPreTestInfo({
+  dimensionId,
+  onStart,
   onBack,
-  onNext 
+  onNext
 }: EnhancedDimensionPreTestInfoProps) {
   const dimension = DIMENSION_DATA[dimensionId];
   const [activeTab, setActiveTab] = useState<"overview" | "sample" | "interpretation">("overview");
   const sampleQuestions = SAMPLE_QUESTIONS[dimensionId] || [];
-  
+
   if (!dimension) {
     return <div>Dimension not found</div>;
   }
@@ -230,15 +230,15 @@ export function EnhancedDimensionPreTestInfo({
         {/* Animated gradient background */}
         <motion.div
           className={`absolute inset-0 bg-gradient-to-br ${dimension.gradient} opacity-20`}
-          animate={{ 
+          animate={{
             backgroundPosition: ["0% 0%", "100% 100%"],
           }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
         />
-        
+
         {/* Mesh pattern overlay */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')]" />
-        
+
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
           {/* Back button */}
           {onBack && (
@@ -252,7 +252,7 @@ export function EnhancedDimensionPreTestInfo({
               <span className="text-sm">Kembali</span>
             </motion.button>
           )}
-          
+
           {/* Progress indicator */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -263,7 +263,7 @@ export function EnhancedDimensionPreTestInfo({
               Dimensi {dimension.step} dari {dimension.totalSteps}
             </span>
           </motion.div>
-          
+
           {/* Main Title */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -273,7 +273,7 @@ export function EnhancedDimensionPreTestInfo({
           >
             {dimension.name}
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -282,14 +282,14 @@ export function EnhancedDimensionPreTestInfo({
           >
             {dimension.nameEn}
           </motion.p>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="text-lg text-white/50 italic"
           >
-            "{dimension.tagline}"
+            &quot;{dimension.tagline}&quot;
           </motion.p>
         </div>
       </div>
@@ -339,11 +339,10 @@ export function EnhancedDimensionPreTestInfo({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab.id
+              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${activeTab === tab.id
                   ? "bg-white text-[#0A0F1A]"
                   : "bg-white/10 text-white/70 hover:bg-white/20"
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -456,7 +455,7 @@ export function EnhancedDimensionPreTestInfo({
                   );
                 })}
               </div>
-              
+
               {/* Normative Data */}
               <div className="mt-6 p-4 bg-white/5 rounded-lg">
                 <h3 className="text-sm font-semibold text-white/80 mb-2">Data Normatif</h3>
@@ -485,12 +484,12 @@ export function EnhancedDimensionPreTestInfo({
               <span>Kembali</span>
             </button>
           )}
-          
+
           <div className="flex items-center gap-2 text-white/50 text-sm">
             <HelpCircle className="w-4 h-4" />
             <span>Butuh bantuan? <a href="/contact" className="text-violet-400 hover:underline">Hubungi kami</a></span>
           </div>
-          
+
           <button
             onClick={onStart}
             className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-bold rounded-xl hover:scale-105 transition-transform shadow-lg shadow-violet-500/25"

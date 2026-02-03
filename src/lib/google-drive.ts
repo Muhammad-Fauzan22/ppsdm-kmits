@@ -71,7 +71,7 @@ export async function listBooksInDrive(
 ): Promise<BookMetadata[]> {
   try {
     const drive = getDriveClient();
-    
+
     const response = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false`,
       fields: 'files(id, name, mimeType, size, modifiedTime, webViewLink, thumbnailLink, description)',
@@ -80,7 +80,7 @@ export async function listBooksInDrive(
     });
 
     const files = response.data.files || [];
-    
+
     return files
       .filter(file => SUPPORTED_BOOK_FORMATS.includes(file.mimeType || ''))
       .map(file => ({
@@ -105,14 +105,14 @@ export async function listBooksInDrive(
 export async function getBookDetails(fileId: string): Promise<DriveFile | null> {
   try {
     const drive = getDriveClient();
-    
+
     const response = await drive.files.get({
       fileId,
       fields: 'id, name, mimeType, size, modifiedTime, webViewLink, thumbnailLink, description',
     });
 
     const file = response.data;
-    
+
     if (!file.id) return null;
 
     return {
@@ -137,7 +137,7 @@ export async function getBookDetails(fileId: string): Promise<DriveFile | null> 
 export async function downloadBook(fileId: string): Promise<Buffer> {
   try {
     const drive = getDriveClient();
-    
+
     const response = await drive.files.get(
       { fileId, alt: 'media' },
       { responseType: 'arraybuffer' }
@@ -156,7 +156,7 @@ export async function downloadBook(fileId: string): Promise<Buffer> {
 export async function getBookStream(fileId: string): Promise<NodeJS.ReadableStream> {
   try {
     const drive = getDriveClient();
-    
+
     const response = await drive.files.get(
       { fileId, alt: 'media' },
       { responseType: 'stream' }
@@ -181,7 +181,7 @@ export async function uploadBook(
 ): Promise<string> {
   try {
     const drive = getDriveClient();
-    
+
     const fileMetadata = {
       name: fileName,
       parents: [folderId],
@@ -215,7 +215,7 @@ export async function searchBooks(
 ): Promise<BookMetadata[]> {
   try {
     const drive = getDriveClient();
-    
+
     const response = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false and (name contains '${query}' or fullText contains '${query}')`,
       fields: 'files(id, name, mimeType, size, modifiedTime, webViewLink, thumbnailLink, description)',
@@ -223,7 +223,7 @@ export async function searchBooks(
     });
 
     const files = response.data.files || [];
-    
+
     return files
       .filter(file => SUPPORTED_BOOK_FORMATS.includes(file.mimeType || ''))
       .map(file => ({
@@ -263,7 +263,7 @@ export async function createFolder(
 ): Promise<string> {
   try {
     const drive = getDriveClient();
-    
+
     const fileMetadata = {
       name: folderName,
       mimeType: 'application/vnd.google-apps.folder',
@@ -293,7 +293,7 @@ function getFormatFromMimeType(mimeType: string): string {
     'application/msword': 'DOC',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'DOCX',
   };
-  
+
   return formatMap[mimeType] || 'UNKNOWN';
 }
 
@@ -311,7 +311,7 @@ function extractTagsFromDescription(description: string | null | undefined): str
 }
 
 // Export default
-export default {
+const googleDrive = {
   listBooks: listBooksInDrive,
   getDetails: getBookDetails,
   download: downloadBook,
@@ -323,3 +323,5 @@ export default {
   DRIVE_FOLDER_ID,
   SUPPORTED_BOOK_FORMATS,
 };
+
+export default googleDrive;

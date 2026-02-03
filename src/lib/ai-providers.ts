@@ -143,14 +143,14 @@ export async function generateWithFallback(
   const providerOrder: ProviderName[] = provider
     ? [provider]
     : (Object.keys(aiProviders) as ProviderName[]).sort(
-        (a, b) => aiProviders[a].priority - aiProviders[b].priority
-      );
+      (a, b) => aiProviders[a].priority - aiProviders[b].priority
+    );
 
   const errors: AIProviderError[] = [];
 
   for (const providerName of providerOrder) {
     const config = aiProviders[providerName];
-    
+
     if (!config.key) {
       errors.push(new AIProviderError(`No API key configured`, providerName));
       continue;
@@ -166,7 +166,7 @@ export async function generateWithFallback(
         tier,
         timeout,
       });
-      
+
       return {
         ...result,
         latency: Date.now() - startTime,
@@ -178,9 +178,9 @@ export async function generateWithFallback(
         error instanceof Error ? error : undefined
       );
       errors.push(aiError);
-      
+
       if (!enableFallback) break;
-      
+
       console.warn(`Provider ${providerName} failed:`, aiError.message);
       continue;
     }
@@ -214,13 +214,13 @@ async function generateWithProvider(
     case 'openai':
     case 'openrouter':
       return generateWithOpenAICompatible(config, model, options);
-    
+
     case 'google':
       return generateWithGoogleAI(model, options);
-    
+
     case 'huggingface':
       return generateWithHuggingFace(model, options);
-    
+
     default:
       throw new Error(`Unknown provider: ${providerName}`);
   }
@@ -245,11 +245,11 @@ async function generateWithOpenAICompatible(
   });
 
   const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
-  
+
   if (options.systemPrompt) {
     messages.push({ role: 'system', content: options.systemPrompt });
   }
-  
+
   messages.push({ role: 'user', content: options.prompt });
 
   const response = await client.chat.completions.create({
@@ -260,7 +260,7 @@ async function generateWithOpenAICompatible(
   });
 
   const choice = response.choices[0];
-  
+
   if (!choice?.message?.content) {
     throw new Error('No content received from API');
   }
@@ -390,7 +390,7 @@ export async function getProviderHealth(): Promise<Record<ProviderName, Provider
 
   for (const providerName of Object.keys(aiProviders) as ProviderName[]) {
     const config = aiProviders[providerName];
-    
+
     if (!config.key) {
       health[providerName] = { available: false, error: 'No API key configured' };
       continue;
@@ -405,7 +405,7 @@ export async function getProviderHealth(): Promise<Record<ProviderName, Provider
         tier: 'fast',
         timeout: 5000,
       });
-      
+
       health[providerName] = { available: true, latency: Date.now() - startTime };
     } catch (error) {
       health[providerName] = {
@@ -419,9 +419,11 @@ export async function getProviderHealth(): Promise<Record<ProviderName, Provider
 }
 
 // Export default for convenience
-export default {
+const aiProvidersExport = {
   generate: generateWithFallback,
   getAvailableProviders,
   getProviderHealth,
   providers: aiProviders,
 };
+
+export default aiProvidersExport;

@@ -92,7 +92,7 @@ export function NotFound() {
                     Page Not Found
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                    The page you're looking for doesn't exist or has been moved.
+                    The page you&apos;re looking for doesn&apos;t exist or has been moved.
                 </p>
                 <Link
                     href="/"
@@ -135,7 +135,7 @@ export function OfflineIndicator() {
     return (
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-yellow-500 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce">
             <span className="material-symbols-outlined text-[18px]">wifi_off</span>
-            <span className="text-sm font-medium">You're offline</span>
+            <span className="text-sm font-medium">You&apos;re offline</span>
         </div>
     );
 }

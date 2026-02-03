@@ -178,7 +178,7 @@ export default function HeritageGraphPage() {
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white">Budi Santoso</h2>
                             <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Senior Data Scientist at GoTo Group</p>
                             <div className="mt-3 flex gap-2">
-                                <span className="px-2 py-1 rounded bg-slate-100 dark:bg-[#282839] text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#3b3b54]">Alumni '19</span>
+                                <span className="px-2 py-1 rounded bg-slate-100 dark:bg-[#282839] text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#3b3b54]">Alumni &apos;19</span>
                                 <span className="px-2 py-1 rounded bg-slate-100 dark:bg-[#282839] text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#3b3b54]">Open to Mentor</span>
                             </div>
                         </div>
@@ -214,7 +214,7 @@ export default function HeritageGraphPage() {
                                 <div className="flex-1">
                                     <p className="text-xs text-slate-500 dark:text-slate-400 mb-0.5">2017 - 2018</p>
                                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">Staff at BEM ITS</h4>
-                                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Ministry of Student Development. Led "ITS Data Summit" project.</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Ministry of Student Development. Led &quot;ITS Data Summit&quot; project.</p>
                                 </div>
                             </div>
 

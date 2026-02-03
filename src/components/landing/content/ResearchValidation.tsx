@@ -54,7 +54,7 @@ export function ResearchValidation() {
 
                     <div className="mt-12 text-center border-t border-slate-100 pt-8">
                         <p className="text-gray-600 mb-4">
-                            "Platform ini menggunakan adaptasi instrumen yang tervalidasi secara psikometrik untuk konteks mahasiswa Indonesia."
+                            &quot;Platform ini menggunakan adaptasi instrumen yang tervalidasi secara psikometrik untuk konteks mahasiswa Indonesia.&quot;
                         </p>
                         <div className="flex justify-center gap-4 flex-wrap">
                             <span className="px-3 py-1 bg-slate-100 rounded-full text-xs text-slate-500 font-medium">ITS Research Center</span>

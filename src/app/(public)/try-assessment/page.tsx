@@ -202,7 +202,7 @@ export default function PublicAssessmentPage() {
                                 </div>
                                 <h3 className="text-lg font-bold text-white mb-2">{enlightenment.title}</h3>
                                 <p className="text-sm text-slate-300 leading-relaxed italic">
-                                    "{enlightenment.text}"
+                                    &quot;Kenali Diri, Lejitkan Potensi&quot;
                                 </p>
                             </div>
                         </div>

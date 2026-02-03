@@ -193,7 +193,7 @@ export default function SpiritualAssessment() {
                         <q.icon className="w-8 h-8" />
                     </div>
                     <h2 className="text-2xl font-serif text-gray-800 mb-10 leading-snug">
-                        "{q.text}"
+                        &quot;{q.text}&quot;
                     </h2>
 
                     <div className="space-y-3">

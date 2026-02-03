@@ -18,7 +18,7 @@ export default function AILogicPage() {
                     <div className="flex justify-between items-end">
                         <div>
                             <h1 className="text-3xl font-bold mb-2">AI Logic Explorer</h1>
-                            <p className="text-gray-400 max-w-lg">Transparency regarding your "Senior Data Analyst" path recommendation.</p>
+                            <p className="text-gray-400 max-w-lg">Transparency regarding your &quot;Senior Data Analyst&quot; path recommendation.</p>
                         </div>
                         <div className="bg-[#1C1E26] border border-[#2D303E] px-4 py-2 rounded-lg flex items-center gap-4">
                             <div className="size-8 bg-blue-600 rounded-lg flex items-center justify-center">

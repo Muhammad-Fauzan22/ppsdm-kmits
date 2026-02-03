@@ -63,7 +63,7 @@ export default function EthicsLab() {
                             {activeCase.status === 'solved' ? (
                                 <div className="bg-green-100 text-green-800 p-4 rounded-lg text-sm">
                                     <div className="font-bold mb-1">Your Solution:</div>
-                                    "{activeCase.userAnswer}"
+                                    &quot;{activeCase.userAnswer}&quot;
                                 </div>
                             ) : (
                                 <div className="flex-1 flex flex-col">

@@ -198,7 +198,7 @@ export default function SelfManagementAssessment({ onComplete }: Props) {
                     </div>
 
                     <h3 className="text-xl md:text-2xl font-medium text-white mb-8 leading-relaxed flex-grow">
-                        "{currentItem.text}"
+                        &quot;{currentItem.text}&quot;
                     </h3>
 
                     <div className="space-y-3">
@@ -209,8 +209,8 @@ export default function SelfManagementAssessment({ onComplete }: Props) {
                                     key={val}
                                     onClick={() => handleResponse(val)}
                                     className={`w-full p-4 rounded-xl border text-left transition-all duration-200 group relative overflow-hidden flex items-center gap-4 ${isSelected
-                                            ? 'border-emerald-500 bg-emerald-500/20 text-emerald-200 shadow-lg scale-[1.02]'
-                                            : 'border-slate-800 bg-slate-800/50 text-slate-400 hover:border-emerald-500/50 hover:bg-emerald-500/5'
+                                        ? 'border-emerald-500 bg-emerald-500/20 text-emerald-200 shadow-lg scale-[1.02]'
+                                        : 'border-slate-800 bg-slate-800/50 text-slate-400 hover:border-emerald-500/50 hover:bg-emerald-500/5'
                                         }`}
                                 >
                                     <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold transition-colors ${isSelected ? 'border-emerald-500 bg-emerald-500 text-black' : 'border-slate-600'

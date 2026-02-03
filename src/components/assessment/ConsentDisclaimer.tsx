@@ -59,7 +59,7 @@ export function ConsentDisclaimer({
                         <CheckCircle2 className="w-4 h-4 text-green-600" />
                         <AlertTitle>Validitas Data</AlertTitle>
                         <AlertDescription>
-                            Instrumen ini memiliki reliabilitas Cronbach's Alpha α = {reliabilityRange},
+                            Instrumen ini memiliki reliabilitas Cronbach&apos;s Alpha α = {reliabilityRange},
                             test-retest reliability r = {testRetestRange}.
                             Divalidasi pada {sampleSize.toLocaleString()} mahasiswa.
                         </AlertDescription>

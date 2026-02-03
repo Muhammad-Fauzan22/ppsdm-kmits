@@ -119,8 +119,8 @@ export default function AlchemyPage() {
                             ].map((step) => (
                                 <div key={step.id} className="relative z-10 flex gap-4">
                                     <div className={`size-12 rounded-full border-4 flex items-center justify-center bg-white shrink-0 ${step.status === 'completed' ? 'border-blue-600 text-blue-600' :
-                                            step.status === 'processing' ? 'border-blue-200 text-blue-600 animate-pulse' :
-                                                'border-slate-100 text-slate-300'
+                                        step.status === 'processing' ? 'border-blue-200 text-blue-600 animate-pulse' :
+                                            'border-slate-100 text-slate-300'
                                         }`}>
                                         {step.status === 'completed' ? <span className="material-symbols-outlined">check</span> :
                                             step.status === 'processing' ? <span className="material-symbols-outlined">sync</span> :

@@ -18,11 +18,11 @@ const courseUpdateSchema = z.object({
 // GET /api/courses/[id] - Get course details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
-    const { id } = params;
+    const { id } = await params;
 
     // Get course with modules and lessons
     const { data: course, error } = await supabase
@@ -102,11 +102,11 @@ export async function GET(
 // PATCH /api/courses/[id] - Update course
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
-    const { id } = params;
+    const { id } = await params;
 
     // Check authentication
     const { data: { session } } = await supabase.auth.getSession();
@@ -186,11 +186,11 @@ export async function PATCH(
 // DELETE /api/courses/[id] - Delete course
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
-    const { id } = params;
+    const { id } = await params;
 
     // Check authentication
     const { data: { session } } = await supabase.auth.getSession();

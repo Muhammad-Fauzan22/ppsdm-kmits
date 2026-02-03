@@ -74,7 +74,7 @@ export default function RecoveryPage() {
                         </div>
 
                         <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-blue-600/20">
-                            Continue to Security Challenge <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                            Don&apos;t worry, this happens to all of us. Enter your email below to recover your account. <span className="material-symbols-outlined text-sm">arrow_forward</span>
                         </button>
 
                         <div className="mt-6 text-center">

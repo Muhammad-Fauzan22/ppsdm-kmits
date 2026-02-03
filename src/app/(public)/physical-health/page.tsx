@@ -177,7 +177,7 @@ export default function PhysicalHealthLanding() {
                 <div className="max-w-4xl mx-auto relative z-10 text-center">
                     <h2 className="text-4xl font-bold text-white mb-6">Siap Mengambil Kendali?</h2>
                     <p className="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
-                        "Kesehatan yang baik bukanlah sesuatu yang kita beli di apotek. Itu adalah hasil dari gaya hidup kita."
+                        &quot;Kesehatan yang baik bukanlah sesuatu yang kita beli di apotek. Itu adalah hasil dari gaya hidup kita.&quot;
                     </p>
 
                     <div className="glass-card p-8 rounded-3xl border-emerald-500/30 bg-emerald-900/20 backdrop-blur-md">

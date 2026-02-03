@@ -268,7 +268,7 @@ export default function GlobalExchangePage() {
                                             <div className="size-6 rounded-full bg-cover bg-center" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYoA3G5-A06PfL-4BvnGsoLjlEsc0d4TT8HueDv3Mnmb8lHcWClQsOYdWVUHE0LL91vu2jf3jCVdPewcpH6sdl7TOTgMg1aLSFCd5ruXnTo3IBo-8wfgg_vOiO85LckbfwrbxyiJZfdhsLM-M8N0QfDKpPXcGrsHdk-FvarViciCZwRN72JLlaAlsgntl8Ye55OhydlN3KMimzDOL5QaJkiTzJLDenEE-so5l3_q7XUkVlfoyoDiXBmvPa9y0sqLJOQUtMlYmLOzQ")' }}></div>
                                             <div className="flex flex-col gap-1 max-w-[80%] items-end">
                                                 <div className="bg-[#1313ec] p-2.5 rounded-2xl rounded-br-none text-xs text-white">
-                                                    Great! I'll review them with the team at ITS tonight.
+                                                    Great! I&apos;ll review them with the team at ITS tonight.
                                                 </div>
                                             </div>
                                         </div>
@@ -277,7 +277,7 @@ export default function GlobalExchangePage() {
                                             <div className="size-6 rounded-full bg-cover bg-center" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkbCEy6z7EuH3iMZ2209o80SAubrMXLxmeG5W5_uzTlDArjaB1fWbffqZqGYRpDVVUkv_YA0it0pleuM06nPh_LgKLPmlYxxXtbEKDeQLYqeGA4GY75bEOoHvS6LaE_u1Ofa3OJUESRGCFqvI6j9Z_DgS7XVLPErKnBpIs8NNJ4iET_uiEPdmBvrrLPFTr79yZ3Myz75NaUnAWoqkEzqNlyWZjpZqIh19TMv9rDYy920rMQffDkqydrMg-h74R4e7c-Cn86V1CX60")' }}></div>
                                             <div className="flex flex-col gap-1 max-w-[80%]">
                                                 <div className="bg-slate-100 dark:bg-[#282839] p-2.5 rounded-2xl rounded-bl-none text-xs text-slate-700 dark:text-slate-200">
-                                                    Don't forget the joint presentation rehearsal on Friday.
+                                                    Don&apos;t forget the joint presentation rehearsal on Friday.
                                                 </div>
                                             </div>
                                         </div>

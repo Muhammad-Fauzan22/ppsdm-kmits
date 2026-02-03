@@ -106,13 +106,13 @@ function MentalResultsContent() {
                         {result.resilience_score < 70 && (
                             <li className="flex gap-3 text-sm text-slate-600 dark:text-emerald-100/80 bg-white dark:bg-[#0b3a2e] p-3 rounded-lg shadow-sm">
                                 <span className="text-emerald-500">•</span>
-                                Ikuti workshop "Growth Mindset" di Pusat Bahasa & Budaya untuk meningkatkan ketahanan akademik.
+                                Ikuti workshop &quot;Growth Mindset&quot; di Pusat Bahasa & Budaya untuk meningkatkan ketahanan akademik.
                             </li>
                         )}
                         {result.stress_score < 60 && (
                             <li className="flex gap-3 text-sm text-slate-600 dark:text-emerald-100/80 bg-white dark:bg-[#0b3a2e] p-3 rounded-lg shadow-sm">
                                 <span className="text-emerald-500">•</span>
-                                Coba teknik "Pomodoro" dan "Time Blocking" untuk mengurangi overwhelm tugas kuliah.
+                                Coba teknik &quot;Pomodoro&quot; dan &quot;Time Blocking&quot; untuk mengurangi overwhelm tugas kuliah.
                             </li>
                         )}
                         <li className="flex gap-3 text-sm text-slate-600 dark:text-emerald-100/80 bg-white dark:bg-[#0b3a2e] p-3 rounded-lg shadow-sm">

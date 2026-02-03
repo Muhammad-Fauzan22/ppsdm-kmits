@@ -3,18 +3,18 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { jobId: string } }
+  { params }: { params: Promise<{ jobId: string }> }
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Check authentication
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { jobId } = params;
+    const { jobId } = await params;
 
     // Get job status
     const { data: job, error } = await supabase
@@ -42,7 +42,7 @@ export async function GET(
         "Layer 9: NotebookLM Audio",
         "Layer 10: Interactive Scenarios",
       ];
-      
+
       layerStatus[layerNames[i - 1]] = {
         status: i <= job.current_layer ? "completed" : i === job.current_layer + 1 && job.status === "processing" ? "in_progress" : "pending",
         progress_percent: i <= job.current_layer ? 100 : 0,
@@ -55,7 +55,7 @@ export async function GET(
         current_layer: job.current_layer,
         total_layers: 10,
         overall_percent: job.progress,
-        elapsed_seconds: job.started_at 
+        elapsed_seconds: job.started_at
           ? Math.floor((new Date().getTime() - new Date(job.started_at).getTime()) / 1000)
           : 0,
         estimated_remaining_seconds: (10 - job.current_layer) * 3,

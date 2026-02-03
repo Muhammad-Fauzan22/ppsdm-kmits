@@ -255,7 +255,7 @@ export default function CharacterAssessment() {
                             </div>
 
                             <h3 className={`text-2xl font-bold mb-2 ${result.categoryColor}`}>{result.category}</h3>
-                            <p className="text-gray-600 italic text-sm px-4 leading-relaxed">"{result.interpretation}"</p>
+                            <p className="text-gray-600 italic text-sm px-4 leading-relaxed">&quot;{result.interpretation}&quot;</p>
 
                             <div className="mt-6 flex justify-center gap-4 text-xs font-medium text-gray-500">
                                 <div className="bg-gray-100 px-3 py-1 rounded-full">Percentile: {result.percentile}%</div>

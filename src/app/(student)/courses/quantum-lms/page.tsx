@@ -174,7 +174,7 @@ export default function QuantumLMSPage() {
                             </div>
 
                             <h2 className="text-2xl font-bold text-white mb-4 font-grotesk">
-                                "The smallest deployable unit in Kubernetes."
+                                &quot;The smallest deployable unit in Kubernetes.&quot;
                             </h2>
 
                             <p className="text-sm text-slate-500 font-mono transform rotate-180 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

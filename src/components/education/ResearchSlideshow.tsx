@@ -105,7 +105,7 @@ export default function ResearchSlideshow({ slides, onComplete }: ResearchSlides
                                     <h2 className="text-3xl font-bold text-white">{slide.title}</h2>
                                 </div>
                                 <div className="text-lg md:text-xl text-slate-300 leading-relaxed pl-4 border-l-4 border-cyan-500 italic">
-                                    "{slide.content.definition}"
+                                    &quot;{slide.content.definition}&quot;
                                 </div>
                                 <div className="grid md:grid-cols-2 gap-6 mt-8">
                                     <div className="p-5 rounded-lg bg-slate-800 border border-slate-700">

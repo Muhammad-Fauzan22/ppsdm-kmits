@@ -147,7 +147,7 @@ export default function HabitForgePage() {
                                 {/* Habit Checklist */}
                                 <div className="bg-[#1e293b] rounded-xl border border-[#282e39] p-6 shadow-sm flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-white text-lg font-bold">Today's Habits</h3>
+                                        <h3 className="text-white text-lg font-bold">Today&apos;s Habits</h3>
                                         <button className="text-[#135bec] text-sm font-medium hover:text-blue-400 flex items-center gap-1">
                                             <span className="material-symbols-outlined text-[16px]">add</span> Add Habit
                                         </button>
@@ -236,7 +236,7 @@ export default function HabitForgePage() {
                                 <div className="bg-[#1e293b] rounded-xl border border-[#282e39] p-6 shadow-sm">
                                     <h3 className="text-white text-lg font-bold mb-5 flex items-center gap-2">
                                         <span className="material-symbols-outlined text-[#135bec]">edit_note</span>
-                                        Log Today's Stats
+                                        Log Today&apos;s Stats
                                     </h3>
                                     <div className="flex flex-col gap-6">
                                         {/* Energy Slider */}

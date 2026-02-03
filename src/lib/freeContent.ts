@@ -559,7 +559,7 @@ export function getIndonesianContent(): LearningContent[] {
     return getAllFreeContent().filter(c => c.language === 'id' || c.language === 'multi');
 }
 
-export default {
+const freeContent = {
     FREE_COURSE_PROVIDERS,
     DIMENSION_CONTENT,
     getContentByDimension,
@@ -569,3 +569,5 @@ export default {
     getContentByType,
     getIndonesianContent,
 };
+
+export default freeContent;

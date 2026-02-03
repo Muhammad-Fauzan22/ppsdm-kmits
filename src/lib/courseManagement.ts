@@ -328,7 +328,7 @@ export function getNextLesson(
     return undefined;
 }
 
-export default {
+const courseManagement = {
     getAllCourses,
     getCourse,
     getCoursesByCategory,
@@ -338,3 +338,5 @@ export default {
     getNextLesson,
     SAMPLE_COURSES,
 };
+
+export default courseManagement;

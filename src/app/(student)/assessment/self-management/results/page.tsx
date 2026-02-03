@@ -73,7 +73,7 @@ function SMResultsContent() {
                                     <AlertTriangle className="w-5 h-5" /> High Urgency
                                 </div>
                                 <p className="text-sm text-red-600 dark:text-red-300">
-                                    Terdeteksi kecenderungan <strong>Prokrastinasi Kronis</strong>. Segera terapkan teknik "5-Minute Rule" untuk memulai tugas.
+                                    Terdeteksi kecenderungan <strong>Prokrastinasi Kronis</strong>. Segera terapkan teknik &quot;5-Minute Rule&quot; untuk memulai tugas.
                                 </p>
                             </div>
                         ) : (
@@ -115,7 +115,7 @@ function SMResultsContent() {
                             <p className="text-sm leading-relaxed">Gunakan matriks ini setiap pagi untuk memisahkan tugas Mendesak vs Penting.</p>
                         </div>
                         <div>
-                            <strong className="block text-white mb-1">Mindset: "Eat The Frog"</strong>
+                            <strong className="block text-white mb-1">Mindset: &quot;Eat The Frog&quot;</strong>
                             <p className="text-sm leading-relaxed">Kerjakan tugas tersulit Anda di pagi hari saat energi willpower maksimal.</p>
                         </div>
                     </div>
