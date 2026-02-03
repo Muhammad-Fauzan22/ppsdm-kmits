@@ -589,15 +589,15 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-700">Theta Estimation</span>
-                      <span className="font-bold text-green-700">{dimension.scoring.irtParameters.thetaEstimation}</span>
+                      <span className="font-bold text-green-700">{dimension.scoring.irtParameters?.thetaEstimation || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-700">Standard Error</span>
-                      <span className="font-bold text-green-700">{dimension.scoring.irtParameters.standardError}</span>
+                      <span className="font-bold text-green-700">{dimension.scoring.irtParameters?.standardError || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-700">Adjustment</span>
-                      <span className="font-bold text-green-700">{dimension.scoring.irtParameters.adjustment}</span>
+                      <span className="font-bold text-green-700">{dimension.scoring.irtParameters?.adjustment || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
@@ -617,7 +617,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Data Normatif</h2>
               <p className="text-gray-600 mb-6">
-                Berdasarkan sampel {dimension.research.sample.total} mahasiswa Indonesia
+                Berdasarkan sampel {dimension.research.sampleSize} mahasiswa Indonesia
               </p>
 
               <div className="overflow-x-auto mb-6">
@@ -645,7 +645,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-purple-50 p-6 rounded-xl">
                   <h3 className="font-bold text-purple-900 mb-3">Per Fakultas</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.research.normativeData.facultyNorms).map(([faculty, data]) => (
+                    {Object.entries(dimension.research.normativeData.facultyNorms || {}).map(([faculty, data]) => (
                       <div key={faculty} className="flex justify-between">
                         <span className="text-gray-700">{faculty}</span>
                         <span className="font-bold text-purple-700">Mean: {data.mean}, SD: {data.sd}</span>
@@ -657,7 +657,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-blue-50 p-6 rounded-xl">
                   <h3 className="font-bold text-blue-900 mb-3">Per Gender</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.research.normativeData.genderNorms).map(([gender, data]) => (
+                    {Object.entries(dimension.research.normativeData.genderNorms || {}).map(([gender, data]) => (
                       <div key={gender} className="flex justify-between">
                         <span className="text-gray-700 capitalize">{gender}</span>
                         <span className="font-bold text-blue-700">Mean: {data.mean}, SD: {data.sd}</span>
