@@ -20,9 +20,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         {props.required && <span className="text-red-500 ml-1">*</span>}
                     </label>
                 )}
-                <div className="relative">
+                 <div className="relative">
                     {icon && (
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                             <span className="material-symbols-outlined text-[20px]">{icon}</span>
                         </span>
                     )}
@@ -36,7 +36,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     />
                 </div>
                 {hint && !error && (
-                    <p className="text-xs text-gray-500">{hint}</p>
+                    <p className="text-xs text-gray-600">{hint}</p>
                 )}
                 {error && (
                     <p className="text-xs text-red-500 flex items-center gap-1">
@@ -67,7 +67,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                         {props.required && <span className="text-red-500 ml-1">*</span>}
                     </label>
                 )}
-                <textarea
+                 <textarea
                     ref={ref}
                     className={`w-full px-4 py-3 border rounded-xl bg-white dark:bg-card-dark outline-none transition-all resize-none ${error
                             ? "border-red-500 focus:ring-2 focus:ring-red-200"
@@ -77,7 +77,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                     {...props}
                 />
                 {hint && !error && (
-                    <p className="text-xs text-gray-500">{hint}</p>
+                    <p className="text-xs text-gray-600">{hint}</p>
                 )}
                 {error && (
                     <p className="text-xs text-red-500 flex items-center gap-1">
@@ -115,7 +115,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     </label>
                 )}
                 <div className="relative">
-                    <select
+                     <select
                         ref={ref}
                         className={`w-full px-4 py-2.5 border rounded-xl bg-white dark:bg-card-dark outline-none transition-all appearance-none cursor-pointer ${error
                                 ? "border-red-500 focus:ring-2 focus:ring-red-200"
@@ -134,7 +134,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                             </option>
                         ))}
                     </select>
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                         <span className="material-symbols-outlined text-[20px]">expand_more</span>
                     </span>
                 </div>
@@ -256,9 +256,9 @@ export function SearchInput({
     placeholder = "Search...",
     onClear,
 }: SearchInputProps) {
-    return (
+     return (
         <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                 <span className="material-symbols-outlined text-[20px]">search</span>
             </span>
             <input
@@ -274,7 +274,7 @@ export function SearchInput({
                         onChange("");
                         onClear?.();
                     }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600"
                 >
                     <span className="material-symbols-outlined text-[18px]">close</span>
                 </button>

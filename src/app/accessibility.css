@@ -1,0 +1,106 @@
+/**
+ * ACCESSIBILITY - Focus Indicators
+ * 
+ * Focus indicators help keyboard users understand which element is currently focused.
+ * This file provides consistent focus styles across the application.
+ */
+
+/* Focus visible styles */
+.focus-visible {
+  outline: 2px solid #3b82f6; /* ITS Blue */
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Focus ring styles */
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Focus within styles */
+.focus-within {
+  outline: 2px dashed #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Remove default focus outline */
+*:focus-visible {
+  outline: none;
+}
+
+/* Button focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  @apply focus-visible;
+}
+
+/* Card focus styles */
+.card:focus-visible {
+  @apply focus-visible;
+  transform: scale(1.02);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Navigation focus styles */
+nav a:focus-visible {
+  @apply focus-visible;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 4px;
+}
+
+/* Form input focus styles */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  @apply focus-visible;
+  border-color: #3b82f6;
+}
+
+/* Skip link styles */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 0 4px 4px 0 4px;
+  z-index: 9999;
+  font-weight: 600;
+  transition: transform 0.2s ease-in-out;
+}
+
+.skip-link:hover {
+  transform: translateY(2px);
+  background-color: #2563eb;
+}
+
+.skip-link:focus-visible {
+  @apply focus-visible;
+  transform: translateY(2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* High contrast mode for better visibility */
+@media (prefers-contrast: high) {
+  .focus-visible {
+    outline-width: 3px;
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.25);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+  
+  .focus-visible {
+    transition: outline 0.2s ease-in-out;
+  }
+}

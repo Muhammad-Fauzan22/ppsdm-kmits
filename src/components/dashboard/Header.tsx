@@ -60,13 +60,13 @@ export default function DashboardHeader({
       {/* Center - Search bar */}
       <div className="flex flex-1 justify-center max-w-xl px-4 sm:px-8">
         <label className="relative flex w-full items-center">
-          <span className="absolute left-3 text-slate-400 material-symbols-outlined">search</span>
+          <span className="absolute left-3 text-slate-300 material-symbols-outlined">search</span>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search resources, goals, or mentors..."
-            className="w-full bg-[#1e2732] border border-white/[0.08] text-sm rounded-lg py-2 pl-10 pr-4 text-slate-200 focus:ring-1 focus:ring-[#003366] focus:border-[#003366] placeholder-slate-500 transition-colors outline-none"
+            className="w-full bg-[#1e2732] border border-white/[0.08] text-sm rounded-lg py-2 pl-10 pr-4 text-slate-200 focus:ring-1 focus:ring-[#003366] focus:border-[#003366] placeholder-slate-400 transition-colors outline-none"
           />
         </label>
       </div>
@@ -74,7 +74,7 @@ export default function DashboardHeader({
       {/* Right side - User info, notifications, avatar */}
       <div className="flex items-center gap-3 sm:gap-4">
         <div className="text-white text-right hidden md:block">
-          <p className="text-xs text-slate-400">{getGreeting()},</p>
+          <p className="text-xs text-slate-300">{getGreeting()},</p>
           <p className="text-sm font-semibold">{user.name}</p>
         </div>
 
@@ -116,11 +116,11 @@ export default function DashboardHeader({
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`w-2 h-2 rounded-full mt-2 ${notif.unread ? 'bg-[#FFD700]' : 'bg-slate-600'}`} />
+                        <div className={`w-2 h-2 rounded-full mt-2 ${notif.unread ? 'bg-[#FFD700]' : 'bg-slate-500'}`} />
                         <div className="flex-1">
                           <p className="text-white text-sm font-medium">{notif.title}</p>
-                          <p className="text-slate-400 text-xs mt-0.5">{notif.message}</p>
-                          <p className="text-slate-500 text-[10px] mt-1">{notif.time}</p>
+                          <p className="text-slate-300 text-xs mt-0.5">{notif.message}</p>
+                          <p className="text-slate-400 text-[10px] mt-1">{notif.time}</p>
                         </div>
                       </div>
                     </div>

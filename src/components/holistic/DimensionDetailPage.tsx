@@ -232,7 +232,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Sub-dimensi</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {dimension.subdimensions.map((subdim, index) => (
+                {dimension.subdimensions?.map((subdim, index) => (
                   <div
                     key={subdim.id}
                     className="p-6 bg-gray-50 rounded-xl border border-gray-200"
@@ -267,7 +267,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Level Interpretasi</h2>
               <div className="space-y-4">
-                {dimension.scoring.interpretation.map((level, index) => (
+                {dimension.scoring.interpretation?.map((level, index) => (
                   <div
                     key={level.level}
                     className="p-6 rounded-xl border-2"
@@ -331,7 +331,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                     <p className="text-gray-700 mb-2"><strong>Search Strategy:</strong> {dimension.research.methodology.approach}</p>
                     <p className="text-gray-700"><strong>Inclusion/Exclusion Criteria:</strong></p>
                     <ul className="list-disc list-inside text-gray-700 ml-4">
-                      {dimension.research.methodology.inclusionCriteria.map((criterion, idx) => (
+                      {dimension.research.methodology.inclusionCriteria?.map((criterion, idx) => (
                         <li key={idx}>{criterion}</li>
                       ))}
                     </ul>
