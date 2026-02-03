@@ -309,12 +309,19 @@ export function FacultyComparison({ userScore, userFaculty, facultyData }: Facul
               <div>
                 <p className="font-semibold mb-1">Analisis</p>
                 <p className="text-sm text-gray-700">
-                  {userScore > facultyData.find(f => f.faculty === userFaculty)?.mean || 0
-                    ? `Skor Anda di atas rata-rata fakultas ${userFaculty}. Ini menunjukkan bahwa Anda memiliki kekuatan di atas rata-rata dibandingkan dengan rekan sefakultas.`
-                    : userScore < facultyData.find(f => f.faculty === userFaculty)?.mean || 0
-                      ? `Skor Anda di bawah rata-rata fakultas ${userFaculty}. Ini menunjukkan area yang dapat dikembangkan lebih lanjut.`
-                      : `Skor Anda sejajar dengan rata-rata fakultas ${userFaculty}.`
-                  }
+                  {(() => {
+                    const facultyInfo = facultyData.find(f => f.faculty === userFaculty);
+                    const facultyMean = facultyInfo?.mean ?? 0;
+                    const facultyName = userFaculty || 'fakultas Anda';
+                    
+                    if (userScore > facultyMean) {
+                      return `Skor Anda di atas rata-rata ${facultyName}. Ini menunjukkan bahwa Anda memiliki kekuatan di atas rata-rata dibandingkan dengan rekan sefakultas.`;
+                    } else if (userScore < facultyMean) {
+                      return `Skor Anda di bawah rata-rata ${facultyName}. Ini menunjukkan area yang dapat dikembangkan lebih lanjut.`;
+                    } else {
+                      return `Skor Anda sejajar dengan rata-rata ${facultyName}.`;
+                    }
+                  })()}
                 </p>
               </div>
             </div>
