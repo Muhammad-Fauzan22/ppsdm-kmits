@@ -45,6 +45,16 @@ const nextConfig = {
         ]
       },
       {
+        // Static assets - cache for 1 year
+        source: '/(.*)\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff|woff2|ttf|eot)$',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
         // API routes - additional security
         source: '/api/(.*)',
         headers: [
@@ -95,6 +105,8 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
+    // Enable code splitting for better performance
+    optimizePackageImports: true,
   },
 
   // Build optimization
