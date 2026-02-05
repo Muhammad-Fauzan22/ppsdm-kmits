@@ -117,7 +117,7 @@ export async function auditAdminOperation(params: {
 
     // Try to insert into audit log table
     // Note: This table needs to be created in the database
-    await supabaseAdmin.from('admin_audit_log').insert(entry);
+    await supabaseAdmin.from('admin_audit_log').insert(entry as any);
   } catch (error) {
     // Log to console if database insert fails
     // Don't throw - audit failures shouldn't break operations
@@ -270,7 +270,7 @@ export const adminOperations = {
  * Check if current environment is safe for admin operations
  */
 export function isSafeEnvironment(): boolean {
-  const env = process.env.NODE_ENV;
+  const env = process.env.NODE_ENV as string;
   return env === 'production' || env === 'staging';
 }
 

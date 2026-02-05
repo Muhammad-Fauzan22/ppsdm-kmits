@@ -355,11 +355,11 @@ function calculateEIProfile(scores: any): any {
   };
   
   // Determine profile type
-  const scoreRange = Math.max(...Object.values(scores)) - Math.min(...Object.values(scores));
+  const scoreRange = Math.max(...Object.values(scores as Record<string, number>)) - Math.min(...Object.values(scores as Record<string, number>));
   if (scoreRange <= 15) {
-    if (Object.values(scores).every(v => v >= 70)) {
+    if (Object.values(scores as Record<string, number>).every(v => v >= 70)) {
       profile.profileType = 'balancedHighEI';
-    } else if (Object.values(scores).every(v => v >= 60)) {
+    } else if (Object.values(scores as Record<string, number>).every(v => v >= 60)) {
       profile.profileType = 'balancedModerateEI';
     } else {
       profile.profileType = 'balancedModerateEI';
@@ -377,8 +377,8 @@ function calculateEIProfile(scores: any): any {
   }
   
   // Determine strength/weakness pattern
-  const strengths = Object.entries(scores).filter(([_, v]) => v >= 70).map(([k]) => k);
-  const weaknesses = Object.entries(scores).filter(([_, v]) => v < 50).map(([k]) => k);
+  const strengths = Object.entries(scores as Record<string, number>).filter(([_, v]) => v >= 70).map(([k]) => k);
+  const weaknesses = Object.entries(scores as Record<string, number>).filter(([_, v]) => v < 50).map(([k]) => k);
   
   if (strengths.length > 0 && weaknesses.length > 0) {
     profile.strengthWeaknessPattern = `Kuat di ${strengths.join(', ')}, perlu pengembangan di ${weaknesses.join(', ')}`;
@@ -419,7 +419,7 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
     }
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score < 50) {
       const info = priorityInfo[component];
       priorities.push({
@@ -435,8 +435,10 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
   // Sort by priority (high first) then score (lowest first)
   const priorityOrder = { high: 1, medium: 2, low: 3 };
   priorities.sort((a, b) => {
-    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    const aPriority = a.priority as 'high' | 'medium' | 'low';
+    const bPriority = b.priority as 'high' | 'medium' | 'low';
+    if (priorityOrder[aPriority] !== priorityOrder[bPriority]) {
+      return priorityOrder[aPriority] - priorityOrder[bPriority];
     }
     return a.score - b.score;
   });

@@ -56,7 +56,7 @@ export const financialDimension: DimensionData = {
                 '75': 64,
                 '95': 82
             },
-            facultySpecific: {
+            facultyNorms: {
                 'Business/Economics': { mean: 65.2, sd: 14.3 },
                 'Engineering': { mean: 55.8, sd: 16.2 },
                 'Science': { mean: 57.3, sd: 15.8 },
@@ -111,6 +111,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'knowledge',
             type: 'multiple-choice',
+            format: 'Multiple Choice (A-D)',
             options: [
                 'A: Meningkat',
                 'B: Tetap sama',
@@ -134,6 +135,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'knowledge',
             type: 'multiple-choice',
+            format: 'Multiple Choice (A-D)',
             options: [
                 'A: Tabungan bank',
                 'B: Reksadana pasar uang',
@@ -157,6 +159,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'behavior',
             type: 'likert',
+            format: 'Likert Scale (1-5)',
             scale: 5,
             weight: 1.3,
             reverseScored: false,
@@ -176,6 +179,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'behavior',
             type: 'likert',
+            format: 'Likert Scale (1-5)',
             scale: 5,
             weight: 1.4,
             reverseScored: false,
@@ -195,6 +199,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'self_efficacy',
             type: 'likert',
+            format: 'Likert Scale (1-5)',
             scale: 5,
             weight: 1.2,
             reverseScored: false,
@@ -214,6 +219,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'self_efficacy',
             type: 'likert',
+            format: 'Likert Scale (1-5)',
             scale: 5,
             weight: 1.1,
             reverseScored: false,
@@ -233,6 +239,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'knowledge',
             type: 'multiple-choice',
+            format: 'Multiple Choice (A-D)',
             options: [
                 'A: 5%',
                 'B: 10%',
@@ -256,6 +263,7 @@ export const financialDimension: DimensionData = {
             dimension: 'financial',
             subdimension: 'behavior',
             type: 'likert',
+            format: 'Likert Scale (1-5)',
             scale: 5,
             weight: 1.3,
             reverseScored: false,

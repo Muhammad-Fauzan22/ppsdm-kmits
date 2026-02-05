@@ -27,7 +27,6 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
           className="absolute inset-0 z-50 rounded-3xl overflow-hidden"
           onAnimationStart={() => onPhaseChange("entering")}
           onAnimationComplete={() => onPhaseChange("active")}
-          onAnimationExitStart={() => onPhaseChange("exiting")}
           role="dialog"
           aria-modal="true"
           aria-label={`${dimension.title} - Detail Information`}

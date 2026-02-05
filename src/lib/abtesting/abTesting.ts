@@ -99,7 +99,7 @@ export class ABTestingManager {
         this.userAssignments = new Map(
           Object.entries(parsed.userAssignments || {}).map(([userId, assignments]) => [
             userId,
-            new Map(assignments as Record<string, string>),
+            new Map(Object.entries(assignments as Record<string, string>)),
           ])
         );
         this.results = parsed.results || [];
@@ -592,7 +592,7 @@ export class ABTestingManager {
       this.userAssignments = new Map(
         Object.entries(parsed.userAssignments || {}).map(([userId, assignments]) => [
           userId,
-          new Map(assignments as Record<string, string>),
+            new Map(Object.entries(assignments as Record<string, string>)),
         ])
       );
       this.results = parsed.results || [];

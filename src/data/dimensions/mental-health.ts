@@ -60,7 +60,7 @@ export const mentalHealthDimension: DimensionData = {
                 '75': 66,
                 '95': 85
             },
-            facultySpecific: {
+            facultyNorms: {
                 'Health Sciences': { mean: 60.2, sd: 13.5 },
                 'STEM': { mean: 57.8, sd: 14.2 },
                 'Social Sciences': { mean: 54.4, sd: 15.8 }
@@ -121,6 +121,7 @@ export const mentalHealthDimension: DimensionData = {
             type: 'frequency',
             scale: 5,
             weight: 1.2,
+            format: 'Frequency Scale (1-5)',
             psychometrics: {
                 alpha: 0.87,
                 factorLoading: 0.72,
@@ -140,6 +141,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.88,
                 factorLoading: 0.70,
@@ -159,6 +161,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.4,
             reverseScored: true,
+            format: 'Frequency Scale (1-5)',
             psychometrics: {
                 alpha: 0.75,
                 factorLoading: 0.75,
@@ -178,6 +181,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.1,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.83,
                 factorLoading: 0.65,
@@ -197,6 +201,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.2,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.80,
                 factorLoading: 0.64,
@@ -216,6 +221,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: true,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.78,
                 factorLoading: 0.70,
@@ -235,6 +241,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.1,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.81,
                 factorLoading: 0.68,
@@ -254,6 +261,7 @@ export const mentalHealthDimension: DimensionData = {
             scale: 5,
             weight: 1.0,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.79,
                 factorLoading: 0.62,

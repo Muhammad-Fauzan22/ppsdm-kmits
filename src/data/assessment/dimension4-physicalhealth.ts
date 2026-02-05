@@ -284,7 +284,7 @@ export function calculatePhysicalHealthScore(
   }
   
   // Determine health profile
-  const sortedComponents = Object.entries(componentScores).sort((a, b) => b[1] - a[1]);
+  const sortedComponents = Object.entries(componentScores as Record<string, number>).sort((a, b) => b[1] - a[1]);
   const topComponents = sortedComponents.slice(0, 2).map(([comp]) => comp);
   
   let healthProfile = 'developingHealth';

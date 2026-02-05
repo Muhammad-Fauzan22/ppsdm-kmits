@@ -1,5 +1,5 @@
-'{
-  "\$schema": "https://json.schemastore.org/eslintrc",
+{
+  "$schema": "https://json.schemastore.org/eslintrc",
   "root": true,
   "env": {
     "browser": true,
@@ -16,6 +16,9 @@
     "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "plugins": [
     "@typescript-eslint",
     "react",
@@ -46,15 +49,42 @@
     "no-debugger": "error",
     "no-unused-vars": "error",
     "no-magic-numbers": "warn",
-    "complexity": ["warn", { "max": 20 }],
-    "max-params": ["error", { "max": 5 }],
-    "max-lines-per-function": ["warn", { "max": 100 }],
-    "eqeqeq": ["error", "always"],
-    "curly": ["error", "all"],
+    "complexity": [
+      "warn",
+      {
+        "max": 20
+      }
+    ],
+    "max-params": [
+      "error",
+      {
+        "max": 5
+      }
+    ],
+    "max-lines-per-function": [
+      "warn",
+      {
+        "max": 100
+      }
+    ],
+    "eqeqeq": [
+      "error",
+      "always"
+    ],
+    "curly": [
+      "error",
+      "all"
+    ],
     "prefer-const": "error",
     "prefer-template": "error",
-    "semi": ["error", "always"],
-    "quotes": ["error", "single"]
+    "semi": [
+      "error",
+      "always"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ]
   },
   "overrides": [
     {
@@ -72,4 +102,4 @@
       }
     }
   ]
-}' 
+}

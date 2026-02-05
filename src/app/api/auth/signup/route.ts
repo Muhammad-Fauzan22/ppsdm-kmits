@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { authRateLimit } from '@/lib/rate-limit';
 import { z } from 'zod';
 
@@ -11,7 +11,7 @@ const signupSchema = z.object({
   department: z.string().min(2, 'Department must be at least 2 characters'),
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         // Apply rate limiting
         const rateLimitResponse = authRateLimit(request);

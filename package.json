@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run lint && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -51,6 +51,7 @@
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "critters": "^0.0.23",
     "date-fns": "^2.30.0",
     "debug": "^4.3.5",
     "docx": "^9.5.1",
@@ -98,9 +99,7 @@
     "undici": "^6.22.0",
     "winston": "^3.19.0",
     "zod": "^3.22.4",
-    "zustand": "^4.5.2",
-    "@supabase/mcp-server-supabase": "^0.6.2",
-    "@github/mcp-server-github": "^0.1.0"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",

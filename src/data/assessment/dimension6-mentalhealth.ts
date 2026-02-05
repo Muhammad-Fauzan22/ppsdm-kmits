@@ -451,7 +451,7 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
     }
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score < 50) {
       const info = priorityInfo[component];
       priorities.push({
@@ -467,8 +467,10 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
   // Sort by priority (high first) then score (lowest first)
   const priorityOrder = { high: 1, medium: 2, low: 3 };
   priorities.sort((a, b) => {
-    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    const aPriority = a.priority as 'high' | 'medium' | 'low';
+    const bPriority = b.priority as 'high' | 'medium' | 'low';
+    if (priorityOrder[aPriority] !== priorityOrder[bPriority]) {
+      return priorityOrder[aPriority] - priorityOrder[bPriority];
     }
     return a.score - b.score;
   });

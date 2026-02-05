@@ -29,7 +29,7 @@ export function LazyLoad<T extends object>({
 
   return (
     <Suspense fallback={fallback || <Skeleton className="w-full h-full" />}>
-      <LazyComponent {...(props as T)} />
+      <LazyComponent {...(props as any)} />
     </Suspense>
   );
 }
@@ -48,7 +48,7 @@ export function createLazyComponent<T extends object>(
   return function LazyComponentWrapper(props: T) {
     return (
       <Suspense fallback={fallback || <Skeleton className="w-full h-full" />}>
-        <LazyComponent {...props} />
+        <LazyComponent {...(props as any)} />
       </Suspense>
     );
   };
@@ -154,6 +154,7 @@ export function LazyScript({
   onError,
   ...props
 }: React.ScriptHTMLAttributes<HTMLScriptElement> & {
+  src: string;
   onLoad?: () => void;
   onError?: () => void;
 }) {

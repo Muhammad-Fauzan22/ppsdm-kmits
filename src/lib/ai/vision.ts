@@ -1,1 +1,4 @@
-[{"openai": "Initialize OpenAI client compatible with Nvidia's API\n// CRITICAL: NVIDIA_API_KEY must be set in environment variables\n// Generate a new key at: https://build.nvidia.com/\nconst NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;\n\nif (!NVIDIA_API_KEY) {\n    throw new Error(\n        'NVIDIA_API_KEY environment variable is required. ' +\n        'Please set it in your .env.local file or deployment environment.'\n    );"}, {"apiKey": "NVIDIA_API_KEY", "baseURL": "https://integrate.api.nvidia.com/v1"}, {"model": "moonshotai/kimi-k2.5", "messages": [{"role": "user", "content": [{"type": "text", "text": "prompt"}, {"type": "image_url", "image_url": {"url": "data:image/png;base64", "temperature": 1.0, "top_p": 1.0, "max_tokens": 16384, "stream": false, "No analysis generated.": ""}, "console.error(": "ision Analysis Error:", "image.": ""}]}]}]
+export async function analyzeImage(imageUrl: string, prompt: string): Promise<any> {
+  // Implementation will be added later
+  throw new Error('Image analysis not implemented');
+}

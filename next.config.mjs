@@ -115,6 +115,9 @@ const nextConfig = {
   // Enable React strict mode
   reactStrictMode: true,
 
+  // Fix workspace root inference
+  outputFileTracingRoot: process.cwd(),
+
   // Output mode
   output: 'standalone',
 

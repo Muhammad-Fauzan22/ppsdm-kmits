@@ -362,13 +362,14 @@ export function useServiceWorkerStatus() {
     isReady: false,
   });
 
-  const refreshStatus = useCallback(async () => {
+   const refreshStatus = useCallback(async () => {
     const swStatus = await getServiceWorkerStatus();
     const ready = await isServiceWorkerReady();
-    setStatus({
+    setStatus(prev => ({
+      ...prev,
       ...swStatus,
       isReady: ready,
-    });
+    }));
   }, []);
 
   useEffect(() => {

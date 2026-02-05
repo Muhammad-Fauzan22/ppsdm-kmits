@@ -367,28 +367,28 @@ function calculateCharacterProfile(scores: any): any {
   };
   
   // Determine profile type
-  const scoreRange = Math.max(...Object.values(scores)) - Math.min(...Object.values(scores));
+  const scoreRange = Math.max(...Object.values(scores as Record<string, number>)) - Math.min(...Object.values(scores as Record<string, number>));
   if (scoreRange <= 15) {
-    if (Object.values(scores).every(v => v >= 70)) {
+    if (Object.values(scores as Record<string, number>).every(v => v >= 70)) {
       profile.profileType = 'balancedStrongCharacter';
-    } else if (Object.values(scores).every(v => v >= 60)) {
+    } else if (Object.values(scores as Record<string, number>).every(v => v >= 60)) {
       profile.profileType = 'balancedModerateCharacter';
     } else {
       profile.profileType = 'balancedModerateCharacter';
     }
-  } else if (scores.integrity > 70 && scores.integrity > Math.max(...Object.values(scores).filter((v: any, k: string) => k !== 'integrity'))) {
+  } else if (scores.integrity > 70 && scores.integrity > Math.max(...Object.entries(scores as Record<string, number>).filter(([k]) => k !== 'integrity').map(([, v]) => v))) {
     profile.profileType = 'integrityFocused';
-  } else if (scores.empathy > 70 && scores.empathy > Math.max(...Object.values(scores).filter((v: any, k: string) => k !== 'empathy'))) {
+  } else if (scores.empathy > 70 && scores.empathy > Math.max(...Object.entries(scores as Record<string, number>).filter(([k]) => k !== 'empathy').map(([, v]) => v))) {
     profile.profileType = 'empathyFocused';
-  } else if (scores.responsibility > 70 && scores.responsibility > Math.max(...Object.values(scores).filter((v: any, k: string) => k !== 'responsibility'))) {
+  } else if (scores.responsibility > 70 && scores.responsibility > Math.max(...Object.entries(scores as Record<string, number>).filter(([k]) => k !== 'responsibility').map(([, v]) => v))) {
     profile.profileType = 'responsibilityFocused';
   } else {
     profile.profileType = 'mixedProfile';
   }
   
   // Determine strength/weakness pattern
-  const strengths = Object.entries(scores).filter(([_, v]) => v >= 70).map(([k]) => k);
-  const weaknesses = Object.entries(scores).filter(([_, v]) => v < 50).map(([k]) => k);
+  const strengths = Object.entries(scores as Record<string, number>).filter(([_, v]) => v >= 70).map(([k]) => k);
+  const weaknesses = Object.entries(scores as Record<string, number>).filter(([_, v]) => v < 50).map(([k]) => k);
   
   if (strengths.length > 0 && weaknesses.length > 0) {
     profile.strengthWeaknessPattern = `Kuat di ${strengths.join(', ')}, perlu pengembangan di ${weaknesses.join(', ')}`;
@@ -430,7 +430,7 @@ function calculateEthicalDecisionMaking(scores: any): any {
   }
   
   // Identify areas for development
-  const weaknesses = Object.entries(scores).filter(([_, v]) => v < 50).map(([k]) => k);
+  const weaknesses = Object.entries(scores as Record<string, number>).filter(([_, v]) => v < 50).map(([k]) => k);
   if (weaknesses.length > 0) {
     style.areasForDevelopment.push(...weaknesses);
   }
@@ -484,7 +484,7 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
     }
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score < 50) {
       const info = priorityInfo[component];
       priorities.push({
@@ -500,8 +500,10 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
   // Sort by priority (high first) then score (lowest first)
   const priorityOrder = { high: 1, medium: 2, low: 3 };
   priorities.sort((a, b) => {
-    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    const aPriority = a.priority as 'high' | 'medium' | 'low';
+    const bPriority = b.priority as 'high' | 'medium' | 'low';
+    if (priorityOrder[aPriority] !== priorityOrder[bPriority]) {
+      return priorityOrder[aPriority] - priorityOrder[bPriority];
     }
     return a.score - b.score;
   });
@@ -523,7 +525,7 @@ function identifyCharacterStrengths(scores: any): string[] {
     humility: 'Kerendahan Hati'
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score >= 70) {
       strengths.push(strengthLabels[component]);
     }
@@ -546,7 +548,7 @@ function identifyCharacterGrowthAreas(scores: any): string[] {
     humility: 'Kerendahan Hati'
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score < 50) {
       growthAreas.push(growthLabels[component]);
     }

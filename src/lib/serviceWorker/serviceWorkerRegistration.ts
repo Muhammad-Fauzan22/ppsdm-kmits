@@ -113,7 +113,8 @@ export async function getServiceWorkerRegistration(): Promise<ServiceWorkerRegis
       return null;
     }
 
-    return await navigator.serviceWorker.getRegistration();
+    const registration = await navigator.serviceWorker.getRegistration();
+    return registration || null;
   } catch (error) {
     console.error('[Service Worker] Failed to get registration:', error);
     return null;
@@ -233,18 +234,18 @@ export async function isServiceWorkerReady(): Promise<boolean> {
  * Get service worker status
  */
 export async function getServiceWorkerStatus(): Promise<{
-  registered: boolean;
-  activated: boolean;
-  installing: boolean;
-  waiting: boolean;
+  isRegistered: boolean;
+  isActivated: boolean;
+  isInstalling: boolean;
+  isWaiting: boolean;
 }> {
   try {
     if (!('serviceWorker' in navigator)) {
       return {
-        registered: false,
-        activated: false,
-        installing: false,
-        waiting: false,
+        isRegistered: false,
+        isActivated: false,
+        isInstalling: false,
+        isWaiting: false,
       };
     }
 
@@ -252,26 +253,26 @@ export async function getServiceWorkerStatus(): Promise<{
     
     if (!registration) {
       return {
-        registered: false,
-        activated: false,
-        installing: false,
-        waiting: false,
+        isRegistered: false,
+        isActivated: false,
+        isInstalling: false,
+        isWaiting: false,
       };
     }
 
     return {
-      registered: true,
-      activated: registration.active !== undefined,
-      installing: registration.installing !== undefined,
-      waiting: registration.waiting !== undefined,
+      isRegistered: true,
+      isActivated: registration.active !== undefined,
+      isInstalling: registration.installing !== undefined,
+      isWaiting: registration.waiting !== undefined,
     };
   } catch (error) {
     console.error('[Service Worker] Failed to get status:', error);
     return {
-      registered: false,
-      activated: false,
-      installing: false,
-      waiting: false,
+      isRegistered: false,
+      isActivated: false,
+      isInstalling: false,
+      isWaiting: false,
     };
   }
 }
@@ -313,6 +314,7 @@ export async function sendMessageToServiceWorker(
 
     // Create a channel for response
     const messageChannel = new MessageChannel();
+    const activeWorker = registration.active;
     
     return new Promise((resolve, reject) => {
       messageChannel.port1.onmessage = (event) => {
@@ -323,7 +325,7 @@ export async function sendMessageToServiceWorker(
         }
       };
 
-      registration.active.postMessage(message, [messageChannel.port2]);
+      activeWorker.postMessage(message, [messageChannel.port2]);
     });
   } catch (error) {
     console.error('[Service Worker] Failed to send message:', error);
@@ -344,7 +346,7 @@ export async function requestBackgroundSync(tag: string): Promise<boolean> {
     }
 
     if ('sync' in registration) {
-      await registration.sync.register(tag);
+      await (registration as any).sync.register(tag);
       console.log('[Service Worker] Background sync requested:', tag);
       return true;
     }

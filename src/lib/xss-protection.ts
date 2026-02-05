@@ -63,7 +63,7 @@ const configureDOMPurify = () => {
 export function sanitizeHtml(dirty: string, options: any = {}): string {
   try {
     const config = { ...configureDOMPurify(), ...options };
-    return DOMPurifyServer.sanitize(dirty, config) as string;
+    return DOMPurifyServer.sanitize(dirty, config) as unknown as string;
   } catch (error) {
     console.error('HTML sanitization error:', error);
     // Return safe fallback

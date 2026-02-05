@@ -15,7 +15,7 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
  * Simple rate limiter for login attempts
  */
 export function authRateLimit(request: NextRequest): NextResponse | null {
-  const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+  const ip = request.headers.get('x-forwarded-for') || 'unknown';
   const config = RATE_LIMIT_CONFIG.login;
   const now = Date.now();
   const resetTime = now + config.windowMs;

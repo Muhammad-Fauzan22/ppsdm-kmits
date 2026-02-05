@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Return response with file
-    return new NextResponse(result.data.buffer, {
+    return new NextResponse(Buffer.from(result.data.buffer), {
       status: 200,
       headers: {
         'Content-Type': result.data.mimeType,

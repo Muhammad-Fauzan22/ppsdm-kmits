@@ -12,8 +12,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function DimensionPage({ params }: { params: { slug: string } }) {
-  const dimension = dimensions.find((d) => d.slug === params.slug);
+export default async function DimensionPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const dimension = dimensions.find((d) => d.slug === resolvedParams.slug);
   
   if (!dimension) {
     notFound();

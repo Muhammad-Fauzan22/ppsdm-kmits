@@ -31,7 +31,7 @@ export interface ReportData {
 }
 
 export interface GenerateOptions {
-    format: ReportFormat;
+    format?: ReportFormat;
     watermark?: boolean;
     passwordProtected?: boolean;
     branding?: 'its' | 'kmm' | 'custom';
@@ -42,12 +42,33 @@ export interface GenerateOptions {
             secondary: string;
         };
     };
+    includeCharts?: boolean;
+    includeRecommendations?: boolean;
 }
 
 export interface ValidationResult {
     isValid: boolean;
     errors: string[];
     warnings: string[];
+}
+
+export interface ReportResponse {
+    success: boolean;
+    data: {
+        reportId: string;
+        buffer: Buffer;
+        fileName: string;
+        fileSize: number;
+        mimeType: string;
+        generatedAt: string;
+    };
+    metadata: {
+        generationTime: number;
+        reportType: string;
+        format: ReportFormat;
+        templateVersion: string;
+        dataPoints: number;
+    };
 }
 
 export interface ReportGenerationResult {

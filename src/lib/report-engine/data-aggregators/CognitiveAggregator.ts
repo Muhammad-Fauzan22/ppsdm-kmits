@@ -16,11 +16,12 @@ export class CognitiveAggregator {
     
     return {
       reportType: 'cognitive',
+      assessmentId,
       reportId: `cognitive-${assessmentId}`,
       userId,
       userName: assessmentData.user_name || 'Unknown User',
       userEmail: assessmentData.user_email || 'unknown@example.com',
-      generatedAt: new Date().toISOString(),
+      generatedAt: new Date(),
       overallScore: assessmentData.overall_score || 0,
       scores: this.processScores(assessmentData),
       strengths: assessmentData.strengths || [],
@@ -82,23 +83,47 @@ export class CognitiveAggregator {
   /**
    * Process scores into standardized format
    */
-  private static processScores(data: any): Record<string, { score: number; percentage: number }> {
+  private static processScores(data: any): Record<string, any> {
     return {
       memory: {
         score: data.memory_score || 0,
         percentage: data.memory_percentage || 0,
+        dimension: 'memory',
+        maxScore: 100,
+        level: data.memory_percentage >= 80 ? 'excellent' : 
+               data.memory_percentage >= 70 ? 'good' : 
+               data.memory_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor kinerja memori'
       },
       attention: {
         score: data.attention_score || 0,
         percentage: data.attention_percentage || 0,
+        dimension: 'attention',
+        maxScore: 100,
+        level: data.attention_percentage >= 80 ? 'excellent' : 
+               data.attention_percentage >= 70 ? 'good' : 
+               data.attention_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor kinerja perhatian'
       },
       reasoning: {
         score: data.reasoning_score || 0,
         percentage: data.reasoning_percentage || 0,
+        dimension: 'reasoning',
+        maxScore: 100,
+        level: data.reasoning_percentage >= 80 ? 'excellent' : 
+               data.reasoning_percentage >= 70 ? 'good' : 
+               data.reasoning_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor kinerja penalaran'
       },
       processingSpeed: {
         score: data.processing_speed_score || 0,
         percentage: data.processing_speed_percentage || 0,
+        dimension: 'processingSpeed',
+        maxScore: 100,
+        level: data.processing_speed_percentage >= 80 ? 'excellent' : 
+               data.processing_speed_percentage >= 70 ? 'good' : 
+               data.processing_speed_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor kecepatan pemrosesan'
       },
     };
   }

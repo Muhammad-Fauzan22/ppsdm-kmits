@@ -25,7 +25,7 @@ export function ReportGeneratorComponent({
   const { generateReport, generatePreview, isLoading, error, previewHtml } = useReportGenerator();
   const [selectedFormat, setSelectedFormat] = useState<ReportFormat>('pdf');
   const [showPreview, setShowPreview] = useState(false);
-  const [options, setOptions] = useState<GenerateOptions>({});
+  const [options, setOptions] = useState<GenerateOptions>({ format: 'pdf' });
 
   const formatOptions = [
     { value: 'pdf', label: 'PDF', icon: FileText, description: 'Format dokumen portabel' },

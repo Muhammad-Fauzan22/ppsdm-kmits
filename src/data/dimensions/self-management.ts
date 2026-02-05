@@ -59,7 +59,7 @@ export const selfManagementDimension: DimensionData = {
                 '75': 70,
                 '95': 86
             },
-            facultySpecific: {
+            facultyNorms: {
                 'Teknik': { mean: 58.7, sd: 12.4 },
                 'Sains': { mean: 60.2, sd: 11.8 },
                 'Sosial': { mean: 55.3, sd: 13.2 },
@@ -120,6 +120,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.84,
                 factorLoading: 0.72,
@@ -139,6 +140,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.4,
             reverseScored: true,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.86,
                 factorLoading: 0.75,
@@ -158,6 +160,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.2,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.81,
                 factorLoading: 0.68,
@@ -177,6 +180,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.83,
                 factorLoading: 0.70,
@@ -196,6 +200,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.4,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.82,
                 factorLoading: 0.73,
@@ -215,6 +220,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.1,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.79,
                 factorLoading: 0.65,
@@ -234,6 +240,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.82,
                 factorLoading: 0.71,
@@ -253,6 +260,7 @@ export const selfManagementDimension: DimensionData = {
             scale: 5,
             weight: 1.2,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.80,
                 factorLoading: 0.66,

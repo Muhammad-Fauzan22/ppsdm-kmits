@@ -222,35 +222,73 @@ export interface Database {
           created_at?: string
         }
       }
-      user_progress: {
-        Row: {
-          id: string
-          user_id: string
-          module_id: string
-          completed: boolean
-          quiz_score: number
-          xp_earned: number
-          completed_at: string | null
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          module_id: string
-          completed?: boolean
-          quiz_score?: number
-          xp_earned?: number
-          completed_at?: string | null
-        }
-        Update: {
-          id?: string
-          user_id: string
-          module_id?: string
-          completed?: boolean
-          quiz_score?: number
-          xp_earned?: number
-          completed_at?: string | null
-        }
-      }
-    }
-  }
-}
+       user_progress: {
+         Row: {
+           id: string
+           user_id: string
+           module_id: string
+           completed: boolean
+           quiz_score: number
+           xp_earned: number
+           completed_at: string | null
+         }
+         Insert: {
+           id?: string
+           user_id: string
+           module_id: string
+           completed?: boolean
+           quiz_score?: number
+           xp_earned?: number
+           completed_at?: string | null
+         }
+         Update: {
+           id?: string
+           user_id: string
+           module_id?: string
+           completed?: boolean
+           quiz_score?: number
+           xp_earned?: number
+           completed_at?: string | null
+         }
+       }
+       admin_audit_log: {
+         Row: {
+           id?: string
+           operation: string
+           user_id?: string
+           target_user_id?: string
+           details: Json
+           ip_address?: string
+           timestamp: string
+           environment: string
+           success: boolean
+           error?: string
+         }
+         Insert: {
+           id?: string
+           operation: string
+           user_id?: string
+           target_user_id?: string
+           details?: Json
+           ip_address?: string
+           timestamp?: string
+           environment?: string
+           success?: boolean
+           error?: string
+         }
+         Update: {
+           id?: string
+           operation?: string
+           user_id?: string
+           target_user_id?: string
+           details?: Json
+           ip_address?: string
+           timestamp?: string
+           environment?: string
+           success?: boolean
+           error?: string
+         }
+       }
+     }
+   }
+ }

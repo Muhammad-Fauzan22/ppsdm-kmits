@@ -323,7 +323,7 @@ export function sanitizePaginationParams(params: {
     page: Math.max(1, Math.min(1000, params.page || 1)),
     limit: Math.max(1, Math.min(100, params.limit || 20)),
     sort: params.sort ? sanitizeInput(params.sort) : undefined,
-    order: ['asc', 'desc'].includes(params.order) ? params.order as 'asc' | 'desc' : 'desc',
+    order: params.order && ['asc', 'desc'].includes(params.order) ? params.order as 'asc' | 'desc' : 'desc',
   };
 }
 

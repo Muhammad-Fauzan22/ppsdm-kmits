@@ -16,11 +16,12 @@ export class HolisticAggregator {
     
     return {
       reportType: 'holistic',
+      assessmentId,
       reportId: `holistic-${assessmentId}`,
       userId,
       userName: assessmentData.user_name || 'Unknown User',
       userEmail: assessmentData.user_email || 'unknown@example.com',
-      generatedAt: new Date().toISOString(),
+      generatedAt: new Date(),
       overallScore: assessmentData.overall_score || 0,
       holisticHealth: assessmentData.holistic_health || 'Unknown',
       scores: this.processScores(assessmentData),
@@ -94,39 +95,87 @@ export class HolisticAggregator {
   /**
    * Process scores into standardized format
    */
-  private static processScores(data: any): Record<string, { score: number; percentage: number }> {
+  private static processScores(data: any): Record<string, any> {
     return {
       cognitive: {
         score: data.cognitive_score || 0,
         percentage: data.cognitive_percentage || 0,
+        dimension: 'cognitive',
+        maxScore: 100,
+        level: data.cognitive_percentage >= 80 ? 'excellent' : 
+               data.cognitive_percentage >= 70 ? 'good' : 
+               data.cognitive_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor kognitif'
       },
       emotional: {
         score: data.emotional_score || 0,
         percentage: data.emotional_percentage || 0,
+        dimension: 'emotional',
+        maxScore: 100,
+        level: data.emotional_percentage >= 80 ? 'excellent' : 
+               data.emotional_percentage >= 70 ? 'good' : 
+               data.emotional_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor emosional'
       },
       social: {
         score: data.social_score || 0,
         percentage: data.social_percentage || 0,
+        dimension: 'social',
+        maxScore: 100,
+        level: data.social_percentage >= 80 ? 'excellent' : 
+               data.social_percentage >= 70 ? 'good' : 
+               data.social_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor sosial'
       },
       physical: {
         score: data.physical_score || 0,
         percentage: data.physical_percentage || 0,
+        dimension: 'physical',
+        maxScore: 100,
+        level: data.physical_percentage >= 80 ? 'excellent' : 
+               data.physical_percentage >= 70 ? 'good' : 
+               data.physical_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor fisik'
       },
       spiritual: {
         score: data.spiritual_score || 0,
         percentage: data.spiritual_percentage || 0,
+        dimension: 'spiritual',
+        maxScore: 100,
+        level: data.spiritual_percentage >= 80 ? 'excellent' : 
+               data.spiritual_percentage >= 70 ? 'good' : 
+               data.spiritual_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor spiritual'
       },
       character: {
         score: data.character_score || 0,
         percentage: data.character_percentage || 0,
+        dimension: 'character',
+        maxScore: 100,
+        level: data.character_percentage >= 80 ? 'excellent' : 
+               data.character_percentage >= 70 ? 'good' : 
+               data.character_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor karakter'
       },
       financial: {
         score: data.financial_score || 0,
         percentage: data.financial_percentage || 0,
+        dimension: 'financial',
+        maxScore: 100,
+        level: data.financial_percentage >= 80 ? 'excellent' : 
+               data.financial_percentage >= 70 ? 'good' : 
+               data.financial_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor keuangan'
       },
       selfManagement: {
         score: data.self_management_score || 0,
         percentage: data.self_management_percentage || 0,
+        dimension: 'selfManagement',
+        maxScore: 100,
+        level: data.self_management_percentage >= 80 ? 'excellent' : 
+               data.self_management_percentage >= 70 ? 'good' : 
+               data.self_management_percentage >= 60 ? 'average' : 'needs-improvement',
+        description: 'Skor manajemen diri'
       },
     };
   }

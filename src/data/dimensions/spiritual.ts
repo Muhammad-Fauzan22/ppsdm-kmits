@@ -55,7 +55,7 @@ export const spiritualDimension: DimensionData = {
                 '75': 66,
                 '95': 84
             },
-            facultySpecific: {
+            facultyNorms: {
                 'Humanities': { mean: 62.3, sd: 13.8 },
                 'Social Sciences': { mean: 59.8, sd: 14.5 },
                 'STEM': { mean: 56.8, sd: 14.2 }
@@ -113,6 +113,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.4,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.86,
                 factorLoading: 0.72,
@@ -132,6 +133,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.2,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.80,
                 factorLoading: 0.68,
@@ -151,6 +153,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.87,
                 factorLoading: 0.70,
@@ -170,6 +173,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.1,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.75,
                 factorLoading: 0.65,
@@ -189,6 +193,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.3,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.85,
                 factorLoading: 0.70,
@@ -208,6 +213,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.0,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.79,
                 factorLoading: 0.66,
@@ -227,6 +233,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.1,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.83,
                 factorLoading: 0.68,
@@ -246,6 +253,7 @@ export const spiritualDimension: DimensionData = {
             scale: 5,
             weight: 1.2,
             reverseScored: false,
+            format: 'Likert Scale (1-5)',
             psychometrics: {
                 alpha: 0.77,
                 factorLoading: 0.64,

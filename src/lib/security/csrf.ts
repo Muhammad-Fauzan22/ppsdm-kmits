@@ -58,7 +58,7 @@ export function generateCSRFToken(sessionId: string): string {
     .update(sessionId)
     .update(timestamp.toString())
     .update(random)
-    .update(CSRF_SECRET)
+    .update(CSRF_SECRET as string)
     .digest('hex');
   
   // Format: timestamp:random:signature
@@ -95,7 +95,7 @@ export function validateCSRFToken(sessionId: string, token: string): boolean {
       .update(sessionId)
       .update(timestamp)
       .update(random)
-      .update(CSRF_SECRET)
+      .update(CSRF_SECRET as string)
       .digest('hex');
     
     return signature === expectedSignature;

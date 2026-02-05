@@ -43,7 +43,7 @@ export function isNavigationKey(key: string): boolean {
     KEY_CODES.END,
     KEY_CODES.PAGE_UP,
     KEY_CODES.PAGE_DOWN,
-  ].includes(key);
+  ].includes(key as any);
 }
 
 /**

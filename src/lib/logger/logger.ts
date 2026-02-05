@@ -71,6 +71,7 @@ export class Logger {
   private config: LoggerConfig;
   private requestId?: string;
   private userId?: string;
+  private context?: Record<string, any>;
 
   constructor(config: Partial<LoggerConfig> = {}) {
     this.config = { ...defaultConfig, ...config };
@@ -91,11 +92,19 @@ export class Logger {
   }
 
   /**
+   * Set context
+   */
+  setContext(context: Record<string, any>): void {
+    this.context = context;
+  }
+
+  /**
    * Clear context
    */
   clearContext(): void {
     this.requestId = undefined;
     this.userId = undefined;
+    this.context = undefined;
   }
 
   /**
@@ -113,6 +122,9 @@ export class Logger {
     }
     if (this.userId) {
       entry.userId = this.userId;
+    }
+    if (this.context) {
+      entry.context = { ...this.context, ...entry.context };
     }
 
     // Console logging
@@ -357,7 +369,7 @@ export const logger = new Logger();
  */
 export function createLogger(context: Record<string, any>): Logger {
   const childLogger = new Logger();
-  childLogger['context'] = context;
+  childLogger.setContext(context);
   return childLogger;
 }
 

@@ -1,394 +1,363 @@
-import { NextRequest, NextResponse } from 'next/server';
+export interface WebVitalsMetric {
+  id: string;
+  name: string;
+  value: number;
+  rating: 'good' | 'needs-improvement' | 'poor' | null;
+  delta: number;
+  entries: PerformanceEntryList;
+}
 
-// Performance monitoring configuration
-const PERFORMANCE_CONFIG = {
-  // Slow query threshold (ms)
-  slowQueryThreshold: 1000,
+export interface PerformanceMetrics {
+  lcp: WebVitalsMetric | null;
+  fid: WebVitalsMetric | null;
+  cls: WebVitalsMetric | null;
+  fcp: WebVitalsMetric | null;
+  ttfb: WebVitalsMetric | null;
+}
 
-  // Memory usage threshold (MB)
-  memoryThreshold: 100,
+export interface PerformanceScore {
+  score: number;
+  rating: 'good' | 'needs-improvement' | 'poor';
+  breakdown: {
+    lcp: number;
+    fid: number;
+    cls: number;
+    fcp: number;
+    ttfb: number;
+  };
+}
 
-  // Response time thresholds (ms)
-  responseTimeThresholds: {
-    good: 500,
-    poor: 2000,
-  },
+export interface PerformanceRecommendation {
+  id: string;
+  title: string;
+  description: string;
+  impact: 'high' | 'medium' | 'low';
+  type: 'optimization' | 'diagnostic' | 'suggestion';
+  actionable: boolean;
+}
 
-  // Bundle size limits (bytes)
-  bundleSizeLimits: {
-    main: 200 * 1024, // 200KB
-    vendor: 500 * 1024, // 500KB
-    total: 1000 * 1024, // 1MB
-  },
+export class PerformanceMonitor {
+  private metrics: PerformanceMetrics = {
+    lcp: null,
+    fid: null,
+    cls: null,
+    fcp: null,
+    ttfb: null
+  };
+  
+  private isMonitoring = false;
+  private observers: PerformanceObserver[] = [];
+  private performanceEntries: PerformanceEntryList = [];
 
-  // Core Web Vitals targets
-  coreWebVitals: {
-    lcp: 2500, // ms
-    fid: 100, // ms
-    cls: 0.1, // score
-  },
-};
-
-// Performance metrics storage
-class PerformanceMetrics {
-  private metrics: Map<string, any[]> = new Map();
-  private alerts: any[] = [];
-
-  record(metric: string, value: any, context?: any) {
-    if (!this.metrics.has(metric)) {
-      this.metrics.set(metric, []);
+  public startMonitoring(): void {
+    if (this.isMonitoring) {
+      console.warn('Performance monitoring already active');
+      return;
     }
 
-    this.metrics.get(metric)!.push({
-      value,
-      timestamp: Date.now(),
-      context,
+    this.isMonitoring = true;
+    
+    // Observe Performance Timeline
+    const timelineObserver = new PerformanceObserver((list) => {
+      this.performanceEntries = list.getEntries();
     });
+    
+    timelineObserver.observe({ entryTypes: ['measure', 'mark', 'navigation', 'resource', 'paint', 'longtask'] });
+    this.observers.push(timelineObserver);
 
-    // Keep only last 1000 entries per metric
-    const entries = this.metrics.get(metric)!;
-    if (entries.length > 1000) {
-      entries.shift();
+    // Observe First Input Delay
+    const firstInputObserver = new PerformanceObserver((list) => {
+      const entry = list.getEntries()[0];
+      if (entry) {
+        const firstInputEntry = entry as any;
+        this.metrics.fid = this.createMetric('fid', 'First Input Delay', firstInputEntry.processingStart - firstInputEntry.startTime);
+      }
+    });
+    
+    firstInputObserver.observe({ type: 'first-input', buffered: true });
+    this.observers.push(firstInputObserver);
+
+    // Observe Cumulative Layout Shift
+    const clsObserver = new PerformanceObserver((list) => {
+      let cumulativeCLS = 0;
+      list.getEntries().forEach(entry => {
+        const layoutShiftEntry = entry as any;
+        if (!layoutShiftEntry.hadRecentInput) {
+          cumulativeCLS += layoutShiftEntry.value;
+        }
+      });
+      
+      this.metrics.cls = this.createMetric('cls', 'Cumulative Layout Shift', cumulativeCLS);
+    });
+    
+    clsObserver.observe({ type: 'layout-shift', buffered: true });
+    this.observers.push(clsObserver);
+
+    // Observe Largest Contentful Paint
+    const lcpObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      
+      if (lastEntry) {
+        this.metrics.lcp = this.createMetric('lcp', 'Largest Contentful Paint', lastEntry.startTime);
+      }
+    });
+    
+    lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+    this.observers.push(lcpObserver);
+
+    // Observe First Contentful Paint
+    const fcpObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      if (entries.length > 0) {
+        this.metrics.fcp = this.createMetric('fcp', 'First Contentful Paint', entries[0].startTime);
+      }
+    });
+    
+    fcpObserver.observe({ type: 'paint', buffered: true });
+    this.observers.push(fcpObserver);
+
+    // Measure Time to First Byte
+    if (window.performance) {
+      const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      if (navigationEntry) {
+        this.metrics.ttfb = this.createMetric('ttfb', 'Time to First Byte', navigationEntry.responseStart);
+      }
     }
 
-    // Check for alerts
-    this.checkAlerts(metric, value, context);
+    console.log('Performance monitoring started');
   }
 
-  getMetrics(metric: string, limit: number = 100) {
-    return this.metrics.get(metric)?.slice(-limit) || [];
-  }
-
-  getAllMetrics() {
-    const result: Record<string, any[]> = {};
-    for (const [key, values] of this.metrics.entries()) {
-      result[key] = values.slice(-50); // Last 50 entries
+  public stopMonitoring(): void {
+    if (!this.isMonitoring) {
+      console.warn('Performance monitoring not active');
+      return;
     }
-    return result;
+
+    this.isMonitoring = false;
+    this.observers.forEach(observer => observer.disconnect());
+    this.observers = [];
+    
+    console.log('Performance monitoring stopped');
   }
 
-  private checkAlerts(metric: string, value: any, context?: any) {
-    switch (metric) {
-      case 'response_time':
-        if (value > PERFORMANCE_CONFIG.responseTimeThresholds.poor) {
-          this.alerts.push({
-            type: 'performance',
-            severity: 'high',
-            message: `Slow response time: ${value}ms`,
-            metric,
-            value,
-            context,
-            timestamp: Date.now(),
-          });
-        }
-        break;
+  public getMetrics(): PerformanceMetrics {
+    return { ...this.metrics };
+  }
 
-      case 'memory_usage':
-        if (value > PERFORMANCE_CONFIG.memoryThreshold) {
-          this.alerts.push({
-            type: 'performance',
-            severity: 'medium',
-            message: `High memory usage: ${value}MB`,
-            metric,
-            value,
-            context,
-            timestamp: Date.now(),
-          });
-        }
-        break;
+  public getRecommendations(): PerformanceRecommendation[] {
+    const recommendations: PerformanceRecommendation[] = [];
 
-      case 'error_rate':
-        if (value > 5) { // 5% error rate
-          this.alerts.push({
-            type: 'performance',
-            severity: 'high',
-            message: `High error rate: ${value}%`,
-            metric,
-            value,
-            context,
-            timestamp: Date.now(),
-          });
-        }
+    if (this.metrics.lcp && this.metrics.lcp.value > 2500) {
+      recommendations.push({
+        id: 'lcp-optimization',
+        title: 'Optimize Largest Contentful Paint',
+        description: 'Your LCP metric exceeds 2.5 seconds. Consider optimizing images, fonts, and server response times.',
+        impact: 'high',
+        type: 'optimization',
+        actionable: true
+      });
+    }
+
+    if (this.metrics.fid && this.metrics.fid.value > 100) {
+      recommendations.push({
+        id: 'fid-optimization',
+        title: 'Improve First Input Delay',
+        description: 'Your FID metric exceeds 100ms. Consider optimizing JavaScript execution and reducing main thread work.',
+        impact: 'high',
+        type: 'optimization',
+        actionable: true
+      });
+    }
+
+    if (this.metrics.cls && this.metrics.cls.value > 0.1) {
+      recommendations.push({
+        id: 'cls-optimization',
+        title: 'Reduce Layout Shifts',
+        description: 'Your CLS metric exceeds 0.1. Consider adding dimensions to images and videos, and stabilizing dynamic content.',
+        impact: 'high',
+        type: 'optimization',
+        actionable: true
+      });
+    }
+
+    const resourceEntries = this.performanceEntries.filter(entry => entry.entryType === 'resource');
+    const largeResources = resourceEntries.filter(entry => (entry as PerformanceResourceTiming).transferSize > 1000000);
+
+    if (largeResources.length > 0) {
+      recommendations.push({
+        id: 'large-resources',
+        title: 'Optimize Large Resources',
+        description: `Found ${largeResources.length} resources larger than 1MB. Consider compressing images, minifying scripts, and lazy loading non-critical resources.`,
+        impact: 'medium',
+        type: 'suggestion',
+        actionable: true
+      });
+    }
+
+    return recommendations;
+  }
+
+  public calculateScore(): PerformanceScore {
+    let totalScore = 0;
+    let metricCount = 0;
+    
+    const breakdown = {
+      lcp: 0,
+      fid: 0,
+      cls: 0,
+      fcp: 0,
+      ttfb: 0
+    };
+
+    // LCP: 0-2500ms (100-0)
+    if (this.metrics.lcp) {
+      const lcpScore = Math.max(0, Math.min(100, 100 - ((this.metrics.lcp.value - 1000) / 15)));
+      breakdown.lcp = Math.round(lcpScore);
+      totalScore += breakdown.lcp;
+      metricCount++;
+    }
+
+    // FID: 0-100ms (100-0)
+    if (this.metrics.fid) {
+      const fidScore = Math.max(0, Math.min(100, 100 - (this.metrics.fid.value - 50) * 2));
+      breakdown.fid = Math.round(fidScore);
+      totalScore += breakdown.fid;
+      metricCount++;
+    }
+
+    // CLS: 0-0.1 (100-0)
+    if (this.metrics.cls) {
+      const clsScore = Math.max(0, Math.min(100, 100 - (this.metrics.cls.value - 0.05) * 1000));
+      breakdown.cls = Math.round(clsScore);
+      totalScore += breakdown.cls;
+      metricCount++;
+    }
+
+    // FCP: 0-1800ms (100-0)
+    if (this.metrics.fcp && this.metrics.fcp.value) {
+      const fcpScore = Math.max(0, Math.min(100, 100 - ((this.metrics.fcp.value - 1000) / 8)));
+      breakdown.fcp = Math.round(fcpScore);
+      totalScore += breakdown.fcp;
+      metricCount++;
+    }
+
+    // TTFB: 0-800ms (100-0)
+    if (this.metrics.ttfb && this.metrics.ttfb.value) {
+      const ttfbScore = Math.max(0, Math.min(100, 100 - (this.metrics.ttfb.value - 500) * 0.33));
+      breakdown.ttfb = Math.round(ttfbScore);
+      totalScore += breakdown.ttfb;
+      metricCount++;
+    }
+
+    const averageScore = metricCount > 0 ? Math.round(totalScore / metricCount) : 0;
+    
+    let rating: 'good' | 'needs-improvement' | 'poor' = 'poor';
+    if (averageScore >= 75) rating = 'good';
+    else if (averageScore >= 50) rating = 'needs-improvement';
+
+    return {
+      score: averageScore,
+      rating,
+      breakdown
+    };
+  }
+
+  public trackWebVital(metric: WebVitalsMetric): void {
+    switch (metric.name.toLowerCase()) {
+      case 'lcp':
+        this.metrics.lcp = metric;
+        break;
+      case 'fid':
+        this.metrics.fid = metric;
+        break;
+      case 'cls':
+        this.metrics.cls = metric;
+        break;
+      case 'fcp':
+        this.metrics.fcp = metric;
+        break;
+      case 'ttfb':
+        this.metrics.ttfb = metric;
         break;
     }
   }
 
-  getAlerts(limit: number = 50) {
-    return this.alerts.slice(-limit);
-  }
+  private createMetric(
+    id: string,
+    name: string,
+    value: number
+  ): WebVitalsMetric {
+    let rating: 'good' | 'needs-improvement' | 'poor' | null = null;
+    
+    switch (id) {
+      case 'lcp':
+        rating = value <= 2500 ? 'good' : value <= 4000 ? 'needs-improvement' : 'poor';
+        break;
+      case 'fid':
+        rating = value <= 100 ? 'good' : value <= 300 ? 'needs-improvement' : 'poor';
+        break;
+      case 'cls':
+        rating = value <= 0.1 ? 'good' : value <= 0.25 ? 'needs-improvement' : 'poor';
+        break;
+      case 'fcp':
+        rating = value <= 1800 ? 'good' : value <= 3000 ? 'needs-improvement' : 'poor';
+        break;
+      case 'ttfb':
+        rating = value <= 800 ? 'good' : value <= 1800 ? 'needs-improvement' : 'poor';
+        break;
+    }
 
-  clearAlerts() {
-    this.alerts = [];
+    return {
+      id,
+      name,
+      value: Math.round(value * 100) / 100,
+      rating,
+      delta: 0,
+      entries: []
+    };
   }
 }
 
-// Global performance metrics instance
-const performanceMetrics = new PerformanceMetrics();
+export function formatMetric(value: number, metric: string): string {
+  switch (metric) {
+    case 'lcp':
+    case 'fid':
+    case 'fcp':
+    case 'ttfb':
+      return `${value}ms`;
+    case 'cls':
+      return value.toFixed(3);
+    default:
+      return value.toString();
+  }
+}
 
-// Performance monitoring utilities
-export const performanceUtils = {
-  // Measure execution time
-  measureExecutionTime: async <T>(
-    operation: () => Promise<T>,
-    operationName: string,
-    context?: any
-  ): Promise<T> => {
-    const startTime = Date.now();
-    try {
-      const result = await operation();
-      const executionTime = Date.now() - startTime;
+export function getScoreColor(score: number): string {
+  if (score >= 75) return 'text-green-600';
+  if (score >= 50) return 'text-yellow-600';
+  return 'text-red-600';
+}
 
-      performanceMetrics.record('execution_time', executionTime, {
-        operation: operationName,
-        ...context,
-      });
-
-      // Log slow operations
-      if (executionTime > PERFORMANCE_CONFIG.slowQueryThreshold) {
-        console.warn(`Slow operation: ${operationName} took ${executionTime}ms`, context);
-      }
-
-      return result;
-    } catch (error) {
-      const executionTime = Date.now() - startTime;
-      performanceMetrics.record('execution_time', executionTime, {
-        operation: operationName,
-        error: true,
-        ...context,
-      });
-      throw error;
-    }
-  },
-
-  // Track API response times
-  trackApiResponse: (method: string, url: string, responseTime: number, statusCode: number) => {
-    performanceMetrics.record('api_response_time', responseTime, {
-      method,
-      url,
-      statusCode,
+export function trackWebVital(metric: WebVitalsMetric, monitor: PerformanceMonitor): void {
+  monitor.trackWebVital(metric);
+  
+  // You could also send this to an analytics service
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', `web-vitals.${metric.name}`, {
+      value: metric.value,
+      rating: metric.rating,
+      delta: metric.delta
     });
+  }
+}
 
-    // Log slow API responses
-    if (responseTime > PERFORMANCE_CONFIG.responseTimeThresholds.good) {
-      console.warn(`Slow API response: ${method} ${url} took ${responseTime}ms`);
+export function calculatePerformanceScore(metrics: PerformanceMetrics): PerformanceScore {
+  const monitor = new PerformanceMonitor();
+  Object.values(metrics).forEach(metric => {
+    if (metric) {
+      monitor.trackWebVital(metric);
     }
-  },
-
-  // Monitor memory usage
-  trackMemoryUsage: () => {
-    if (typeof performance !== 'undefined' && 'memory' in performance) {
-      const memory = (performance as any).memory;
-      const usedMB = Math.round(memory.usedJSHeapSize / 1024 / 1024);
-
-      performanceMetrics.record('memory_usage', usedMB);
-
-      return usedMB;
-    }
-    return null;
-  },
-
-  // Track bundle size
-  trackBundleSize: (bundleName: string, size: number) => {
-    performanceMetrics.record('bundle_size', size, { bundleName });
-
-    const limit = PERFORMANCE_CONFIG.bundleSizeLimits[bundleName as keyof typeof PERFORMANCE_CONFIG.bundleSizeLimits] ||
-                  PERFORMANCE_CONFIG.bundleSizeLimits.total;
-
-    if (size > limit) {
-      console.warn(`Large bundle: ${bundleName} is ${(size / 1024).toFixed(1)}KB (limit: ${(limit / 1024).toFixed(1)}KB)`);
-    }
-  },
-
-  // Track Core Web Vitals
-  trackWebVitals: (metric: any) => {
-    const { name, value } = metric;
-
-    performanceMetrics.record(`web_vitals_${name.toLowerCase()}`, value);
-
-    // Check against targets
-    const target = PERFORMANCE_CONFIG.coreWebVitals[name.toLowerCase() as keyof typeof PERFORMANCE_CONFIG.coreWebVitals];
-    if (target && value > target) {
-      console.warn(`Poor Core Web Vital: ${name} = ${value} (target: ${target})`);
-    }
-  },
-
-  // Track user interactions
-  trackUserInteraction: (interaction: string, duration: number, context?: any) => {
-    performanceMetrics.record('user_interaction', duration, {
-      interaction,
-      ...context,
-    });
-  },
-
-  // Get performance report
-  getPerformanceReport: () => {
-    const metrics = performanceMetrics.getAllMetrics();
-    const alerts = performanceMetrics.getAlerts();
-
-    return {
-      metrics,
-      alerts,
-      summary: {
-        totalMetrics: Object.keys(metrics).length,
-        totalAlerts: alerts.length,
-        timestamp: new Date().toISOString(),
-      },
-    };
-  },
-
-  // Clear old metrics
-  cleanup: (olderThanMs: number = 24 * 60 * 60 * 1000) => {
-    // This would implement cleanup logic for old metrics
-    // For now, just clear alerts
-    performanceMetrics.clearAlerts();
-  },
-};
-
-// Database performance monitoring
-export const databasePerformance = {
-  // Track query performance
-  trackQuery: async <T>(
-    queryFn: () => Promise<T>,
-    queryName: string,
-    parameters?: any
-  ): Promise<T> => {
-    return performanceUtils.measureExecutionTime(
-      queryFn,
-      `db_query_${queryName}`,
-      { parameters }
-    );
-  },
-
-  // Track connection pool stats
-  trackConnectionPool: (stats: {
-    totalCount: number;
-    idleCount: number;
-    waitingCount: number;
-  }) => {
-    performanceMetrics.record('db_connection_pool', stats);
-  },
-};
-
-// API performance monitoring
-export const apiPerformance = {
-  // Middleware for API performance tracking
-  createPerformanceMiddleware: () => {
-    return async (request: NextRequest, response: NextResponse) => {
-      const startTime = Date.now();
-      const { method, url } = request;
-
-      // Add response interceptor
-      const originalJson = response.json.bind(response);
-      response.json = async (data: any, options?: any) => {
-        const responseTime = Date.now() - startTime;
-        const statusCode = response.status;
-
-        performanceUtils.trackApiResponse(method, url, responseTime, statusCode);
-
-        return originalJson(data, options);
-      };
-
-      return response;
-    };
-  },
-
-  // Track external API calls
-  trackExternalApi: async <T>(
-    apiCall: () => Promise<T>,
-    serviceName: string,
-    endpoint: string
-  ): Promise<T> => {
-    return performanceUtils.measureExecutionTime(
-      apiCall,
-      `external_api_${serviceName}`,
-      { endpoint }
-    );
-  },
-};
-
-// Real User Monitoring (RUM)
-export const rumMonitoring = {
-  // Track page views
-  trackPageView: (page: string, loadTime: number) => {
-    performanceMetrics.record('page_view', loadTime, { page });
-  },
-
-  // Track user journeys
-  trackUserJourney: (steps: string[], totalTime: number) => {
-    performanceMetrics.record('user_journey', totalTime, { steps });
-  },
-
-  // Track errors
-  trackError: (error: Error, context?: any) => {
-    performanceMetrics.record('error', {
-      message: error.message,
-      stack: error.stack,
-      ...context,
-    });
-  },
-
-  // Track custom events
-  trackEvent: (eventName: string, properties?: any) => {
-    performanceMetrics.record('custom_event', properties, { eventName });
-  },
-};
-
-// Performance budgets
-export const performanceBudgets = {
-  // Check if performance is within budget
-  checkBudget: (metric: string, value: number, budget: number): boolean => {
-    const withinBudget = value <= budget;
-
-    if (!withinBudget) {
-      console.warn(`Performance budget exceeded: ${metric} = ${value} (budget: ${budget})`);
-      performanceMetrics.record('budget_exceeded', value, { metric, budget });
-    }
-
-    return withinBudget;
-  },
-
-  // Bundle size budgets
-  bundleBudgets: PERFORMANCE_CONFIG.bundleSizeLimits,
-
-  // Response time budgets
-  responseBudgets: PERFORMANCE_CONFIG.responseTimeThresholds,
-
-  // Core Web Vitals budgets
-  webVitalsBudgets: PERFORMANCE_CONFIG.coreWebVitals,
-};
-
-// Export utilities
-export {
-  performanceMetrics,
-  PERFORMANCE_CONFIG,
-  databasePerformance,
-  apiPerformance,
-  rumMonitoring,
-  performanceBudgets,
-};
-
-// Next.js specific performance utilities
-export const nextjsPerformance = {
-  // Webpack bundle analyzer integration
-  webpackBundleAnalyzer: {
-    analyzerMode: 'static',
-    reportFilename: './bundle-analysis.html',
-    openAnalyzer: false,
-    generateStatsFile: true,
-    statsFilename: './bundle-stats.json',
-  },
-
-  // Optimize images
-  imageOptimization: {
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
-    dangerouslyAllowSVG: false,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-
-  // Compression
-  compression: {
-    compress: true,
-    poweredByHeader: false,
-  },
-};
+  });
+  return monitor.calculateScore();
+}

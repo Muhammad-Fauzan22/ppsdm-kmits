@@ -25,7 +25,8 @@ export class QueryOptimizer {
     columns: string,
     filters?: Record<string, any>
   ): Promise<T[]> {
-    let query = this.supabase.from(table).select(columns);
+    const client = await this.supabase;
+    let query = client.from(table).select(columns);
 
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
@@ -39,7 +40,7 @@ export class QueryOptimizer {
       throw new Error(`Query error: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []) as T[];
   }
 
   /**
@@ -54,9 +55,10 @@ export class QueryOptimizer {
   ): Promise<{ data: T[]; total: number; page: number; pageSize: number }> {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
+    const client = await this.supabase;
 
     // Get data with pagination
-    let dataQuery = this.supabase
+    let dataQuery = client
       .from(table)
       .select(columns)
       .range(from, to);
@@ -74,7 +76,7 @@ export class QueryOptimizer {
     }
 
     // Get total count
-    let countQuery = this.supabase.from(table).select('*', { count: 'exact', head: true });
+    let countQuery = client.from(table).select('*', { count: 'exact', head: true });
 
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
@@ -89,7 +91,7 @@ export class QueryOptimizer {
     }
 
     return {
-      data: data || [],
+      data: (data || []) as T[],
       total: count || 0,
       page,
       pageSize,
@@ -105,7 +107,8 @@ export class QueryOptimizer {
     ids: string[],
     idColumn: string = 'id'
   ): Promise<T[]> {
-    const { data, error } = await this.supabase
+    const client = await this.supabase;
+    const { data, error } = await client
       .from(table)
       .select(columns)
       .in(idColumn, ids);
@@ -114,7 +117,7 @@ export class QueryOptimizer {
       throw new Error(`Batch query error: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []) as T[];
   }
 
   /**
@@ -127,8 +130,9 @@ export class QueryOptimizer {
     filters?: Record<string, any>
   ): Promise<T[]> {
     const selectColumns = [...columns.split(', '), ...joins].join(', ');
+    const client = await this.supabase;
 
-    let query = this.supabase.from(table).select(selectColumns);
+    let query = client.from(table).select(selectColumns);
 
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
@@ -142,7 +146,7 @@ export class QueryOptimizer {
       throw new Error(`Join query error: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []) as T[];
   }
 
   /**
@@ -161,7 +165,8 @@ export class QueryOptimizer {
     }
 
     // Query database
-    const { data, error } = await this.supabase
+    const client = await this.supabase;
+    const { data, error } = await client
       .from(table)
       .select(columns);
 
@@ -172,7 +177,7 @@ export class QueryOptimizer {
     // Set cache
     this.setCache(cacheKey, data || [], ttl);
 
-    return data || [];
+    return (data || []) as T[];
   }
 
   /**
@@ -327,9 +332,10 @@ export class IndexManager {
     indexName?: string
   ): Promise<void> {
     const name = indexName || `idx_${table}_${columns.join('_')}`;
+    const client = await this.supabase;
 
     // Execute SQL to create index
-    const { error } = await this.supabase.rpc('create_index', {
+    const { error } = await client.rpc('create_index', {
       table_name: table,
       column_names: columns,
       index_name: name,
@@ -344,7 +350,8 @@ export class IndexManager {
    * Drop index
    */
   async dropIndex(indexName: string): Promise<void> {
-    const { error } = await this.supabase.rpc('drop_index', {
+    const client = await this.supabase;
+    const { error } = await client.rpc('drop_index', {
       index_name: indexName,
     });
 
@@ -357,7 +364,8 @@ export class IndexManager {
    * List indexes on table
    */
   async listIndexes(table: string): Promise<any[]> {
-    const { data, error } = await this.supabase.rpc('list_indexes', {
+    const client = await this.supabase;
+    const { data, error } = await client.rpc('list_indexes', {
       table_name: table,
     });
 
@@ -372,7 +380,8 @@ export class IndexManager {
    * Analyze query performance
    */
   async analyzeQuery(query: string): Promise<any> {
-    const { data, error } = await this.supabase.rpc('analyze_query', {
+    const client = await this.supabase;
+    const { data, error } = await client.rpc('analyze_query', {
       query_text: query,
     });
 

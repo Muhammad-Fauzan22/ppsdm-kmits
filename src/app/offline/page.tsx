@@ -3,6 +3,8 @@
  * Ditampilkan saat user tidak memiliki koneksi internet
  */
 
+'use client';
+
 import React from 'react';
 
 export default function OfflinePage() {

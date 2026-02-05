@@ -52,8 +52,8 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
 
         console.log('[DEBUG] Loading dimension data for ID:', dimensionId);
         console.log('[DEBUG] Raw data:', rawData);
-        console.log('[DEBUG] Subdimensions:', rawData?.subdimensions);
-        console.log('[DEBUG] Scoring:', rawData?.scoring);
+        console.log('[DEBUG] Subdimensions:', (rawData as any)?.subdimensions);
+        console.log('[DEBUG] Scoring:', (rawData as any)?.scoring);
         console.log('[DEBUG] Research:', rawData?.research);
 
         // Adapt raw data to match the expected DimensionData interface
@@ -654,11 +654,11 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                     </tr>
                   </thead>
                   <tbody>
-                    {dimension.research.normativeData?.normativeData?.map((norm: any, index: number) => (
+                    {Object.entries(dimension.research.normativeData?.percentiles || {}).map(([percentile, score], index: number) => (
                       <tr key={index} className="border-b border-gray-100">
-                        <td className="py-2 px-4 font-semibold">{norm.percentile}</td>
-                        <td className="text-center py-2 px-4">{norm.scoreRange}</td>
-                        <td className="py-2 px-4">{norm.interpretation}</td>
+                        <td className="py-2 px-4 font-semibold">{percentile}th Percentile</td>
+                        <td className="text-center py-2 px-4">{score}</td>
+                        <td className="py-2 px-4">-</td>
                       </tr>
                     ))}
                   </tbody>

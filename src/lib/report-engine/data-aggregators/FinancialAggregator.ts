@@ -1,4 +1,4 @@
-import { ReportData } from '../types';
+import { AssessmentScore, ReportData } from '../types';
 
 /**
  * Financial Assessment Data Aggregator
@@ -16,11 +16,11 @@ export class FinancialAggregator {
     
     return {
       reportType: 'financial',
-      reportId: `financial-${assessmentId}`,
+      assessmentId,
       userId,
       userName: assessmentData.user_name || 'Unknown User',
       userEmail: assessmentData.user_email || 'unknown@example.com',
-      generatedAt: new Date().toISOString(),
+      generatedAt: new Date(),
       overallScore: assessmentData.overall_score || 0,
       financialHealth: assessmentData.financial_health || 'Unknown',
       scores: this.processScores(assessmentData),
@@ -88,28 +88,49 @@ export class FinancialAggregator {
   /**
    * Process scores into standardized format
    */
-  private static processScores(data: any): Record<string, { score: number; percentage: number }> {
+  private static processScores(data: any): Record<string, AssessmentScore> {
+    const toLevel = (percentage: number): AssessmentScore['level'] => {
+      if (percentage >= 85) return 'excellent';
+      if (percentage >= 70) return 'good';
+      if (percentage >= 50) return 'average';
+      return 'needs-improvement';
+    };
+
+    const createAssessmentScore = (
+      dimension: string,
+      score: number,
+      percentage: number
+    ): AssessmentScore => ({
+      score,
+      percentage,
+      dimension,
+      maxScore: 100,
+      level: toLevel(percentage),
+      description: `${dimension} score: ${percentage}%`,
+    });
+
     return {
-      budgeting: {
-        score: data.budgeting_score || 0,
-        percentage: data.budgeting_percentage || 0,
-      },
-      saving: {
-        score: data.saving_score || 0,
-        percentage: data.saving_percentage || 0,
-      },
-      investing: {
-        score: data.investing_score || 0,
-        percentage: data.investing_percentage || 0,
-      },
-      debtManagement: {
-        score: data.debt_management_score || 0,
-        percentage: data.debt_management_percentage || 0,
-      },
-      financialLiteracy: {
-        score: data.financial_literacy_score || 0,
-        percentage: data.financial_literacy_percentage || 0,
-      },
+      budgeting: createAssessmentScore(
+        'Budgeting',
+        data.budgeting_score || 0,
+        data.budgeting_percentage || 0
+      ),
+      saving: createAssessmentScore('Saving', data.saving_score || 0, data.saving_percentage || 0),
+      investing: createAssessmentScore(
+        'Investing',
+        data.investing_score || 0,
+        data.investing_percentage || 0
+      ),
+      debtManagement: createAssessmentScore(
+        'Debt Management',
+        data.debt_management_score || 0,
+        data.debt_management_percentage || 0
+      ),
+      financialLiteracy: createAssessmentScore(
+        'Financial Literacy',
+        data.financial_literacy_score || 0,
+        data.financial_literacy_percentage || 0
+      ),
     };
   }
 

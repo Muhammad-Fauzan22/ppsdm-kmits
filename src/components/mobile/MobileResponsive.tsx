@@ -22,7 +22,7 @@ import {
   X,
   Search,
   Filter,
-  Sort,
+
   Grid,
   List,
   Maximize2,

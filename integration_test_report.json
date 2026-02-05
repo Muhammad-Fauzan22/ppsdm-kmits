@@ -1,0 +1,96 @@
+{
+  "timestamp": "2026-02-04T03:17:23.600387",
+  "total_tests": 11,
+  "passed": 5,
+  "failed": 6,
+  "results": [
+    {
+      "name": "Supabase",
+      "success": false,
+      "message": "Connection failed",
+      "details": null,
+      "error": "{'message': 'infinite recursion detected in policy for relation \"admins\"', 'code': '42P17', 'hint': None, 'details': None}"
+    },
+    {
+      "name": "Groq",
+      "success": true,
+      "message": "API working, model: llama-3.1-8b-instant",
+      "details": {
+        "latency_ms": 44
+      },
+      "error": null
+    },
+    {
+      "name": "OpenAI",
+      "success": false,
+      "message": "API returned 429",
+      "details": null,
+      "error": "{\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.\",\n        \"type\": \"insufficient_quota\",\n        \"param\": null,\n        \"code\": \"insufficient_quota\"\n    }\n}\n"
+    },
+    {
+      "name": "OpenRouter",
+      "success": true,
+      "message": "API working",
+      "details": {
+        "models_available": true
+      },
+      "error": null
+    },
+    {
+      "name": "Google AI",
+      "success": false,
+      "message": "API returned 400",
+      "details": null,
+      "error": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"API key expired. Please renew the API key.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",\n        \"reason\": \"API_KEY_INVALID\",\n        \"domain\": \"googleapis.com\",\n        \"metadata\": {\n          \"service\": \"generativelanguage.googleapis.com\"\n        }\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.LocalizedMessage\",\n        \"locale\": \"en-US\",\n        \"message\": \"API key expired. Please renew the API key.\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "name": "Hugging Face",
+      "success": false,
+      "message": "API returned 401",
+      "details": null,
+      "error": "{\"error\":\"Invalid username or password.\"}"
+    },
+    {
+      "name": "QStash",
+      "success": false,
+      "message": "API returned 401",
+      "details": null,
+      "error": "{\"error\":\"unable to authenticate: invalid token\"}"
+    },
+    {
+      "name": "SerpAPI",
+      "success": true,
+      "message": "API working",
+      "details": {
+        "searches_remaining": 149
+      },
+      "error": null
+    },
+    {
+      "name": "Replicate",
+      "success": false,
+      "message": "API returned 401",
+      "details": null,
+      "error": "{\"title\":\"Unauthenticated\",\"detail\":\"You did not pass a valid authentication token\",\"status\":401}\n"
+    },
+    {
+      "name": "Supabase Platform",
+      "success": true,
+      "message": "API accessible. Found 4 projects.",
+      "details": {
+        "project_count": 4
+      },
+      "error": null
+    },
+    {
+      "name": "GitHub",
+      "success": true,
+      "message": "Logged in as Muhammad-Fauzan22",
+      "details": {
+        "user": "Muhammad-Fauzan22",
+        "scopes": "admin:enterprise, admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook, admin:ssh_signing_key, audit_log, codespace, copilot, delete:packages, delete_repo, gist, notifications, project, repo, user, workflow, write:discussion, write:network_configurations, write:packages"
+      },
+      "error": null
+    }
+  ]
+}

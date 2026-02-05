@@ -24,7 +24,7 @@ export {
     LoadingSpinner,
     LoadingOverlay,
 } from "./Loading";
-export { ErrorBoundary, NotFound, EmptyState, OfflineIndicator } from "./ErrorBoundary";
+export { ErrorBoundary } from "./ErrorBoundary";
 // Decomposed UI Components (Audit Refactor)
 export { BottomNav } from "./ui/bottom-nav";
 export { FAB } from "./ui/fab";

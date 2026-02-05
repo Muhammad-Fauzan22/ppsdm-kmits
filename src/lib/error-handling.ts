@@ -202,7 +202,7 @@ export function handleApiError(
   request: NextRequest
 ): NextResponse {
   const context = {
-    ip: request.ip || request.headers.get('x-forwarded-for') || 'unknown',
+    ip: request.headers.get('x-forwarded-for') || 'unknown',
     userAgent: request.headers.get('user-agent') || 'unknown',
     method: request.method,
     url: request.url,
@@ -354,14 +354,14 @@ export function setupGracefulShutdown(callback: () => Promise<void>) {
 
   // Handle uncaught exceptions
   process.on('uncaughtException', (error) => {
-    logError(error, { context: 'uncaughtException' });
+    logError(error, { requestId: 'uncaughtException' });
     process.exit(1);
   });
 
   // Handle unhandled promise rejections
   process.on('unhandledRejection', (reason, promise) => {
     const error = reason instanceof Error ? reason : new Error(String(reason));
-    logError(error, { context: 'unhandledRejection' });
+    logError(error, { requestId: 'unhandledRejection' });
     process.exit(1);
   });
 }
@@ -386,7 +386,7 @@ export async function performHealthCheck(): Promise<{
 
   } catch (error) {
     checks.error = false;
-    logError(error as Error, { context: 'healthCheck' });
+    logError(error as Error, { requestId: 'healthCheck' });
   }
 
   const allHealthy = Object.values(checks).every(check => check);

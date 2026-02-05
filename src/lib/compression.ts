@@ -157,7 +157,7 @@ export async function withCompression(
     const compressedData = await compressData(data, algorithm);
 
     // Create new response with compressed data
-    const compressedResponse = new NextResponse(compressedData, {
+    const compressedResponse = new NextResponse(compressedData.buffer as ArrayBuffer, {
       status: response.status,
       statusText: response.statusText,
       headers: {

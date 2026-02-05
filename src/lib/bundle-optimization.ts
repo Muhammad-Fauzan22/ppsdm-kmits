@@ -148,26 +148,18 @@ export const codeSplittingStrategies = {
   // Route-based splitting
   routeBased: {
     // Dashboard routes
-    dashboard: () => import('@/app/(dashboard)/page'),
-    assessment: () => import('@/app/(dashboard)/assessment/page'),
-    courses: () => import('@/app/(dashboard)/courses/page'),
-
-    // Admin routes
-    adminContent: () => import('@/app/(admin)/content-generator/page'),
-    adminAnalytics: () => import('@/app/(admin)/analytics/page'),
+    dashboard: () => import('@/app/dashboard/page'),
+    assessment: () => import('@/app/dashboard/character/assessment/page'),
+    courses: () => import('@/app/dashboard/courses/page'),
   },
 
   // Component-based splitting
   componentBased: {
     // Heavy components
     charts: () => import('@/components/Charts'),
-    assessmentEngine: () => import('@/components/assessment/AssessmentEngine'),
     dataVisualization: () => import('@/components/visualizations/HolisticRadarChart'),
 
     // UI libraries
-    modal: () => import('@/components/ui/Modal'),
-    datePicker: () => import('@/components/ui/DatePicker'),
-    richEditor: () => import('@/components/ui/RichTextEditor'),
   },
 
   // Feature-based splitting
@@ -178,9 +170,6 @@ export const codeSplittingStrategies = {
     physical: () => import('@/components/assessment/PhysicalAssessment'),
 
     // Gamification features
-    leaderboard: () => import('@/components/gamification/Leaderboard'),
-    achievements: () => import('@/components/gamification/Achievements'),
-    badges: () => import('@/components/gamification/Badges'),
   },
 };
 

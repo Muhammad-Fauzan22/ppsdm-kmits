@@ -276,7 +276,7 @@ export function calculateFinancialScore(
   // Average scores for each component
   const finalComponentScores: any = {};
   for (const [component, scores] of Object.entries(componentScores)) {
-    finalComponentScores[component] = scores.reduce((a: number, b: number) => a + b, 0) / scores.length;
+    finalComponentScores[component] = (scores as number[]).reduce((a: number, b: number) => a + b, 0) / (scores as number[]).length;
   }
   
   // Calculate weighted composite score
@@ -300,7 +300,7 @@ export function calculateFinancialScore(
   }
   
   // Determine financial profile
-  const sortedComponents = Object.entries(finalComponentScores).sort((a, b) => b[1] - a[1]);
+  const sortedComponents = Object.entries(finalComponentScores as Record<string, number>).sort((a, b) => b[1] - a[1]);
   const topComponents = sortedComponents.slice(0, 2).map(([comp]) => comp);
   
   let financialProfile = 'developingFinancial';
@@ -315,12 +315,12 @@ export function calculateFinancialScore(
   }
   
   // Identify development priorities
-  const developmentPriorities = Object.entries(finalComponentScores)
+  const developmentPriorities = Object.entries(finalComponentScores as Record<string, number>)
     .filter(([_, score]) => score < 50)
     .map(([component, score]) => ({
       component,
       score,
-      priority: score < 40 ? 'high' : 'medium',
+      priority: (score < 40 ? 'high' : score < 50 ? 'medium' : 'low') as 'high' | 'medium' | 'low',
       description: getComponentDescription(component),
       impact: getComponentImpact(component)
     }))

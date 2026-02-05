@@ -174,7 +174,7 @@ export async function GET(request: NextRequest) {
 // Get assessment results for a specific dimension
 // ============================================================================
 
-export async function GET_BY_DIMENSION(
+async function GET_BY_DIMENSION(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -235,7 +235,7 @@ export async function GET_BY_DIMENSION(
 // Get holistic overview with all dimensions
 // ============================================================================
 
-export async function GET_OVERVIEW(request: NextRequest) {
+async function GET_OVERVIEW(request: NextRequest) {
   try {
     const supabase = createClient();
 
@@ -307,7 +307,7 @@ export async function GET_OVERVIEW(request: NextRequest) {
 // Get gap analysis for all dimensions
 // ============================================================================
 
-export async function GET_GAP_ANALYSIS(request: NextRequest) {
+async function GET_GAP_ANALYSIS(request: NextRequest) {
   try {
     const supabase = createClient();
 
@@ -361,7 +361,7 @@ export async function GET_GAP_ANALYSIS(request: NextRequest) {
 // Get personalized development roadmap
 // ============================================================================
 
-export async function GET_ROADMAP(request: NextRequest) {
+async function GET_ROADMAP(request: NextRequest) {
   try {
     const supabase = createClient();
 

@@ -367,28 +367,28 @@ function calculateSpiritualProfile(scores: any): any {
   };
   
   // Determine profile type
-  const scoreRange = Math.max(...Object.values(scores)) - Math.min(...Object.values(scores));
+  const scoreRange = Math.max(...Object.values(scores as Record<string, number>)) - Math.min(...Object.values(scores as Record<string, number>));
   if (scoreRange <= 15) {
-    if (Object.values(scores).every(v => v >= 70)) {
+    if (Object.values(scores as Record<string, number>).every(v => v >= 70)) {
       profile.profileType = 'balancedAwakened';
-    } else if (Object.values(scores).every(v => v >= 60)) {
+    } else if (Object.values(scores as Record<string, number>).every(v => v >= 60)) {
       profile.profileType = 'balancedDeveloping';
     } else {
       profile.profileType = 'balancedDeveloping';
     }
-  } else if (scores.spiritualPractices > 70 && scores.spiritualPractices > Math.max(...Object.values(scores).filter((v: any, k: string) => k !== 'spiritualPractices'))) {
+  } else if (scores.spiritualPractices > 70 && scores.spiritualPractices > Math.max(...Object.entries(scores as Record<string, number>).filter(([k]) => k !== 'spiritualPractices').map(([, v]) => v))) {
     profile.profileType = 'practiceFocused';
-  } else if (scores.spiritualMeaning > 70 && scores.spiritualMeaning > Math.max(...Object.values(scores).filter((v: any, k: string) => k !== 'spiritualMeaning'))) {
+  } else if (scores.spiritualMeaning > 70 && scores.spiritualMeaning > Math.max(...Object.entries(scores as Record<string, number>).filter(([k]) => k !== 'spiritualMeaning').map(([, v]) => v))) {
     profile.profileType = 'meaningFocused';
-  } else if (scores.spiritualCommunity > 70 && scores.spiritualCommunity > Math.max(...Object.values(scores).filter((v: any, k: string) => k !== 'spiritualCommunity'))) {
+  } else if (scores.spiritualCommunity > 70 && scores.spiritualCommunity > Math.max(...Object.entries(scores as Record<string, number>).filter(([k]) => k !== 'spiritualCommunity').map(([, v]) => v))) {
     profile.profileType = 'communityFocused';
   } else {
     profile.profileType = 'mixedProfile';
   }
   
   // Determine strength/weakness pattern
-  const strengths = Object.entries(scores).filter(([_, v]) => v >= 70).map(([k]) => k);
-  const weaknesses = Object.entries(scores).filter(([_, v]) => v < 50).map(([k]) => k);
+  const strengths = Object.entries(scores as Record<string, number>).filter(([_, v]) => v >= 70).map(([k]) => k);
+  const weaknesses = Object.entries(scores as Record<string, number>).filter(([_, v]) => v < 50).map(([k]) => k);
   
   if (strengths.length > 0 && weaknesses.length > 0) {
     profile.strengthWeaknessPattern = `Kuat di ${strengths.join(', ')}, perlu pengembangan di ${weaknesses.join(', ')}`;
@@ -410,7 +410,7 @@ function calculateSpiritualJourney(scores: any): any {
     nextSteps: [] as string[]
   };
   
-  const averageScore = Object.values(scores).reduce((a: number, b: number) => a + b, 0) / Object.keys(scores).length;
+  const averageScore = Object.values(scores as Record<string, number>).reduce((a: number, b: number) => a + b, 0) / Object.keys(scores).length;
   
   if (averageScore >= 80) {
     journey.stage = 'transcendent';
@@ -503,7 +503,7 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
     }
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score < 50) {
       const info = priorityInfo[component];
       priorities.push({
@@ -519,8 +519,10 @@ function identifyDevelopmentPriorities(scores: any): Array<any> {
   // Sort by priority (high first) then score (lowest first)
   const priorityOrder = { high: 1, medium: 2, low: 3 };
   priorities.sort((a, b) => {
-    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    const aPriority = a.priority as 'high' | 'medium' | 'low';
+    const bPriority = b.priority as 'high' | 'medium' | 'low';
+    if (priorityOrder[aPriority] !== priorityOrder[bPriority]) {
+      return priorityOrder[aPriority] - priorityOrder[bPriority];
     }
     return a.score - b.score;
   });
@@ -542,7 +544,7 @@ function identifySpiritualStrengths(scores: any): string[] {
     spiritualResilience: 'Ketahanan Spiritual'
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score >= 70) {
       strengths.push(strengthLabels[component]);
     }
@@ -565,7 +567,7 @@ function identifySpiritualGrowthAreas(scores: any): string[] {
     spiritualResilience: 'Ketahanan Spiritual'
   };
   
-  for (const [component, score] of Object.entries(scores)) {
+  for (const [component, score] of Object.entries(scores as Record<string, number>)) {
     if (score < 50) {
       growthAreas.push(growthLabels[component]);
     }

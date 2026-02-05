@@ -121,12 +121,6 @@ export function MobileMenu({
         menuRef.current?.removeEventListener('keydown', handleTab);
       };
     };
-
-    menuRef.current.addEventListener('keydown', handleTab);
-
-    return () => {
-      menuRef.current?.removeEventListener('keydown', handleTab);
-    };
   }, [isOpen]);
 
   return (

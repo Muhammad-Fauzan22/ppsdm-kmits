@@ -16,17 +16,18 @@ import { QuizWidget } from "@/components/lms-content/QuizWidget";
 import { Card } from "@/components/ui/card";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
     id: string;
-  };
+  }>;
 }
 
 export const revalidate = 0;
 
 export default async function ModulePage({ params }: PageProps) {
+  const resolvedParams = await params;
   const supabase = createClient();
-  const module_id = params.id;
+  const module_id = resolvedParams.id;
 
   // Get User Session for Gamification
   const { data: { user } } = await supabase.auth.getUser();

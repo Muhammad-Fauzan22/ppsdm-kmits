@@ -143,8 +143,8 @@ export const assessmentSubmissionSchema = z.object({
       z.number().min(1).max(10),
       z.array(z.string().max(500)).max(10),
     ]))
-    .min(1, 'Minimal 1 jawaban')
-    .max(200, 'Maksimal 200 jawaban'),
+    .refine(data => Object.keys(data).length >= 1, 'Minimal 1 jawaban')
+    .refine(data => Object.keys(data).length <= 200, 'Maksimal 200 jawaban'),
 });
 
 // ============================================================================
