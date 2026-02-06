@@ -1,17 +1,25 @@
-import { NewLandingPage } from "@/components/landing-page";
+import HeroSection from "@/components/landing-page/HeroSection";
+import ProblemSolution from "@/components/landing-page/ProblemSolution";
+import AssessmentEngineShowcase from "@/components/landing-page/AssessmentEngineShowcase";
+import CTASection from "@/components/landing-page/CTASection";
+import FAQSection from "@/components/landing-page/FAQSection";
+import Footer from "@/components/landing-page/Footer";
+import Testimonials from "@/components/landing-page/Testimonials";
 
 /**
  * PPSDM KMITS Landing Page
- * 
- * REDESIGNED: Level 2 & 3 Fixes Applied
- * - Mobile-first responsive design
- * - WCAG 2.1 AA accessibility compliance
- * - Simplified language (no jargon)
- * - Real testimonials (placeholder removed)
- * - Proper navigation with working links
- * - Loading states and error boundaries
- * - Consistent design system
+ * Platform pengembangan holistik untuk mahasiswa KM ITS
  */
 export default function LandingPage() {
-  return <NewLandingPage />;
+  return (
+    <main className="min-h-screen bg-[#0A0F1A]">
+      <HeroSection />
+      <ProblemSolution />
+      <AssessmentEngineShowcase />
+      <Testimonials />
+      <CTASection />
+      <FAQSection />
+      <Footer />
+    </main>
+  );
 }

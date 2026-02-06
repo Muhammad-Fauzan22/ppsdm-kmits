@@ -9,36 +9,6 @@ export class HolisticAggregator {
    * Aggregate holistic assessment data from database
    */
   static async aggregate(assessmentId: string, userId: string): Promise<ReportData> {
-    // TODO: Implement actual database query
-    // This is a placeholder implementation
-
-    interface AssessmentDBData {
-      user_name?: string;
-      user_email?: string;
-      overall_score?: number;
-      holistic_health?: string;
-      created_at: string;
-      strengths?: string[];
-      areas_for_improvement?: string[];
-      recommendations?: string[];
-      cognitive_score?: number;
-      cognitive_percentage?: number;
-      emotional_score?: number;
-      emotional_percentage?: number;
-      social_score?: number;
-      social_percentage?: number;
-      physical_score?: number;
-      physical_percentage?: number;
-      spiritual_score?: number;
-      spiritual_percentage?: number;
-      character_score?: number;
-      character_percentage?: number;
-      financial_score?: number;
-      financial_percentage?: number;
-      self_management_score?: number;
-      self_management_percentage?: number;
-    }
-
     const assessmentData = await this.fetchAssessmentData(assessmentId, userId);
 
     return {
@@ -64,67 +34,82 @@ export class HolisticAggregator {
   }
 
   /**
-   * Process scores from assessment data
+   * Create score object
    */
-  private static processScores(data: any): Record<string, AssessmentScore> {
-    const createScore = (
-      score: number,
-      percentage: number,
-      dimension: string,
-      description: string
-    ): AssessmentScore => ({
+  private static createScore(
+    score: number,
+    percentage: number,
+    dimension: string,
+    description: string
+  ): AssessmentScore {
+    return {
       score: score || 0,
       maxScore: 100,
       percentage: percentage || 0,
-      level: this.getLevelFromPercentage(percentage || 0),
       dimension,
       description,
-    });
+      level: this.getLevelLabel(percentage || 0),
+    };
+  }
 
+  /**
+   * Get level label based on percentage
+   */
+  private static getLevelLabel(percentage: number): 'excellent' | 'good' | 'average' | 'needs-improvement' {
+    if (percentage >= 80) return 'excellent';
+    if (percentage >= 60) return 'good';
+    if (percentage >= 40) return 'average';
+    return 'needs-improvement';
+  }
+
+  /**
+   * Process scores from assessment data
+   */
+  private static processScores(data: any): Record<string, AssessmentScore> {
     return {
-      cognitive: createScore(
+      cognitive: this.createScore(
         data.cognitive_score,
         data.cognitive_percentage,
         'cognitive',
         'Skor kognitif dan intelektual'
       ),
-      emotional: createScore(
+      emotional: this.createScore(
         data.emotional_score,
         data.emotional_percentage,
         'emotional',
         'Skor kecerdasan emosional'
       ),
-      social: createScore(
+      social: this.createScore(
         data.social_score,
         data.social_percentage,
         'social',
         'Skor keterampilan sosial'
       ),
-      physical: createScore(
+      physical: this.createScore(
         data.physical_score,
         data.physical_percentage,
         'physical',
         'Skor kesehatan fisik'
       ),
-      spiritual: createScore(
+      spiritual: this.createScore(
         data.spiritual_score,
         data.spiritual_percentage,
         'spiritual',
         'Skor spiritual'
       ),
-      character: createScore(
+      character: this.createScore(
         data.character_score,
         data.character_percentage,
         'character',
         'Skor karakter'
       ),
-      financial: createScore(
+      financial: this.createScore(
         data.financial_score,
         data.financial_percentage,
         'financial',
         'Skor literasi finansial'
       ),
-      selfManagement: createScore(
+      selfManagement: this.createScore(
         data.self_management_score,
         data.self_management_percentage,
         'selfManagement',
@@ -134,28 +119,10 @@ export class HolisticAggregator {
   }
 
   /**
-   * Get level from percentage score
-   */
-  private static getLevelFromPercentage(percentage: number): 'excellent' | 'good' | 'average' | 'needs-improvement' {
-    if (percentage >= 80) return 'excellent';
-    if (percentage >= 60) return 'good';
-    if (percentage >= 40) return 'average';
-    return 'needs-improvement';
-  }
-
-  /**
    * Fetch assessment data from database
    */
   private static async fetchAssessmentData(assessmentId: string, userId: string): Promise<any> {
     // TODO: Implement actual Supabase query
-    // Example:
-    // const { data, error } = await supabase
-    //   .from('holistic_assessments')
-    //   .select('*')
-    //   .eq('id', assessmentId)
-    //   .eq('user_id', userId)
-    //   .single();
-
     // Placeholder data
     return {
       user_name: 'Mahasiswa ITS',

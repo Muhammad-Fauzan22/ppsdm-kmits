@@ -27,7 +27,11 @@ const SunburstComponent: React.FC<SunburstProps> = ({
   selectedNode,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const radius = Math.min(width, height) / 2;
+  // Ensure minimum dimensions to prevent rendering issues
+  const safeWidth = Math.max(1, width);
+  const safeHeight = Math.max(1, height);
+  const radius = Math.min(safeWidth, safeHeight) / 2;
+
 
   useEffect(() => {
     if (!svgRef.current || !data) return;
@@ -37,12 +41,13 @@ const SunburstComponent: React.FC<SunburstProps> = ({
 
     const svg = d3
       .select(svgRef.current)
-      .attr('viewBox', [0, 0, width, height])
+      .attr('viewBox', [0, 0, safeWidth, safeHeight])
       .style('font', '10px sans-serif');
 
     const g = svg
       .append('g')
-      .attr('transform', `translate(${width / 2},${height / 2})`);
+      .attr('transform', `translate(${safeWidth / 2},${safeHeight / 2})`);
+
 
     // Prepare data hierarchy
     const root = d3.hierarchy(data)
@@ -180,9 +185,10 @@ const SunburstComponent: React.FC<SunburstProps> = ({
     // Initialize state
     root.each((d: any) => d.current = d);
 
-  }, [data, width, height, colorScale, onNodeClick]);
+  }, [data, safeWidth, safeHeight, colorScale, onNodeClick]);
 
-  return <svg ref={svgRef} width={width} height={height} />;
+  return <svg ref={svgRef} width={safeWidth} height={safeHeight} />;
+
 };
 
 // Memoize Sunburst component to prevent unnecessary re-renders

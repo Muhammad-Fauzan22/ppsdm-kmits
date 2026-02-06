@@ -159,3 +159,112 @@ html {
     display: block !important;
   }
 }
+
+/* ==========================================
+   BUTTON ACCESSIBILITY & VISUAL FEEDBACK
+   Ensures WCAG 2.1 AA compliance
+   ========================================== */
+
+/* Minimum touch target size - 44px for accessibility */
+.btn-accessible {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.5rem 1rem;
+}
+
+/* Visual feedback for button states */
+.btn-feedback {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out;
+}
+
+.btn-feedback:active {
+  transform: scale(0.97);
+}
+
+.btn-feedback::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+
+.btn-feedback:active::after {
+  opacity: 1;
+}
+
+/* Focus visible styles for keyboard navigation */
+.btn-focus:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Disabled state with clear visual indication */
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.3);
+}
+
+/* Loading state with shimmer effect */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn-loading::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: btn-spin 0.8s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Button group spacing to prevent overlapping */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn-group > * {
+  flex-shrink: 0;
+}
+
+/* Responsive button sizing */
+@media (max-width: 640px) {
+  .btn-responsive {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .btn-group-responsive {
+    flex-direction: column;
+  }
+  
+  .btn-group-responsive > * {
+    width: 100%;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-focus:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+}

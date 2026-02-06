@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
 
 export default function Footer() {
     return (
@@ -14,67 +13,31 @@ export default function Footer() {
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-its-blue font-black shadow-xl">ITS</div>
                             <h2 className="text-xl font-bold font-heading text-white">Institut Teknologi Sepuluh Nopember</h2>
                         </div>
-                        <p className="text-slate-500 text-sm max-w-sm leading-relaxed">Pusat Pengembangan Sumber Daya Manusia - KM ITS berfokus pada integrasi pendidikan akademik dan pembentukan karakter unggul melalui 9 dimensi pengembangan holistik.</p>
+                        <p className="text-slate-500 text-sm max-w-sm leading-relaxed">Pusat Pengembangan Sumber Daya Manusia - KMM ITS berfokus pada integrasi pendidikan akademik dan pembentukan karakter unggul.</p>
                         <div className="flex gap-4">
-                            <a 
-                                className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" 
-                                href="https://www.its.ac.id" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                aria-label="Website ITS"
-                            >
+                            <Link className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" href="https://its.ac.id" target="_blank" rel="noopener noreferrer">
                                 <span className="material-symbols-outlined text-lg">public</span>
-                            </a>
-                            <a 
-                                className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" 
-                                href="mailto:ppsdm@its.ac.id"
-                                aria-label="Email PPSDM"
-                            >
+                            </Link>
+                            <Link className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" href="mailto:ppsdm@its.ac.id">
                                 <span className="material-symbols-outlined text-lg">mail</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div>
                         <h3 className="text-white font-bold mb-6">Program</h3>
                         <ul className="space-y-4 text-sm text-slate-500">
-                            <li>
-                                <Link className="hover:text-brand-accent transition-colors flex items-center gap-1" href="/assessment">
-                                    Assessment Mandiri
-                                </Link>
-                            </li>
-                            <li>
-                                <Link className="hover:text-brand-accent transition-colors flex items-center gap-1" href="/courses">
-                                    Bootcamp Kompetensi
-                                </Link>
-                            </li>
-                            <li>
-                                <Link className="hover:text-brand-accent transition-colors flex items-center gap-1" href="/coming-soon">
-                                    Mentorship Karir
-                                    <span className="text-[10px] bg-brand-blue/20 text-brand-accent px-1.5 py-0.5 rounded ml-1">Segera</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link className="hover:text-brand-accent transition-colors flex items-center gap-1" href="/content-discovery">
-                                    Katalog Soft Skills
-                                </Link>
-                            </li>
+                            <li><Link className="hover:text-brand-accent transition-colors" href="/assessment">Assessment Mandiri</Link></li>
+                            <li><Link className="hover:text-brand-accent transition-colors" href="/coming-soon">Bootcamp Kompetensi</Link></li>
+                            <li><Link className="hover:text-brand-accent transition-colors" href="/coming-soon">Mentorship Karir</Link></li>
+                            <li><Link className="hover:text-brand-accent transition-colors" href="/coming-soon">Katalog Soft Skills</Link></li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="text-white font-bold mb-6">Kontak</h3>
                         <ul className="space-y-4 text-sm text-slate-500">
-                            <li className="flex items-start gap-2">
-                                <span className="material-symbols-outlined text-sm mt-0.5">location_on</span>
-                                <span>Kampus ITS Sukolilo,<br />Surabaya 60111</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-sm">phone</span>
-                                <span>+62-31-5994251</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-sm">alternate_email</span>
-                                <a href="mailto:ppsdm@its.ac.id" className="hover:text-brand-accent transition-colors">ppsdm@its.ac.id</a>
-                            </li>
+                            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-sm">location_on</span> Kampus ITS Sukolilo, Surabaya</li>
+                            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-sm">phone</span> +62-31-5994251</li>
+                            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-sm">alternate_email</span> ppsdm@its.ac.id</li>
                         </ul>
                     </div>
                 </div>
