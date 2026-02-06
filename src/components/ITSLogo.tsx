@@ -38,7 +38,7 @@ export default function ITSLogo({
 
     return (
         <Image
-            src="https://www.its.ac.id/wp-content/themes/flavor/images/favicon.ico"
+            src="/logo-m-its.png"
             alt="Institut Teknologi Sepuluh Nopember - Logo Resmi"
             width={width}
             height={height}

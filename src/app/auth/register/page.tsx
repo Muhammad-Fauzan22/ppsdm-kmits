@@ -14,6 +14,8 @@ export default function RegisterPage() {
         password: '',
         confirmPassword: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -55,7 +57,7 @@ export default function RegisterPage() {
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all"
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-400 transition-all"
                             placeholder="Nama Lengkap"
                             required
                         />
@@ -66,7 +68,7 @@ export default function RegisterPage() {
                             type="text"
                             value={formData.nrp}
                             onChange={(e) => setFormData({ ...formData, nrp: e.target.value })}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all"
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-400 transition-all"
                             placeholder="50252..."
                             required
                         />
@@ -87,26 +89,44 @@ export default function RegisterPage() {
 
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-300 ml-1">Password</label>
-                    <input
-                        type="password"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all"
-                        placeholder="Buat password kuat"
-                        required
-                    />
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all pr-12"
+                            placeholder="Buat password kuat"
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-white transition-colors"
+                        >
+                            <span className="material-symbols-outlined text-xl">{showPassword ? 'visibility_off' : 'visibility'}</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-300 ml-1">Konfirmasi Password</label>
-                    <input
-                        type="password"
-                        value={formData.confirmPassword}
-                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all"
-                        placeholder="Ulangi password"
-                        required
-                    />
+                    <div className="relative">
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={formData.confirmPassword}
+                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all pr-12"
+                            placeholder="Ulangi password"
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-white transition-colors"
+                        >
+                            <span className="material-symbols-outlined text-xl">{showConfirmPassword ? 'visibility_off' : 'visibility'}</span>
+                        </button>
+                    </div>
                 </div>
 
                 {error && (

@@ -11,9 +11,36 @@ export class HolisticAggregator {
   static async aggregate(assessmentId: string, userId: string): Promise<ReportData> {
     // TODO: Implement actual database query
     // This is a placeholder implementation
-    
+
+    interface AssessmentDBData {
+      user_name?: string;
+      user_email?: string;
+      overall_score?: number;
+      holistic_health?: string;
+      created_at: string;
+      strengths?: string[];
+      areas_for_improvement?: string[];
+      recommendations?: string[];
+      cognitive_score?: number;
+      cognitive_percentage?: number;
+      emotional_score?: number;
+      emotional_percentage?: number;
+      social_score?: number;
+      social_percentage?: number;
+      physical_score?: number;
+      physical_percentage?: number;
+      spiritual_score?: number;
+      spiritual_percentage?: number;
+      character_score?: number;
+      character_percentage?: number;
+      financial_score?: number;
+      financial_percentage?: number;
+      self_management_score?: number;
+      self_management_percentage?: number;
+    }
+
     const assessmentData = await this.fetchAssessmentData(assessmentId, userId);
-    
+
     return {
       reportType: 'holistic',
       assessmentId,
@@ -50,9 +77,9 @@ export class HolisticAggregator {
       percentage: percentage || 0,
       dimension,
       maxScore: 100,
-      level: percentage >= 80 ? 'excellent' : 
-             percentage >= 70 ? 'good' : 
-             percentage >= 60 ? 'average' : 'needs-improvement',
+      level: percentage >= 80 ? 'excellent' :
+        percentage >= 70 ? 'good' :
+          percentage >= 60 ? 'average' : 'needs-improvement',
       description
     });
 
@@ -120,7 +147,7 @@ export class HolisticAggregator {
     //   .eq('id', assessmentId)
     //   .eq('user_id', userId)
     //   .single();
-    
+
     // Placeholder data
     return {
       user_name: 'Mahasiswa ITS',
@@ -177,16 +204,16 @@ export class HolisticAggregator {
       'financial',
       'self_management'
     ];
-    
+
     scoreKeys.forEach(key => {
       if (data[`${key}_score`] !== undefined) count++;
       if (data[`${key}_percentage`] !== undefined) count++;
     });
-    
+
     if (data.strengths) count += data.strengths.length;
     if (data.areas_for_improvement) count += data.areas_for_improvement.length;
     if (data.recommendations) count += data.recommendations.length;
-    
+
     return count;
   }
 }

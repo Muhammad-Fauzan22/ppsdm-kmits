@@ -6,7 +6,7 @@ const features = [
     {
         title: "Scientific Foundation",
         items: [
-            "72 Pertanyaan Tervalidasi (α=0.87)",
+            "72 Pertanyaan Tervalidasi (Reliabilitas Tinggi)",
             "Norma 2,000+ Mahasiswa Indonesia",
             "Cross-cultural Adaptation"
         ],

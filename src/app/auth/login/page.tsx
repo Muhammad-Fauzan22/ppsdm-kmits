@@ -9,6 +9,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,13 +69,13 @@ export default function LoginPage() {
           <label className="text-sm font-medium text-slate-300 ml-1">Email ITS / Mahasiswa</label>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-slate-500 group-focus-within:text-brand-accent transition-colors">mail</span>
+              <span className="material-symbols-outlined text-slate-400 group-focus-within:text-brand-accent transition-colors">mail</span>
             </div>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all font-medium"
+              className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-400 transition-all font-medium"
               placeholder="nama@mahasiswa.its.ac.id"
               required
             />
@@ -90,16 +91,23 @@ export default function LoginPage() {
           </div>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-slate-500 group-focus-within:text-brand-accent transition-colors">lock</span>
+              <span className="material-symbols-outlined text-slate-400 group-focus-within:text-brand-accent transition-colors">lock</span>
             </div>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-600 transition-all font-medium"
+              className="w-full pl-11 pr-12 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-400 transition-all font-medium"
               placeholder="••••••••"
               required
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-white transition-colors"
+            >
+              <span className="material-symbols-outlined text-xl">{showPassword ? 'visibility_off' : 'visibility'}</span>
+            </button>
           </div>
         </div>
 
@@ -143,7 +151,7 @@ export default function LoginPage() {
         >
           {/* Google Icon Placeholder */}
           <span className="text-lg font-bold">G</span>
-          Masuk dengan Google
+          Masuk dengan myITS (SSO)
         </button>
       </form>
 

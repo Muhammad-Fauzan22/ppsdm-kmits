@@ -15,11 +15,13 @@
     --popover-foreground: 222.2 84% 4.9%;
 
     /* Primary - ITS Blue */
-    --primary: 214 99% 25%; /* #013880 */
+    --primary: 214 99% 25%;
+    /* #013880 */
     --primary-foreground: 210 40% 98%;
 
     /* Secondary - ITS Gold */
-    --secondary: 47 100% 50%; /* #FFD700 */
+    --secondary: 47 100% 50%;
+    /* #FFD700 */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     /* Muted */
@@ -27,7 +29,8 @@
     --muted-foreground: 215.4 16.3% 30%;
 
     /* Accent - Digital Blue */
-    --accent: 190 100% 50%; /* #00d4ff */
+    --accent: 190 100% 50%;
+    /* #00d4ff */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     /* Destructive */
@@ -50,7 +53,8 @@
   }
 
   .dark {
-    --background: 222.2 47% 7%; /* #0A0F1A */
+    --background: 222.2 47% 7%;
+    /* #0A0F1A */
     --foreground: 210 40% 98%;
 
     --card: 222.2 47% 7%;
@@ -91,6 +95,7 @@
 }
 
 @layer utilities {
+
   /* Glass Card Utilities */
   .glass-card {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
@@ -177,14 +182,40 @@ html {
 }
 
 /* Minimal styles for code highlighting (avoid importing external css during build) */
-pre code.hljs { display:block; overflow-x:auto; padding:1em; }
-code.hljs { padding:3px 5px; }
-.hljs { color: #c9d1d9; background: #0d1117 }
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117
+}
 
 /* Minimal styles for audio player */
-.rhap_container { box-sizing: border-box; display:flex; flex-direction:column; width:100%; padding:8px; background:#fff; }
-.rhap_progress-bar { height:5px; background:#ddd; border-radius:2px; }
-.rhap_main-controls-button { font-size:20px; }
+.rhap_container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px;
+  background: #fff;
+}
+
+.rhap_progress-bar {
+  height: 5px;
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.rhap_main-controls-button {
+  font-size: 20px;
+}
 
 /* Hero Boomerang Video Styles */
 .hero-boomerang-canvas {
@@ -200,6 +231,7 @@ code.hljs { padding:3px 5px; }
     opacity: 0;
     transform: scale(1.05);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -212,9 +244,12 @@ code.hljs { padding:3px 5px; }
 
 /* Pulse glow animation untuk indicator */
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 5px rgba(74, 222, 128, 0.4);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(74, 222, 128, 0.8);
   }
@@ -236,9 +271,12 @@ code.hljs { padding:3px 5px; }
 
 /* Dimension Detail Page Styles */
 @keyframes gradient-border {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -260,15 +298,18 @@ code.hljs { padding:3px 5px; }
   z-index: 1;
 }
 
-.holographic-border > * {
+.holographic-border>* {
   position: relative;
   z-index: 2;
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -279,9 +320,12 @@ code.hljs { padding:3px 5px; }
 }
 
 @keyframes pulse-glow-dim {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(19, 91, 236, 0.3);
   }
+
   50% {
     box-shadow: 0 0 40px rgba(19, 91, 236, 0.6);
   }
@@ -329,4 +373,24 @@ code.hljs { padding:3px 5px; }
 .stat-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Material Symbols Outlined */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

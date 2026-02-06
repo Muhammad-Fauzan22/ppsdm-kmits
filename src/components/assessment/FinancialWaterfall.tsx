@@ -93,21 +93,19 @@ export const FinancialWaterfall: React.FC<FinancialWaterfallProps> = ({
         <div className="flex bg-slate-800 rounded-lg p-1">
           <button
             onClick={() => setView('waterfall')}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-              view === 'waterfall'
-                ? 'bg-[#135bec] text-white'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${view === 'waterfall'
+              ? 'bg-[#135bec] text-white'
+              : 'text-slate-400 hover:text-white'
+              }`}
           >
             Waterfall
           </button>
           <button
             onClick={() => setView('network')}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-              view === 'network'
-                ? 'bg-[#135bec] text-white'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${view === 'network'
+              ? 'bg-[#135bec] text-white'
+              : 'text-slate-400 hover:text-white'
+              }`}
           >
             Network
           </button>
@@ -115,7 +113,7 @@ export const FinancialWaterfall: React.FC<FinancialWaterfallProps> = ({
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-4 h-4 text-green-400" />
@@ -167,7 +165,7 @@ export const FinancialWaterfall: React.FC<FinancialWaterfallProps> = ({
           </div>
 
           {/* Financial Goals */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-slate-800/50 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Wallet className="w-4 h-4 text-blue-400" />
@@ -246,20 +244,19 @@ export const FinancialWaterfall: React.FC<FinancialWaterfallProps> = ({
         <div className="h-[400px] flex items-center justify-center">
           <div className="text-center">
             <div className="text-slate-400 mb-4">Financial Knowledge Network</div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {data.networkNodes.map((node, index) => (
                 <motion.div
                   key={node.id}
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`w-24 h-24 rounded-full flex items-center justify-center text-center p-2 ${
-                    node.mastery >= 70
-                      ? 'bg-green-500/20 border-2 border-green-500'
-                      : node.mastery >= 50
+                  className={`w-24 h-24 rounded-full flex items-center justify-center text-center p-2 ${node.mastery >= 70
+                    ? 'bg-green-500/20 border-2 border-green-500'
+                    : node.mastery >= 50
                       ? 'bg-yellow-500/20 border-2 border-yellow-500'
                       : 'bg-red-500/20 border-2 border-red-500'
-                  }`}
+                    }`}
                 >
                   <div>
                     <div className="text-xs text-white font-medium">{node.name}</div>

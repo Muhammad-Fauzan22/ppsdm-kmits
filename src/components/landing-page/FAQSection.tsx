@@ -36,7 +36,7 @@ function FAQItem({ question, answer, index }: FAQItemProps) {
           <ChevronDown className="w-5 h-5 text-white/50" />
         </motion.div>
       </button>
-      
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -72,7 +72,7 @@ export function FAQSection() {
     },
     {
       question: "Bagaimana akurasi assessment ini?",
-      answer: "Assessment kami memiliki reliabilitas α = 0.87 dan validitas CFI = 0.92, berdasarkan norma dari 2,000+ mahasiswa Indonesia. Ini sudah memenuhi standar psikometrik internasional."
+      answer: "Assessment kami memiliki tingkat reliabilitas dan validitas yang sangat tinggi, berdasarkan norma dari 2,000+ mahasiswa Indonesia. Ini sudah memenuhi standar psikometrik internasional."
     },
     {
       question: "Apakah perlu install aplikasi?",
@@ -103,7 +103,7 @@ export function FAQSection() {
 
   const getFilteredFaqs = (categoryId: string) => {
     if (categoryId === "all") return faqs;
-    
+
     const categoryIndex = categories.findIndex(c => c.id === categoryId);
     const startIndex = categories.slice(0, categoryIndex).reduce((sum, c) => sum + c.count, 0);
     const endIndex = startIndex + categories[categoryIndex].count;
@@ -148,11 +148,10 @@ export function FAQSection() {
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeCategory === category.id
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeCategory === category.id
                   ? "bg-white text-[#0A0F1A]"
                   : "bg-white/10 text-white/70 hover:bg-white/20"
-              }`}
+                }`}
             >
               {category.label} ({category.count})
             </button>

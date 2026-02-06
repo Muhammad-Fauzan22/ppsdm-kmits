@@ -58,7 +58,7 @@ export async function getAssetConfig(): Promise<AssetConfig> {
     // Default values jika DB kosong/error
     const defaults = {
         its_lambang: '/images/lambang-its-bundar.png',
-        its_logo_blue: '/images/logo-its-techno-shield.png',
+        its_logo_blue: '/logo-m-its.png',
     };
 
     const configMap: Record<string, string> = {};

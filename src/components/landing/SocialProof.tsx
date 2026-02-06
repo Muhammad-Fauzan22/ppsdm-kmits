@@ -5,20 +5,20 @@ import { motion } from "framer-motion";
 const testimonials = [
     {
         quote: "PPSDM membantu saya memahami bahwa IPK tinggi tanpa leadership skill tidak cukup untuk bersaing di dunia kerja.",
-        author: "Rizky Firmansyah",
-        role: "Ketua Himpunan Mahasiswa 2024",
+        author: "Rizky F.",
+        role: "Mahasiswa Teknik Sipil 2023",
         avatar: "RF"
     },
     {
         quote: "Assessment-nya sangat akurat. Saya jadi tahu gap kompetensi saya dan modul yang disarankan sangat relevan.",
         author: "Sari Andini",
-        role: "Mahasiswa Teknik Industri",
+        role: "Mahasiswa Teknik Industri 2024",
         avatar: "SA"
     },
     {
-        quote: "Platform ini adalah game changer untuk kaderisasi di ITS. Berbasis data dan terukur.",
+        quote: "Platform ini sangat membantu untuk melihat progress pengembangan diri saya secara terukur setiap semester.",
         author: "Budi Santoso",
-        role: "Presiden BEM ITS Kabinet Aksi",
+        role: "Mahasiswa Informatika",
         avatar: "BS"
     }
 ];

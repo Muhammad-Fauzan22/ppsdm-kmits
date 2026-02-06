@@ -51,7 +51,7 @@ function SolutionPillar({ title, description, stats, index, color }: SolutionPil
         className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10`}
         transition={{ duration: 0.3 }}
       />
-      
+
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-6">
           <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
@@ -63,10 +63,10 @@ function SolutionPillar({ title, description, stats, index, color }: SolutionPil
             Pillar {index + 1}
           </span>
         </div>
-        
+
         <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
         <p className="text-white/70 leading-relaxed mb-6">{description}</p>
-        
+
         <div className="flex items-center gap-4">
           <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
             <motion.div
@@ -109,8 +109,8 @@ export function ProblemSolutionSection() {
   const solutions = [
     {
       title: "Assessment Berbasis Sains",
-      description: "72 pertanyaan psikometrik tervalidasi dengan reliabilitas α=0.87. Norma dari 2,000+ mahasiswa Indonesia dengan instant personalized feedback.",
-      stats: { label: "Reliabilitas", value: "α = 0.87" },
+      description: "72 pertanyaan psikometrik tervalidasi dengan reliabilitas tinggi. Norma dari 2,000+ mahasiswa Indonesia dengan instant personalized feedback.",
+      stats: { label: "Reliabilitas", value: "Teruji Ilmiah" },
       color: "from-violet-500 to-purple-600"
     },
     {

@@ -11,6 +11,7 @@ import { HowItWorks } from "@/components/landing/content/HowItWorks";
 import { RoadmapPreview } from "@/components/landing/content/RoadmapPreview";
 import { AssessmentPreview } from "@/components/landing/content/AssessmentPreview";
 import { FAQ } from "@/components/landing/content/FAQ";
+import { Footer } from "@/components/landing/content/Footer";
 import { dimensions } from "@/data/dimensions";
 
 // --- Components ---
@@ -21,7 +22,7 @@ function Header() {
   const navLinks = [
     { href: "#methodology", label: "Metodologi" },
     { href: "#dimensions", label: "9 Dimensi" },
-    { href: "#dashboard", label: "Dashboard" },
+    { href: "#roadmap", label: "Preview" },
     { href: "#faq", label: "FAQ" },
   ];
 
@@ -86,9 +87,11 @@ function DimensionsSection() {
           <p className="text-slate-400 max-w-2xl mx-auto">Kurikulum komprehensif untuk membentuk mahasiswa yang tidak hanya cerdas akademik, tapi juga matang karakter.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        <div className="flex overflow-x-auto pb-8 -mx-6 px-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0 sm:px-0 scrollbar-hide snap-x gap-4 sm:mx-0">
           {dimensions.map((dim, index) => (
-            <DimensionCard key={dim.id} dimension={dim} index={index} />
+            <div key={dim.id} className="min-w-[85vw] sm:min-w-0 snap-center">
+              <DimensionCard dimension={dim} index={index} />
+            </div>
           ))}
         </div>
       </div>
@@ -119,23 +122,7 @@ function FinalCTA() {
   )
 }
 
-function Footer() {
-  return (
-    <footer className="py-12 bg-its-dark border-t border-white/5 text-center">
-      <div className="flex items-center justify-center gap-3 mb-6 opacity-50 grayscale hover:grayscale-0 transition-all">
-        {/* Logo Placeholder */}
-        <span className="material-symbols-outlined text-3xl">analytics</span>
-        <span className="text-xl font-bold font-heading">PPSDM KMITS</span>
-      </div>
-      <div className="flex justify-center gap-8 mb-8 text-sm text-slate-400">
-        <a href="#" className="hover:text-white transition-colors">Tentang Kami</a>
-        <a href="#" className="hover:text-white transition-colors">Kontak</a>
-        <a href="#" className="hover:text-white transition-colors">Kebijakan Privasi</a>
-      </div>
-      <p className="text-slate-600 text-xs">© 2026 PPSDM KM ITS. Excellence in Student Development.</p>
-    </footer>
-  )
-}
+
 
 // --- Main Page Component ---
 // Full 10-Section Structure:

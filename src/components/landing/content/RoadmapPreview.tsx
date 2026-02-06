@@ -13,7 +13,7 @@ const items = [
 
 export function RoadmapPreview() {
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section id="roadmap" className="py-24 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     <div className="lg:w-1/2">
@@ -44,7 +44,10 @@ export function RoadmapPreview() {
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-blue to-cyan-500" />
                                     <div>
-                                        <h4 className="text-white font-bold text-sm">Rizky's Roadmap</h4>
+                                        <h4 className="text-white font-bold text-sm flex items-center gap-2">
+                                            Rizky's Roadmap
+                                            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-normal">Demo</span>
+                                        </h4>
                                         <p className="text-slate-400 text-xs">Informatics Engineering '24</p>
                                     </div>
                                 </div>
@@ -56,9 +59,9 @@ export function RoadmapPreview() {
                                     <motion.div
                                         key={idx}
                                         initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
                                         transition={{ delay: idx * 0.1 }}
-                                        className={`p-4 rounded-xl border ${item.status === 'completed' ? 'bg-brand-blue/10 border-brand-blue/30' : item.status === 'current' ? 'bg-white/5 border-white/20' : 'opacity-50 grayscale border-slate-800'}`}
+                                        whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
+                                        className={`p-4 rounded-xl border cursor-pointer transition-all ${item.status === 'completed' ? 'bg-brand-blue/10 border-brand-blue/30' : item.status === 'current' ? 'bg-white/5 border-white/20' : 'opacity-50 grayscale border-slate-800'}`}
                                     >
                                         <div className="flex justify-between items-center mb-1">
                                             <span className={`text-xs font-bold uppercase ${item.status === 'completed' ? 'text-brand-blue' : 'text-slate-400'}`}>{item.sem}</span>

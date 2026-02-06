@@ -63,35 +63,35 @@ export function AssessmentEngineShowcase() {
       icon: <Brain className="w-6 h-6 text-white" />,
       title: "72 Pertanyaan Tervalidasi",
       description: "Instrument psikometrik dengan reliabilitas tinggi, diadaptasi untuk konteks mahasiswa Indonesia",
-      stats: "α = 0.87",
+      stats: "Reliabilitas Tinggi",
       color: "from-violet-500 to-purple-500"
     },
     {
       icon: <Users className="w-6 h-6 text-white" />,
       title: "Norma 2,000+ Mahasiswa",
       description: "Data normatif dari sampel representatif mahasiswa Indonesia dari berbagai universitas",
-      stats: "CFI = 0.92",
+      stats: "Data Valid",
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: <TrendingUp className="w-6 h-6 text-white" />,
       title: "IRT-based Scoring",
       description: "Item Response Theory untuk akurasi maksimal dalam pengukuran kemampuan",
-      stats: "SEM = 3.2",
+      stats: "Akurasi Tinggi",
       color: "from-emerald-500 to-green-500"
     },
     {
       icon: <Target className="w-6 h-6 text-white" />,
       title: "Personalized Weighting",
       description: "Penyesuaian bobot berdasarkan konteks jurusan dan tujuan karir",
-      stats: "95% CI",
+      stats: "Personalisasi",
       color: "from-amber-500 to-orange-500"
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-white" />,
       title: "Visual Radar Chart",
       description: "Visualisasi 9 dimensi dalam satu tampilan untuk gambaran holistik",
-      stats: "9 axes",
+      stats: "Holistik",
       color: "from-rose-500 to-pink-500"
     },
     {
@@ -112,10 +112,10 @@ export function AssessmentEngineShowcase() {
   ];
 
   const psychometricStats = [
-    { label: "Reliability", value: "α = 0.87", desc: "Excellent (Nunnally)" },
-    { label: "Validity", value: "CFI = 0.92", desc: "Good fit indices" },
-    { label: "RMSEA", value: "0.05", desc: "Excellent" },
-    { label: "Test-Retest", value: "r = 0.82", desc: "4-week interval" }
+    { label: "Reliability", value: "Teruji", desc: "Konsisten (Excellent)" },
+    { label: "Validity", value: "Valid", desc: "Akurasi Tinggi" },
+    { label: "Standard Error", value: "Minim", desc: "Presisi Tinggi" },
+    { label: "Test-Retest", value: "Stabil", desc: "Konsistensi Waktu" }
   ];
 
   return (
@@ -244,7 +244,7 @@ export function AssessmentEngineShowcase() {
                 ))}
               </ul>
             </div>
-            
+
             {/* Radar Chart Preview */}
             <div className="relative">
               <div className="aspect-square max-w-xs mx-auto bg-white/5 rounded-2xl p-8 flex items-center justify-center">

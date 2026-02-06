@@ -30,8 +30,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://ppsdm.its.ac.id"),
   title: {
-    default: "PPSDM KMM | Ultimate Human Capital Platform",
-    template: "%s | PPSDM KMM",
+    default: "PPSDM KM ITS | Ultimate Human Capital Platform",
+    template: "%s | PPSDM KM ITS",
   },
   description: "Platform pengembangan terpadu berbasis data untuk mahasiswa ITS. Bangun portofolio kompetensi melalui asesmen presisi, roadmap terukur.",
   keywords: ["ITS", "PPSDM", "Mahasiswa", "Kaderisasi", "Surabaya", "KM ITS", "Pengembangan Diri"],
@@ -84,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/manifest.json" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
         />
         <script defer data-domain="ppsdm.its.ac.id" src="https://plausible.io/js/script.js"></script>
         {/* Skip to main content link for accessibility */}

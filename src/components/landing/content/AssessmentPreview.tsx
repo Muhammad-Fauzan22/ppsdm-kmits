@@ -44,7 +44,7 @@ export function AssessmentPreview() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="mt-8 p-6 bg-green-500/10 border border-green-500/20 rounded-xl"
+                            className="mt-8 p-6 bg-brand-blue/20 border border-brand-blue/50 rounded-xl shadow-lg shadow-brand-blue/10"
                         >
                             <div className="flex items-start gap-3">
                                 <span className="material-symbols-outlined text-green-400">psychology</span>
