@@ -2,15 +2,15 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { BoomerangVideo } from "@/components/hero/BoomerangVideo";
 
 export function HeroSection() {
     return (
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-its-dark pt-20">
             {/* Dynamic Background (CSS Only - High Performance) */}
+            {/* Premium Animated Background */}
             <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-its-blue/20 blur-[120px] animate-float" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-brand-blue/20 blur-[120px] animate-pulse-slow" />
-                <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-[0.03]" />
+                <BoomerangVideo opacity={0.4} />
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
@@ -59,7 +59,7 @@ export function HeroSection() {
                     className="flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <Link
-                        href="/register"
+                        href="/auth/register"
                         className="w-full sm:w-auto px-8 py-4 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl transition-all hover:scale-105 shadow-lg shadow-brand-blue/25 flex items-center justify-center gap-3"
                     >
                         Mulai Asesmen Gratis

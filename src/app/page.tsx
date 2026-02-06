@@ -44,10 +44,10 @@ function Header() {
             <a key={link.href} href={link.href} className="text-sm font-medium text-slate-300 hover:text-white hover:text-glow transition-all">{link.label}</a>
           ))}
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-bold text-white hover:text-brand-accent transition-colors">
+            <Link href="/auth/login" className="text-sm font-bold text-white hover:text-brand-accent transition-colors">
               Login
             </Link>
-            <Link href="/register" className="bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-blue/30 hover:shadow-brand-blue/50 active:scale-95 flex items-center gap-2 group">
+            <Link href="/auth/register" className="bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-blue/30 hover:shadow-brand-blue/50 active:scale-95 flex items-center gap-2 group">
               Coba Asesmen
             </Link>
           </div>
@@ -67,7 +67,7 @@ function Header() {
               {navLinks.map((link) => (
                 <a key={link.href} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-base font-medium text-slate-300 hover:text-white transition-colors py-2">{link.label}</a>
               ))}
-              <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-3 rounded-full font-bold text-sm transition-all text-center mt-2">Mulai Sekarang</Link>
+              <Link href="/auth/register" onClick={() => setIsMobileMenuOpen(false)} className="bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-3 rounded-full font-bold text-sm transition-all text-center mt-2">Mulai Sekarang</Link>
             </nav>
           </motion.div>
         )}
@@ -107,7 +107,7 @@ function FinalCTA() {
         <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
           Jangan biarkan potensi Anda terkubur. Mulai perjalanan transformasi Anda menjadi mahasiswa paripurna hari ini.
         </p>
-        <Link href="/register" className="inline-flex items-center gap-3 bg-white text-its-blue px-10 py-5 rounded-xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/20">
+        <Link href="/auth/register" className="inline-flex items-center gap-3 bg-white text-its-blue px-10 py-5 rounded-xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/20">
           Mulai Transformasi Sekarang
           <span className="material-symbols-outlined">rocket_launch</span>
         </Link>
