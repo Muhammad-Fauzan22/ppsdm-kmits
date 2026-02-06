@@ -70,7 +70,7 @@ export default function LoginPage() {
           <label className="text-sm font-medium text-slate-300 ml-1">Email ITS / Mahasiswa</label>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-slate-400 group-focus-within:text-brand-accent transition-colors">mail</span>
+              <Mail className="w-5 h-5 text-slate-400 group-focus-within:text-brand-accent transition-colors" />
             </div>
             <input
               type="email"
@@ -132,7 +132,7 @@ export default function LoginPage() {
           ) : (
             <>
               Masuk Sekarang
-              <span className="material-symbols-outlined">arrow_forward</span>
+              <ArrowRight className="w-5 h-5" />
             </>
           )}
         </button>

@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Home, LayoutDashboard, KanbanSquare, FolderHeart, ListTodo } from "lucide-react";
 
 interface NavItem {
     label: string;
     href: string;
-    icon: string;
+    icon: React.ElementType;
 }
 
 const navItems: NavItem[] = [
-    { label: "Home", href: "/", icon: "home" },
-    { label: "Dashboard", href: "/dashboard", icon: "dashboard" },
-    { label: "RPI", href: "/rpi", icon: "view_kanban" },
-    { label: "Portfolio", href: "/portfolio", icon: "folder_special" },
-    { label: "Activities", href: "/activities", icon: "checklist" },
+    { label: "Home", href: "/", icon: Home },
+    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { label: "RPI", href: "/rpi", icon: KanbanSquare },
+    { label: "Portfolio", href: "/portfolio", icon: FolderHeart },
+    { label: "Activities", href: "/activities", icon: ListTodo },
 ];
 
 export function BottomNav() {
@@ -25,6 +26,7 @@ export function BottomNav() {
             <div className="flex items-center justify-around h-16">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+                    const Icon = item.icon;
                     return (
                         <Link
                             key={item.href}
@@ -34,9 +36,7 @@ export function BottomNav() {
                                 : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                                 }`}
                         >
-                            <span className={`material-symbols-outlined text-[22px] ${isActive ? "font-bold" : ""}`}>
-                                {item.icon}
-                            </span>
+                            <Icon className={`w-[22px] h-[22px] ${isActive ? "stroke-[2.5px]" : "stroke-2"}`} />
                             <span className="text-[10px] font-medium">{item.label}</span>
                             {isActive && (
                                 <span className="absolute top-1 w-1 h-1 bg-primary rounded-full"></span>

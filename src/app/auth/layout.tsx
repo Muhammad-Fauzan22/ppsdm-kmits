@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
     title: 'Authentication - PPSDM KMITS',
@@ -25,8 +26,14 @@ export default function AuthLayout({
                 {/* Content Overlay */}
                 <div className="relative z-10 p-12 max-w-lg text-center">
                     <div className="mb-8 flex justify-center">
-                        <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-accent to-brand-blue flex items-center justify-center shadow-2xl shadow-brand-blue/40">
-                            <span className="material-symbols-outlined text-4xl text-white">analytics</span>
+                        <div className="w-32 h-32 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-2xl shadow-brand-blue/40 p-4">
+                            <Image
+                                src="/images/logo-m-its-red-with-black-list.png"
+                                alt="PPSDM KM Logo"
+                                width={120}
+                                height={120}
+                                className="object-contain"
+                            />
                         </div>
                     </div>
                     <h1 className="text-5xl font-bold font-heading mb-6 tracking-tight">
