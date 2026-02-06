@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,11 +9,7 @@ import {
   Menu, X, Sparkles, TrendingUp, Award, Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
 import { Card, DimensionCard } from '@/components/ui/card';
-
-
-
 
 // =============================================================================
 // TYPES & INTERFACES
@@ -24,7 +20,7 @@ interface Dimension {
   title: string;
   subtitle: string;
   description: string;
-  icon: string;
+  icon: React.ReactNode;
   color: string;
   gradient: string;
   stats: { label: string; value: string }[];
@@ -54,7 +50,7 @@ const dimensions: Dimension[] = [
     title: 'Cognitive & Intellectual',
     subtitle: 'Kecerdasan Kognitif',
     description: 'Pengembangan kemampuan berpikir kritis, analitis, dan kreatif untuk pemecahan masalah kompleks.',
-    icon: 'brain',
+    icon: <Brain className="w-6 h-6 text-white" />,
     color: '#3B82F6',
     gradient: 'from-blue-500 to-cyan-400',
     stats: [
@@ -67,7 +63,7 @@ const dimensions: Dimension[] = [
     title: 'Self Management',
     subtitle: 'Manajemen Diri',
     description: 'Pengelolaan waktu, emosi, dan produktivitas untuk mencapai peak performance.',
-    icon: 'target',
+    icon: <Target className="w-6 h-6 text-white" />,
     color: '#10B981',
     gradient: 'from-emerald-500 to-teal-400',
     stats: [
@@ -80,7 +76,7 @@ const dimensions: Dimension[] = [
     title: 'Emotional & Social',
     subtitle: 'Kecerdasan Emosional',
     description: 'Pengembangan EQ, empati, dan keterampilan interpersonal untuk kolaborasi efektif.',
-    icon: 'heart',
+    icon: <Heart className="w-6 h-6 text-white" />,
     color: '#F59E0B',
     gradient: 'from-amber-500 to-orange-400',
     stats: [
@@ -93,7 +89,7 @@ const dimensions: Dimension[] = [
     title: 'Physical Health',
     subtitle: 'Kesehatan Fisik',
     description: 'Pemantauan dan peningkatan kondisi fisik, kebiasaan hidup sehat, dan wellbeing.',
-    icon: 'zap',
+    icon: <Zap className="w-6 h-6 text-white" />,
     color: '#EF4444',
     gradient: 'from-red-500 to-rose-400',
     stats: [
@@ -106,7 +102,7 @@ const dimensions: Dimension[] = [
     title: 'Spiritual & Values',
     subtitle: 'Spiritual & Nilai',
     description: 'Eksplorasi makna hidup, nilai-nilai fundamental, dan kontribusi kepada masyarakat.',
-    icon: 'sparkles',
+    icon: <Sparkles className="w-6 h-6 text-white" />,
     color: '#8B5CF6',
     gradient: 'from-violet-500 to-purple-400',
     stats: [
@@ -119,7 +115,7 @@ const dimensions: Dimension[] = [
     title: 'Character & Ethics',
     subtitle: 'Karakter & Etika',
     description: 'Pembentukan integritas, tanggung jawab, dan etika dalam kehidupan akademik dan profesional.',
-    icon: 'award',
+    icon: <Award className="w-6 h-6 text-white" />,
     color: '#EC4899',
     gradient: 'from-pink-500 to-fuchsia-400',
     stats: [
@@ -132,7 +128,7 @@ const dimensions: Dimension[] = [
     title: 'Financial Literacy',
     subtitle: 'Literasi Keuangan',
     description: 'Pengelolaan keuangan pribadi, investasi, dan perencanaan financial jangka panjang.',
-    icon: 'piggy-bank',
+    icon: <PiggyBank className="w-6 h-6 text-white" />,
     color: '#14B8A6',
     gradient: 'from-teal-500 to-cyan-400',
     stats: [
@@ -145,7 +141,7 @@ const dimensions: Dimension[] = [
     title: 'Environmental',
     subtitle: 'Kesadaran Lingkungan',
     description: 'Pemahaman dan aksi untuk keberlanjutan lingkungan serta tanggung jawab sosial.',
-    icon: 'sprout',
+    icon: <Sprout className="w-6 h-6 text-white" />,
     color: '#22C55E',
     gradient: 'from-green-500 to-emerald-400',
     stats: [
@@ -158,7 +154,7 @@ const dimensions: Dimension[] = [
     title: 'Professional Skills',
     subtitle: 'Keterampilan Profesional',
     description: 'Pengembangan soft skills, leadership, dan kesiapan karir di dunia kerja.',
-    icon: 'briefcase',
+    icon: <Briefcase className="w-6 h-6 text-white" />,
     color: '#6366F1',
     gradient: 'from-indigo-500 to-blue-400',
     stats: [
@@ -550,12 +546,12 @@ const DimensionsSection: React.FC = () => {
           viewport={{ once: true }}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {dimensions.map((dim, index) => (
+          {dimensions.map((dim) => (
             <motion.div key={dim.id} variants={fadeInUp}>
               <DimensionCard
                 icon={
                   <div className={`p-3 rounded-xl bg-gradient-to-br ${dim.gradient}`}>
-                    <Icon name={dim.icon} className="w-6 h-6 text-white" />
+                    {dim.icon}
                   </div>
                 }
                 title={`${dim.title} - ${dim.subtitle}`}
@@ -565,7 +561,6 @@ const DimensionsSection: React.FC = () => {
                 actionLabel="Mulai Assessment"
               />
             </motion.div>
-
           ))}
         </motion.div>
       </div>

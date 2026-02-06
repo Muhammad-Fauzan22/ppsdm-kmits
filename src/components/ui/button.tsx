@@ -17,6 +17,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        // Default: Alias for primary (backward compatibility)
+        default:
+          "bg-[#003366] text-white shadow-md hover:bg-[#004080] hover:shadow-lg hover:shadow-blue-900/20 active:bg-[#002244] focus-visible:ring-blue-600 border border-[#003366]",
+        
         // Primary: Main CTA - High contrast 4.5:1
         primary:
           "bg-[#003366] text-white shadow-md hover:bg-[#004080] hover:shadow-lg hover:shadow-blue-900/20 active:bg-[#002244] focus-visible:ring-blue-600 border border-[#003366]",
@@ -35,6 +39,10 @@ const buttonVariants = cva(
         
         // Danger: Destructive actions - High contrast
         danger:
+          "bg-red-600 text-white shadow-md hover:bg-red-700 hover:shadow-lg hover:shadow-red-900/20 active:bg-red-800 focus-visible:ring-red-500 border border-red-600",
+        
+        // Destructive: Alias for danger (backward compatibility with shadcn)
+        destructive:
           "bg-red-600 text-white shadow-md hover:bg-red-700 hover:shadow-lg hover:shadow-red-900/20 active:bg-red-800 focus-visible:ring-red-500 border border-red-600",
         
         // Success: Positive actions

@@ -8,7 +8,6 @@ export class HolisticAggregator {
   /**
    * Aggregate holistic assessment data from database
    */
-
   static async aggregate(assessmentId: string, userId: string): Promise<ReportData> {
     // TODO: Implement actual database query
     // This is a placeholder implementation
@@ -75,13 +74,11 @@ export class HolisticAggregator {
       description: string
     ): AssessmentScore => ({
       score: score || 0,
-      percentage: percentage || 0,
-      dimension,
       maxScore: 100,
-      level: percentage >= 80 ? 'excellent' :
-        percentage >= 70 ? 'good' :
-          percentage >= 60 ? 'average' : 'needs-improvement',
-      description
+      percentage: percentage || 0,
+      level: this.getLevelFromPercentage(percentage || 0),
+      dimension,
+      description,
     });
 
     return {
@@ -89,25 +86,25 @@ export class HolisticAggregator {
         data.cognitive_score,
         data.cognitive_percentage,
         'cognitive',
-        'Skor kognitif'
+        'Skor kognitif dan intelektual'
       ),
       emotional: createScore(
         data.emotional_score,
         data.emotional_percentage,
         'emotional',
-        'Skor emosional'
+        'Skor kecerdasan emosional'
       ),
       social: createScore(
         data.social_score,
         data.social_percentage,
         'social',
-        'Skor sosial'
+        'Skor keterampilan sosial'
       ),
       physical: createScore(
         data.physical_score,
         data.physical_percentage,
         'physical',
-        'Skor fisik'
+        'Skor kesehatan fisik'
       ),
       spiritual: createScore(
         data.spiritual_score,
@@ -125,7 +122,7 @@ export class HolisticAggregator {
         data.financial_score,
         data.financial_percentage,
         'financial',
-        'Skor keuangan'
+        'Skor literasi finansial'
       ),
       selfManagement: createScore(
         data.self_management_score,
@@ -134,6 +131,16 @@ export class HolisticAggregator {
         'Skor manajemen diri'
       ),
     };
+  }
+
+  /**
+   * Get level from percentage score
+   */
+  private static getLevelFromPercentage(percentage: number): 'excellent' | 'good' | 'average' | 'needs-improvement' {
+    if (percentage >= 80) return 'excellent';
+    if (percentage >= 60) return 'good';
+    if (percentage >= 40) return 'average';
+    return 'needs-improvement';
   }
 
   /**

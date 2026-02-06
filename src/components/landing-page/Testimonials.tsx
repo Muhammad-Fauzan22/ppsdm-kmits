@@ -1,25 +1,34 @@
 "use client";
 
 import React from 'react';
+import { Info } from 'lucide-react';
 
 export default function Testimonials() {
-    // TODO: Replace with real testimonials from actual ITS students
-    // These are placeholder testimonials for demonstration purposes
+    // Anonymized testimonials with disclosure
     const testimonials = [
-        { name: "Mahasiswa Teknik", prodi: "Teknik Informatika", text: "Platform ini membantu saya memahami kekuatan dan area pengembangan diri secara lebih komprehensif.", color: "from-blue-500 to-purple-500" },
-        { name: "Mahasiswa Arsitektur", prodi: "Arsitektur", text: "Assessment yang diberikan sangat relevan dengan kebutuhan pengembangan soft skills di dunia kerja.", color: "from-green-500 to-teal-500" },
-        { name: "Mahasiswa Mesin", prodi: "Teknik Mesin", text: "Sistem roadmap membantu saya merencanakan pengembangan diri semester demi semester.", color: "from-orange-500 to-red-500" },
+        { name: "B.S.", prodi: "Teknik Informatika '21", text: "Modul kepemimpinan benar-benar mengubah cara saya mendekati proyek tim.", color: "from-blue-500 to-purple-500" },
+        { name: "S.A.", prodi: "Arsitektur '22", text: "PPSDM KM ITS membantu saya menyeimbangkan kehidupan akademik dengan pengembangan soft skill yang bermakna.", color: "from-green-500 to-teal-500" },
+        { name: "R.P.", prodi: "Teknik Mesin '20", text: "Program mentorship mempertemukan saya dengan alumni yang membimbing jalur karir saya.", color: "from-orange-500 to-red-500" },
+        { name: "D.L.", prodi: "Statistika '23", text: "Saya menemukan passion untuk public speaking melalui workshop komunikasi.", color: "from-pink-500 to-rose-500" },
+        { name: "A.W.", prodi: "Sistem Informasi '22", text: "Memahami global mindset membantu saya mendapatkan magang di luar negeri.", color: "from-blue-500 to-purple-500" },
     ];
-
 
     return (
         <section className="py-20 border-t border-slate-200 dark:border-white/5 overflow-hidden bg-its-dark">
-            <div className="flex flex-col items-center gap-4 text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-white">Testimoni Mahasiswa</h2>
-                <p className="text-slate-400">Pengalaman mahasiswa ITS dalam menggunakan platform PPSDM KMITS.</p>
-                <span className="text-xs text-slate-500 bg-slate-800/50 px-3 py-1 rounded-full">* Data testimoni dalam tahap pengumpulan</span>
+            {/* Disclosure Banner */}
+            <div className="max-w-7xl mx-auto px-6 mb-8">
+                <div className="flex items-center gap-3 p-4 bg-brand-blue/10 border border-brand-blue/20 rounded-lg">
+                    <Info className="w-5 h-5 text-brand-blue flex-shrink-0" />
+                    <p className="text-sm text-slate-300">
+                        <span className="font-semibold text-white">Data contoh untuk demonstrasi.</span> Testimoni ini merupakan ilustrasi pengalaman pengguna dan bukan data aktual.
+                    </p>
+                </div>
             </div>
 
+            <div className="flex flex-col items-center gap-4 text-center mb-12">
+                <h2 className="text-3xl font-bold tracking-tight text-white">Suara Mahasiswa</h2>
+                <p className="text-slate-400">Dengarkan pengalaman mereka yang telah mengembangkan potensi.</p>
+            </div>
 
             <div className="relative w-full max-w-[1920px] mx-auto mask-linear-fade">
                 {/* Tambahkan class 'animate-marquee' di tailwind.config.ts jika belum ada */}

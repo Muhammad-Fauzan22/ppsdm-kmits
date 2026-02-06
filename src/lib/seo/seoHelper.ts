@@ -1207,28 +1207,29 @@ export function generateCompleteHead(options: {
 }
 
 /**
- * Default SEO configuration for PPSDM KMITS
+ * Default SEO configuration for PPSDM KM ITS
+ * Brand: PPSDM KM ITS (Pusat Pengembangan Sumber Daya Manusia - Keluarga Mahasiswa ITS)
  */
 export const defaultSEOConfig = {
   meta: {
-    title: 'PPSDM KMITS - Platform Pengembangan SDM Mahasiswa ITS',
-    description: 'Platform pengembangan soft skills dan hard skills mahasiswa ITS melalui assessment, course, dan mentoring.',
-    keywords: ['PPSDM', 'KMITS', 'ITS', 'pengembangan SDM', 'soft skills', 'hard skills', 'assessment', 'course', 'mentoring'],
-    siteName: 'PPSDM KMITS',
+    title: 'PPSDM KM ITS - Platform Pengembangan Mahasiswa ITS',
+    description: 'Platform pengembangan komprehensif mahasiswa ITS melalui 9 dimensi: kognitif, manajemen diri, spiritual, emosional, sosial, fisik, karakter, finansial, dan intelektual.',
+    keywords: ['PPSDM', 'KM ITS', 'KMITS', 'ITS', 'pengembangan mahasiswa', 'soft skills', 'hard skills', 'assessment', '9 dimensi', 'kemahasiswaan ITS'],
+    siteName: 'PPSDM KM ITS',
     locale: 'id_ID',
     type: 'website' as const,
   },
   openGraph: {
-    title: 'PPSDM KMITS - Platform Pengembangan SDM Mahasiswa ITS',
-    description: 'Platform pengembangan soft skills dan hard skills mahasiswa ITS melalui assessment, course, dan mentoring.',
+    title: 'PPSDM KM ITS - Platform Pengembangan Mahasiswa ITS',
+    description: 'Platform pengembangan komprehensif mahasiswa ITS melalui 9 dimensi: kognitif, manajemen diri, spiritual, emosional, sosial, fisik, karakter, finansial, dan intelektual.',
     type: 'website' as const,
-    siteName: 'PPSDM KMITS',
+    siteName: 'PPSDM KM ITS',
     locale: 'id_ID',
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'PPSDM KMITS - Platform Pengembangan SDM Mahasiswa ITS',
-    description: 'Platform pengembangan soft skills dan hard skills mahasiswa ITS melalui assessment, course, dan mentoring.',
+    title: 'PPSDM KM ITS - Platform Pengembangan Mahasiswa ITS',
+    description: 'Platform pengembangan komprehensif mahasiswa ITS melalui 9 dimensi: kognitif, manajemen diri, spiritual, emosional, sosial, fisik, karakter, finansial, dan intelektual.',
   },
   viewport: {
     width: 'device-width' as const,

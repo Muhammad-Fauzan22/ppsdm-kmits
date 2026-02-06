@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -19,39 +19,11 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    // Simulator Login
+    // Simulator Login - Demo Mode
     setTimeout(() => {
       setLoading(false);
       router.push("/dashboard");
     }, 1500);
-
-    /* Real Integration Placeholder
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      // Login successful, redirect to dashboard
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err: any) {
-      setError(err.message || "Gagal masuk. Periksa email dan password Anda.");
-      setLoading(false);
-    }
-    */
   };
 
   return (
@@ -76,29 +48,24 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-400 transition-all font-medium"
-              placeholder="nama@mahasiswa.its.ac.id"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder-slate-500 focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"
+              placeholder="nama@its.ac.id"
               required
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <div className="flex justify-between items-center ml-1">
-            <label className="text-sm font-medium text-slate-300">Password</label>
-            <Link href="/auth/forgot-password" className="text-xs text-brand-accent hover:text-brand-blue transition-colors">
-              Lupa Password?
-            </Link>
-          </div>
+          <label className="text-sm font-medium text-slate-300 ml-1">Password</label>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Lock className="w-5 h-5 text-slate-400 group-focus-within:text-brand-accent transition-colors" />
             </div>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-11 pr-12 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none text-white placeholder:text-slate-400 transition-all font-medium"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-12 text-white placeholder-slate-500 focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"
               placeholder="••••••••"
               required
             />
@@ -146,24 +113,29 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            // TODO: Implement actual myITS SSO OAuth flow
-            // window.location.href = 'https://sso.its.ac.id/oauth/authorize?client_id=...';
-            alert('Fitur SSO myITS sedang dalam pengembangan. Silakan gunakan login email/password untuk sementara.');
-          }}
-          className="w-full bg-white text-its-dark font-bold py-3.5 rounded-xl hover:bg-slate-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-        >
-          {/* myITS Icon */}
-          <span className="text-lg font-bold text-blue-600">ITS</span>
-          Masuk dengan SSO ITS (Segera)
-        </button>
+        {/* SSO Coming Soon Notice */}
+        <div className="space-y-3">
+          <button
+            type="button"
+            disabled
+            className="w-full bg-white/10 text-slate-400 font-bold py-3.5 rounded-xl cursor-not-allowed flex items-center justify-center gap-3 border border-white/5"
+          >
+            <span className="text-lg font-bold">ITS</span>
+            Login SSO myITS
+          </button>
+          
+          <div className="flex items-start gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <Info className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-blue-400">
+              Login dengan SSO myITS akan segera hadir. Saat ini gunakan mode simulasi dengan email apa saja.
+            </p>
+          </div>
+        </div>
       </form>
 
       <p className="mt-8 text-center text-slate-400 text-sm">
         Belum memiliki akun?{' '}
-        <Link href="/auth/register" className="text-brand-accent font-bold hover:text-white transition-colors">
+        <Link href="/coming-soon" className="text-brand-accent font-bold hover:text-white transition-colors">
           Daftar Mahasiswa Baru
         </Link>
       </p>

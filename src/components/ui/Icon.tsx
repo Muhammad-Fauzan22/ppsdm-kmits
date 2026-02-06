@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-
 import * as LucideIcons from 'lucide-react';
 
 // ==========================================
@@ -11,10 +10,10 @@ import * as LucideIcons from 'lucide-react';
 // With automatic fallback and loading states
 // ==========================================
 
-type IconType = 'material' | 'lucide' | 'svg';
-type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type IconType = 'material' | 'lucide' | 'svg';
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
-interface IconProps {
+export interface IconProps {
   name: string;
   type?: IconType;
   size?: IconSize;
@@ -37,128 +36,114 @@ const sizeMap: Record<IconSize, string> = {
 
 // Material Icons mapping for common icons
 const materialIconMap: Record<string, string> = {
-  // Navigation
-  'home': 'home',
-  'dashboard': 'dashboard',
-  'menu': 'menu',
-  'close': 'close',
-  'arrow_back': 'arrow_back',
-  'arrow_forward': 'arrow_forward',
-  'arrow_up': 'arrow_upward',
-  'arrow_down': 'arrow_downward',
-  'chevron_left': 'chevron_left',
-  'chevron_right': 'chevron_right',
-  'chevron_up': 'expand_less',
-  'chevron_down': 'expand_more',
-  
-  // Actions
-  'search': 'search',
-  'add': 'add',
-  'edit': 'edit',
-  'delete': 'delete',
-  'save': 'save',
-  'download': 'download',
-  'upload': 'upload',
-  'share': 'share',
-  'print': 'print',
-  'refresh': 'refresh',
-  'settings': 'settings',
-  
-  // Status
-  'check': 'check',
-  'check_circle': 'check_circle',
-  'error': 'error',
-  'warning': 'warning',
-  'info': 'info',
-  'help': 'help',
-  'notifications': 'notifications',
-  
-  // Content
-  'person': 'person',
-  'group': 'group',
-  'school': 'school',
-  'book': 'book',
-  'article': 'article',
-  'assessment': 'assessment',
-  'analytics': 'analytics',
-  'calendar': 'calendar',
-  'mail': 'mail',
-  'phone': 'phone',
-  
-  // UI
-  'favorite': 'favorite',
-  'star': 'star',
-  'visibility': 'visibility',
-  'visibility_off': 'visibility_off',
-  'lock': 'lock',
-  'unlock': 'lock_open',
-  'more_vert': 'more_vert',
-  'more_horiz': 'more_horiz',
-  'filter': 'filter_list',
-  'sort': 'sort',
+  home: 'home',
+  dashboard: 'dashboard',
+  menu: 'menu',
+  close: 'close',
+  arrow_back: 'arrow_back',
+  arrow_forward: 'arrow_forward',
+  arrow_up: 'arrow_upward',
+  arrow_down: 'arrow_downward',
+  chevron_left: 'chevron_left',
+  chevron_right: 'chevron_right',
+  chevron_up: 'expand_less',
+  chevron_down: 'expand_more',
+  search: 'search',
+  add: 'add',
+  edit: 'edit',
+  delete: 'delete',
+  save: 'save',
+  download: 'download',
+  upload: 'upload',
+  share: 'share',
+  print: 'print',
+  refresh: 'refresh',
+  settings: 'settings',
+  check: 'check',
+  check_circle: 'check_circle',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  help: 'help',
+  notifications: 'notifications',
+  person: 'person',
+  group: 'group',
+  school: 'school',
+  book: 'book',
+  article: 'article',
+  assessment: 'assessment',
+  analytics: 'analytics',
+  calendar: 'calendar',
+  mail: 'mail',
+  phone: 'phone',
+  favorite: 'favorite',
+  star: 'star',
+  visibility: 'visibility',
+  visibility_off: 'visibility_off',
+  lock: 'lock',
+  unlock: 'lock_open',
+  more_vert: 'more_vert',
+  more_horiz: 'more_horiz',
+  filter: 'filter_list',
+  sort: 'sort',
 };
 
 // Lucide icon mapping for fallback
 const lucideIconMap: Record<string, keyof typeof LucideIcons> = {
-  'home': 'Home',
-  'dashboard': 'LayoutDashboard',
-  'menu': 'Menu',
-  'close': 'X',
-  'arrow_back': 'ArrowLeft',
-  'arrow_forward': 'ArrowRight',
-  'arrow_up': 'ArrowUp',
-  'arrow_down': 'ArrowDown',
-  'chevron_left': 'ChevronLeft',
-  'chevron_right': 'ChevronRight',
-  'chevron_up': 'ChevronUp',
-  'chevron_down': 'ChevronDown',
-  'search': 'Search',
-  'add': 'Plus',
-  'edit': 'Pencil',
-  'delete': 'Trash2',
-  'save': 'Save',
-  'download': 'Download',
-  'upload': 'Upload',
-  'share': 'Share2',
-  'print': 'Printer',
-  'refresh': 'RefreshCw',
-  'settings': 'Settings',
-  'check': 'Check',
-  'check_circle': 'CheckCircle',
-  'error': 'AlertCircle',
-  'warning': 'AlertTriangle',
-  'info': 'Info',
-  'help': 'HelpCircle',
-  'notifications': 'Bell',
-  'person': 'User',
-  'group': 'Users',
-  'school': 'GraduationCap',
-  'book': 'BookOpen',
-  'article': 'FileText',
-  'assessment': 'ClipboardCheck',
-  'analytics': 'BarChart3',
-  'calendar': 'Calendar',
-  'mail': 'Mail',
-  'phone': 'Phone',
-  'favorite': 'Heart',
-  'star': 'Star',
-  'visibility': 'Eye',
-  'visibility_off': 'EyeOff',
-  'lock': 'Lock',
-  'unlock': 'Unlock',
-  'more_vert': 'MoreVertical',
-  'more_horiz': 'MoreHorizontal',
-  'filter': 'Filter',
-  'sort': 'ArrowUpDown',
+  home: 'Home',
+  dashboard: 'LayoutDashboard',
+  menu: 'Menu',
+  close: 'X',
+  arrow_back: 'ArrowLeft',
+  arrow_forward: 'ArrowRight',
+  arrow_up: 'ArrowUp',
+  arrow_down: 'ArrowDown',
+  chevron_left: 'ChevronLeft',
+  chevron_right: 'ChevronRight',
+  chevron_up: 'ChevronUp',
+  chevron_down: 'ChevronDown',
+  search: 'Search',
+  add: 'Plus',
+  edit: 'Pencil',
+  delete: 'Trash2',
+  save: 'Save',
+  download: 'Download',
+  upload: 'Upload',
+  share: 'Share2',
+  print: 'Printer',
+  refresh: 'RefreshCw',
+  settings: 'Settings',
+  check: 'Check',
+  check_circle: 'CheckCircle',
+  error: 'AlertCircle',
+  warning: 'AlertTriangle',
+  info: 'Info',
+  help: 'HelpCircle',
+  notifications: 'Bell',
+  person: 'User',
+  group: 'Users',
+  school: 'GraduationCap',
+  book: 'BookOpen',
+  article: 'FileText',
+  assessment: 'ClipboardCheck',
+  analytics: 'BarChart3',
+  calendar: 'Calendar',
+  mail: 'Mail',
+  phone: 'Phone',
+  favorite: 'Heart',
+  star: 'Star',
+  visibility: 'Eye',
+  visibility_off: 'EyeOff',
+  lock: 'Lock',
+  unlock: 'Unlock',
+  more_vert: 'MoreVertical',
+  more_horiz: 'MoreHorizontal',
+  filter: 'Filter',
+  sort: 'ArrowUpDown',
 };
 
 /**
  * Icon Component - Universal icon system with fallbacks
- * 
- * Usage:
- * <Icon name="home" type="material" size="md" />
- * <Icon name="dashboard" type="lucide" size="lg" />
- * <Icon name="custom" type="svg" className="w-6 h-6" />
  */
 export function Icon({
   name,
@@ -173,28 +158,20 @@ export function Icon({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // Check if Material Icons font is loaded
   useEffect(() => {
     if (type === 'material') {
-      // Check if font is available
-      document.fonts.ready.then(() => {
-        setIsLoaded(true);
-      }).catch(() => {
-        setHasError(true);
-      });
-      
-      // Fallback timeout
+      document.fonts.ready
+        .then(() => setIsLoaded(true))
+        .catch(() => setHasError(true));
+
       const timer = setTimeout(() => {
-        if (!isLoaded) {
-          setHasError(true);
-        }
+        if (!isLoaded) setHasError(true);
       }, 3000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [type, isLoaded]);
 
-  // Handle click with keyboard support
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (onClick && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
@@ -205,7 +182,6 @@ export function Icon({
   // Render Material Icon
   if (type === 'material' && !hasError) {
     const iconName = materialIconMap[name] || name;
-    
     return (
       <span
         className={cn(
@@ -217,7 +193,7 @@ export function Icon({
           onClick && 'cursor-pointer hover:scale-110 active:scale-95',
           className
         )}
-        style={{ 
+        style={{
           color,
           fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
         }}
@@ -235,14 +211,18 @@ export function Icon({
   // Render Lucide Icon (fallback or explicit)
   if (type === 'lucide' || (type === 'material' && hasError)) {
     const lucideName = lucideIconMap[name] || 'Circle';
-    const LucideIcon = LucideIcons[lucideName] as React.ComponentType<{ className?: string }>;
-    
+    const LucideIcon = LucideIcons[lucideName] as React.ComponentType<{
+      className?: string;
+    }>;
+
     if (!LucideIcon) {
-      return fallback || (
-        <span 
-          className={cn('inline-block bg-gray-200 rounded', sizeMap[size])}
-          aria-label={ariaLabel || name}
-        />
+      return (
+        fallback || (
+          <span
+            className={cn('inline-block bg-gray-200 rounded', sizeMap[size])}
+            aria-label={ariaLabel || name}
+          />
+        )
       );
     }
 
@@ -265,7 +245,6 @@ export function Icon({
         <LucideIcon className="w-full h-full" />
       </span>
     );
-
   }
 
   // SVG type - render as-is
@@ -289,14 +268,13 @@ export function Icon({
     );
   }
 
-  // Fallback
   return fallback || null;
 }
 
 /**
  * IconButton - Clickable icon with proper accessibility
  */
-interface IconButtonProps extends Omit<IconProps, 'onClick'> {
+export interface IconButtonProps extends Omit<IconProps, 'onClick'> {
   onClick: () => void;
   variant?: 'default' | 'ghost' | 'outline';
   disabled?: boolean;
@@ -339,7 +317,13 @@ export function IconButton({
 /**
  * Loading Icon - Animated spinner
  */
-export function LoadingIcon({ size = 'md', className }: { size?: IconSize; className?: string }) {
+export function LoadingIcon({
+  size = 'md',
+  className,
+}: {
+  size?: IconSize;
+  className?: string;
+}) {
   return (
     <Icon
       name="refresh"
@@ -351,4 +335,5 @@ export function LoadingIcon({ size = 'md', className }: { size?: IconSize; class
   );
 }
 
+// Default export for compatibility
 export default Icon;
