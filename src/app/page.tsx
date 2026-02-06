@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ProblemSolution } from "@/components/landing/content/ProblemSolution";
@@ -30,8 +31,14 @@ function Header() {
     <header className="fixed top-0 z-[100] w-full border-b border-white/5 bg-its-dark/80 backdrop-blur-xl supports-[backdrop-filter]:bg-its-dark/60">
       <div className="flex h-20 items-center justify-between px-6 lg:px-12 max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue shadow-lg shadow-brand-blue/30 group-hover:shadow-brand-accent/40 transition-all duration-300">
-            <span className="material-symbols-outlined text-white relative z-10">analytics</span>
+          <div className="relative flex h-16 w-16 items-center justify-center group-hover:scale-105 transition-all duration-300">
+            <Image
+              src="/images/logo-m-its-red-with-black-list.png"
+              alt="PPSDM KM Logo"
+              width={64}
+              height={64}
+              className="object-contain"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold font-heading tracking-tight text-white leading-none group-hover:text-brand-accent transition-colors">PPSDM KMITS</span>

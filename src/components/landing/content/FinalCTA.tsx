@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Rocket, PlayCircle, CheckCircle } from "lucide-react";
 
 export function FinalCTA() {
     return (
@@ -26,31 +27,31 @@ export function FinalCTA() {
                         href="/login"
                         className="w-full sm:w-auto px-8 py-4 bg-white text-brand-blue hover:bg-slate-50 font-bold rounded-xl transition-all hover:scale-105 shadow-xl shadow-indigo-900/20 flex items-center justify-center gap-2"
                     >
-                        <span className="material-symbols-outlined">rocket_launch</span>
+                        <Rocket className="w-5 h-5" />
                         Mulai Assessment Gratis
                     </Link>
                     <Link
                         href="/demos"
                         className="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/30 hover:bg-white/10 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2"
                     >
-                        <span className="material-symbols-outlined">play_circle</span>
+                        <PlayCircle className="w-5 h-5" />
                         Tonton Platform Tour
                     </Link>
                 </div>
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-sm text-indigo-200">
                     <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-green-400">check_circle</span>
+                        <CheckCircle className="w-4 h-4 text-green-400" />
                         Backed by ITS Research Center
                     </div>
                     <div className="hidden md:block w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
                     <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-green-400">check_circle</span>
+                        <CheckCircle className="w-4 h-4 text-green-400" />
                         GDPR & PDPA Compliant
                     </div>
                     <div className="hidden md:block w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
                     <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-green-400">check_circle</span>
+                        <CheckCircle className="w-4 h-4 text-green-400" />
                         100% Free Integration
                     </div>
                 </div>

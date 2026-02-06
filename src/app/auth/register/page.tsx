@@ -104,7 +104,7 @@ export default function RegisterPage() {
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-white transition-colors"
                         >
-                            <span className="material-symbols-outlined text-xl">{showPassword ? 'visibility_off' : 'visibility'}</span>
+                            <span className="text-xl">{showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}</span>
                         </button>
                     </div>
                 </div>
@@ -150,7 +150,7 @@ export default function RegisterPage() {
                     ) : (
                         <>
                             Daftar Sekarang
-                            <span className="material-symbols-outlined">rocket_launch</span>
+                            <Rocket className="w-5 h-5" />
                         </>
                     )}
                 </button>

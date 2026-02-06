@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Rocket } from 'lucide-react';
 
 export default function MissionControlDemo() {
     return (
@@ -98,7 +99,7 @@ export default function MissionControlDemo() {
                                     <p className="text-[10px] text-slate-400 font-bold uppercase">Development Status</p>
                                     <p className="text-white font-bold">Growth Potential: 85%</p>
                                 </div>
-                                <span className="material-symbols-outlined text-brand-accent animate-bounce">rocket_launch</span>
+                                <Rocket className="w-5 h-5 text-brand-accent animate-bounce" />
                             </div>
                         </div>
                     </motion.div>
