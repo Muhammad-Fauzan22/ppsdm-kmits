@@ -1,0 +1,25 @@
+# PPSDM KMITS Scraper Dependencies
+# Install with: pip install -r scrapers/requirements.txt
+
+# Web Scraping
+requests>=2.31.0
+beautifulsoup4>=4.12.2
+lxml>=4.9.3
+
+# APIs
+google-api-python-client>=2.108.0
+google-auth>=2.22.0
+google-auth-oauthlib>=1.0.0
+
+# Database
+supabase>=2.0.0
+
+# Utils
+python-dateutil>=2.8.2
+fake-useragent>=1.4.0
+
+# Optional (for advanced scrapers)
+# selenium>=4.15.0
+# playwright>=1.40.0
+# scrapy>=2.11.0
+# feedparser>=6.0.10

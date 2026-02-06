@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server"; export async function GET() { return NextResponse.json({ active: 0, total: 0, new: 0, returning: 0, sessions: 0, avgSessionDuration: 0, bounceRate: 0 }); }

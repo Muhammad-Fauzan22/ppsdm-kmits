@@ -1,0 +1,35 @@
+{
+  "news": [],
+  "scholarships": [],
+  "jobs": [],
+  "videos": [
+    {
+      "title": "Belajar Tool Populer untuk UI/UX Designer\ud83e\udd29\ud83d\udd25 (+PENDAFTARAN BOOTCAMP UI/UX DITUTUP BESOK)",
+      "url": "https://www.youtube.com/watch?v=I-zMeBxuCyE",
+      "channel": "Web Programming UNPAS",
+      "published_at": "2026-01-30T11:40:35+00:00",
+      "source": "YouTube",
+      "scraped_at": "2026-02-01T03:34:38.722770",
+      "thumbnail": "https://i2.ytimg.com/vi/I-zMeBxuCyE/hqdefault.jpg"
+    },
+    {
+      "title": "Sat-Set Cari Inspirasi Font di Website!\ud83d\udd0d",
+      "url": "https://www.youtube.com/shorts/ukntPc3F6WA",
+      "channel": "Web Programming UNPAS",
+      "published_at": "2026-01-29T10:10:02+00:00",
+      "source": "YouTube",
+      "scraped_at": "2026-02-01T03:34:38.723199",
+      "thumbnail": "https://i2.ytimg.com/vi/ukntPc3F6WA/hqdefault.jpg"
+    },
+    {
+      "title": "Belajar Fundamental UI/UX Designer Supaya Gak Ngasal!\ud83e\udd29\ud83d\udd25",
+      "url": "https://www.youtube.com/watch?v=3ERh-eceFcI",
+      "channel": "Web Programming UNPAS",
+      "published_at": "2026-01-28T11:30:03+00:00",
+      "source": "YouTube",
+      "scraped_at": "2026-02-01T03:34:38.723213",
+      "thumbnail": "https://i4.ytimg.com/vi/3ERh-eceFcI/hqdefault.jpg"
+    }
+  ],
+  "repos": []
+}

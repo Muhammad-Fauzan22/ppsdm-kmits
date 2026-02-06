@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM KMM Database Architecture</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#003366",
+                        "secondary": "#0f1923",
+                        "background-dark": "#0a0e12",
+                        "accent-gold": "#FFBD07",
+                        "code-bg": "#1e293b",
+                        "table-header": "#172554",
+                        "table-border": "#1e3a8a",
+                    },
+                    fontFamily: {
+                        "mono": ["Roboto Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.375rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(15, 25, 35, 0.95);
+            border-bottom: 1px solid rgba(0, 51, 102, 0.3);
+        }
+        .erd-node {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s;
+        }
+        .erd-node:hover {
+            border-color: #FFBD07;
+            box-shadow: 0 0 15px rgba(255, 189, 7, 0.1);
+        }
+        .connector-line {
+            stroke: #475569;
+            stroke-width: 2;
+            fill: none;
+        }::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0e12; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b; 
+            border: 1px solid #0f172a;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155; 
+        }
+        .code-syntax-key { color: #f472b6; }
+        .code-syntax-val { color: #60a5fa; }
+        .code-syntax-str { color: #a3e635; }
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px), linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-300 min-h-screen flex flex-col overflow-hidden">
+<header class="glass-panel h-14 flex items-center justify-between px-4 sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary flex items-center justify-center text-white rounded-sm border border-blue-800">
+<span class="material-symbols-outlined text-lg">schema</span>
+</div>
+<div>
+<h1 class="text-white text-sm font-bold tracking-wider uppercase">PPSDM_KMM_DB_ARCH</h1>
+<div class="flex items-center gap-2 text-[10px] text-accent-gold">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+<span>LIVE CONNECTION: production-pg-01</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono">
+<div class="flex items-center gap-2 px-3 py-1 bg-slate-800 rounded border border-slate-700">
+<span class="text-slate-400">Schema:</span>
+<span class="text-white font-bold">public</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-slate-800 rounded border border-slate-700">
+<span class="text-slate-400">Version:</span>
+<span class="text-white font-bold">v2.4.1</span>
+</div>
+<button class="bg-primary hover:bg-blue-800 text-white px-3 py-1 rounded border border-blue-700 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">download</span>
+                Export SQL
+            </button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden relative">
+<aside class="w-64 bg-[#0d1117] border-r border-slate-800 flex flex-col z-10 shrink-0">
+<div class="p-4 border-b border-slate-800">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-2 text-slate-500 text-sm">search</span>
+<input class="w-full bg-[#161b22] text-slate-300 text-xs py-2 pl-8 pr-2 border border-slate-700 rounded focus:border-accent-gold focus:ring-0 placeholder-slate-600 font-mono" placeholder="Search tables..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-2 py-3 space-y-1 text-xs font-mono">
+<div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 py-1 mb-1">Core Identity</div>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-accent-gold flex items-center justify-between group">
+<span>users</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">1.2M rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-between group">
+<span>auth_identities</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">1.2M rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-between group">
+<span>roles</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">8 rows</span>
+</button>
+<div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 py-1 mb-1 mt-4">Assessment Engine</div>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-accent-gold flex items-center justify-between group">
+<span>assessments</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">450k rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-between group">
+<span>questions</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">5.2k rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-between group">
+<span>submissions</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">2.1M rows</span>
+</button>
+<div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 py-1 mb-1 mt-4">LMS Core</div>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-accent-gold flex items-center justify-between group">
+<span>resources</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">12k rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-accent-gold flex items-center justify-between group">
+<span>rpi_items</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">890k rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-accent-gold flex items-center justify-between group">
+<span>portfolio_claims</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">320k rows</span>
+</button>
+<button class="w-full text-left px-2 py-1.5 rounded hover:bg-slate-800 text-accent-gold flex items-center justify-between group">
+<span>mentor_sessions</span>
+<span class="text-[10px] text-slate-600 group-hover:text-slate-400">56k rows</span>
+</button>
+</div>
+<div class="p-3 border-t border-slate-800 bg-[#0a0e12]">
+<div class="text-[10px] font-bold text-accent-gold mb-2 uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">code</span> SQL Snippet
+                </div>
+<div class="bg-code-bg p-2 rounded border border-slate-700 font-mono text-[10px] overflow-hidden">
+<div class="text-purple-400">SELECT</div>
+<div class="pl-2 text-blue-300">u.username, r.title</div>
+<div class="text-purple-400">FROM</div>
+<div class="pl-2 text-green-400">users u</div>
+<div class="text-purple-400">JOIN</div>
+<div class="pl-2 text-green-400">resources r</div>
+<div class="text-purple-400">ON</div>
+<div class="pl-2 text-blue-300">u.id = r.author_id</div>
+<div class="text-purple-400">LIMIT 10;</div>
+</div>
+<button class="w-full mt-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] py-1 rounded border border-slate-600">Copy to Clipboard</button>
+</div>
+</aside>
+<main class="flex-1 bg-background-dark relative overflow-auto cursor-grab active:cursor-grabbing p-10">
+<div class="absolute inset-0 grid-bg pointer-events-none w-[3000px] h-[3000px]"></div>
+<div class="relative w-[1400px] h-[1000px] mx-auto scale-90 origin-top-left transform translate-x-12 translate-y-8">
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+<path class="connector-line" d="M 320 200 C 450 200, 450 200, 580 200" marker-end="url(#arrow)"></path>
+<path class="connector-line" d="M 200 420 C 200 500, 200 550, 200 620" marker-end="url(#arrow)"></path>
+<path class="connector-line" d="M 320 300 C 400 300, 400 650, 580 650" marker-end="url(#arrow)"></path>
+<path class="connector-line" d="M 320 250 C 350 250, 350 420, 580 420" marker-end="url(#arrow)"></path>
+<path class="connector-line" d="M 980 200 C 1050 200, 1050 420, 930 420" marker-end="url(#arrow)"></path>
+<defs>
+<marker id="arrow" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="10" refY="5" viewBox="0 0 10 10">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"></path>
+</marker>
+</defs>
+</svg>
+<div class="erd-node absolute top-20 left-20 w-80 rounded-lg z-10">
+<div class="bg-table-header px-3 py-2 border-b border-table-border flex justify-between items-center rounded-t-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-gold text-sm">table_chart</span>
+<span class="text-white font-bold text-sm">users</span>
+</div>
+<span class="text-[10px] text-blue-300">PK: uuid</span>
+</div>
+<div class="text-xs font-mono bg-[#0f172a] divide-y divide-[#1e293b]">
+<div class="px-3 py-1.5 flex justify-between group hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-accent-gold">key</span>
+<span class="text-white font-medium">id</span>
+</div>
+<span class="text-slate-500">uuid</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between group hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">email</div>
+<span class="text-slate-500">varchar(255)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between group hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">password_hash</div>
+<span class="text-slate-500">varchar</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between group hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">metadata</div>
+<span class="text-slate-500">jsonb</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between group hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">created_at</div>
+<span class="text-slate-500">timestamp</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between group hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">last_login</div>
+<span class="text-slate-500">timestamp</span>
+</div>
+</div>
+</div>
+<div class="erd-node absolute top-20 left-[580px] w-80 rounded-lg z-10">
+<div class="bg-table-header px-3 py-2 border-b border-table-border flex justify-between items-center rounded-t-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">table_chart</span>
+<span class="text-white font-bold text-sm">assessments</span>
+</div>
+<span class="text-[10px] text-blue-300">PK: bigserial</span>
+</div>
+<div class="text-xs font-mono bg-[#0f172a] divide-y divide-[#1e293b]">
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-accent-gold">key</span>
+<span class="text-white font-medium">id</span>
+</div>
+<span class="text-slate-500">bigserial</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-blue-400 rotate-90">key</span>
+<span class="text-blue-300">author_id</span>
+</div>
+<span class="text-slate-500">uuid (FK)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">title</div>
+<span class="text-slate-500">varchar(150)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">passing_score</div>
+<span class="text-slate-500">integer</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">config</div>
+<span class="text-slate-500">jsonb</span>
+</div>
+</div>
+</div>
+<div class="erd-node absolute top-20 left-[980px] w-80 rounded-lg z-10">
+<div class="bg-table-header px-3 py-2 border-b border-table-border flex justify-between items-center rounded-t-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">table_chart</span>
+<span class="text-white font-bold text-sm">resources</span>
+</div>
+<span class="text-[10px] text-blue-300">PK: uuid</span>
+</div>
+<div class="text-xs font-mono bg-[#0f172a] divide-y divide-[#1e293b]">
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-accent-gold">key</span>
+<span class="text-white font-medium">id</span>
+</div>
+<span class="text-slate-500">uuid</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">title</div>
+<span class="text-slate-500">varchar</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">file_url</div>
+<span class="text-slate-500">text</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">tags</div>
+<span class="text-slate-500">text[]</span>
+</div>
+</div>
+</div>
+<div class="erd-node absolute top-[380px] left-[580px] w-80 rounded-lg z-10">
+<div class="bg-table-header px-3 py-2 border-b border-table-border flex justify-between items-center rounded-t-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">table_chart</span>
+<span class="text-white font-bold text-sm">rpi_items</span>
+</div>
+<span class="text-[10px] text-blue-300">PK: bigserial</span>
+</div>
+<div class="text-xs font-mono bg-[#0f172a] divide-y divide-[#1e293b]">
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-accent-gold">key</span>
+<span class="text-white font-medium">id</span>
+</div>
+<span class="text-slate-500">bigserial</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-blue-400 rotate-90">key</span>
+<span class="text-blue-300">user_id</span>
+</div>
+<span class="text-slate-500">uuid (FK)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-blue-400 rotate-90">key</span>
+<span class="text-blue-300">resource_id</span>
+</div>
+<span class="text-slate-500">uuid (FK)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">status</div>
+<span class="text-slate-500">enum</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">progress</div>
+<span class="text-slate-500">float</span>
+</div>
+</div>
+</div>
+<div class="erd-node absolute top-[620px] left-[20px] w-80 rounded-lg z-10">
+<div class="bg-table-header px-3 py-2 border-b border-table-border flex justify-between items-center rounded-t-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">table_chart</span>
+<span class="text-white font-bold text-sm">portfolio_claims</span>
+</div>
+<span class="text-[10px] text-blue-300">PK: uuid</span>
+</div>
+<div class="text-xs font-mono bg-[#0f172a] divide-y divide-[#1e293b]">
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-accent-gold">key</span>
+<span class="text-white font-medium">id</span>
+</div>
+<span class="text-slate-500">uuid</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-blue-400 rotate-90">key</span>
+<span class="text-blue-300">claimant_id</span>
+</div>
+<span class="text-slate-500">uuid (FK)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">skill_code</div>
+<span class="text-slate-500">varchar</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">evidence</div>
+<span class="text-slate-500">text</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">verified_at</div>
+<span class="text-slate-500">timestamp</span>
+</div>
+</div>
+</div>
+<div class="erd-node absolute top-[620px] left-[580px] w-80 rounded-lg z-10">
+<div class="bg-table-header px-3 py-2 border-b border-table-border flex justify-between items-center rounded-t-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">table_chart</span>
+<span class="text-white font-bold text-sm">mentor_sessions</span>
+</div>
+<span class="text-[10px] text-blue-300">PK: bigserial</span>
+</div>
+<div class="text-xs font-mono bg-[#0f172a] divide-y divide-[#1e293b]">
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-accent-gold">key</span>
+<span class="text-white font-medium">id</span>
+</div>
+<span class="text-slate-500">bigserial</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-blue-400 rotate-90">key</span>
+<span class="text-blue-300">mentor_id</span>
+</div>
+<span class="text-slate-500">uuid (FK)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-blue-400 rotate-90">key</span>
+<span class="text-blue-300">mentee_id</span>
+</div>
+<span class="text-slate-500">uuid (FK)</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">scheduled_at</div>
+<span class="text-slate-500">timestamp</span>
+</div>
+<div class="px-3 py-1.5 flex justify-between hover:bg-[#1e293b]">
+<div class="pl-5 text-slate-300">notes</div>
+<span class="text-slate-500">text</span>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed bottom-6 right-6 w-48 h-32 bg-[#0d1117] border border-slate-700 shadow-xl rounded z-50 p-2 pointer-events-none opacity-80">
+<div class="w-full h-full bg-[#1e293b] relative overflow-hidden">
+<div class="absolute top-2 left-2 w-8 h-6 bg-slate-600 rounded-sm"></div>
+<div class="absolute top-2 left-[50px] w-8 h-6 bg-slate-600 rounded-sm"></div>
+<div class="absolute top-2 left-[100px] w-8 h-6 bg-slate-600 rounded-sm"></div>
+<div class="absolute top-[40px] left-[50px] w-8 h-6 bg-slate-600 rounded-sm"></div>
+<div class="absolute top-[80px] left-2 w-8 h-6 bg-slate-600 rounded-sm"></div>
+<div class="absolute top-[80px] left-[50px] w-8 h-6 bg-slate-600 rounded-sm"></div>
+<div class="absolute top-0 left-0 w-32 h-24 border-2 border-accent-gold rounded-sm"></div>
+</div>
+</div>
+<div class="fixed bottom-6 right-[240px] flex gap-2">
+<button class="size-8 rounded bg-[#1e293b] border border-slate-700 text-slate-300 flex items-center justify-center hover:bg-slate-700 shadow-lg">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<div class="h-8 px-3 rounded bg-[#0d1117] border border-slate-700 text-slate-300 flex items-center justify-center text-xs font-mono shadow-lg">
+                    90%
+                </div>
+<button class="size-8 rounded bg-[#1e293b] border border-slate-700 text-slate-300 flex items-center justify-center hover:bg-slate-700 shadow-lg">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</main>
+</div>
+
+</body></html>

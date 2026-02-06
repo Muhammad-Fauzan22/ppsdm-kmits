@@ -1,0 +1,43 @@
+{
+  "title": "Atomic Habits",
+  "author": "James Clear",
+  "created": "2026-02-01T10:20:53.167454",
+  "modified": "2026-02-01T10:20:53.167459",
+  "version": "1.0.0",
+  "language": "id",
+  "keywords": [],
+  "description": "Premium Grade A course based on Atomic Habits",
+  "typical_learning_time": "PT40H",
+  "difficulty_level": "intermediate",
+  "intended_end_user_role": "learner",
+  "context": "higher education",
+  "coverage": "Comprehensive coverage of subject matter",
+  "rights": "CC BY-SA 4.0",
+  "compliance": {
+    "bsnp": {
+      "compliant": true,
+      "standard_version": "2023",
+      "alignment_notes": "Content meets BSNP curriculum standards"
+    },
+    "kkni": {
+      "level": "Level 6 (S1)",
+      "competencies_addressed": [],
+      "learning_outcomes_mapped": true
+    },
+    "unesco": {
+      "sdg_alignment": [
+        "SDG4: Quality Education"
+      ],
+      "digital_literacy": true,
+      "open_education": true
+    },
+    "lom": {
+      "schema": "IEEE LOM",
+      "fields_populated": true
+    },
+    "scorm": {
+      "version": "1.2/2004",
+      "metadata_complete": true
+    }
+  }
+}

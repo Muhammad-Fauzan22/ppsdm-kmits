@@ -1,0 +1,529 @@
+{
+  "title": "Deep Dive: Introduction to Project Management",
+  "description": "An educational interview exploring Introduction to Project Management",
+  "duration_estimate": "15-20 minutes",
+  "style": "educational_interview",
+  "language": "id",
+  "voices_used": {
+    "host": {
+      "name": "Andi",
+      "gender": "male",
+      "style": "professional"
+    },
+    "expert": {
+      "name": "Dr. Sari",
+      "gender": "female",
+      "style": "academic"
+    },
+    "student": {
+      "name": "Budi",
+      "gender": "male",
+      "style": "casual"
+    },
+    "narrator": {
+      "name": "Nadia",
+      "gender": "female",
+      "style": "neutral"
+    }
+  },
+  "script": [
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Selamat datang di Podcast Pembelajaran. Saya Andi, dan hari ini kita akan membahas Introduction to Project Management.",
+      "emotion": "enthusiastic",
+      "pause_after": 1.0
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Terima kasih Andi. Saya sangat senang bisa berbagi pengetahuan tentang topik ini.",
+      "emotion": "warm",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Bolehkah Anda menjelaskan tentang Modul 1: Topik Utama 1?",
+      "emotion": "curious",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Modul 1: Topik Utama 1 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 1.",
+      "emotion": "authoritative",
+      "pause_after": 1.0
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Konsep Superposition sangat penting ya?",
+      "emotion": "intrigued",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Benar sekali. Superposition adalah fondasi dari pemahaman ini.",
+      "emotion": "emphatic",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Bolehkah Anda menjelaskan tentang Modul 2: Topik Utama 2?",
+      "emotion": "curious",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Modul 2: Topik Utama 2 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 2.",
+      "emotion": "authoritative",
+      "pause_after": 1.0
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Konsep Entanglement sangat penting ya?",
+      "emotion": "intrigued",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Benar sekali. Entanglement adalah fondasi dari pemahaman ini.",
+      "emotion": "emphatic",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Bolehkah Anda menjelaskan tentang Modul 3: Topik Utama 3?",
+      "emotion": "curious",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Modul 3: Topik Utama 3 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 3.",
+      "emotion": "authoritative",
+      "pause_after": 1.0
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Konsep Qubits sangat penting ya?",
+      "emotion": "intrigued",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Benar sekali. Qubits adalah fondasi dari pemahaman ini.",
+      "emotion": "emphatic",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Terima kasih banyak atas wawasan yang sangat berharga hari ini.",
+      "emotion": "grateful",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Sama-sama. Semoga bermanfaat untuk pendengar semua.",
+      "emotion": "warm",
+      "pause_after": 0.5
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Sampai jumpa di episode berikutnya!",
+      "emotion": "enthusiastic",
+      "pause_after": 1.0
+    }
+  ],
+  "audio_segments": [
+    {
+      "segment_id": 1,
+      "speaker": "Andi",
+      "start_time": 0.0,
+      "end_time": 7.8,
+      "duration_seconds": 7.8,
+      "text_preview": "Selamat datang di Podcast Pembelajaran. Saya Andi,..."
+    },
+    {
+      "segment_id": 2,
+      "speaker": "Dr. Sari",
+      "start_time": 7.8,
+      "end_time": 13.1,
+      "duration_seconds": 5.3,
+      "text_preview": "Terima kasih Andi. Saya sangat senang bisa berbagi..."
+    },
+    {
+      "segment_id": 3,
+      "speaker": "Andi",
+      "start_time": 13.1,
+      "end_time": 17.2,
+      "duration_seconds": 4.1,
+      "text_preview": "Bolehkah Anda menjelaskan tentang Modul 1: Topik U..."
+    },
+    {
+      "segment_id": 4,
+      "speaker": "Dr. Sari",
+      "start_time": 17.2,
+      "end_time": 25.0,
+      "duration_seconds": 7.8,
+      "text_preview": "Modul 1: Topik Utama 1 adalah topik yang sangat me..."
+    },
+    {
+      "segment_id": 5,
+      "speaker": "Andi",
+      "start_time": 25.0,
+      "end_time": 27.5,
+      "duration_seconds": 2.5,
+      "text_preview": "Konsep Superposition sangat penting ya?"
+    },
+    {
+      "segment_id": 6,
+      "speaker": "Dr. Sari",
+      "start_time": 27.5,
+      "end_time": 31.2,
+      "duration_seconds": 3.7,
+      "text_preview": "Benar sekali. Superposition adalah fondasi dari pe..."
+    },
+    {
+      "segment_id": 7,
+      "speaker": "Andi",
+      "start_time": 31.2,
+      "end_time": 35.3,
+      "duration_seconds": 4.1,
+      "text_preview": "Bolehkah Anda menjelaskan tentang Modul 2: Topik U..."
+    },
+    {
+      "segment_id": 8,
+      "speaker": "Dr. Sari",
+      "start_time": 35.3,
+      "end_time": 43.099999999999994,
+      "duration_seconds": 7.8,
+      "text_preview": "Modul 2: Topik Utama 2 adalah topik yang sangat me..."
+    },
+    {
+      "segment_id": 9,
+      "speaker": "Andi",
+      "start_time": 43.099999999999994,
+      "end_time": 45.599999999999994,
+      "duration_seconds": 2.5,
+      "text_preview": "Konsep Entanglement sangat penting ya?"
+    },
+    {
+      "segment_id": 10,
+      "speaker": "Dr. Sari",
+      "start_time": 45.599999999999994,
+      "end_time": 49.3,
+      "duration_seconds": 3.7,
+      "text_preview": "Benar sekali. Entanglement adalah fondasi dari pem..."
+    },
+    {
+      "segment_id": 11,
+      "speaker": "Andi",
+      "start_time": 49.3,
+      "end_time": 53.4,
+      "duration_seconds": 4.1,
+      "text_preview": "Bolehkah Anda menjelaskan tentang Modul 3: Topik U..."
+    },
+    {
+      "segment_id": 12,
+      "speaker": "Dr. Sari",
+      "start_time": 53.4,
+      "end_time": 61.199999999999996,
+      "duration_seconds": 7.8,
+      "text_preview": "Modul 3: Topik Utama 3 adalah topik yang sangat me..."
+    },
+    {
+      "segment_id": 13,
+      "speaker": "Andi",
+      "start_time": 61.199999999999996,
+      "end_time": 63.699999999999996,
+      "duration_seconds": 2.5,
+      "text_preview": "Konsep Qubits sangat penting ya?"
+    },
+    {
+      "segment_id": 14,
+      "speaker": "Dr. Sari",
+      "start_time": 63.699999999999996,
+      "end_time": 67.39999999999999,
+      "duration_seconds": 3.7,
+      "text_preview": "Benar sekali. Qubits adalah fondasi dari pemahaman..."
+    },
+    {
+      "segment_id": 15,
+      "speaker": "Andi",
+      "start_time": 67.39999999999999,
+      "end_time": 71.89999999999999,
+      "duration_seconds": 4.5,
+      "text_preview": "Terima kasih banyak atas wawasan yang sangat berha..."
+    },
+    {
+      "segment_id": 16,
+      "speaker": "Dr. Sari",
+      "start_time": 71.89999999999999,
+      "end_time": 74.8,
+      "duration_seconds": 2.9,
+      "text_preview": "Sama-sama. Semoga bermanfaat untuk pendengar semua..."
+    },
+    {
+      "segment_id": 17,
+      "speaker": "Andi",
+      "start_time": 74.8,
+      "end_time": 77.8,
+      "duration_seconds": 3.0,
+      "text_preview": "Sampai jumpa di episode berikutnya!"
+    }
+  ],
+  "production_notes": {
+    "format": "multi-voice dialogue",
+    "recording_tips": [
+      "Record each speaker separately for better audio quality",
+      "Use consistent microphone distance for each speaker",
+      "Add 0.5 second pause between segments for editing"
+    ],
+    "post_processing": [
+      "Normalize audio levels across all speakers",
+      "Add intro/outro music",
+      "Apply noise reduction",
+      "Add transition effects between segments"
+    ],
+    "tts_options": {
+      "recommended_engines": [
+        "ElevenLabs",
+        "Coqui TTS",
+        "Murf.ai"
+      ],
+      "voice_settings": {
+        "host": {
+          "speed": 1.0,
+          "pitch": "neutral"
+        },
+        "expert": {
+          "speed": 0.95,
+          "pitch": "slightly_lower"
+        },
+        "student": {
+          "speed": 1.05,
+          "pitch": "slightly_higher"
+        }
+      }
+    }
+  },
+  "tts_prompts": [
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Selamat datang di Podcast Pembelajaran. Saya Andi, dan hari ini kita akan membahas Introduction to Project Management.",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "enthusiastic"
+      },
+      "ssml": "<speak><prosody rate=\"105%\" pitch=\"+5%\">Selamat datang di Podcast Pembelajaran. Saya Andi, dan hari ini kita akan membahas Introduction to Project Management.</prosody><break time=\"1000ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Terima kasih Andi. Saya sangat senang bisa berbagi pengetahuan tentang topik ini.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "warm"
+      },
+      "ssml": "<speak><prosody rate=\"95%\" pitch=\"-2%\">Terima kasih Andi. Saya sangat senang bisa berbagi pengetahuan tentang topik ini.</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Bolehkah Anda menjelaskan tentang Modul 1: Topik Utama 1?",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "curious"
+      },
+      "ssml": "<speak><prosody rate=\"100%\" pitch=\"+2%\">Bolehkah Anda menjelaskan tentang Modul 1: Topik Utama 1?</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Modul 1: Topik Utama 1 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 1.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "authoritative"
+      },
+      "ssml": "<speak><prosody rate=\"95%\" pitch=\"-5%\">Modul 1: Topik Utama 1 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 1.</prosody><break time=\"1000ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Konsep Superposition sangat penting ya?",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "intrigued"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Konsep Superposition sangat penting ya?</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Benar sekali. Superposition adalah fondasi dari pemahaman ini.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "emphatic"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Benar sekali. Superposition adalah fondasi dari pemahaman ini.</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Bolehkah Anda menjelaskan tentang Modul 2: Topik Utama 2?",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "curious"
+      },
+      "ssml": "<speak><prosody rate=\"100%\" pitch=\"+2%\">Bolehkah Anda menjelaskan tentang Modul 2: Topik Utama 2?</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Modul 2: Topik Utama 2 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 2.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "authoritative"
+      },
+      "ssml": "<speak><prosody rate=\"95%\" pitch=\"-5%\">Modul 2: Topik Utama 2 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 2.</prosody><break time=\"1000ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Konsep Entanglement sangat penting ya?",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "intrigued"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Konsep Entanglement sangat penting ya?</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Benar sekali. Entanglement adalah fondasi dari pemahaman ini.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "emphatic"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Benar sekali. Entanglement adalah fondasi dari pemahaman ini.</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Bolehkah Anda menjelaskan tentang Modul 3: Topik Utama 3?",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "curious"
+      },
+      "ssml": "<speak><prosody rate=\"100%\" pitch=\"+2%\">Bolehkah Anda menjelaskan tentang Modul 3: Topik Utama 3?</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Modul 3: Topik Utama 3 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 3.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "authoritative"
+      },
+      "ssml": "<speak><prosody rate=\"95%\" pitch=\"-5%\">Modul 3: Topik Utama 3 adalah topik yang sangat menarik. Secara singkat, Konten pembelajaran untuk modul 3.</prosody><break time=\"1000ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Konsep Qubits sangat penting ya?",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "intrigued"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Konsep Qubits sangat penting ya?</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Benar sekali. Qubits adalah fondasi dari pemahaman ini.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "emphatic"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Benar sekali. Qubits adalah fondasi dari pemahaman ini.</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Terima kasih banyak atas wawasan yang sangat berharga hari ini.",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "grateful"
+      },
+      "ssml": "<speak><prosody rate=\"100%\">Terima kasih banyak atas wawasan yang sangat berharga hari ini.</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Dr. Sari",
+      "role": "expert",
+      "text": "Sama-sama. Semoga bermanfaat untuk pendengar semua.",
+      "voice_settings": {
+        "name": "Dr. Sari",
+        "gender": "female",
+        "style": "academic",
+        "emotion": "warm"
+      },
+      "ssml": "<speak><prosody rate=\"95%\" pitch=\"-2%\">Sama-sama. Semoga bermanfaat untuk pendengar semua.</prosody><break time=\"500ms\"/></speak>"
+    },
+    {
+      "speaker": "Andi",
+      "role": "host",
+      "text": "Sampai jumpa di episode berikutnya!",
+      "voice_settings": {
+        "name": "Andi",
+        "gender": "male",
+        "style": "professional",
+        "emotion": "enthusiastic"
+      },
+      "ssml": "<speak><prosody rate=\"105%\" pitch=\"+5%\">Sampai jumpa di episode berikutnya!</prosody><break time=\"1000ms\"/></speak>"
+    }
+  ]
+}

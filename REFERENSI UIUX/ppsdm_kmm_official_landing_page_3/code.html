@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM KMM - Official Landing Page</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-hover": "#104abf",
+                        "secondary": "#be1e2d", // ITS Red inspired
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111318] dark:text-white antialiased overflow-x-hidden selection:bg-primary selection:text-white">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#101622]/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<!-- Logo -->
+<div class="flex-shrink-0 flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<span class="font-bold text-xl tracking-tight text-[#111318] dark:text-white">PPSDM KMM</span>
+</div>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#">Beranda</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#dimensions">Dimensi</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#testimonials">Testimoni</a>
+</nav>
+<!-- CTA Button -->
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center h-10 px-5 rounded bg-primary hover:bg-primary-hover text-white text-sm font-bold transition-all shadow-md hover:shadow-lg">
+                        Masuk
+                    </button>
+<!-- Mobile Menu Button -->
+<button class="md:hidden p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+<!-- Mesh Gradient Background -->
+<div class="absolute inset-0 z-0 pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/20 blur-[100px] animate-pulse"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/10 blur-[120px]"></div>
+<div class="absolute top-[40%] left-[50%] transform -translate-x-1/2 w-[60%] h-[60%] rounded-full bg-blue-400/10 blur-[90px]"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Official Portal ITS
+            </div>
+<h1 class="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-[#111318] dark:text-white mb-6 leading-[1.1]">
+                Membangun Insan<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">ITS Seutuhnya</span>
+</h1>
+<p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
+                Portal pengembangan diri terintegrasi untuk mahasiswa Institut Teknologi Sepuluh Nopember. Jelajahi potensi diri Anda melalui 9 dimensi pengembangan komprehensif.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="h-12 px-8 rounded bg-primary hover:bg-primary-hover text-white text-base font-bold transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2 group">
+                    Mulai Perjalanan Anda
+                    <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="h-12 px-8 rounded bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#111318] dark:text-white text-base font-bold transition-all hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+                    Pelajari Lebih Lanjut
+                </button>
+</div>
+<!-- Abstract Hero Image / Dashboard Preview -->
+<div class="mt-16 relative mx-auto max-w-5xl">
+<div class="rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+<img alt="Students collaborating in a modern campus environment representing growth and community" class="w-full h-auto object-cover opacity-90 dark:opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZbQrIla3SchnJtjkdBfwvPzaaAt5y9sFJ80yW4tt7xlFK3RBwL3MtZekVu8r0AMNtAy-5r3Xuap6eH5dkAGKOI3AMUeq4toJqM0z4-_EjELR-XpnhLVtaFwqm_4qQshkp2UQaKZqeMU484dtWfXtEf561BGKsjmDN1zA_HL6RsW5dTN9Xep4lvePwdESrkEu07bqZTk3Loy9SNGnc9gftQu6rfQ1L9Mrp0IrBGcfTJJVPpp7CyiYkvml5qBewcLEVJ7JuMh_uqV8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent dark:from-black/40"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Section (9 Dimensions) -->
+<section class="py-24 bg-white dark:bg-[#101622] relative" id="dimensions">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold text-[#111318] dark:text-white mb-4">9 Dimensi Pengembangan</h2>
+<p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Kerangka kerja holistik untuk membentuk karakter mahasiswa yang unggul, adaptif, dan siap menghadapi tantangan global.
+                </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Dimension Cards -->
+<!-- Card 1 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Spiritual</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Memperkuat nilai keimanan dan ketakwaan sebagai landasan moral dalam setiap tindakan.
+                    </p>
+</div>
+<!-- Card 2 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Kognitif</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Mengasah kemampuan berpikir kritis, analitis, dan sistematis dalam memecahkan masalah.
+                    </p>
+</div>
+<!-- Card 3 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">work</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Profesional</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Mempersiapkan etika kerja, kompetensi teknis, dan kesiapan karir masa depan.
+                    </p>
+</div>
+<!-- Card 4 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Sosial</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Membangun relasi positif, empati, dan kontribusi nyata bagi masyarakat sekitar.
+                    </p>
+</div>
+<!-- Card 5 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">manage_accounts</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Manajerial</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Mengembangkan jiwa kepemimpinan dan kemampuan mengelola organisasi secara efektif.
+                    </p>
+</div>
+<!-- Card 6 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Fisik</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Menjaga kesehatan jasmani dan kebugaran untuk mendukung produktivitas maksimal.
+                    </p>
+</div>
+<!-- Card 7 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Emosional</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Meningkatkan kecerdasan emosional dan ketahanan mental dalam menghadapi tekanan.
+                    </p>
+</div>
+<!-- Card 8 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Intelektual</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Memperluas wawasan dan kedalaman ilmu pengetahuan di berbagai bidang.
+                    </p>
+</div>
+<!-- Card 9 -->
+<div class="group relative p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">public</span>
+</div>
+<h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">Global</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Membangun perspektif internasional dan kemampuan beradaptasi lintas budaya.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Visualization Section -->
+<section class="py-24 bg-background-light dark:bg-[#151b2b]">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 flex flex-col lg:flex-row">
+<!-- Content Side -->
+<div class="p-8 lg:p-12 lg:w-1/2 flex flex-col justify-center">
+<div class="inline-flex items-center gap-2 mb-4">
+<span class="px-2 py-1 rounded bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-bold uppercase tracking-wider">Simulasi Interaktif</span>
+</div>
+<h2 class="text-3xl lg:text-4xl font-bold text-[#111318] dark:text-white mb-6">
+                        Visualisasikan Potensi Anda
+                    </h2>
+<p class="text-gray-600 dark:text-gray-300 text-lg mb-8">
+                        Lihat bagaimana keseimbangan 9 dimensi membentuk profil unik Anda. Platform kami membantu Anda mengidentifikasi area kekuatan dan peluang pengembangan.
+                    </p>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">analytics</span>
+</div>
+<div>
+<h4 class="font-bold text-[#111318] dark:text-white">Analisis Mendalam</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400">Data real-time tentang perkembangan Anda.</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</div>
+<div>
+<h4 class="font-bold text-[#111318] dark:text-white">Rekomendasi Personal</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400">Saran kegiatan sesuai kebutuhan Anda.</p>
+</div>
+</div>
+</div>
+<button class="w-fit h-12 px-6 rounded bg-primary hover:bg-primary-hover text-white text-sm font-bold transition-all flex items-center gap-2">
+                        Coba Simulasi Profil
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Chart Side -->
+<div class="lg:w-1/2 bg-gray-50 dark:bg-gray-800/50 p-8 lg:p-12 flex items-center justify-center relative overflow-hidden">
+<!-- Abstract Background Pattern -->
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#135bec 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- CSS Radar Chart Visualization -->
+<div class="relative w-full max-w-md aspect-square">
+<!-- Chart Circles -->
+<div class="absolute inset-0 border border-gray-300 dark:border-gray-600 rounded-full m-auto w-[100%] h-[100%]"></div>
+<div class="absolute inset-0 border border-gray-300 dark:border-gray-600 rounded-full m-auto w-[75%] h-[75%]"></div>
+<div class="absolute inset-0 border border-gray-300 dark:border-gray-600 rounded-full m-auto w-[50%] h-[50%]"></div>
+<div class="absolute inset-0 border border-gray-300 dark:border-gray-600 rounded-full m-auto w-[25%] h-[25%]"></div>
+<!-- Chart Axis Lines -->
+<div class="absolute inset-0 m-auto w-[1px] h-full bg-gray-200 dark:bg-gray-700"></div>
+<div class="absolute inset-0 m-auto w-full h-[1px] bg-gray-200 dark:bg-gray-700"></div>
+<div class="absolute inset-0 m-auto w-[1px] h-full bg-gray-200 dark:bg-gray-700 rotate-45"></div>
+<div class="absolute inset-0 m-auto w-full h-[1px] bg-gray-200 dark:bg-gray-700 rotate-45"></div>
+<!-- Polygon Shape (Simulated with clip-path) -->
+<div class="absolute inset-0 m-auto w-[80%] h-[80%] bg-primary/20 border-2 border-primary" style="clip-path: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%); animation: pulse-chart 3s infinite ease-in-out;">
+</div>
+<!-- Data Points -->
+<div class="absolute top-[10%] left-[50%] -translate-x-1/2 w-3 h-3 bg-primary rounded-full shadow-lg border-2 border-white"></div>
+<div class="absolute top-[50%] right-[0%] -translate-y-1/2 w-3 h-3 bg-primary rounded-full shadow-lg border-2 border-white"></div>
+<div class="absolute bottom-[10%] left-[50%] -translate-x-1/2 w-3 h-3 bg-primary rounded-full shadow-lg border-2 border-white"></div>
+<div class="absolute top-[50%] left-[0%] -translate-y-1/2 w-3 h-3 bg-primary rounded-full shadow-lg border-2 border-white"></div>
+<!-- Labels (Simplified) -->
+<div class="absolute top-2 left-1/2 -translate-x-1/2 -translate-y-full text-xs font-bold text-primary bg-white dark:bg-gray-900 px-2 py-0.5 rounded shadow">Spiritual</div>
+<div class="absolute right-2 top-1/2 translate-x-full -translate-y-1/2 text-xs font-bold text-primary bg-white dark:bg-gray-900 px-2 py-0.5 rounded shadow">Profesional</div>
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 translate-y-full text-xs font-bold text-primary bg-white dark:bg-gray-900 px-2 py-0.5 rounded shadow">Sosial</div>
+<div class="absolute left-2 top-1/2 -translate-x-full -translate-y-1/2 text-xs font-bold text-primary bg-white dark:bg-gray-900 px-2 py-0.5 rounded shadow">Intelektual</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials Marquee -->
+<section class="py-20 overflow-hidden bg-white dark:bg-[#101622]" id="testimonials">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
+<h2 class="text-3xl font-bold text-[#111318] dark:text-white">Apa Kata Mahasiswa</h2>
+<p class="text-gray-500 mt-2">Mereka yang telah merasakan dampak positif pengembangan diri.</p>
+</div>
+<div class="relative w-full">
+<div class="flex gap-6 animate-scroll w-max hover:pause">
+<!-- Testimonial Items (Duplicated for infinite scroll effect) -->
+<!-- Item 1 -->
+<div class="w-[350px] p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden" data-alt="Portrait of a smiling male student">
+<img alt="Student avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUR9NtJKraJYRJRhsYfjMxDYL3exLk8hwStXlKmqWPCigFpVb2-3xyjEUN05AZ5aloXj_-SD9o80f-hQzU4l4QWRcB50d48JAXpTQx6GAWk_QT3SeEQTs6OynPxxVJn2Mk41SEP-Ck_1aF6Yqza7Az1T1a1X-La2xX6rc06B7jyeuaTarGbj33W9aZ6nnBMqIIZSa07lEa3dyIGsSjdKj-6HJyOoRzZ6WTEyJJAJg_T5JeJbDB9q_nbMBmjIGm8ob9YCrq-sEhihI"/>
+</div>
+<div>
+<h4 class="font-bold text-sm text-[#111318] dark:text-white">Budi Santoso</h4>
+<p class="text-xs text-gray-500">Teknik Informatika</p>
+</div>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm italic">"Program ini mengubah cara saya memandang soft skills. Sangat membantu untuk persiapan dunia kerja."</p>
+</div>
+<!-- Item 2 -->
+<div class="w-[350px] p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden" data-alt="Portrait of a female student wearing glasses">
+<img alt="Student avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlbYihY_OOLm0zy03DQma9C_xvH-ufMPlidh5Kcnv52qt9DNgBC2jQ85CuhOJl4-Tn6-Ar3xrFjbdADW-QGIXHTfD1_4ZVlw9EzrGqw8HD2teH9KE212GxdYRabGHMcGqy8BBAhm8muMRA8I47X-mhpRTdb0D5XOYBENZZfkqR6y0IJBylBOh3vlSqP7_2VrjzWSuaV-9UArqiG4_6x3EVCg2wxRwbE1kTRils2QXth_4BYPN_JItWX8tC-JSduLltKqZ5Mpqf7c"/>
+</div>
+<div>
+<h4 class="font-bold text-sm text-[#111318] dark:text-white">Siti Aminah</h4>
+<p class="text-xs text-gray-500">Desain Produk</p>
+</div>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm italic">"Fitur radar chart sangat membantu saya melihat keseimbangan hidup antara akademik dan sosial."</p>
+</div>
+<!-- Item 3 -->
+<div class="w-[350px] p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden" data-alt="Portrait of a male student outdoors">
+<img alt="Student avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgG8qQPNHaXvBVOGc_hxBtqKq-tg-deFC5oy4DTMe44MuUzi4mNza7crStBBNgFxoX3JMK5QtJvc0yTXhVRgBh0Tw8Xohypfe1zVoWaMu8VVNl3NAW4k8SWLyG9ypXEbrbIrxn_oWFZa03jiF-uArXwXyh4UaPO1bOea3ZEW-sxJij5d4xumS30q-aRrsKoFi_7YQPvMDzcT5f9juurBIi_FTaGu4QwluTHvzuYFKV2VUTSd9GFRFaNzPWn68DCDVC9U42w9C0Fb4"/>
+</div>
+<div>
+<h4 class="font-bold text-sm text-[#111318] dark:text-white">Rizky Pratama</h4>
+<p class="text-xs text-gray-500">Teknik Mesin</p>
+</div>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm italic">"Platform yang wajib diakses mahasiswa baru. Dimensi Spiritual benar-benar memberikan perspektif baru."</p>
+</div>
+<!-- Item 4 -->
+<div class="w-[350px] p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden" data-alt="Portrait of a female student smiling">
+<img alt="Student avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqqE_kzVSdWXArTRKZRfxfW4-Uev_ydnFgAlAl55emUGHBBoFeE54z7PNDZMqpKP4eb5KS5lLz2OrBPTCcOYtPfikP2VtBxD7tpE8faZDo7atMGOjmU6brbOKuM-tGzdASC5PSoupnrjrN2ss_BDxqsIm88N2F4XMxRf84vLGUwdaaQ09RlCluINqZiRW50-wRxHpTavMi9gJd_sapoxptfxurrAXw8kIX0S1vyxZ-j6OkJ0j0Lq0Aln7EaKMH6stFrpetMErqynA"/>
+</div>
+<div>
+<h4 class="font-bold text-sm text-[#111318] dark:text-white">Dewi Lestari</h4>
+<p class="text-xs text-gray-500">Statistika</p>
+</div>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm italic">"Sangat intuitif dan mudah digunakan. Saya suka bagaimana semua aktivitas tercatat dengan rapi."</p>
+</div>
+<!-- Duplicate items for seamless loop -->
+<div class="w-[350px] p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden" data-alt="Portrait of a smiling male student">
+<img alt="Student avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIYS2jXfHmlUTftFeN0JjJ9-yebkYx6X1ZNtERRsbCcy_2_uY_w4FIKUQw9KeqU_LcNEbgDZfPsOw3GcJYmSq9-kXfTZLdzVmv_i0BsoTYsxW1O3PO1GJqicGIfwz7kr1QBWYUk4bck_LHXVl_Aoqo6YMC1SHjpD7vqlwidVVwXDqH_TMA1w3CFRGv2q98n0DH-nLK46RE2ureIWg7856zFsitaAdMP72rCiggM6zxLPKcoDlY6PLBZvO6x4k7V3Un4nTBM3HYWfY"/>
+</div>
+<div>
+<h4 class="font-bold text-sm text-[#111318] dark:text-white">Budi Santoso</h4>
+<p class="text-xs text-gray-500">Teknik Informatika</p>
+</div>
+</div>
+<p class="text-gray-600 dark:text-gray-400 text-sm italic">"Program ini mengubah cara saya memandang soft skills. Sangat membantu untuk persiapan dunia kerja."</p>
+</div>
+</div>
+</div>
+<style>
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-100%); }
+            }
+            .animate-scroll {
+                animation: scroll 30s linear infinite;
+            }
+            .hover\:pause:hover {
+                animation-play-state: paused;
+            }
+        </style>
+</section>
+<!-- Footer -->
+<footer class="bg-[#0b111a] text-white pt-16 pb-8 border-t border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+<!-- Brand Column -->
+<div class="col-span-1 lg:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<span class="font-bold text-xl tracking-tight">PPSDM KMM</span>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Membangun karakter unggul mahasiswa ITS melalui pengembangan diri yang terintegrasi dan berkelanjutan.
+                    </p>
+<div class="flex gap-4">
+<a class="text-gray-400 hover:text-white transition-colors" href="#"><span class="material-symbols-outlined">social_leaderboard</span></a>
+<a class="text-gray-400 hover:text-white transition-colors" href="#"><span class="material-symbols-outlined">smart_display</span></a> <!-- YouTube/Video icon proxy -->
+<a class="text-gray-400 hover:text-white transition-colors" href="#"><span class="material-symbols-outlined">photo_camera</span></a> <!-- Instagram icon proxy -->
+</div>
+</div>
+<!-- Quick Links -->
+<div>
+<h3 class="font-bold text-white mb-6">Tautan Cepat</h3>
+<ul class="space-y-4 text-sm text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">Beranda</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tentang Kami</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">9 Dimensi</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Berita &amp; Artikel</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+</ul>
+</div>
+<!-- Contact -->
+<div>
+<h3 class="font-bold text-white mb-6">Hubungi Kami</h3>
+<ul class="space-y-4 text-sm text-gray-400">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5 text-lg">location_on</span>
+<span>Gedung Rektorat Lt. 1, Kampus ITS Sukolilo, Surabaya 60111</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-lg">call</span>
+<span>(031) 5994251</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-lg">mail</span>
+<span>ppsdm@its.ac.id</span>
+</li>
+</ul>
+</div>
+<!-- Newsletter (Simplified) -->
+<div>
+<h3 class="font-bold text-white mb-6">Dapatkan Informasi Terbaru</h3>
+<p class="text-sm text-gray-400 mb-4">Berlangganan newsletter kami untuk update kegiatan.</p>
+<div class="flex flex-col gap-2">
+<input class="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Email Anda" type="email"/>
+<button class="w-full px-4 py-2 rounded bg-primary hover:bg-primary-hover text-white text-sm font-bold transition-colors">Langganan</button>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+<p>© 2023 PPSDM KMM - Institut Teknologi Sepuluh Nopember. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-white transition-colors" href="#">Kebijakan Privasi</a>
+<a class="hover:text-white transition-colors" href="#">Syarat &amp; Ketentuan</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

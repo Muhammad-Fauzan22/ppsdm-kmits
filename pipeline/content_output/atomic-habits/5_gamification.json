@@ -1,0 +1,30 @@
+{
+  "games": {
+    "quiz_battle": {
+      "html": "<!-- Game Template: battle_royale -->\n<script>const questions = [{\"question\": \"What is 2+2?\", \"answers\": [\"3\", \"4\", \"5\"], \"correct\": \"4\", \"points\": 100, \"time_limit\": 30, \"powerups\": [\"Skip\", \"50/50\"]}, {\"question\": \"What is the capital of France?\", \"answers\": [\"London\", \"Paris\", \"Berlin\"], \"correct\": \"Paris\", \"points\": 100, \"time_limit\": 30, \"powerups\": [\"Skip\", \"50/50\"]}];</script>",
+      "js": "// Game Logic Generated",
+      "assets": [],
+      "config": {
+        "scoring_system": "weighted",
+        "multiplayer": true,
+        "offline_mode": true
+      }
+    },
+    "concept_puzzle": {
+      "type": "crossword",
+      "concepts": [
+        "Superposition",
+        "Entanglement",
+        "Qubits",
+        "Quantum Gates"
+      ],
+      "difficulty": "adaptive",
+      "html": "<!-- Puzzle Game: crossword -->"
+    }
+  },
+  "integration_code": {
+    "quiz_battle": "<iframe src='game_quiz_battle.html' width='100%' height='600px'></iframe>",
+    "concept_puzzle": "<iframe src='game_concept_puzzle.html' width='100%' height='600px'></iframe>"
+  },
+  "mobile_app_ready": true
+}

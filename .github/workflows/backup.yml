@@ -1,0 +1,187 @@
+/**
+ * GitHub Actions Workflow for Automated Database Backups
+ * Free Tier: 2,000 minutes/month
+ */
+
+name: Database Backup
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Manual trigger
+    inputs:
+      backup_type:
+        description: 'Type of backup (full/incremental)'
+        required: false
+        default: 'full'
+
+env:
+  SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+  BACKUP_RETENTION_DAYS: 30
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Database Backup
+        run: |
+          echo "Starting database backup..."
+          supabase db dump --db-url "${{ secrets.SUPABASE_DB_URL }}" \
+            --file "backups/backup-$(date +%Y%m%d-%H%M%S).sql" \
+            --schema public \
+            --data
+          
+      - name: Upload Backup to GitHub Releases
+        if: github.event_name == 'schedule'
+        uses: actions/upload-artifact@v4
+        with:
+          name: database-backup
+          path: backups/
+          retention-days: 7
+
+      - name: Upload Backup to Cloud Storage
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          bucket: ${{ secrets.BACKUP_BUCKET_NAME }}
+          path: backups/
+          headers: '{"Cache-Control": "no-store"}'
+
+      - name: Cleanup Old Backups
+        run: |
+          # Keep last 30 daily backups
+          ls -t backups/*.sql | tail -n +31 | xargs -r rm
+          
+          # Keep only last 4 weekly backups
+          ls -t backups/*-week*.sql | tail -n +5 | xargs -r rm
+          
+          # Keep only last 12 monthly backups
+          ls -t backups/*-month*.sql | tail -n +13 | xargs -r rm
+
+      - name: Send Notification
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "Database Backup Status: ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Database Backup* ${{ job.status }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Weekly backup with extended retention
+  weekly-backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'schedule' && github.run_number % 7 == 0
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Full Database Backup
+        run: |
+          supabase db dump --db-url "${{ secrets.SUPABASE_DB_URL }}" \
+            --file "backups/backup-weekly-$(date +%Y%m%d).sql" \
+            --schema public \
+            --data \
+            --exclude-table "logs" \
+            --exclude-table "audit_trail"
+
+      - name: Upload Weekly Backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-backup
+          path: backups/
+          retention-days: 90
+
+  # Monthly backup for long-term archive
+  monthly-backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'schedule' && github.run_number % 30 == 0
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Full Database Backup
+        run: |
+          supabase db dump --db-url "${{ secrets.SUPABASE_DB_URL }}" \
+            --file "backups/backup-monthly-$(date +%Y%m).sql" \
+            --schema public \
+            --data
+
+      - name: Compress Backup
+        run: gzip backups/backup-monthly-*.sql
+
+      - name: Upload to Cloud Storage
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          bucket: ${{ secrets.ARCHIVE_BUCKET_NAME }}
+          path: monthly-backups/
+          headers: '{"Cache-Control": "no-store"}'
+
+  # Restore from backup (manual trigger only)
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: github.event_name == 'workflow_dispatch'
+    needs: backup
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: List Available Backups
+        run: |
+          echo "Available backups:"
+          ls -la backups/*.sql 2>/dev/null || echo "No backups found"
+
+      - name: Restore Database
+        run: |
+          BACKUP_FILE=$(ls -t backups/*.sql | head -1)
+          echo "Restoring from: $BACKUP_FILE"
+          supabase db restore --db-url "${{ secrets.SUPABASE_DB_URL }}" "$BACKUP_FILE"
+
+      - name: Verify Restoration
+        run: |
+          echo "Checking table counts..."
+          # Add verification queries here

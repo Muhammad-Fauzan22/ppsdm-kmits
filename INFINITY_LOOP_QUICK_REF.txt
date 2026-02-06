@@ -1,0 +1,195 @@
+# ⚡ INFINITY LOOP - QUICK REFERENCE CARD
+
+## 🚀 ONE-LINER START
+
+```powershell
+$env:NVIDIA_API_KEY = "your-key"; python scripts/infinity_loop.py --iterations 5
+```
+
+---
+
+## 📋 COMMAND CHEAT SHEET
+
+| Command | What it does |
+|---------|-------------|
+| `python scripts/infinity_loop.py` | **Infinite loop** (forever, Ctrl+C to stop) |
+| `python scripts/infinity_loop.py --iterations 3` | **3 loops only** |
+| `python scripts/infinity_loop.py --iterations 50` | **50 loops** |
+| `python scripts/infinity_loop.py --focus ui-ux` | **Focus on UI/UX** |
+| `python scripts/infinity_loop.py --iterations 10 --focus frontend` | **10 loops, frontend focused** |
+| `.\start-infinity-loop.ps1` | **Interactive launcher** |
+
+---
+
+## 🎯 RECOMMENDED WORKFLOWS
+
+### Conservative (First Time)
+```powershell
+$env:NVIDIA_API_KEY = "your-key"
+
+# 1. Test with 3 iterations
+python scripts/infinity_loop.py --iterations 3
+
+# 2. Review changes
+git diff
+
+# 3. If good, commit
+git add . && git commit -m "feat: infinity loop test"
+
+# 4. Then try 10 iterations
+python scripts/infinity_loop.py --iterations 10
+```
+
+### Aggressive (Confident)
+```powershell
+$env:NVIDIA_API_KEY = "your-key"
+
+# Just run infinite loop
+python scripts/infinity_loop.py
+# (Stop with Ctrl+C when satisfied)
+```
+
+### Focused (Target Area)
+```powershell
+# UI/UX improvements only
+python scripts/infinity_loop.py --iterations 20 --focus ui-ux
+
+# Then frontend
+python scripts/infinity_loop.py --iterations 20 --focus frontend
+
+# Then backend
+python scripts/infinity_loop.py --iterations 20 --focus backend
+```
+
+---
+
+## 📊 WHAT HAPPENS IN EACH LOOP
+
+```
+1. 🧠 ARCHITECT analyzes project
+   ↓
+2. 🔨 EXECUTOR writes code
+   ↓
+3. 💾 AUTO-SAVE to files (NO PERMISSION!)
+   ↓
+4. ⏸️  Wait 5 seconds
+   ↓
+5. 🔄 REPEAT
+```
+
+---
+
+## 📁 KEY FILES
+
+| File | Purpose |
+|------|---------|
+| `scripts/infinity_loop.py` | Main orchestrator script |
+| `start-infinity-loop.ps1` | Interactive launcher |
+| `INFINITY_LOOP_GUIDE.md` | Full documentation |
+| `infinity_loop_logs/` | Iteration logs (auto-created) |
+
+---
+
+## 🛑 HOW TO STOP
+
+Press **Ctrl+C** at any time. Script will exit gracefully.
+
+---
+
+## 📊 MONITORING
+
+### View Logs
+```powershell
+Get-ChildItem infinity_loop_logs | Sort-Object -Desc | Select-Object -First 5
+```
+
+### See Changes
+```powershell
+git diff
+```
+
+### Check Modified Files
+```powershell
+git status
+```
+
+---
+
+## ✅ BEFORE YOU START
+
+- [ ] API key set: `$env:NVIDIA_API_KEY = "your-key"`
+- [ ] Project is git repository: `git status` works
+- [ ] Current state committed: `git add . && git commit -m "before"`
+- [ ] You have 5+ minutes available
+- [ ] Terminal won't auto-close
+
+---
+
+## ❌ WHAT NOT TO DO
+
+- ❌ Don't close terminal while running
+- ❌ Don't interrupt with Ctrl+Z (use Ctrl+C)
+- ❌ Don't modify code while it's running
+- ❌ Don't run multiple instances simultaneously
+- ❌ Don't hardcode API key in script
+
+---
+
+## 🆘 QUICK TROUBLESHOOTING
+
+| Problem | Solution |
+|---------|----------|
+| "API_KEY not set" | `$env:NVIDIA_API_KEY = "your-key"` |
+| "No JSON in response" | Script skips, retries next loop (normal) |
+| "Files not saved" | Check path in `### FILE:` marker |
+| "Hangs on Architect" | Ctrl+C and check API status |
+| "Python not found" | Install Python 3.9+ from python.org |
+
+---
+
+## 💡 TIPS
+
+1. **Start small** - Use `--iterations 3` first
+2. **Commit often** - After each session, git commit
+3. **Focus areas** - Improve one area at a time
+4. **Monitor output** - Watch terminal, don't tab away
+5. **Review logs** - Check `infinity_loop_logs/` for details
+
+---
+
+## 📈 TIMELINE
+
+| Time | Expected Result |
+|------|-----------------|
+| 1-2 min (3 iterations) | Quick taste of what's possible |
+| 5-10 min (10 iterations) | Noticeable improvements |
+| 15-20 min (30 iterations) | Significant quality gains |
+| 30+ min (50+ iterations) | Professional-grade code |
+
+---
+
+## 🎉 SUCCESS INDICATORS
+
+After running, you should see:
+- ✅ Terminal shows progress
+- ✅ Files saved to project
+- ✅ Logs created in `infinity_loop_logs/`
+- ✅ `git status` shows modified files
+- ✅ No errors in terminal
+
+---
+
+## 🚀 GO!
+
+```powershell
+$env:NVIDIA_API_KEY = "your-key-here"
+python scripts/infinity_loop.py --iterations 5
+```
+
+**That's it! The system will handle the rest.** ⚙️
+
+---
+
+**Status:** 🟢 Ready to use  
+**Version:** 1.0  
+**Date:** January 31, 2026

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-Powered Quantum Learning Library</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for the detail view */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 20px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111318] dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-40 w-full bg-white dark:bg-[#1a202c] border-b border-[#f0f2f4] dark:border-[#2d3748] px-6 lg:px-12 py-3 shadow-sm">
+<div class="flex items-center justify-between max-w-[1600px] mx-auto">
+<!-- Logo -->
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined text-2xl">local_library</span>
+</div>
+<h2 class="text-[#111318] dark:text-white text-lg font-bold tracking-tight">PPSDM KMM <span class="font-normal text-gray-500 dark:text-gray-400">Library</span></h2>
+</div>
+<!-- Nav Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-primary text-sm font-semibold bg-primary/10 px-3 py-1.5 rounded-full" href="#">Library</a>
+<a class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">My Progress</a>
+</div>
+<!-- Profile -->
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-[#1a202c]"></span>
+</button>
+<div class="h-9 w-9 bg-gray-200 dark:bg-gray-700 rounded-full bg-cover bg-center border-2 border-white dark:border-[#2d3748] shadow-sm cursor-pointer" data-alt="User profile avatar image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgLvlVYkIzdaGulQmwkozeV6o45ZII13hkH_fOJNDTEkXP2Hdf2cPjO2TvmGFxxz3MDj7_molY6-9N4ckBtes3aFOyIbbOI8nI_plJzZueII4g4JZ7wdqUzHhCYwQkakRGA1jIj5WTS_Ahitgnu1q1VZE2IXEgvjC2rcqqk24lonbK1wBjjHKbQOvwBwO539Hz7gitAVEJBcZ87MZXebSu4hWJY5sL91U8gUbm9fLMVC1bVFNybo_6ElZdbgJqlHFfmiR0bb8RxD4');">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Layout -->
+<main class="flex-1 flex flex-col lg:flex-row max-w-[1600px] mx-auto w-full h-[calc(100vh-64px)] overflow-hidden">
+<!-- Left Content: Search & Grid -->
+<div class="flex-1 h-full overflow-y-auto custom-scrollbar p-6 lg:p-10 lg:pr-6">
+<!-- Hero Search Section -->
+<div class="max-w-4xl mx-auto mb-10 text-center">
+<h1 class="text-[#111318] dark:text-white text-3xl lg:text-4xl font-bold tracking-tight mb-2">
+                    Unlock Knowledge with <span class="text-primary">Quantum AI</span>
+</h1>
+<p class="text-gray-500 dark:text-gray-400 mb-8">Discover personalized resources tailored to your learning path.</p>
+<!-- Search Bar -->
+<div class="relative max-w-2xl mx-auto group z-20">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary text-2xl">temp_preferences_custom</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-white dark:bg-[#1f2937] border-0 rounded-full text-gray-900 dark:text-white shadow-[0_4px_20px_-4px_rgba(19,91,236,0.15)] ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-primary placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all text-base" placeholder="What do you want to learn today?" type="text" value="Introduction to Neural Networks"/>
+<div class="absolute inset-y-0 right-2 flex items-center">
+<button class="bg-primary hover:bg-blue-700 text-white p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap justify-center gap-3 mt-6">
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full text-sm font-medium shadow-md transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+                        Video
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1f2937] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px]">article</span>
+                        Article
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1f2937] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px]">school</span>
+                        Course
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1f2937] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px]">book_2</span>
+                        Book
+                    </button>
+</div>
+</div>
+<!-- Results Grid -->
+<div class="mb-6 flex items-center justify-between">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white">Top Results</h3>
+<span class="text-sm text-gray-500">1,203 matches found in 0.4s</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
+<!-- Active Card (Simulated Selection) -->
+<div class="group relative bg-white dark:bg-[#1f2937] rounded-xl overflow-hidden shadow-lg ring-2 ring-primary transform transition-all">
+<div class="aspect-video w-full bg-cover bg-center relative" data-alt="Abstract neural network visualization with blue nodes" style="background-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuD6qGR8gFVQghMjt9Ij1TxgIl-xrCaRqRl8a34_RHgoakvsts0TIiAV7hvgQ0C7JqeLew30rHIRNmS6FiaxzKI1yyO7NjDUAQWz3Bmj1dueqycOT2rPsW067cs2KL4O7xRFdernOjikML9Ar4ULIhTZlZ35u-jWpBxVGxXDTjIS7jh_MaZrh3p3Hpdr40wVs52wSqbQHbuU2Dzqq5apYHbCP2QX_R2UDwrTwZOEnfMdzMfnnwpfFRFp424hEPmvvMF9m2lY1w4SEF4');">
+<span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-primary text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">smart_toy</span> 98% Match
+                        </span>
+<div class="absolute bottom-3 left-3 text-white">
+<div class="flex items-center gap-1.5 mb-1 opacity-90">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+<span class="text-xs font-medium uppercase tracking-wider">Video Module</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<h4 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2">Introduction to Neural Networks</h4>
+<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> Prof. A. Wijaya</span>
+<span>15m 20s</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group relative bg-white dark:bg-[#1f2937] rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-video w-full bg-cover bg-center relative" data-alt="Abstract digital business strategy concept" style="background-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAY31XTARppdeyC3sxXtdSHs8pjqjL1XUqEEsWrv4XMdPE-SW55wAVAVnitshvahPpbWkrgnX_aufPZ900zqSDU4G8kj_bOWIKs5S69wegsP6hL-trym5qeiJxhZbwcnBXtXd4mcLdRrJhTl3P-3v9MJkR0fU0vu4eAdS-PmFTiBWuwsuXmW0gAb-tMY3sCBE05a7ZfolQC1zqoRlvXrb3Vj0iq9hv3gWGfo65jXGwpZA00ZHvcsrv_F-lf9Ry8-yQVa3PR2MRxYlI');">
+<span class="absolute top-3 right-3 bg-gray-900/40 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                            85% Match
+                        </span>
+<div class="absolute bottom-3 left-3 text-white">
+<div class="flex items-center gap-1.5 mb-1 opacity-90">
+<span class="material-symbols-outlined text-sm">article</span>
+<span class="text-xs font-medium uppercase tracking-wider">Article</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<h4 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2">Strategic Management in the Digital Age</h4>
+<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">source</span> HBR Archive</span>
+<span>8 min read</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group relative bg-white dark:bg-[#1f2937] rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-video w-full bg-cover bg-center relative" data-alt="Quantum computing particles visualization" style="background-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCCl16EGXDQXV5VuyErfXv_3_WGB3c_WKf3RD7Bkgm9g7lwxGQq8mqiVzv50yPQK1bjcJzW4qDRCAuUa-v9PFVJb5JOv5YVV-6UsWu6Uras_L0ZNhmqx-vvXHQaUhgPzlbWJ2jlO9lnRrWM5CbQhWMaUm1EXwD4jTrdVtnuEX8LjY2TcK6cBKxUILJ0ZJl_SJiFpSu1O43wSfloyTX6NYWa8ytQKvrhHKxvvCnO1RYYDpqCsOJOPrYi4KYsSp0fjRAtn03i9G3uALY');">
+<span class="absolute top-3 right-3 bg-gray-900/40 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                            92% Match
+                        </span>
+<div class="absolute bottom-3 left-3 text-white">
+<div class="flex items-center gap-1.5 mb-1 opacity-90">
+<span class="material-symbols-outlined text-sm">book_2</span>
+<span class="text-xs font-medium uppercase tracking-wider">Book</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<h4 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2">Quantum Computing for Beginners</h4>
+<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">domain</span> MIT Press</span>
+<span>210 pages</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group relative bg-white dark:bg-[#1f2937] rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-video w-full bg-cover bg-center relative" data-alt="Data science charts and graphs" style="background-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhYehED9498gEnbMjXISfk__ssXiVsueZA_9juqCrpodm7CmNr9dGzA5PZqwl4D8k9-qd8e8-J9iBPSE32fAhgcrepxC5ypZWXd1DbKsVNDvnploPnxvXkbUgl81r6GqYoCPPLLQpyeeAVQO5M2P-kiLSTQI8jstEMeNSwKCTdtJS-IvLn1s8J5RONq9EIKqhSe0xle2wUwEGhnKPw-tEvKSNUvkHllJJQW4bls7hqZgRaIaBc8Z78irXYWX5LLqNb44xyGYA3GQE');">
+<span class="absolute top-3 right-3 bg-gray-900/40 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                            78% Match
+                        </span>
+<div class="absolute bottom-3 left-3 text-white">
+<div class="flex items-center gap-1.5 mb-1 opacity-90">
+<span class="material-symbols-outlined text-sm">school</span>
+<span class="text-xs font-medium uppercase tracking-wider">Course</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<h4 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2">Advanced Data Science Workflows</h4>
+<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> Dr. S. Lee</span>
+<span>12 Modules</span>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="group relative bg-white dark:bg-[#1f2937] rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-video w-full bg-cover bg-center relative" data-alt="Abstract blue tech background" style="background-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuD07q3Vh7fk-T50MDDuTEeQjjOD8sR-wq-Dz0f3SBT3uDnduiQ4wKqqQ_IMpzRkovBgKTChg0hZPT2o1qIdsUTXVW7P8v9omEjLW4QCHtwUHU1sM24pdUrLfyY6jWT_E7498VQZ1v3pSOKtUf0WSitrqzIXkb7KxdRogrpcxiwqF6RUPFXV0ofe3KJvFOpGF6VGr9CJBY1PkDCLL3tdOt8UytgEbidy87s_cHZ3lw8skBdMJ5CaJ7wSJhZJsiyTdTcm8za8GJRwYEY');">
+<span class="absolute top-3 right-3 bg-gray-900/40 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                            74% Match
+                        </span>
+<div class="absolute bottom-3 left-3 text-white">
+<div class="flex items-center gap-1.5 mb-1 opacity-90">
+<span class="material-symbols-outlined text-sm">article</span>
+<span class="text-xs font-medium uppercase tracking-wider">Article</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<h4 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2">Machine Learning Ops (MLOps)</h4>
+<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">source</span> TechCrunch</span>
+<span>5 min read</span>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group relative bg-white dark:bg-[#1f2937] rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-video w-full bg-cover bg-center relative" data-alt="Cybersecurity lock icon on dark background" style="background-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpkCTViOnEzdJifX4vTCF4p-W_QzTVbZNs9PQL-1I6CqmlAngIWG2_pqTBrdi0NTfsnYqYntfKy37yXDqodI-oICGoHeMKl7YskiVZuTJ3kVhvSZwVkXVawTTv13nEBk2PNe8gd500GYvfjPRMlsSO4zterky2tzfeZuKAfxUxkWRccLeHnY4H4_a601pdNW5RkR2VlmFXKC2vVdd8f7cZ_gVREpFcmTzDwkEI8XfpgUHk3bktNs6d5rJ4eFVJAGKqAg3MMFKREn4');">
+<span class="absolute top-3 right-3 bg-gray-900/40 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                            65% Match
+                        </span>
+<div class="absolute bottom-3 left-3 text-white">
+<div class="flex items-center gap-1.5 mb-1 opacity-90">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+<span class="text-xs font-medium uppercase tracking-wider">Video</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<h4 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2">Cybersecurity Fundamentals</h4>
+<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> J. Doe</span>
+<span>45m 10s</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Detail Drawer (Expanded View) -->
+<div class="w-full lg:w-[450px] bg-white dark:bg-[#1a202c] border-l border-gray-200 dark:border-gray-800 flex flex-col h-full shadow-2xl z-30 relative shrink-0">
+<!-- Close Button (Mobile Only visible via CSS usually, here illustrative) -->
+<button class="lg:hidden absolute top-4 right-4 p-2 bg-gray-100 rounded-full">
+<span class="material-symbols-outlined">close</span>
+</button>
+<!-- Drawer Header -->
+<div class="p-6 border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-start gap-4 mb-4">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0 shadow-sm" data-alt="Small thumbnail of neural network video" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrdsurfYshYclWzmgVh8yScklGyQ_qfaS32nHMcIRPosfBAGzINYU2Y4augBGhGe_OD97Y6_bduPSa2HLvFtjUTJlO1tEJuoJlJ0yiWuogm9AeQ4mOKyPRG_g1ys3KaaDKnKz0hWjDVbC3zpe8vGuywMfNgMbD8d3gnF-MuHylhaafnpjuzPYmc82d7LQRRInLWcRNGyK48iGR6eB5MyBUajLA0YmjuWg3Eopr7QOYJ7ehK0m1YPtbD4F441tabF1IgZD61MByepk');">
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Video</span>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">98% Match</span>
+</div>
+<h2 class="text-xl font-bold text-gray-900 dark:text-white leading-snug">Introduction to Neural Networks</h2>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-3">
+<button class="flex-1 bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-blue-500/20">
+<span class="material-symbols-outlined text-xl">play_arrow</span>
+                        Start Learning
+                    </button>
+<button class="p-2.5 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-xl">bookmark_add</span>
+</button>
+<button class="p-2.5 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-gray-100 dark:border-gray-800 px-6">
+<button class="py-4 text-sm font-semibold text-primary border-b-2 border-primary mr-6">Deep Report</button>
+<button class="py-4 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">Mind Map</button>
+<button class="py-4 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors ml-6">Related</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6">
+<!-- AI Insight Box -->
+<div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 p-4 rounded-xl border border-blue-100 dark:border-blue-800/30 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+<p class="text-xs font-bold text-primary uppercase">Quantum AI Analysis</p>
+</div>
+<p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        This resource is a <span class="font-semibold text-gray-900 dark:text-white">highly relevant match</span> for your goal to learn "Neural Networks". It covers the core Perceptron model which connects directly to your previous module on Linear Algebra.
+                    </p>
+</div>
+<!-- Markdown Content Area -->
+<div class="prose prose-sm prose-blue dark:prose-invert max-w-none">
+<h3 class="text-gray-900 dark:text-white font-bold text-lg mb-3">Summary</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Neural networks are a set of algorithms, modeled loosely after the human brain, that are designed to recognize patterns. They interpret sensory data through a kind of machine perception, labeling or clustering raw input.
+                    </p>
+<h3 class="text-gray-900 dark:text-white font-bold text-lg mb-3">Key Concepts</h3>
+<ul class="space-y-2 mb-6 text-gray-600 dark:text-gray-400 list-none pl-0">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Perceptrons:</strong> The fundamental building blocks of neural networks.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Activation Functions:</strong> How the network decides what information matters (Sigmoid, ReLU).</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+<span><strong>Backpropagation:</strong> The method used to fine-tune the weights of a neural net.</span>
+</li>
+</ul>
+<!-- Mind Map Placeholder Preview (Visual Tab Teaser) -->
+<div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-[#151b26] mb-4">
+<div class="flex items-center justify-between mb-3">
+<h4 class="text-xs font-bold uppercase text-gray-500">Mind Map Preview</h4>
+<span class="material-symbols-outlined text-gray-400 text-sm">hub</span>
+</div>
+<div class="h-32 w-full flex items-center justify-center relative">
+<!-- Simulated Nodes CSS -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-24 h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center animate-[spin_10s_linear_infinite]">
+<div class="w-3 h-3 bg-primary rounded-full absolute -top-1.5 left-1/2 -translate-x-1/2"></div>
+<div class="w-3 h-3 bg-blue-300 rounded-full absolute top-1/2 -right-1.5 -translate-y-1/2"></div>
+<div class="w-3 h-3 bg-indigo-300 rounded-full absolute -bottom-1.5 left-1/2 -translate-x-1/2"></div>
+</div>
+<div class="absolute bg-white dark:bg-[#1a202c] px-3 py-1 rounded-full shadow-sm border border-gray-200 dark:border-gray-700 z-10">
+<span class="text-xs font-bold text-primary">Core Node</span>
+</div>
+</div>
+</div>
+<button class="w-full text-center text-xs text-primary font-medium mt-2 hover:underline">View Full Interactive Map</button>
+</div>
+</div>
+</div>
+<!-- Drawer Footer (Optional metadata) -->
+<div class="p-4 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-400 flex justify-between">
+<span>Updated: Oct 24, 2023</span>
+<span>ID: RES-8922</span>
+</div>
+</div>
+</main>
+</body></html>

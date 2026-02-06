@@ -1,0 +1,38 @@
+{
+  "id": "course_kdkm_hdpsdm_001",
+  "title": "Mata Kuliah: Buku 1 KDKM dan HDPSDM MUBES V ITS",
+  "title_en": "Course: Book 1 KDKM and HDPSDM MUBES V ITS",
+  "description": "Kursus komprehensif berbasis buku 'Buku 1 KDKM dan HDPSDM MUBES V ITS' oleh PPSDM KMM. Materi mencakup konsep-konsep fundamental KDKM (Keluarga Dasar Keluarga Mahasiswa) dan HDPSDM (Himpunan Diplomasi dan Pengembangan Sumber Daya Mahasiswa) sebagai acuan keorganisasian mahasiswa ITS.",
+  "description_en": "Comprehensive course based on 'Book 1 KDKM and HDPSDM MUBES V ITS' by PPSDM KMM. Covers fundamental concepts of KDKM (Basic Student Family) and HDPSDM (Student Diplomacy and Human Resources Development Association) as a reference for ITS student organization.",
+  "category": "Keorganisasian",
+  "subcategory": "PPSDM KMM ITS",
+  "level": "intermediate",
+  "language": "id",
+  "tags": ["keorganisasian", "ppsdm", "kdkm", "hdpsdm", "kmm-its", "mahasiswa"],
+  "xp_total": 850,
+  "estimated_hours": 12,
+  "badge_name": "Ahli Keorganisasian PPSDM",
+  "badge_name_en": "PPSDM Organization Expert",
+  "badge_icon": "🏆",
+  "prerequisites": [],
+  "learning_outcomes": [
+    "Mampu memahami konsep fundamental KDKM dan HDPSDM dalam konteks organisasi mahasiswa",
+    "Mampu menganalisis struktur dan fungsi organisasi mahasiswa ITS",
+    "Mampu menerapkan prinsip-prinsip keorganisasian dalam kegiatan kemahasiswaan",
+    "Mampu mengevaluasi efektivitas program kerja organisasi mahasiswa",
+    "Mampu menciptakan inovasi dalam pengembangan organisasi mahasiswa"
+  ],
+  "cover_image": "cover_image.svg",
+  "source_book": {
+    "id": "44c9edc5-a7cd-43b2-9951-b48eb622ca64",
+    "title": "Buku 1 KDKM dan HDPSDM MUBES V ITS",
+    "author": "PPSDM KMM ITS",
+    "drive_id": "1RtJBQ_Hd-ULaOH5l_7PDU4ruiTpWUta3",
+    "category": "Keorganisasian"
+  },
+  "created_at": "2026-02-01T03:30:00.000Z",
+  "generated_by": "batch_process_ebooks.py",
+  "generator_version": "2.0.0",
+  "quality_score": 94.5,
+  "grade": "A"
+}

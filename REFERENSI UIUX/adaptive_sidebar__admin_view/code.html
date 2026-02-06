@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM KMM - Admin View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "sidebar-dark": "#0B0E14",
+                        "card-dark": "#1A1F2B",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for dark theme dashboard */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101622; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3648; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a5568; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 overflow-hidden h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-64 h-full flex flex-col justify-between bg-white dark:bg-sidebar-dark border-r border-slate-200 dark:border-slate-800 shrink-0 z-20">
+<!-- Header & Nav -->
+<div class="flex flex-col p-4 gap-8">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/20 p-2 rounded-lg">
+<div class="text-primary material-symbols-outlined text-[28px]">shield_person</div>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">PPSDM KMM</h1>
+<span class="text-xs font-semibold tracking-wider text-primary uppercase">Admin View</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1">
+<!-- Active Item -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white group shadow-lg shadow-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Console</span>
+</a>
+<!-- Inactive Items -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+<span class="text-sm font-medium">Orchestrator</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Config</span>
+</a>
+</nav>
+</div>
+<!-- Footer / User Profile -->
+<div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-sidebar-dark">
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-white/5 cursor-pointer transition-colors">
+<div class="relative">
+<div class="w-9 h-9 rounded-full bg-cover bg-center border border-slate-300 dark:border-slate-600" data-alt="System Administrator Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBoTjh9vEjttsNbDYjYKsrk2oZuuMukSMeNjJMvtC3iZNgpSp5mHmnCwB5TNlWfSBfsEEXCRtXpQHX2C1cheqrG8cBa3sXeUMZVB3L7s1xLyywnGAhpiqpxVDuqiT6-lmLvd-p7QztGBobJGdWmOIvaAoihePAmb_MAin-dkPKf3ZRhDL4RIk8Ubum3XCKYonEgb42h-EuNx7m6GLApymbFhFkDVa4Lj3SsryTLXJXtOGSddexHymfXegmu5kbp9256wo1oeVeAoAk');"></div>
+<div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-sidebar-dark"></div>
+</div>
+<div class="flex flex-col flex-1 overflow-hidden">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">System Admin</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">admin@ppsdm.kmm</p>
+</div>
+</div>
+<button class="flex items-center justify-center gap-2 w-full py-2 text-xs font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+                    Sign Out
+                </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Navigation / Breadcrumbs (Optional Context) -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<span>PPSDM</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-slate-900 dark:text-white font-medium">Console</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<button class="p-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">System Overview</h2>
+<p class="text-slate-500 dark:text-slate-400">Real-time command center dashboard</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                             Last 24 Hours
+                        </button>
+<button class="px-4 py-2 bg-primary hover:bg-blue-600 text-white rounded-lg text-sm font-medium shadow-lg shadow-primary/20 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                             Refresh Data
+                        </button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Stat Card 1 -->
+<div class="p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4 group hover:border-primary/50 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-primary">
+<span class="material-symbols-outlined">memory</span>
+</div>
+<span class="text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">-5%</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">System Load</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">34%</p>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-auto overflow-hidden">
+<div class="bg-primary h-1.5 rounded-full" style="width: 34%"></div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4 group hover:border-primary/50 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">group</span>
+</div>
+<span class="text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">+12%</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Active Users</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">1,204</p>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-auto overflow-hidden">
+<div class="bg-purple-500 h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4 group hover:border-primary/50 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<span class="text-xs font-medium px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">Stable</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Orchestration Status</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">Healthy</p>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-auto overflow-hidden">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+<!-- Main Chart Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<!-- Large Chart -->
+<div class="lg:col-span-2 p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Network Traffic Activity</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Inbound and outbound data flow</p>
+</div>
+<div class="text-right">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">12.5 TB</p>
+<p class="text-sm text-emerald-500 font-medium flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                    +8% vs last 24h
+                                </p>
+</div>
+</div>
+<div class="w-full h-[250px] relative">
+<!-- Abstract Chart Lines using SVG -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#135bec" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#135bec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 250 Q 100 200, 200 230 T 400 180 T 600 210 T 800 100 T 1000 150 V 300 H 0 Z" fill="url(#chartGradient)"></path>
+<path d="M0 250 Q 100 200, 200 230 T 400 180 T 600 210 T 800 100 T 1000 150" fill="none" stroke="#135bec" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0 280 Q 150 260, 300 270 T 500 240 T 700 260 T 1000 220" fill="none" opacity="0.5" stroke="#94a3b8" stroke-dasharray="5,5" stroke-width="2"></path>
+</svg>
+<!-- X Axis Labels -->
+<div class="flex justify-between mt-2 px-2 text-xs font-medium text-slate-400">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+<span>16:00</span>
+<span>20:00</span>
+<span>23:59</span>
+</div>
+</div>
+</div>
+<!-- Side Panel / Quick Actions -->
+<div class="lg:col-span-1 flex flex-col gap-4">
+<div class="p-6 rounded-xl bg-primary text-white shadow-lg shadow-primary/25 relative overflow-hidden">
+<!-- Background Pattern Decoration -->
+<div class="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl"></div>
+<div class="absolute -left-10 -bottom-10 w-32 h-32 rounded-full bg-black/10 blur-xl"></div>
+<h3 class="text-lg font-bold mb-1 relative z-10">Quick Maintenance</h3>
+<p class="text-blue-100 text-sm mb-6 relative z-10">Run diagnostics on selected nodes.</p>
+<div class="flex flex-col gap-3 relative z-10">
+<button class="w-full py-2 px-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-medium flex items-center justify-between transition-colors">
+<span>Run Health Check</span>
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+<button class="w-full py-2 px-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-medium flex items-center justify-between transition-colors">
+<span>Clear Cache</span>
+<span class="material-symbols-outlined text-[18px]">cleaning_services</span>
+</button>
+</div>
+</div>
+<div class="flex-1 p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Recent Alerts</h3>
+<div class="flex flex-col gap-4 overflow-y-auto max-h-[200px] pr-2 custom-scrollbar">
+<div class="flex gap-3 items-start">
+<div class="mt-1 w-2 h-2 rounded-full bg-amber-500 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-slate-800 dark:text-slate-200">High Latency on Node A</p>
+<p class="text-xs text-slate-500">10 mins ago</p>
+</div>
+</div>
+<div class="flex gap-3 items-start">
+<div class="mt-1 w-2 h-2 rounded-full bg-red-500 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-slate-800 dark:text-slate-200">Failed Backup Job</p>
+<p class="text-xs text-slate-500">32 mins ago</p>
+</div>
+</div>
+<div class="flex gap-3 items-start">
+<div class="mt-1 w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-slate-800 dark:text-slate-200">Config Update Applied</p>
+<p class="text-xs text-slate-500">1 hour ago</p>
+</div>
+</div>
+</div>
+<button class="mt-auto pt-4 text-xs font-semibold text-primary hover:underline text-center">View All Logs</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

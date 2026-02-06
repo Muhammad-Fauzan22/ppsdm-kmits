@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM Research &amp; Findings Gallery</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dashboard */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-x-hidden min-h-screen flex flex-col">
+<!-- Navbar -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur supports-[backdrop-filter]:bg-background-light/60 dark:supports-[backdrop-filter]:bg-background-dark/60">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex h-16 items-center justify-between">
+<div class="flex items-center gap-8">
+<!-- Logo Section -->
+<div class="flex items-center gap-3">
+<div class="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-xl">school</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">PPSDM Research</h2>
+</div>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Findings</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Methodology</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Publications</a>
+</nav>
+</div>
+<!-- Search & Actions -->
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-64 rounded-lg border-0 bg-slate-200 dark:bg-slate-800 py-2 pl-10 pr-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-primary" placeholder="Search findings..." type="text"/>
+</div>
+<button class="flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-8 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+<img alt="User Profile" class="h-full w-full object-cover" data-alt="Portrait of a researcher" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5mHVu8BpK-v6olxNDKD7z-NdlwgxuLvkSeEwWsyDAr279cv-o8KomWZFnkvLkGqkjIVUdBKVMcwInBWn2olU1nG23YcH12-CnEdKrCVgw46BAtxvgNe2q_MfRT4o8SUAei1G8zYd5gtuza5GKsDH5uDT9h163pa4H1nOrJ6f1iaz4ucLzPDNyLs1K2BUX8e5BqU-OO7IXZrEPMoKTjeRDAAQr96ZOXUm7R9OtFXfhzytv_eIplCJQRJ6h4-Ee3hbbejm0Wizr350"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+<!-- Breadcrumbs & Heading Section -->
+<section class="space-y-6">
+<nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<a class="hover:text-slate-900 dark:hover:text-white transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-medium text-slate-900 dark:text-white">Research</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-3xl space-y-3">
+<h1 class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+                        Institutional Research &amp; Developmental Findings
+                    </h1>
+<p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
+                        Shaping the future of student development through rigorous, data-driven insights and longitudinal analysis.
+                    </p>
+</div>
+<div class="flex gap-3">
+<button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">share</span>
+                        Share
+                    </button>
+<button class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/20">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Report
+                    </button>
+</div>
+</div>
+</section>
+<!-- Key Stats Cards -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+<div class="absolute right-0 top-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-blue-500/10 blur-xl"></div>
+<div class="relative">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Student Profiles Analyzed</p>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-3xl font-bold text-slate-900 dark:text-white">12,000+</span>
+<span class="text-sm font-medium text-emerald-500 flex items-center">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            12%
+                        </span>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+<div class="absolute right-0 top-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-purple-500/10 blur-xl"></div>
+<div class="relative">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Longitudinal Data Depth</p>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-3xl font-bold text-slate-900 dark:text-white">5 Years</span>
+<span class="text-sm text-slate-500 dark:text-slate-500">2019-2024</span>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+<div class="absolute right-0 top-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-amber-500/10 blur-xl"></div>
+<div class="relative">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Research Papers</p>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-3xl font-bold text-slate-900 dark:text-white">45+</span>
+<span class="text-sm font-medium text-primary cursor-pointer hover:underline">View archive</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Dashboard / Visualization Area -->
+<section class="space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Data Visualization Gallery</h2>
+<div class="flex items-center gap-2 bg-slate-200 dark:bg-slate-800 p-1 rounded-lg">
+<button class="px-3 py-1.5 text-xs font-medium rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm">Growth Trends</button>
+<button class="px-3 py-1.5 text-xs font-medium rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Demographics</button>
+<button class="px-3 py-1.5 text-xs font-medium rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Assessment Scores</button>
+</div>
+</div>
+<!-- Chart Container -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-6 md:p-8">
+<div class="flex flex-col md:flex-row justify-between mb-8 gap-4">
+<div>
+<h3 class="text-lg font-semibold text-slate-900 dark:text-white">Longitudinal Skill Acquisition</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Average competency growth per academic cohort.</p>
+</div>
+<div class="flex gap-3">
+<select class="form-select text-sm rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:border-primary focus:ring-primary">
+<option>All Cohorts</option>
+<option>Class of 2023</option>
+<option>Class of 2024</option>
+</select>
+<select class="form-select text-sm rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:border-primary focus:ring-primary">
+<option>By Year</option>
+<option>By Semester</option>
+</select>
+</div>
+</div>
+<!-- CSS Only Bar Chart Visualization -->
+<div class="relative h-80 w-full mt-4">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between text-xs text-slate-400">
+<div class="border-b border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-b border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-b border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-b border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-b border-slate-200 dark:border-slate-700 w-full h-0"></div>
+</div>
+<!-- Bars -->
+<div class="absolute inset-0 flex items-end justify-around px-4 pb-0 pt-6">
+<!-- Group 1 -->
+<div class="group relative flex flex-col items-center gap-2 w-1/12 h-full justify-end">
+<div class="w-full bg-primary/30 h-[45%] rounded-t-sm group-hover:bg-primary/40 transition-all duration-300"></div>
+<div class="w-full bg-primary h-[60%] rounded-t-sm -mt-[45%] z-10 shadow-lg shadow-blue-500/20 group-hover:h-[62%] transition-all duration-300">
+<div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                                    Value: 60%
+                                </div>
+</div>
+<span class="text-xs font-medium text-slate-500 mt-2">2019</span>
+</div>
+<!-- Group 2 -->
+<div class="group relative flex flex-col items-center gap-2 w-1/12 h-full justify-end">
+<div class="w-full bg-primary/30 h-[52%] rounded-t-sm group-hover:bg-primary/40 transition-all duration-300"></div>
+<div class="w-full bg-primary h-[68%] rounded-t-sm -mt-[52%] z-10 shadow-lg shadow-blue-500/20 group-hover:h-[70%] transition-all duration-300">
+<div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                                    Value: 68%
+                                </div>
+</div>
+<span class="text-xs font-medium text-slate-500 mt-2">2020</span>
+</div>
+<!-- Group 3 -->
+<div class="group relative flex flex-col items-center gap-2 w-1/12 h-full justify-end">
+<div class="w-full bg-primary/30 h-[40%] rounded-t-sm group-hover:bg-primary/40 transition-all duration-300"></div>
+<div class="w-full bg-primary h-[55%] rounded-t-sm -mt-[40%] z-10 shadow-lg shadow-blue-500/20 group-hover:h-[57%] transition-all duration-300">
+<div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                                    Value: 55%
+                                </div>
+</div>
+<span class="text-xs font-medium text-slate-500 mt-2">2021</span>
+</div>
+<!-- Group 4 -->
+<div class="group relative flex flex-col items-center gap-2 w-1/12 h-full justify-end">
+<div class="w-full bg-primary/30 h-[65%] rounded-t-sm group-hover:bg-primary/40 transition-all duration-300"></div>
+<div class="w-full bg-primary h-[78%] rounded-t-sm -mt-[65%] z-10 shadow-lg shadow-blue-500/20 group-hover:h-[80%] transition-all duration-300">
+<div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                                    Value: 78%
+                                </div>
+</div>
+<span class="text-xs font-medium text-slate-500 mt-2">2022</span>
+</div>
+<!-- Group 5 -->
+<div class="group relative flex flex-col items-center gap-2 w-1/12 h-full justify-end">
+<div class="w-full bg-primary/30 h-[72%] rounded-t-sm group-hover:bg-primary/40 transition-all duration-300"></div>
+<div class="w-full bg-primary h-[85%] rounded-t-sm -mt-[72%] z-10 shadow-lg shadow-blue-500/20 group-hover:h-[87%] transition-all duration-300">
+<div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                                    Value: 85%
+                                </div>
+</div>
+<span class="text-xs font-medium text-slate-500 mt-2">2023</span>
+</div>
+<!-- Group 6 -->
+<div class="group relative flex flex-col items-center gap-2 w-1/12 h-full justify-end">
+<div class="w-full bg-primary/30 h-[75%] rounded-t-sm group-hover:bg-primary/40 transition-all duration-300"></div>
+<div class="w-full bg-primary h-[90%] rounded-t-sm -mt-[75%] z-10 shadow-lg shadow-blue-500/20 group-hover:h-[92%] transition-all duration-300">
+<div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                                    Value: 90%
+                                </div>
+</div>
+<span class="text-xs font-medium text-slate-500 mt-2">2024</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center gap-6 mt-6">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-xs font-medium text-slate-500">Core Competencies</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary/30"></div>
+<span class="text-xs font-medium text-slate-500">Elective Skills</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Publications Grid -->
+<section class="space-y-6">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Recent Publications</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Card 1 -->
+<article class="flex flex-col justify-between rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-6 hover:border-primary/50 transition-colors">
+<div class="space-y-4">
+<div class="flex items-center gap-2 text-xs font-medium text-primary">
+<span class="px-2 py-1 rounded bg-primary/10">Cognitive Development</span>
+<span class="text-slate-500">Oct 2023</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">
+                            The Impact of Remote Learning on Cognitive Development
+                        </h3>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+                            This study analyzes the longitudinal effects of remote learning modalities on student cognitive flexibility and problem-solving skills across three academic years. Findings suggest a bimodal distribution in adaptability.
+                        </p>
+</div>
+<div class="mt-6 flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<div class="flex -space-x-2">
+<img alt="Author" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 object-cover" data-alt="Researcher headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA16kjDgqayI0LLvTBVfHXRTcXn6paMU3fWc0LMMpqVRrAnbQ38j8T299ZwBL4oebMfLo_gBRPzDlZTUiTJaorT-6xAguwxjWWs38av7Au3-qQFGOud8hKvolW5qiOutgaGWLY7iSgFE1SwDg0JKmBjj_NiSL9oUx7TYP9vcGzK21JvHOwRIPpmxDf2VUelQDKGE0Wa56pUTyDESebNeV7vdzzi6-dIeH292cRU1kT--nDCTCGhav-6WVo4oc9fGNnRNcpDG83HLfU"/>
+<img alt="Author" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 object-cover" data-alt="Researcher headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvckfVQt0ZK9HUsFrErkID_DpKOW890GS3LrutkErQF6XysE3cew1JoOzRF2gbNQfKFYRtqgRhbyiGXVTIGC9Ji5PbGmEFdyJ13i3yaG--Zx9_yLxK-WQmxo6ns7YfpCJHC1Oe9OAPXLBZk-2oqV-0VRcnXBnRkeLKAiEvflwcF-iPmb3shRBWGRZacuBOVHRPiafASiVOhAeHmiFitVGyBQ2tnztVJ7-LLtn3cXD9mJdg6lT_ahwfYdgrQmpSlw7CGCmdLXoiF7g"/>
+</div>
+<span class="text-xs text-slate-500">Dr. Sarah Lin, et al.</span>
+</div>
+<a class="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-blue-400" href="#">
+                            Download PDF
+                            <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+</a>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="flex flex-col justify-between rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-6 hover:border-primary/50 transition-colors">
+<div class="space-y-4">
+<div class="flex items-center gap-2 text-xs font-medium text-primary">
+<span class="px-2 py-1 rounded bg-primary/10">Institutional Resilience</span>
+<span class="text-slate-500">Aug 2023</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">
+                            Institutional Resilience in Post-Pandemic Cohorts
+                        </h3>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+                            An examination of structural and social support systems implemented in 2021 and their correlation with student retention rates. Data indicates a significant positive correlation between early mentorship programs and long-term success.
+                        </p>
+</div>
+<div class="mt-6 flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<div class="flex -space-x-2">
+<img alt="Author" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 object-cover" data-alt="Researcher headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1vulLWjfZKZg-thvtjfZ5ix1XjRRpkaSBWa8t-2B6DbbSiJOUTI38TzKVACgICYadcHj40Gmh1Ca914nA90WmHUh_GhVlheZXCyGzn0iiAbesLz3UaJK8E3RYVUFkeNdQVBpSL0UjfOHXdYOXHOR82JhOQXsy5215r-Drlk5nGzgPqms64n-BqIfT2Of0Y7pp3AqWEDAyWwre00XrmcBkE2OZJEv4zVTzrQIHKGpeD-1OnjqEmpmEhD1in4iOsEbrAxkOpX3T5mo"/>
+</div>
+<span class="text-xs text-slate-500">Prof. James Chen</span>
+</div>
+<a class="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-blue-400" href="#">
+                            Download PDF
+                            <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+</a>
+</div>
+</article>
+</div>
+<div class="flex justify-center pt-4">
+<button class="text-sm font-medium text-slate-500 hover:text-primary transition-colors flex items-center gap-1">
+                    View all 45 publications
+                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Methodology Accordion (Simulated) -->
+<section class="rounded-2xl bg-slate-100 dark:bg-slate-800/40 p-8 border border-slate-200 dark:border-slate-700">
+<div class="flex flex-col md:flex-row gap-8">
+<div class="md:w-1/3 space-y-4">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Research Methodology</h2>
+<p class="text-sm text-slate-600 dark:text-slate-400">
+                        Our findings are based on a comprehensive, mixed-methods approach ensuring both statistical significance and qualitative depth.
+                    </p>
+<button class="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                        Read full documentation
+                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+<div class="md:w-2/3 space-y-4">
+<!-- Item 1 -->
+<div class="group rounded-lg bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex h-8 w-8 flex-none items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-primary">
+<span class="material-symbols-outlined text-[20px]">dataset</span>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white">Data Collection</h4>
+<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                                    Data is aggregated from standardized testing (n=8,500), annual student surveys (n=12,000), and longitudinal tracking of alumni career placement.
+                                </p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group rounded-lg bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex h-8 w-8 flex-none items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-primary">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white">Privacy &amp; Ethics</h4>
+<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                                    All personal identifiers are anonymized via SHA-256 encryption. Research protocols are reviewed quarterly by the Institutional Review Board (IRB).
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="mt-auto w-full border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">school</span>
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-200">PPSDM Research Division</span>
+</div>
+<div class="flex gap-8 text-sm text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Use</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Data Team</a>
+</div>
+<div class="text-xs text-slate-400">
+                    © 2024 PPSDM. All rights reserved.
+                </div>
+</div>
+</div>
+</footer>
+</body></html>

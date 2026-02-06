@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Background & Foreground - High Contrast */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%; /* #0f172a - contrast 15:1 on white */
+
+    /* Card Colors */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* Popover Colors */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Primary - Blue #2563eb - contrast 4.5:1 on white */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    /* Muted - contrast 7:1 on white */
+    --muted: 215.4 16.3% 46.9%;
+    --muted-foreground: 215.4 16.3% 30%; /* #64748b - contrast 7:1 */
+
+    /* Accent */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    /* Destructive - Red with good contrast */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Success - Green with good contrast */
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+
+    /* Warning - Orange/Yellow with good contrast */
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+
+    /* Border & Input */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    /* Chart Colors */
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    /* Radius */
+    --radius: 0.5rem;
+  }
+  .dark {
+    /* Dark mode - High Contrast */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Glass Card Utilities */
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-card-strong {
+    @apply bg-[#0A0F1A]/60 backdrop-blur-2xl border border-white/10;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue via-brand-accent to-white;
+  }
+
+  .its-gradient {
+    background: radial-gradient(circle at 50% 0%, #013880 0%, #0A0F1A 60%);
+  }
+
+  /* Text Glow */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  }
+
+  /* Noise Overlay */
+  .noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+  }
+
+  /* Timeline Line */
+  .timeline-line {
+    background: linear-gradient(90deg, transparent 0%, #135bec 50%, transparent 100%);
+  }
+
+  /* Card Hover Effect */
+  .card-hover:hover .progress-fill {
+    width: 100% !important;
+    transition: width 1s ease-in-out;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0F1A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Selection */
+::selection {
+  background: #135bec;
+  color: white;
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Minimal styles for code highlighting (avoid importing external css during build) */
+pre code.hljs { display:block; overflow-x:auto; padding:1em; }
+code.hljs { padding:3px 5px; }
+.hljs { color: #c9d1d9; background: #0d1117 }
+
+/* Minimal styles for audio player */
+.rhap_container { box-sizing: border-box; display:flex; flex-direction:column; width:100%; padding:8px; background:#fff; }
+.rhap_progress-bar { height:5px; background:#ddd; border-radius:2px; }
+.rhap_main-controls-button { font-size:20px; }
+
+/* Hero Boomerang Video Styles */
+.hero-boomerang-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Smooth fade in untuk video boomerang */
+@keyframes boomerangFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.boomerang-container canvas {
+  animation: boomerangFadeIn 1s ease-out forwards;
+}
+
+/* Pulse glow animation untuk indicator */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.8);
+  }
+}
+
+/* Responsive adjustments untuk hero section */
+@media (max-width: 768px) {
+  .hero-boomerang-canvas {
+    object-position: center top;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .boomerang-container canvas {
+    animation: none;
+  }
+}
+
+/* Dimension Detail Page Styles */
+@keyframes gradient-border {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.holographic-border {
+  position: relative;
+  background: linear-gradient(90deg, #135bec, #06b6d4, #8b5cf6, #135bec);
+  background-size: 300% 300%;
+  animation: gradient-border 3s ease infinite;
+}
+
+.holographic-border::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: rgba(10, 15, 26, 0.9);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.holographic-border > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-dim {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(19, 91, 236, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(19, 91, 236, 0.6);
+  }
+}
+
+.pulse-glow-dim {
+  animation: pulse-glow-dim 2s ease-in-out infinite;
+}
+
+/* Dimension Card Hover Effects */
+.dimension-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dimension-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Module Card Hover */
+.module-card {
+  transition: all 0.3s ease;
+}
+
+.module-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(19, 91, 236, 0.3);
+}
+
+/* Finding Card Hover */
+.finding-card {
+  transition: all 0.3s ease;
+}
+
+.finding-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+/* Stat Card Hover */
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}

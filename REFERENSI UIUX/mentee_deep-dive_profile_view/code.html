@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM Supervisor Portal - Mentee Profile</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1e293b",
+                        "surface-light": "#ffffff",
+                        "border-dark": "#282e39",
+                        "border-light": "#e2e8f0",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b4354;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+        
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex-none flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light dark:border-border-dark bg-surface-light dark:bg-[#111318] px-6 py-3 z-20">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px]">school</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM Supervisor</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex relative w-64">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full bg-slate-100 dark:bg-border-dark text-sm rounded-lg pl-10 pr-4 py-2 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Search students..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="relative p-2 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 ring-2 ring-primary/20" data-alt="Supervisor Profile Picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBOtgRiT7LFRCurA0tmFppRyy7Cn-56_6STdp6T2NrOUFU9xMNRdHaP2Obl-9OiBczcnqeGC6j4a45fGH3vOsJz9sxSJ9iJwDXj8VXCHkkKhRgAY4he-JZJm1DUnpO6Xfyf85yySs4hiEEugiS_ixwRfn5K9L9eTNNhSFO3QD1qdb7pd-zUQkyi4WzLltrdYo16iiW_l4U_zFYH_X0kRWfWp4WT7WYGfCJHOJv_9UTvNJZRXelVYDZ96YsChrAcYW7l6Y8FZyo8Swo");'></div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Sidebar: Student Profile Summary -->
+<aside class="w-80 flex-none bg-surface-light dark:bg-[#111318] border-r border-border-light dark:border-border-dark overflow-y-auto flex flex-col p-6 gap-6 relative z-10">
+<!-- Profile Card -->
+<div class="flex flex-col items-center gap-4 text-center">
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-32 shadow-lg ring-4 ring-surface-light dark:ring-border-dark" data-alt="Student Portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEXNTDHWT4sQVYn3QVc6WmStjeExn0ToVJXp_F_-OF0W8WCuclbY0XeD8PrPVzAzGKiIfjKODuGeDDz71R6iKvFYcBRrbXo4EB-h0_hlQGlQMFr8IKCCxdVJ1pDyynSKk6gYjwlRSDM1ILu2hUYmGEozVjwtAk-dzo95MBF8OLQVZIW-6StbZNHGeztL33ZAB0QV3QiZBdWSuRWbdGBarhriHLF5TPpAreS_QaQIxq9b6ghQugfjmgmm0ty_zN7ggkpao7RvE4jA0");'></div>
+<div class="absolute bottom-1 right-1 bg-green-500 border-4 border-surface-light dark:border-[#111318] size-6 rounded-full" title="Online"></div>
+</div>
+<div>
+<h2 class="text-xl font-bold text-slate-900 dark:text-white">Alexandria Rahel</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400 font-medium">ID: 2024001</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-border-dark text-xs font-semibold text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[14px]">school</span>
+                        Computer Science
+                    </div>
+</div>
+</div>
+<hr class="border-border-light dark:border-border-dark"/>
+<!-- Key Stats Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="p-3 rounded-lg bg-slate-50 dark:bg-border-dark/50 border border-border-light dark:border-border-dark">
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-1">GPA</p>
+<div class="flex items-end gap-1">
+<span class="text-xl font-bold text-slate-900 dark:text-white">3.42</span>
+<span class="text-[10px] text-red-500 font-medium mb-1">▼ 0.1</span>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-slate-50 dark:bg-border-dark/50 border border-border-light dark:border-border-dark">
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Credits</p>
+<span class="text-xl font-bold text-slate-900 dark:text-white">112</span>
+</div>
+<div class="p-3 rounded-lg bg-slate-50 dark:bg-border-dark/50 border border-border-light dark:border-border-dark">
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Attendance</p>
+<div class="flex items-end gap-1">
+<span class="text-xl font-bold text-slate-900 dark:text-white">94%</span>
+<span class="text-[10px] text-green-500 font-medium mb-1">▲ 2%</span>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-900/30">
+<p class="text-xs text-yellow-700 dark:text-yellow-500 mb-1">Risk Level</p>
+<span class="text-sm font-bold text-yellow-700 dark:text-yellow-500">Moderate</span>
+</div>
+</div>
+<!-- Contact Actions -->
+<div class="flex flex-col gap-3">
+<button class="flex items-center justify-center gap-2 h-10 w-full rounded-lg border border-border-light dark:border-border-dark hover:bg-slate-50 dark:hover:bg-border-dark transition-colors text-sm font-medium text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                    Email Student
+                </button>
+<button class="flex items-center justify-center gap-2 h-10 w-full rounded-lg border border-border-light dark:border-border-dark hover:bg-slate-50 dark:hover:bg-border-dark transition-colors text-sm font-medium text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+                    WhatsApp
+                </button>
+<button class="flex items-center justify-center gap-2 h-10 w-full rounded-lg border border-border-light dark:border-border-dark hover:bg-slate-50 dark:hover:bg-border-dark transition-colors text-sm font-medium text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                    Schedule Meeting
+                </button>
+</div>
+<!-- Quick Notes -->
+<div class="flex-1 flex flex-col min-h-0 bg-slate-50 dark:bg-border-dark/30 rounded-lg p-3 border border-border-light dark:border-border-dark">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Last Note</span>
+<span class="text-[10px] text-slate-400">2 days ago</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-300 italic line-clamp-4">
+                    "Discussed the drop in Data Structures grades. Student mentioned health issues last month. Agreed to submit make-up assignment by Friday."
+                </p>
+<button class="mt-auto text-xs text-primary font-medium hover:underline text-left pt-2">View all notes</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark overflow-hidden relative">
+<!-- Breadcrumbs & Header -->
+<div class="flex-none px-6 py-4 md:px-10">
+<nav class="flex text-sm text-slate-500 dark:text-slate-400 mb-2">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary transition-colors" href="#">Students</a>
+<span class="mx-2">/</span>
+<span class="text-slate-900 dark:text-white font-medium">Profile View</span>
+</nav>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white">Student Deep-Dive</h1>
+<div class="flex items-center gap-3">
+<label class="text-sm text-slate-500 dark:text-slate-400">Semester:</label>
+<select class="form-select bg-surface-light dark:bg-[#1e293b] border-border-light dark:border-border-dark rounded-md text-sm py-1.5 pl-3 pr-8 focus:ring-primary focus:border-primary">
+<option>Fall 2024 (Current)</option>
+<option>Spring 2024</option>
+<option>Fall 2023</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex-none px-6 md:px-10 border-b border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark z-10">
+<div class="flex gap-8">
+<button class="pb-3 border-b-2 border-primary text-primary font-medium text-sm">Overview</button>
+<button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 font-medium text-sm transition-colors">Academic Radar</button>
+<button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 font-medium text-sm transition-colors">RPI Timeline</button>
+<button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 font-medium text-sm transition-colors">Activity Log</button>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-6 md:p-10 space-y-6">
+<!-- Top Row: Radar & Sparklines -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Radar Chart Card -->
+<div class="lg:col-span-1 bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-border-light dark:border-border-dark flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-base font-bold text-slate-900 dark:text-white">Competency Map</h3>
+<button class="text-slate-400 hover:text-white"><span class="material-symbols-outlined text-sm">more_horiz</span></button>
+</div>
+<div class="flex-1 flex items-center justify-center py-2 relative">
+<!-- SVG Radar Chart Simulation -->
+<svg class="w-full max-w-[240px] h-auto" viewbox="0 0 200 200">
+<!-- Background Web -->
+<polygon fill="none" points="100,10 190,55 190,145 100,190 10,145 10,55" stroke="#334155" stroke-width="1"></polygon>
+<polygon fill="none" points="100,35 165,67 165,133 100,165 35,133 35,67" stroke="#334155" stroke-width="1"></polygon>
+<polygon fill="none" points="100,60 140,80 140,120 100,140 60,120 60,80" stroke="#334155" stroke-width="1"></polygon>
+<!-- Axis Lines -->
+<line stroke="#334155" stroke-width="1" x1="100" x2="100" y1="100" y2="10"></line>
+<line stroke="#334155" stroke-width="1" x1="100" x2="190" y1="100" y2="55"></line>
+<line stroke="#334155" stroke-width="1" x1="100" x2="190" y1="100" y2="145"></line>
+<line stroke="#334155" stroke-width="1" x1="100" x2="100" y1="100" y2="190"></line>
+<line stroke="#334155" stroke-width="1" x1="100" x2="10" y1="100" y2="145"></line>
+<line stroke="#334155" stroke-width="1" x1="100" x2="10" y1="100" y2="55"></line>
+<!-- Data Shape -->
+<polygon fill="rgba(19, 91, 236, 0.2)" points="100,20 170,60 150,130 100,160 40,130 50,70" stroke="#135bec" stroke-width="2"></polygon>
+</svg>
+<!-- Labels for Radar -->
+<span class="absolute top-0 text-[10px] font-bold text-slate-400">Technical</span>
+<span class="absolute bottom-0 text-[10px] font-bold text-slate-400">Soft Skills</span>
+<span class="absolute top-[25%] right-0 text-[10px] font-bold text-slate-400">Attendance</span>
+<span class="absolute top-[25%] left-0 text-[10px] font-bold text-slate-400">Labs</span>
+<span class="absolute bottom-[25%] right-0 text-[10px] font-bold text-slate-400">Participation</span>
+<span class="absolute bottom-[25%] left-0 text-[10px] font-bold text-slate-400">Theory</span>
+</div>
+</div>
+<!-- Sparkline Metrics -->
+<div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-border-light dark:border-border-dark flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">GPA Trend</p>
+<h4 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">3.42</h4>
+</div>
+<span class="px-2 py-0.5 rounded text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">-0.12%</span>
+</div>
+<div class="h-24 mt-4 w-full">
+<!-- SVG Sparkline -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 300 100">
+<defs>
+<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgb(239, 68, 68);stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:rgb(239, 68, 68);stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,80 Q50,70 100,50 T200,60 T300,75" fill="none" stroke="#ef4444" stroke-width="3"></path>
+<path d="M0,80 Q50,70 100,50 T200,60 T300,75 V100 H0 Z" fill="url(#grad1)" stroke="none"></path>
+</svg>
+</div>
+<div class="flex justify-between text-xs text-slate-400 mt-2">
+<span>Sem 1</span>
+<span>Sem 5</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-border-light dark:border-border-dark flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Assignment Scores</p>
+<h4 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">88.5 <span class="text-sm font-normal text-slate-500">avg</span></h4>
+</div>
+<span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">+5.2%</span>
+</div>
+<div class="h-24 mt-4 w-full">
+<!-- SVG Sparkline -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 300 100">
+<defs>
+<lineargradient id="grad2" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgb(19, 91, 236);stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:rgb(19, 91, 236);stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,60 Q50,55 100,30 T200,20 T300,15" fill="none" stroke="#135bec" stroke-width="3"></path>
+<path d="M0,60 Q50,55 100,30 T200,20 T300,15 V100 H0 Z" fill="url(#grad2)" stroke="none"></path>
+</svg>
+</div>
+<div class="flex justify-between text-xs text-slate-400 mt-2">
+<span>Week 1</span>
+<span>Week 12</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Timeline & Intervention -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-6">
+<!-- RPI Timeline & Activity Log Combined -->
+<div class="lg:col-span-2 bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark flex flex-col">
+<div class="p-5 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+<h3 class="font-bold text-slate-900 dark:text-white">Recent Activity &amp; Milestones</h3>
+<a class="text-sm text-primary font-medium hover:underline" href="#">View Full Log</a>
+</div>
+<div class="p-5">
+<div class="relative pl-4 border-l-2 border-border-light dark:border-border-dark space-y-8">
+<!-- Item 1 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 size-3.5 bg-red-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-1">
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Missed Deadline: Linear Algebra Quiz</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Automatically flagged by LMS.</p>
+</div>
+<span class="text-xs font-mono text-slate-400 whitespace-nowrap">Today, 09:41 AM</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 size-3.5 bg-green-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-1">
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Submitted: Thesis Proposal Draft</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">File: <code>thesis_v1.pdf</code></p>
+</div>
+<span class="text-xs font-mono text-slate-400 whitespace-nowrap">Yesterday, 4:20 PM</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 size-3.5 bg-slate-400 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-1">
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Supervisor Meeting Logged</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Topic: Semester goals and internship search.</p>
+</div>
+<span class="text-xs font-mono text-slate-400 whitespace-nowrap">Oct 24, 2024</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 size-3.5 bg-primary rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-1">
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Mid-Term Exam Period Started</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Academic Milestone</p>
+</div>
+<span class="text-xs font-mono text-slate-400 whitespace-nowrap">Oct 20, 2024</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Intervention Box -->
+<div class="lg:col-span-1">
+<div class="bg-surface-light dark:bg-[#151b26] rounded-xl shadow-lg border border-primary/30 flex flex-col sticky top-6">
+<div class="bg-primary/10 p-4 rounded-t-xl border-b border-primary/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">warning</span>
+<h3 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wide">Supervisor Actions</h3>
+</div>
+<div class="p-5 flex flex-col gap-4">
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Action Type</label>
+<select class="w-full bg-slate-50 dark:bg-border-dark border-border-light dark:border-border-dark rounded-lg text-sm p-2.5 focus:ring-primary focus:border-primary">
+<option>Academic Warning</option>
+<option>Attendance Notice</option>
+<option>Kudos / Recognition</option>
+<option>Schedule Mandatory Meeting</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Note to Student</label>
+<textarea class="w-full bg-slate-50 dark:bg-border-dark border-border-light dark:border-border-dark rounded-lg text-sm p-3 focus:ring-primary focus:border-primary placeholder:text-slate-500" placeholder="Write your message here..." rows="4"></textarea>
+</div>
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Severity</label>
+<div class="flex gap-2">
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="severity" type="radio"/>
+<div class="text-center py-2 rounded-md border border-border-light dark:border-border-dark text-xs font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-border-dark peer-checked:bg-green-500/20 peer-checked:text-green-500 peer-checked:border-green-500 transition-all">Low</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="severity" type="radio"/>
+<div class="text-center py-2 rounded-md border border-border-light dark:border-border-dark text-xs font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-border-dark peer-checked:bg-yellow-500/20 peer-checked:text-yellow-500 peer-checked:border-yellow-500 transition-all">Med</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="severity" type="radio"/>
+<div class="text-center py-2 rounded-md border border-border-light dark:border-border-dark text-xs font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-border-dark peer-checked:bg-red-500/20 peer-checked:text-red-500 peer-checked:border-red-500 transition-all">High</div>
+</label>
+</div>
+</div>
+<button class="mt-2 w-full bg-primary hover:bg-blue-600 text-white font-bold py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">send</span>
+                                    Send Intervention
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

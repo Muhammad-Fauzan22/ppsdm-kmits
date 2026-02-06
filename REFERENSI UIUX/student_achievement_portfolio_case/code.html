@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM KMM - Student Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1a1d24",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hexagon Shape CSS */
+        .hexagon-wrapper {
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
+        }
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111318;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #282e39;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b4354;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-[#282e39] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-10 py-4">
+<div class="flex items-center gap-4 text-primary dark:text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">school</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-gray-300 hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Home</a>
+<a class="text-primary dark:text-white text-sm font-bold leading-normal relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary after:-bottom-2 after:left-0" href="#">Portfolio</a>
+<a class="text-slate-600 dark:text-gray-300 hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Leaderboard</a>
+<a class="text-slate-600 dark:text-gray-300 hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-primary/10 hover:bg-primary/20 text-primary dark:text-white rounded-full p-2 transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/50" data-alt="User profile avatar small" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCiwwE8ILEyNLubRgizFrw3xeat8Cqr4pzFxXduaU8KxaUeUBiKh-TNPotvxfO4SKyvnI11nysMD0F6DqthMY5P-y1jRtEdSMqLx9cBEUijLj9XUww2EOyz4iCl6DRYehgI8P4k1ecwH1FmkgcLxVWhHSRVUnqrGcTw4BmdekGPJ4bhl54HVfcFWVmlF9OeEQ84S1zWtHP3nS4lB39Ejh69vJdcAPA6nRhiZB9PFO_NjXXoahesS4-Tph-JZERZoE3ty-tIMNdlk0");'></div>
+</div>
+</div>
+</header>
+<main class="flex-grow layout-container flex flex-col items-center">
+<div class="w-full max-w-[1200px] px-6 py-8 flex flex-col gap-10">
+<!-- Hero Section: Student ID Card Style -->
+<section class="w-full">
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-surface-light via-gray-100 to-gray-200 dark:from-surface-dark dark:via-[#1e2330] dark:to-[#101622] border border-gray-200 dark:border-[#282e39] shadow-2xl">
+<!-- Decorative Background Pattern -->
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent pointer-events-none"></div>
+<div class="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
+<!-- ID Card Left: Avatar & Basic Info -->
+<div class="flex-shrink-0 relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-blue-400 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+<div class="relative bg-surface-light dark:bg-background-dark p-2 rounded-xl border border-gray-200 dark:border-[#3b4354]">
+<div class="bg-center bg-no-repeat bg-cover rounded-lg h-40 w-40 md:h-48 md:w-48 shadow-inner" data-alt="Scholar Alex profile picture in ID card style" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAO_rUftQwIJTe-iNwDT59fmq0yeDKOFSK_5RCPB9KIX_VqgwGov4f3DfqswHJQXsBYNQKM8pV83g-Wtoo4l-kQCUmOpC3YQCC7g9zcxSEaykDXuwfybYATkvK5NvrJitvP5OaLKdWsEZOSwTNmaN5ybpo4_GYQJNQmKt_yyKZ6JRUslPr20wv1XW7oeN2fEE9rer3kpG7GAKR60qxi0FEc-d50MjcoCxY-CEAZaUquvFgBNWD5TmLf09QvcOejfQZLJ9ELHWpql0w");'></div>
+</div>
+<div class="absolute -bottom-3 -right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-2 border-surface-light dark:border-background-dark flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">verified</span>
+                                VERIFIED
+                            </div>
+</div>
+<!-- ID Card Middle: Details & Stats -->
+<div class="flex flex-col flex-1 w-full text-center md:text-left">
+<div class="flex flex-wrap justify-between items-start gap-4 mb-2">
+<div>
+<h1 class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-1">Scholar Alex Smith</h1>
+<p class="text-slate-500 dark:text-[#9da6b9] text-lg font-medium">Computer Science Department • Class of 2025</p>
+</div>
+<div class="hidden md:block">
+<div class="bg-surface-light dark:bg-[#282e39] border border-gray-200 dark:border-[#3b4354] px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">id_card</span>
+<span class="text-sm font-mono text-slate-500 dark:text-gray-400">ID: 884-291-KMM</span>
+</div>
+</div>
+</div>
+<div class="mt-6 space-y-4">
+<!-- Level & Progress -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="text-primary font-bold text-lg tracking-wider uppercase">Level 4 Scholar</span>
+<span class="text-slate-500 dark:text-gray-400 text-sm font-mono">750/1000 XP</span>
+</div>
+<div class="h-4 w-full bg-gray-200 dark:bg-[#0f1218] rounded-full overflow-hidden border border-gray-300 dark:border-[#282e39] relative">
+<!-- Animated Stripes on Progress Bar -->
+<div class="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[spin_3s_linear_infinite]"></div>
+<div class="h-full bg-primary rounded-full relative" style="width: 75%;">
+<div class="absolute right-0 top-0 h-full w-1 bg-white/30"></div>
+</div>
+</div>
+<p class="text-xs text-slate-500 dark:text-gray-500 mt-1">Next Reward: <span class="text-primary dark:text-blue-300">Advanced Research Access Grant</span></p>
+</div>
+<!-- Quick Stats Row -->
+<div class="flex flex-wrap gap-4 mt-2 justify-center md:justify-start">
+<div class="flex items-center gap-2 bg-surface-light dark:bg-[#1a1d24] px-3 py-1.5 rounded-md border border-gray-200 dark:border-[#282e39]">
+<span class="material-symbols-outlined text-yellow-500 text-sm">trophy</span>
+<span class="text-sm font-bold">12 Badges</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-light dark:bg-[#1a1d24] px-3 py-1.5 rounded-md border border-gray-200 dark:border-[#282e39]">
+<span class="material-symbols-outlined text-green-500 text-sm">workspace_premium</span>
+<span class="text-sm font-bold">Top 5%</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-light dark:bg-[#1a1d24] px-3 py-1.5 rounded-md border border-gray-200 dark:border-[#282e39]">
+<span class="material-symbols-outlined text-purple-500 text-sm">stars</span>
+<span class="text-sm font-bold">Project Lead</span>
+</div>
+</div>
+</div>
+</div>
+<!-- FAB for Desktop (Inside Card Area for Layout) -->
+<div class="flex flex-col gap-3 w-full md:w-auto mt-4 md:mt-0">
+<button class="bg-primary hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-transform transform hover:-translate-y-1 active:translate-y-0 w-full md:w-auto whitespace-nowrap">
+<span class="material-symbols-outlined">download</span>
+                                Download CV
+                            </button>
+<button class="bg-surface-light dark:bg-[#282e39] hover:bg-gray-100 dark:hover:bg-[#3b4354] text-slate-900 dark:text-white font-medium py-3 px-6 rounded-lg border border-gray-200 dark:border-[#3b4354] flex items-center justify-center gap-2 transition-colors w-full md:w-auto whitespace-nowrap">
+<span class="material-symbols-outlined">share</span>
+                                Share Profile
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Split Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+<!-- Left Column: Trophy Case (Hexagonal Grid) -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<h2 class="text-2xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">military_tech</span>
+                            Trophy Case
+                        </h2>
+<div class="flex bg-surface-light dark:bg-[#1a1d24] rounded-lg p-1 border border-gray-200 dark:border-[#282e39]">
+<button class="px-3 py-1 text-xs font-bold rounded bg-primary text-white shadow-sm">All</button>
+<button class="px-3 py-1 text-xs font-medium rounded text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-[#282e39] transition">Academic</button>
+<button class="px-3 py-1 text-xs font-medium rounded text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-[#282e39] transition">Extracurricular</button>
+</div>
+</div>
+<!-- Hexagon Grid Container -->
+<div class="bg-surface-light dark:bg-[#1a1d24] rounded-xl p-8 border border-gray-200 dark:border-[#282e39] relative min-h-[400px]">
+<div class="flex flex-wrap justify-center gap-4 md:gap-6">
+<!-- Unlocked Badge 1: Innovation -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
+<div class="absolute inset-0 bg-gradient-to-br from-primary to-blue-600 hexagon shadow-[0_0_15px_rgba(19,91,236,0.5)]"></div>
+<div class="absolute inset-[2px] bg-surface-light dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-primary">lightbulb</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-primary">Innovator</span>
+</div>
+<!-- Tooltip -->
+<div class="absolute bottom-full mb-2 hidden group-hover:block w-48 bg-gray-900 text-white text-xs rounded p-2 z-50 text-center shadow-xl border border-gray-700">
+<p class="font-bold text-primary">Innovation Award</p>
+<p class="text-gray-300 mt-1">Submitted 3 verified ideas to the student council.</p>
+<p class="text-[10px] text-gray-500 mt-1">Unlocked: Oct 12, 2023</p>
+</div>
+</div>
+<!-- Unlocked Badge 2: Debate -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
+<div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 hexagon shadow-[0_0_15px_rgba(168,85,247,0.5)]"></div>
+<div class="absolute inset-[2px] bg-surface-light dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-purple-500">record_voice_over</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-purple-500">Orator</span>
+</div>
+</div>
+<!-- Unlocked Badge 3: Code -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
+<div class="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 hexagon shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
+<div class="absolute inset-[2px] bg-surface-light dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-green-500">terminal</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-green-500">Coder</span>
+</div>
+</div>
+<!-- Unlocked Badge 4: Teamwork -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
+<div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 hexagon shadow-[0_0_15px_rgba(249,115,22,0.5)]"></div>
+<div class="absolute inset-[2px] bg-surface-light dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-orange-500">groups</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-orange-500">Leader</span>
+</div>
+</div>
+<!-- Locked Badge 1 -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
+<div class="absolute inset-0 bg-gray-600 hexagon"></div>
+<div class="absolute inset-[1px] bg-surface-light dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-gray-400">science</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Research</span>
+<span class="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+</div>
+<div class="absolute bottom-full mb-2 hidden group-hover:block w-40 bg-gray-800 text-gray-300 text-xs rounded p-2 z-50 text-center border border-gray-600">
+                                    Locked: Publish 1 Research Paper
+                                </div>
+</div>
+<!-- Locked Badge 2 -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
+<div class="absolute inset-0 bg-gray-600 hexagon"></div>
+<div class="absolute inset-[1px] bg-surface-light dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-gray-400">volunteer_activism</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Charity</span>
+<span class="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+</div>
+</div>
+<!-- Locked Badge 3 -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
+<div class="absolute inset-0 bg-gray-600 hexagon"></div>
+<div class="absolute inset-[1px] bg-surface-light dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-gray-400">sports_esports</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Gamer</span>
+<span class="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+</div>
+</div>
+<!-- Locked Badge 4 -->
+<div class="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
+<div class="absolute inset-0 bg-gray-600 hexagon"></div>
+<div class="absolute inset-[1px] bg-surface-light dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-gray-400">translate</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Polyglot</span>
+<span class="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Skills Matrix & Recent Activity -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Skills Matrix -->
+<div class="flex flex-col gap-4">
+<h2 class="text-2xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">psychology</span>
+                            Skills Matrix
+                        </h2>
+<div class="bg-surface-light dark:bg-[#1a1d24] rounded-xl p-6 border border-gray-200 dark:border-[#282e39]">
+<p class="text-sm text-slate-500 dark:text-gray-400 mb-4">Verified competencies based on coursework and projects.</p>
+<div class="flex flex-wrap gap-2">
+<!-- High Proficiency -->
+<span class="px-3 py-1.5 rounded-full bg-primary text-white text-sm font-medium border border-blue-500 shadow-md shadow-blue-500/20">Python</span>
+<span class="px-3 py-1.5 rounded-full bg-primary text-white text-sm font-medium border border-blue-500 shadow-md shadow-blue-500/20">Public Speaking</span>
+<span class="px-3 py-1.5 rounded-full bg-primary text-white text-sm font-medium border border-blue-500 shadow-md shadow-blue-500/20">Data Analysis</span>
+<!-- Medium Proficiency (Opacity variations) -->
+<span class="px-3 py-1.5 rounded-full bg-primary/80 text-white text-sm font-medium border border-blue-500/50">React.js</span>
+<span class="px-3 py-1.5 rounded-full bg-primary/80 text-white text-sm font-medium border border-blue-500/50">UI Design</span>
+<span class="px-3 py-1.5 rounded-full bg-primary/70 text-white text-sm font-medium border border-blue-500/40">Project Mgmt</span>
+<!-- Developing Proficiency -->
+<span class="px-3 py-1.5 rounded-full bg-surface-light dark:bg-[#111318] text-slate-700 dark:text-gray-300 text-sm font-medium border border-gray-200 dark:border-[#3b4354]">Machine Learning</span>
+<span class="px-3 py-1.5 rounded-full bg-surface-light dark:bg-[#111318] text-slate-700 dark:text-gray-300 text-sm font-medium border border-gray-200 dark:border-[#3b4354]">Technical Writing</span>
+<span class="px-3 py-1.5 rounded-full bg-surface-light dark:bg-[#111318] text-slate-700 dark:text-gray-300 text-sm font-medium border border-gray-200 dark:border-[#3b4354]">Git</span>
+</div>
+<div class="mt-6 pt-4 border-t border-gray-200 dark:border-[#282e39]">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-gray-500 mb-3">Recent Endorsements</h3>
+<div class="flex items-center gap-3 mb-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-8 w-8 border border-gray-600" data-alt="Professor Miller avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAwqUgb_spl35bspeKY46tcxghqhrVuiGNbDDPDuqqrbILjFE3hbJaCiGaHgGtX2-DayjMgYGk36AENhQg4j4hUZOb3hCUztn8vBalVCgZQ6WGsDwy36P3ebYYtPK3GV0nFmZJbfbjPdRv7ZEf2MVJwV4fqm5-_sCgbebZ3fMbDoMsgTWfMnmSHCSeLTl7ou3Ha_AzFBqPi2dMalOi8ScNaGEVYu9cY6B9cVlKef5MvC3chzLI9jANnCBwLxQxaJB1Ucdhc7r4Goh8");'></div>
+<div class="text-sm">
+<p class="font-medium text-slate-900 dark:text-white">Prof. Miller</p>
+<p class="text-xs text-slate-500 dark:text-gray-400">Endorsed <span class="text-primary">Data Analysis</span></p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-8 w-8 border border-gray-600" data-alt="Sarah Lee avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDs_5A3i7pP8XE4n5ZTN7GXGl1ShYw1_d206AuFoGcHlw51QJ8qCMV__SeJlBrrHidoVFw5AG6WI9A9gTWSRgfKk-5SIz7f6gT20O4UA3g4n30p02LXATRrwbJ2Qlxj0UoVLJHUnBBRNr6p6yI_spF8TpgAk9LwrsJBpOWjRvCuDnqM8IoEBkhq7h9OUq5Wryc3SbVkvBhKzdVUyBBq5kg-jiw1GiFbb45DnUpDUect-YqRVqEHaS4i5625LNkfJXmLQBjeaz60sL8");'></div>
+<div class="text-sm">
+<p class="font-medium text-slate-900 dark:text-white">Sarah Lee</p>
+<p class="text-xs text-slate-500 dark:text-gray-400">Endorsed <span class="text-primary">Public Speaking</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Mini Map / Location -->
+<div class="bg-surface-light dark:bg-[#1a1d24] rounded-xl overflow-hidden border border-gray-200 dark:border-[#282e39] h-48 relative group">
+<div class="absolute top-3 left-3 z-10 bg-background-dark/80 backdrop-blur text-white text-xs px-2 py-1 rounded">
+                            Campus Location
+                        </div>
+<div class="w-full h-full bg-center bg-cover opacity-80 group-hover:opacity-100 transition duration-500" data-alt="Map showing campus location" data-location="University Campus" style='background-image: url("https://placeholder.pics/svg/300");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1a1d24] to-transparent opacity-90"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<p class="text-white text-sm font-bold">Innovation Hub, Building C</p>
+<p class="text-gray-400 text-xs">Currently working on: Capstone Project</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-10 border-t border-gray-200 dark:border-[#282e39] pt-8 pb-10 w-full">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-500 dark:text-[#9da6b9] text-sm">© 2024 PPSDM KMM. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-slate-500 dark:text-[#9da6b9] hover:text-primary text-sm" href="#">University Home</a>
+<a class="text-slate-500 dark:text-[#9da6b9] hover:text-primary text-sm" href="#">Privacy Policy</a>
+<a class="text-slate-500 dark:text-[#9da6b9] hover:text-primary text-sm" href="#">Support</a>
+</div>
+</div>
+</footer>
+</div>
+</main>
+</body></html>

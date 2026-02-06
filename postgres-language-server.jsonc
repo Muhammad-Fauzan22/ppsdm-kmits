@@ -1,0 +1,8 @@
+{
+    // Configure the connection to your Supabase or Postgres database.
+    // Obtain your connection string from your Supabase Dashboard or by running 'supabase status' if using local CLI.
+    // Format: postgresql://<user>:<password>@<host>:<port>/<db>
+    "db": {
+        "connection_string": "postgresql://postgres:postgres@localhost:54322/postgres"
+    }
+}

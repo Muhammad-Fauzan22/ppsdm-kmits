@@ -1,0 +1,138 @@
+name: 🕷️ Daily Content Scraping
+
+on:
+  schedule:
+    # Run every day at 2:00 AM UTC (9:00 AM WIB)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions tab
+    inputs:
+      scraper_type:
+        description: 'Which scraper to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - its_news
+          - youtube
+          - github
+
+jobs:
+  # Job 1: ITS News Scraper
+  scrape-its-news:
+    if: github.event.inputs.scraper_type == 'all' || github.event.inputs.scraper_type == 'its_news'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4 supabase python-dateutil
+    
+    - name: 🔍 Run ITS News Scraper
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: |
+        cd ppsdm-kmits
+        python scrapers/its_news_scraper.py --pages 3 --supabase
+    
+    - name: 📤 Upload artifacts (if failed)
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: its-news-debug
+        path: ppsdm-kmits/its_news.json
+        retention-days: 5
+
+  # Job 2: YouTube Aggregator
+  scrape-youtube:
+    if: github.event.inputs.scraper_type == 'all' || github.event.inputs.scraper_type == 'youtube'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install google-api-python-client supabase
+    
+    - name: 🎬 Run YouTube Aggregator
+      env:
+        YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: |
+        cd ppsdm-kmits
+        python scrapers/youtube_aggregator.py --max-results 5 --supabase
+
+  # Job 3: GitHub Trending
+  scrape-github:
+    if: github.event.inputs.scraper_type == 'all' || github.event.inputs.scraper_type == 'github'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests supabase
+    
+    - name: 🐙 Run GitHub Trending Scraper
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: |
+        cd ppsdm-kmits
+        python scrapers/github_trending.py --multi --since weekly --supabase
+
+  # Job 4: Notification (runs after all scrapers)
+  notify:
+    needs: [scrape-its-news, scrape-youtube, scrape-github]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📊 Scraping Summary
+      run: |
+        echo "🕷️ Scraping completed!"
+        echo "ITS News: ${{ needs.scrape-its-news.result }}"
+        echo "YouTube: ${{ needs.scrape-youtube.result }}"
+        echo "GitHub: ${{ needs.scrape-github.result }}"
+    
+    - name: 🔔 Notify on failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🚨 Scraper Failed - ' + new Date().toISOString().split('T')[0],
+            body: 'One or more scrapers failed. Please check the logs.',
+            labels: ['bug', 'scraper']
+          })

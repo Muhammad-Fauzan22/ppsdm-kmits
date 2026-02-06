@@ -1,0 +1,57 @@
+/**
+ * Cloudflare Pages Configuration
+ * Free Tier: Unlimited requests, 100GB bandwidth/month
+ */
+
+{
+  "name": "ppsdm-kmits",
+  "compatibility_date": "2024-01-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "vars": {
+    "ENVIRONMENT": "production",
+    "NEXT_PUBLIC_APP_URL": "https://ppsdm-kmits.vercel.app"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "${KV_CACHE_ID}",
+      "preview_id": "${KV_CACHE_PREVIEW_ID}"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimiter"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "pattern": "*.ppsdm-kmits.pages.dev",
+      "zone_name": "ppsdm-kmits.pages.dev"
+    }
+  ],
+  "headers": {
+    "Cache-Control": "public, max-age=86400, s-maxage=86400"
+  },
+  "redirects": [
+    {
+      "source": "/old-path",
+      "target": "/new-path",
+      "status": 301
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/edge/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
+  "functions": "./functions",
+  "observability": {
+    "head_tail": true
+  }
+}

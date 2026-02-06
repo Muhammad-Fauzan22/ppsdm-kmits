@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM Student Mobile Navigation</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;family=Poppins:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#003366",
+                        "primary-light": "#336699", 
+                        "primary-highlight": "#4DA3FF", // Lighter blue for dark mode visibility
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                        "surface-dark": "#1b2128",
+                        "nav-glass": "rgba(15, 25, 35, 0.85)",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "nav": ["Poppins", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for the mobile container */
+        .mobile-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .mobile-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .mobile-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen p-4 font-display text-white">
+<!-- Desktop Wrapper for Mobile View -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-background-light dark:bg-background-dark rounded-[40px] shadow-2xl border-[8px] border-[#2a2a2a] overflow-hidden flex flex-col group/design-root">
+<!-- Status Bar Area (Decorative) -->
+<div class="h-6 w-full bg-background-dark flex justify-between items-center px-6 pt-2 z-50">
+<span class="text-[10px] font-bold">9:41</span>
+<div class="flex gap-1.5">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[14px]">battery_full</span>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto mobile-scroll pb-[100px]">
+<!-- Top Header -->
+<header class="flex items-center justify-between px-6 py-5 sticky top-0 bg-background-dark/95 backdrop-blur-sm z-40 border-b border-[#27303a]">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]">school</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">PPSDM Student</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-9 rounded-full bg-cover bg-center border border-[#394756]" data-alt="User profile avatar of a smiling student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAffZ14WO-W7P5rFXqyMXJojAmzynEQ88voWYE5zdVYOJJ4Yc7k9tqK2Sf9tFZ5tfM_Dl2xCHxWLjsB8A_wa-16dka7j56qEYW0x-h6F19dPm9bcuMGlGGnxBi8IuWr4wu2VFJ2XdNkV2tf_dydCYuT6l7EmdH5PVScpndIuQOZ96xDBT1DjsZlrMa-8GU9a9wzItyxkfnmESe1z7M_WO1RwuJYjQt_o7sYx1XZsOxvez4KG-gZmqc9-fwbpq0e8o-SjdgKX_fKcDc");'>
+</div>
+</div>
+</header>
+<!-- Page Heading -->
+<div class="px-6 pt-6 pb-2">
+<p class="text-[#9aabbc] text-sm font-medium mb-1">Welcome back,</p>
+<h1 class="text-white text-3xl font-bold leading-tight">Dashboard</h1>
+</div>
+<!-- Stats Section -->
+<div class="px-6 py-4">
+<div class="flex gap-4 overflow-x-auto pb-2 -mx-6 px-6 no-scrollbar">
+<div class="flex min-w-[140px] flex-col gap-2 rounded-xl p-4 bg-surface-dark border border-[#394756]">
+<div class="flex items-center gap-2 text-primary-highlight">
+<span class="material-symbols-outlined text-[20px]">grade</span>
+<p class="text-sm font-medium">GPA</p>
+</div>
+<p class="text-white text-2xl font-bold">3.8</p>
+</div>
+<div class="flex min-w-[140px] flex-col gap-2 rounded-xl p-4 bg-surface-dark border border-[#394756]">
+<div class="flex items-center gap-2 text-emerald-400">
+<span class="material-symbols-outlined text-[20px]">credit_score</span>
+<p class="text-sm font-medium">Credits</p>
+</div>
+<p class="text-white text-2xl font-bold">85</p>
+</div>
+</div>
+</div>
+<!-- "Upcoming" Section -->
+<div class="px-6 py-2">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-white text-lg font-bold">Upcoming</h3>
+<a class="text-sm text-primary-highlight font-medium" href="#">See all</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 1 -->
+<div class="flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-[#27303a] shadow-lg">
+<div class="h-32 w-full rounded-lg bg-cover bg-center" data-alt="Abstract colorful gradient representing UX design concepts" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIrSaaboIFYJh5CUtEXyIGxvy90i5xLdE1q7ek8RVbYyfHIH2cAHMpG2rh8KgB9szsPs3aK5Jw8kAOxRYPzn0OWGBRXr1M_Zet3apKERs4gvAKyzQYMBxbt-Oyp5J-UIXTi4KrJ_LGVYc4fBN-kYnzy79D-WRwuxFMphng-qAN8C5jVmzBW92k8miCSruJmDGY2FRFAeH_SaCobw_RLi1ozPABJCW5teDN2WGwbyysL2pEupA-GdiBzwZwBPTNvLN5jKlj6n_bJeU");'></div>
+<div>
+<div class="flex justify-between items-start mb-1">
+<p class="text-white font-bold text-lg">UX Design Class</p>
+<span class="bg-primary/20 text-primary-highlight text-xs px-2 py-1 rounded font-medium">10:00 AM</span>
+</div>
+<p class="text-[#9aabbc] text-sm">Room 304 • Prof. Anderson</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-[#27303a] shadow-lg">
+<div class="h-32 w-full rounded-lg bg-cover bg-center" data-alt="Minimalist study desk with open book and glasses" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_XKFelsrxQOdy2ZBjbiwPawKYnTrBGRu-6UmA4fOPuVZYRBr91bl8oztt2zkidtZHDDtu7lj6QZkyMy8N2N3RewZjR47ej6bNFtTFTE9Bl0pgA_OaYs346IfYvClDLzOUkG4ktKAWD63_4SVQs0KkalZf7zU6bkQSHWpmvBtVCK0JY-bTAjHv6PvdEi7ck5YWaYkn8txm5xuRg60DfYTq-WHz4Pq0u03rvlVB7ndgt3kFWXmuknT0xvObykb5rBWHBkVDx58DCJ0");'></div>
+<div>
+<div class="flex justify-between items-start mb-1">
+<p class="text-white font-bold text-lg">Research Methods</p>
+<span class="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded font-medium">Due Today</span>
+</div>
+<p class="text-[#9aabbc] text-sm">Assignment submission • 11:59 PM</p>
+</div>
+</div>
+<!-- Card 3 (Padding content) -->
+<div class="flex flex-col gap-3 rounded-xl bg-surface-dark p-4 border border-[#27303a] shadow-lg">
+<div class="h-24 w-full rounded-lg bg-cover bg-center" data-alt="Close up of a library shelf with blurred books" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCe097IWwaY4UVQiiPdyxEmE_3sd-Hb1DjCIs9WwFmDb2gzjZ6ftjluw5TaYQeczJQ4AHkmCt2xkiOqFRpe7LJKPL6HaD9fntQ6EBq-l3Q9PiCZRbUT-wPS6-0sh3E5VXj4bnXnT2LDUaJbhGBFWeqJ3c79CbtH1WSwgOop3dl8K7qEJylVq4kUuJYUXCxlZNgoXxNk8zkUMJUM75z4DmRgSlTm8sLM3tTZhoEPyk9XBSUBfPtu6al7UwWJZo48WO_XBWR8QrXIAEg");'></div>
+<div>
+<p class="text-white font-bold">Library Loan</p>
+<p class="text-[#9aabbc] text-sm">Return 'Design of Everyday Things'</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<!-- Fixed at bottom, Glassmorphism style -->
+<nav class="absolute bottom-0 left-0 w-full bg-nav-glass backdrop-blur-xl border-t border-[#394756]/50 pb-6 pt-2 px-2 z-50">
+<ul class="flex justify-between items-end w-full max-w-[360px] mx-auto">
+<!-- 1. Dashboard (Active) -->
+<li class="flex-1 flex justify-center group cursor-pointer">
+<div class="flex flex-col items-center gap-1 w-full relative">
+<!-- Top Indicator Line -->
+<div class="absolute -top-[9px] w-8 h-[3px] bg-primary rounded-b-full shadow-[0_0_8px_rgba(0,51,102,0.8)]"></div>
+<span class="material-symbols-outlined text-[24px] text-primary-highlight transition-colors duration-200">dashboard</span>
+<span class="text-[10px] font-nav font-medium text-primary-highlight tracking-wide">Dashboard</span>
+</div>
+</li>
+<!-- 2. Assessment -->
+<li class="flex-1 flex justify-center group cursor-pointer">
+<div class="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">shield</span>
+<span class="text-[10px] font-nav font-medium tracking-wide">Assessment</span>
+</div>
+</li>
+<!-- 3. Library -->
+<li class="flex-1 flex justify-center group cursor-pointer">
+<div class="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">menu_book</span>
+<span class="text-[10px] font-nav font-medium tracking-wide">Library</span>
+</div>
+</li>
+<!-- 4. RPI -->
+<li class="flex-1 flex justify-center group cursor-pointer">
+<div class="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">timeline</span>
+<span class="text-[10px] font-nav font-medium tracking-wide">RPI</span>
+</div>
+</li>
+<!-- 5. Portfolio -->
+<li class="flex-1 flex justify-center group cursor-pointer">
+<div class="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">emoji_events</span>
+<span class="text-[10px] font-nav font-medium tracking-wide">Portfolio</span>
+</div>
+</li>
+</ul>
+<!-- Home Indicator (iPhone style) -->
+<div class="flex justify-center mt-3">
+<div class="w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+</nav>
+</div>
+</body></html>

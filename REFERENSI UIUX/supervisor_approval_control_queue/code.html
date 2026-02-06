@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PPSDM Supervisor Approval Queue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "sans": ["Lexend", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dark mode list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1c1f27;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b4354;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex-none flex items-center justify-between border-b border-gray-200 dark:border-[#282e39] bg-white dark:bg-[#111318] px-6 py-3 z-10">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight dark:text-white">PPSDM Supervisor</h2>
+</div>
+<div class="h-6 w-px bg-gray-200 dark:bg-[#282e39] mx-2"></div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-gray-500 hover:text-primary dark:text-[#9da6b9] dark:hover:text-white transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium text-primary dark:text-white border-b-2 border-primary pb-0.5" href="#">Approvals</a>
+<a class="text-sm font-medium text-gray-500 hover:text-primary dark:text-[#9da6b9] dark:hover:text-white transition-colors" href="#">Students</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-64 rounded-lg border border-gray-200 dark:border-[#3b4354] bg-gray-50 dark:bg-[#1c1f27] py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search student..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="relative rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-[#282e39] text-gray-500 dark:text-white transition-colors">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 rounded-full bg-red-500"></span>
+</button>
+<div class="size-9 rounded-full bg-cover bg-center ml-2 border border-gray-200 dark:border-[#3b4354]" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDhuW7yQnlKrniQpHhYSAU3I2k22b2iv9u8FV2sZQMbaUw4T9ocFOMs4pDAUPo-kIqvkIyaSx8cVfCfg2rh5S8iTG1ocIcPw1SFSAR6TK6yyXQNPOn0Aw0N8AqvoZAul2URxmfUW1z6Mz20D7nPZfuSHBzW6rbXIv8ZNMyr_wZG9qn572QgADEs_HPDXFF02Lz5Z_jmf6rizjIj8X3AOOmOX8HlN188G7RoHefgX7MnX5xDQRJ7OlJ1MrXI_DUi6Atcd4ZJsISIEc');"></div>
+</div>
+</div>
+</header>
+<!-- Main Content Area (Inbox Layout) -->
+<main class="flex flex-1 overflow-hidden">
+<!-- Left Panel: List View -->
+<aside class="w-full md:w-[400px] lg:w-[450px] flex flex-col border-r border-gray-200 dark:border-[#282e39] bg-white dark:bg-[#111318]">
+<!-- List Header -->
+<div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#282e39]">
+<div class="flex flex-col">
+<h3 class="text-lg font-bold dark:text-white">Pending Requests</h3>
+<p class="text-xs text-gray-500 dark:text-[#9da6b9]">12 items waiting for review</p>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+                    Approve All
+                </button>
+</div>
+<!-- Scrollable List -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-2">
+<!-- Active Item -->
+<div class="group flex gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20 cursor-pointer relative transition-all">
+<div class="absolute left-0 top-3 bottom-3 w-1 bg-primary rounded-r-full"></div>
+<div class="size-12 rounded-full bg-gray-200 dark:bg-[#282e39] shrink-0 bg-cover bg-center" data-alt="Portrait of Sarah Jenkins" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBVQDEcodDUfryvP86RWZ6ZaUmo9MbeJ_wuzvZw9P3c6hmgOmZ1_7XEgacYNmti_t-cnS-c8IYNTUnY4XqQUtntlve4XElTPwmLWEPKqO6qMmQEz5Ka6m1QYAp1TbpCudHM6QpFnyU4-RIZch4NN-FOGVNlUMB8KdcYfTQ7N7zURg_DqfQEjKY7ioHvVlSR3d0TBdolSVrxDbC5ypxx3E7lM-9G5tmy0mjq2cuIXYBvzUt_SRebrEcxppo-Pc1Agc4bqAF9-P_Q1WI');"></div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm text-gray-900 dark:text-white truncate">Sarah Jenkins</span>
+<span class="text-xs text-primary font-medium whitespace-nowrap">2m ago</span>
+</div>
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">Intro to Data Science Workshop</span>
+<div class="flex items-center gap-2 mt-1.5">
+<span class="inline-flex items-center rounded-full bg-yellow-400/10 px-2 py-0.5 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-400/20">Pending</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280]">Certificate</span>
+</div>
+</div>
+</div>
+<!-- Inactive Item -->
+<div class="group flex gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-[#1c1f27] border border-transparent hover:border-gray-200 dark:hover:border-[#3b4354] cursor-pointer transition-all">
+<div class="size-12 rounded-full bg-gray-200 dark:bg-[#282e39] shrink-0 bg-cover bg-center" data-alt="Portrait of Michael Chen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB7jojGsrlE567qdCDW0M09j9W-fiJeBljTfEozDH7c0k1LxsaRO-jy-JX7FZnB36ZzyXTG3T7zQTz2Gaqf42KwbhBLWQEGfwZhs5dh5ew_59EfofHypFOIjxovbdETBexT9hBc4S66rD_jUqE6hUt55XlCnkQFeu6Wg5W8l30RVIgehZdmPUjXIFm6-OpPyJ6QAHfZ6t9JLaWsat7IwRsKG4fYlAnRIQbvwbtWI9YVlz-SbXBSrE055X1OfS8uRiyKw5CBJF82bWM');"></div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm text-gray-900 dark:text-white truncate">Michael Chen</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280] whitespace-nowrap">1h ago</span>
+</div>
+<span class="text-sm text-gray-600 dark:text-[#9da6b9] truncate">Advanced Python Certification</span>
+<div class="flex items-center gap-2 mt-1.5">
+<span class="inline-flex items-center rounded-full bg-yellow-400/10 px-2 py-0.5 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-400/20">Pending</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280]">Course</span>
+</div>
+</div>
+</div>
+<!-- Inactive Item -->
+<div class="group flex gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-[#1c1f27] border border-transparent hover:border-gray-200 dark:hover:border-[#3b4354] cursor-pointer transition-all">
+<div class="size-12 rounded-full bg-indigo-500 shrink-0 flex items-center justify-center text-white font-bold text-lg">
+                        AL
+                    </div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm text-gray-900 dark:text-white truncate">Alex Lee</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280] whitespace-nowrap">3h ago</span>
+</div>
+<span class="text-sm text-gray-600 dark:text-[#9da6b9] truncate">Volunteer: Community Cleanup</span>
+<div class="flex items-center gap-2 mt-1.5">
+<span class="inline-flex items-center rounded-full bg-yellow-400/10 px-2 py-0.5 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-400/20">Pending</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280]">Activity</span>
+</div>
+</div>
+</div>
+<!-- Inactive Item -->
+<div class="group flex gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-[#1c1f27] border border-transparent hover:border-gray-200 dark:hover:border-[#3b4354] cursor-pointer transition-all">
+<div class="size-12 rounded-full bg-gray-200 dark:bg-[#282e39] shrink-0 bg-cover bg-center" data-alt="Portrait of Emily Watson" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhyZdi2mNKvz4xwP9dBr2o6v61-mLMb5lWARbty11RxzO5pn7TSlYQtOvgC44TXS7jwOkXr0Ovs8pTmyaeLvE5_NXVizHwnz0P_lGqpxIt1fH9S0Rg0JOzZGS6sEABFG3j7Y2NrVKV1shiWfLwcNa_lSZSTNTLZVnKAvCf9_gl7-60tPD2F4ewfv2MGEcgMxmfKlZab_rmrddn_m-8dUIzJLMOhHcp4P0v91SFOq2S5kB0_8z0bsDDzFlOCJ47XxgNv6qyuN14R8Q');"></div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm text-gray-900 dark:text-white truncate">Emily Watson</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280] whitespace-nowrap">Yesterday</span>
+</div>
+<span class="text-sm text-gray-600 dark:text-[#9da6b9] truncate">Web Development Bootcamp</span>
+<div class="flex items-center gap-2 mt-1.5">
+<span class="inline-flex items-center rounded-full bg-yellow-400/10 px-2 py-0.5 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-400/20">Pending</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280]">Certificate</span>
+</div>
+</div>
+</div>
+<!-- Inactive Item -->
+<div class="group flex gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-[#1c1f27] border border-transparent hover:border-gray-200 dark:hover:border-[#3b4354] cursor-pointer transition-all">
+<div class="size-12 rounded-full bg-pink-600 shrink-0 flex items-center justify-center text-white font-bold text-lg">
+                        JR
+                    </div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm text-gray-900 dark:text-white truncate">Jessica Robinson</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280] whitespace-nowrap">Yesterday</span>
+</div>
+<span class="text-sm text-gray-600 dark:text-[#9da6b9] truncate">UI/UX Design Fundamentals</span>
+<div class="flex items-center gap-2 mt-1.5">
+<span class="inline-flex items-center rounded-full bg-yellow-400/10 px-2 py-0.5 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-400/20">Pending</span>
+<span class="text-xs text-gray-400 dark:text-[#6b7280]">Course</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Panel: Detailed View -->
+<section class="hidden md:flex flex-1 flex-col bg-gray-50 dark:bg-[#101622] overflow-hidden relative">
+<!-- Detail Header -->
+<div class="p-6 pb-2">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 ring-1 ring-inset ring-blue-700/10">Certificate Request</span>
+<span class="text-sm text-gray-500 dark:text-[#9da6b9]">ID: #REQ-2024-8921</span>
+</div>
+<h1 class="text-2xl font-bold dark:text-white leading-tight">Introduction to Data Science Workshop</h1>
+</div>
+<div class="flex gap-2">
+<button class="text-gray-400 hover:text-gray-600 dark:hover:text-white p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-[#282e39] transition-colors">
+<span class="material-symbols-outlined">print</span>
+</button>
+<button class="text-gray-400 hover:text-gray-600 dark:hover:text-white p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-[#282e39] transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Student Info Card -->
+<div class="mt-6 flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-[#1c1f27] border border-gray-200 dark:border-[#282e39] shadow-sm">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Portrait of Sarah Jenkins" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCN00HaWihR7ORs90GdAdYF2zAT3M2ofJEcmRp9WYJt353g9ly3mZwj_E3SbFkdKZ_KuzOw0_oIwS04WdYc5Ik--xsdnVNTgxvyqv5jwomcLh0fcGo8rGtt4xGbzzssoiPfdGfWBDlYWsPniPr16lYk54LXwpgg6Smc16cT8M2AZAa8BRzaDbw6Rxp9PFyMUobFMY4ql-wmQ35FMxsYM42jzWFi3tNW1WFrMByBVViHMuAJb_VTxMULBkFFfmXz6XBzFp08LYWJQkA');"></div>
+<div class="flex flex-col">
+<p class="text-base font-bold dark:text-white">Sarah Jenkins</p>
+<p class="text-sm text-gray-500 dark:text-[#9da6b9]">Student ID: 2023001 • Computer Science Dept.</p>
+</div>
+<div class="ml-auto px-4 py-2 rounded-lg bg-gray-50 dark:bg-[#282e39] border border-gray-100 dark:border-[#3b4354]">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400">Total Credits</p>
+<p class="text-lg font-bold dark:text-white">124 <span class="text-xs font-normal text-gray-400">/ 140</span></p>
+</div>
+</div>
+</div>
+<!-- Detail Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-6 pt-2">
+<!-- Description Section -->
+<div class="mb-8">
+<h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-[#9da6b9] mb-3">Activity Description</h4>
+<div class="prose dark:prose-invert max-w-none text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+<p>
+                            I attended a 3-day intensive workshop focusing on Python and the Pandas library for data manipulation. The workshop covered data cleaning, visualization using Matplotlib, and basic statistical analysis.
+                        </p>
+<p class="mt-2">
+                            The final project involved analyzing a real-world dataset regarding global climate change trends over the last 50 years. I have attached the completion certificate provided by the workshop organizers.
+                        </p>
+</div>
+</div>
+<!-- Attachment Section -->
+<div class="mb-8">
+<h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-[#9da6b9] mb-3">Attachments (1)</h4>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+<div class="group relative flex flex-col rounded-xl border border-gray-200 dark:border-[#3b4354] bg-white dark:bg-[#1c1f27] overflow-hidden hover:border-primary/50 transition-colors">
+<!-- Preview Area -->
+<div class="h-48 bg-gray-100 dark:bg-[#111318] flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-105 transition-transform duration-500" data-alt="Abstract document pattern" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSeogN4qyAdJRL_hkBjJnOajiZOB8qUJ7r4624TxDBshAJaaqLbQa5fXsOaGI39tK3QJOpS_thh6-y6EnYytfwYm0DGyosI6sugBGogJOVcdI7Csv8LPhbZVbbDSA8BGrTXb07CTvDBSUEGkV5UhLKx9TK5X5aZupmbr9DI0__L6zBEmNgNoHzHESS-HD1gsOIjaozVAC4VpZB9KphZ6VPyk9on8iBKt39f-byEX3PF5E5Oyg4qawKjERSqJa8jttBt1I9Op7RCCE');"></div>
+<div class="relative z-10 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 shadow-lg">
+<span class="material-symbols-outlined text-4xl text-white drop-shadow-md">picture_as_pdf</span>
+</div>
+</div>
+<!-- File Info -->
+<div class="p-3 flex items-center justify-between">
+<div class="flex items-center gap-3 overflow-hidden">
+<div class="bg-red-50 dark:bg-red-500/10 p-2 rounded-lg text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined text-[20px]">description</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="text-sm font-medium dark:text-white truncate">certificate_sjenkins_datascience.pdf</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">2.4 MB • Uploaded Oct 24, 2023</p>
+</div>
+</div>
+<button class="shrink-0 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Metadata Grid -->
+<div>
+<h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-[#9da6b9] mb-3">Request Details</h4>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="p-3 rounded-lg bg-white dark:bg-[#1c1f27] border border-gray-200 dark:border-[#3b4354]">
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Activity Date</p>
+<p class="text-sm font-medium dark:text-white">Oct 20 - Oct 23, 2023</p>
+</div>
+<div class="p-3 rounded-lg bg-white dark:bg-[#1c1f27] border border-gray-200 dark:border-[#3b4354]">
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Category</p>
+<p class="text-sm font-medium dark:text-white">Technical Skill</p>
+</div>
+<div class="p-3 rounded-lg bg-white dark:bg-[#1c1f27] border border-gray-200 dark:border-[#3b4354]">
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Supervisor</p>
+<p class="text-sm font-medium dark:text-white">Prof. Alan Grant</p>
+</div>
+<div class="p-3 rounded-lg bg-white dark:bg-[#1c1f27] border border-gray-200 dark:border-[#3b4354]">
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Credit Value</p>
+<p class="text-sm font-medium dark:text-white">2.0 Points</p>
+</div>
+</div>
+</div>
+<div class="h-24"></div> <!-- Spacer for footer -->
+</div>
+<!-- Sticky Action Footer -->
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-white dark:bg-[#111318] border-t border-gray-200 dark:border-[#282e39] flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:shadow-black/50 z-20">
+<div class="hidden lg:flex items-center gap-4 text-sm text-gray-500 dark:text-[#9da6b9]">
+<span class="flex items-center gap-1">
+<kbd class="px-2 py-0.5 rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#282e39] font-sans text-xs">R</kbd>
+                        Reject
+                    </span>
+<span class="flex items-center gap-1">
+<kbd class="px-2 py-0.5 rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#282e39] font-sans text-xs">A</kbd>
+                        Approve
+                    </span>
+</div>
+<div class="flex gap-3 w-full lg:w-auto">
+<button class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-gray-300 dark:border-[#3b4354] bg-white dark:bg-[#1c1f27] text-gray-700 dark:text-white hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/20 dark:hover:text-red-400 dark:hover:border-red-800 transition-all font-bold text-sm">
+<span class="material-symbols-outlined text-[20px]">close</span>
+                        Reject Request
+                    </button>
+<button class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-8 py-2.5 rounded-lg bg-primary text-white hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20 font-bold text-sm">
+<span class="material-symbols-outlined text-[20px]">check</span>
+                        Approve Request
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Confirmation Modal (Hidden by default, purely visual for design) -->
+<!-- 
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="w-full max-w-md bg-white dark:bg-[#1c1f27] rounded-xl shadow-2xl overflow-hidden border border-gray-200 dark:border-[#3b4354]">
+            <div class="p-6">
+                <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                     <span class="material-symbols-outlined text-primary text-3xl">done_all</span>
+                </div>
+                <h3 class="text-xl font-bold dark:text-white mb-2">Approve All Requests?</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    You are about to approve <strong>12 pending requests</strong>. This action cannot be easily undone. Are you sure you want to proceed?
+                </p>
+                <div class="mt-4">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Optional Comment</label>
+                    <textarea class="w-full rounded-lg border border-gray-300 dark:border-[#3b4354] bg-white dark:bg-[#111318] p-3 text-sm text-gray-900 dark:text-white focus:ring-primary focus:border-primary" rows="2" placeholder="Add a note..."></textarea>
+                </div>
+            </div>
+            <div class="bg-gray-50 dark:bg-[#111318] px-6 py-4 flex justify-end gap-3 border-t border-gray-200 dark:border-[#282e39]">
+                <button class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#282e39] transition-colors">Cancel</button>
+                <button class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-primary hover:bg-blue-600 transition-colors">Yes, Approve All</button>
+            </div>
+        </div>
+    </div>
+    -->
+</body></html>

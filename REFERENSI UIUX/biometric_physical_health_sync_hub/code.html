@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Biometric Physical Health Sync Hub</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1313ec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#111118",
+              "surface-dark": "#1c1c27",
+              "border-dark": "#282839",
+              "text-secondary": "#9d9db9",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"],
+              "body": ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.375rem", 
+              "lg": "0.5rem", 
+              "xl": "0.75rem", 
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="border-b border-solid border-border-dark bg-background-dark px-4 md:px-10 py-3 sticky top-0 z-50">
+<div class="max-w-[1400px] mx-auto flex items-center justify-between whitespace-nowrap">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">hexagon</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
+</div>
+<div class="flex gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-transparent hover:bg-[#282839] text-white text-sm font-bold transition-colors">
+<span class="truncate">Dashboard</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-transparent hover:bg-[#282839] text-white text-sm font-bold transition-colors">
+<span class="truncate">Analysis</span>
+</button>
+<div class="w-px h-6 bg-[#282839] mx-1 my-auto"></div>
+<button class="flex size-9 cursor-pointer items-center justify-center rounded-full bg-[#282839] text-white hover:bg-[#3b3b54] transition-colors">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Layout -->
+<div class="flex-1 flex justify-center py-8 px-4 md:px-10">
+<div class="flex flex-col max-w-[1200px] w-full flex-1 gap-8">
+<!-- Page Header -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#282839] pb-6">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">monitor_heart</span>
+                        Physical Dimension
+                    </div>
+<h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Biometric Sync Hub</h1>
+<p class="text-text-secondary text-base font-normal max-w-2xl">
+                        Centralize your physical inputs from wearables to power your 9-axis development profile.
+                    </p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-primary hover:bg-primary/90 transition text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-[0_0_15px_rgba(19,19,236,0.3)]">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+                            Sync Now
+                        </span>
+</button>
+<span class="text-xs text-text-secondary mt-1">Last synced: 2 mins ago</span>
+</div>
+</header>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Left Column: Data Ingestion (Span 4) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Wearable Connections Card -->
+<div class="rounded-xl border border-border-dark bg-surface-dark p-5 flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<h3 class="text-white text-lg font-bold">Data Sources</h3>
+<span class="material-symbols-outlined text-text-secondary" title="Manage Sources">settings</span>
+</div>
+<!-- Garmin (Connected) -->
+<div class="flex items-center gap-4 rounded-lg border border-[#3b3b54] bg-[#15151e] p-4 group hover:border-primary/40 transition-colors cursor-pointer">
+<div class="flex items-center justify-center size-10 rounded-full bg-[#282839] text-white">
+<span class="material-symbols-outlined">watch</span>
+</div>
+<div class="flex flex-col flex-1">
+<h4 class="text-white text-sm font-bold">Garmin Connect</h4>
+<p class="text-[#0bda68] text-xs font-medium flex items-center gap-1">
+<span class="size-1.5 rounded-full bg-[#0bda68]"></span> Connected
+                                </p>
+</div>
+<div class="custom-toggle">
+<span class="material-symbols-outlined text-primary">toggle_on</span>
+</div>
+</div>
+<!-- Apple Health (Disconnected) -->
+<div class="flex items-center gap-4 rounded-lg border border-[#3b3b54] bg-[#15151e] p-4 group hover:border-white/20 transition-colors cursor-pointer opacity-80">
+<div class="flex items-center justify-center size-10 rounded-full bg-[#282839] text-white">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<div class="flex flex-col flex-1">
+<h4 class="text-white text-sm font-bold">Apple Health</h4>
+<p class="text-text-secondary text-xs font-medium">Disconnected</p>
+</div>
+<div class="custom-toggle">
+<span class="material-symbols-outlined text-text-secondary">toggle_off</span>
+</div>
+</div>
+<!-- Fitbit (Disconnected) -->
+<div class="flex items-center gap-4 rounded-lg border border-[#3b3b54] bg-[#15151e] p-4 group hover:border-white/20 transition-colors cursor-pointer opacity-80">
+<div class="flex items-center justify-center size-10 rounded-full bg-[#282839] text-white">
+<span class="material-symbols-outlined">directions_run</span>
+</div>
+<div class="flex flex-col flex-1">
+<h4 class="text-white text-sm font-bold">Fitbit</h4>
+<p class="text-text-secondary text-xs font-medium">Disconnected</p>
+</div>
+<div class="custom-toggle">
+<span class="material-symbols-outlined text-text-secondary">toggle_off</span>
+</div>
+</div>
+<div class="mt-2 pt-4 border-t border-[#282839] flex items-center justify-center gap-2 text-xs text-text-secondary">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>Data encrypted &amp; locally processed</span>
+</div>
+</div>
+<!-- 9-Axis Impact Card -->
+<div class="rounded-xl border border-border-dark bg-surface-dark p-5 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-8xl">radar</span>
+</div>
+<div class="flex flex-col gap-1 z-10">
+<h3 class="text-white text-lg font-bold">Physical Impact</h3>
+<p class="text-text-secondary text-sm">Contribution to 9-Axis Profile</p>
+</div>
+<div class="flex items-center gap-6 py-2 z-10">
+<!-- Circular Progress Simulation -->
+<div class="relative size-24 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-[#282839]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-primary drop-shadow-[0_0_4px_rgba(19,19,236,0.8)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="75, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-xl font-bold text-white">75%</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<div class="flex justify-between text-xs text-white">
+<span>Growth</span>
+<span class="text-[#0bda68]">+12%</span>
+</div>
+<div class="w-full bg-[#282839] rounded-full h-1.5">
+<div class="bg-[#0bda68] h-1.5 rounded-full" style="width: 60%"></div>
+</div>
+<div class="text-xs text-text-secondary mt-1">
+                                    High HRV is boosting your resilience score.
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Data Interpretation (Span 8) -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- AI Energy Optimization Engine -->
+<div class="relative rounded-xl border border-primary/30 bg-gradient-to-br from-surface-dark to-[#0f0f25] p-6 shadow-[0_0_30px_rgba(19,19,236,0.1)] overflow-hidden">
+<!-- Background decoration -->
+<div class="absolute -right-10 -top-10 size-40 bg-primary/20 blur-[60px] rounded-full pointer-events-none"></div>
+<div class="relative z-10 flex flex-col md:flex-row gap-6">
+<div class="shrink-0 flex items-start">
+<div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(19,19,236,0.3)] border border-primary/20">
+<span class="material-symbols-outlined text-2xl">auto_awesome</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex flex-wrap justify-between items-start gap-2">
+<div>
+<h3 class="text-lg font-bold text-white">PPSDM Energy Forecast</h3>
+<p class="text-sm text-primary font-medium tracking-wide uppercase mt-1">AI Optimized Study Window</p>
+</div>
+<div class="px-3 py-1 bg-[#282839] rounded border border-white/10 text-white text-sm font-bold">
+                                        Today
+                                    </div>
+</div>
+<div class="p-4 rounded-lg bg-black/20 border border-white/5 backdrop-blur-sm">
+<p class="text-white text-base leading-relaxed">
+                                        Based on your high sleep quality and morning HRV spike, your cognitive peak is predicted between <strong class="text-primary text-lg">09:00 - 11:30</strong>.
+                                    </p>
+</div>
+<div class="flex items-center gap-2 text-sm text-text-secondary">
+<span class="material-symbols-outlined text-sm">lightbulb</span>
+<span>Suggestion: Schedule your hardest analysis module during this window.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Metrics Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Active Hours -->
+<div class="flex flex-col gap-3 rounded-xl p-5 border border-border-dark bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-sm font-medium">Active Hours</p>
+<span class="material-symbols-outlined text-text-secondary text-[20px]">directions_walk</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">6.5 <span class="text-lg font-normal text-text-secondary">hrs</span></p>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<div class="px-2 py-0.5 rounded bg-[#0bda68]/10 text-[#0bda68] text-xs font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +10%
+                                </div>
+<span class="text-xs text-text-secondary">vs yesterday</span>
+</div>
+</div>
+<!-- Sleep Quality -->
+<div class="flex flex-col gap-3 rounded-xl p-5 border border-border-dark bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-sm font-medium">Sleep Quality</p>
+<span class="material-symbols-outlined text-text-secondary text-[20px]">bedtime</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">85 <span class="text-lg font-normal text-text-secondary">/100</span></p>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<div class="px-2 py-0.5 rounded bg-[#0bda68]/10 text-[#0bda68] text-xs font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +5%
+                                </div>
+<span class="text-xs text-text-secondary">Restful</span>
+</div>
+</div>
+<!-- HRV -->
+<div class="flex flex-col gap-3 rounded-xl p-5 border border-border-dark bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-sm font-medium">Heart Rate Var.</p>
+<span class="material-symbols-outlined text-text-secondary text-[20px]">ecg_heart</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">42 <span class="text-lg font-normal text-text-secondary">ms</span></p>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<div class="px-2 py-0.5 rounded bg-[#fa6938]/10 text-[#fa6938] text-xs font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> -2%
+                                </div>
+<span class="text-xs text-text-secondary">High Readiness</span>
+</div>
+</div>
+</div>
+<!-- Detailed Visualization Chart -->
+<div class="flex flex-col rounded-xl border border-border-dark bg-surface-dark p-6 h-full min-h-[300px]">
+<div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+<div>
+<h3 class="text-white text-lg font-bold">Activity vs. Readiness</h3>
+<p class="text-text-secondary text-sm">Correlating your physical exertion with recovery</p>
+</div>
+<div class="flex bg-[#111118] p-1 rounded-lg">
+<button class="px-3 py-1 rounded bg-[#282839] text-white text-xs font-bold">Day</button>
+<button class="px-3 py-1 rounded text-text-secondary hover:text-white text-xs font-bold transition">Week</button>
+<button class="px-3 py-1 rounded text-text-secondary hover:text-white text-xs font-bold transition">Month</button>
+</div>
+</div>
+<!-- CSS Chart Representation -->
+<div class="flex-1 w-full flex items-end justify-between gap-2 md:gap-4 relative pt-10" data-alt="Bar chart comparing daily activity with a line graph overlay for readiness">
+<!-- Grid lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-px bg-[#282839] border-t border-dashed border-[#3b3b54]"></div>
+<div class="w-full h-px bg-[#282839] border-t border-dashed border-[#3b3b54]"></div>
+<div class="w-full h-px bg-[#282839] border-t border-dashed border-[#3b3b54]"></div>
+<div class="w-full h-px bg-[#282839] border-t border-dashed border-[#3b3b54]"></div>
+<div class="w-full h-px bg-[#282839]"></div>
+</div>
+<!-- Bars -->
+<div class="relative z-10 w-full bg-[#3b3b54] rounded-t-sm h-[40%] hover:bg-primary/50 transition-all group">
+<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-xs text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Mon</div>
+</div>
+<div class="relative z-10 w-full bg-[#3b3b54] rounded-t-sm h-[55%] hover:bg-primary/50 transition-all group"></div>
+<div class="relative z-10 w-full bg-[#3b3b54] rounded-t-sm h-[45%] hover:bg-primary/50 transition-all group"></div>
+<div class="relative z-10 w-full bg-[#3b3b54] rounded-t-sm h-[70%] hover:bg-primary/50 transition-all group"></div>
+<div class="relative z-10 w-full bg-primary rounded-t-sm h-[85%] shadow-[0_0_20px_rgba(19,19,236,0.4)] group">
+<div class="absolute top-2 left-1/2 -translate-x-1/2 size-2 bg-white rounded-full animate-pulse"></div>
+<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white text-black text-xs font-bold px-2 py-1 rounded">Today</div>
+</div>
+<div class="relative z-10 w-full bg-[#3b3b54]/30 rounded-t-sm h-[60%] border border-[#3b3b54] border-dashed"></div>
+<div class="relative z-10 w-full bg-[#3b3b54]/30 rounded-t-sm h-[50%] border border-[#3b3b54] border-dashed"></div>
+</div>
+<div class="flex justify-between text-xs text-text-secondary mt-2 px-1">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span class="text-primary font-bold">Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

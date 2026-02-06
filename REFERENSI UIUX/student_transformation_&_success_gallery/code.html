@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Transformation &amp; Success Gallery</title>
+<!-- Google Fonts: Lexend -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "primary-content": "#ffffff",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a1a2e",
+                        "text-main": "#111118",
+                        "text-sub": "#60608a",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-gray-200 dark:border-gray-800 bg-surface-light dark:bg-surface-dark px-10 py-3 shadow-sm">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="size-8 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined !text-3xl">school</span>
+</div>
+<h2 class="text-text-main dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
+</div>
+<div class="hidden lg:flex items-center gap-9">
+<a class="text-text-main dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-primary text-sm font-bold leading-normal" href="#">Community</a>
+<a class="text-text-main dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Impact</a>
+<a class="text-text-main dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Apply</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-text-sub flex border-none bg-background-light dark:bg-gray-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-0 border-none bg-background-light dark:bg-gray-800 focus:border-none h-full placeholder:text-text-sub px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search profiles" value=""/>
+</div>
+</label>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary hover:bg-blue-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Login</span>
+</button>
+</div>
+</header>
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-5 md:px-20 xl:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[1200px] flex-1">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 p-4">
+<a class="text-text-sub hover:text-primary text-base font-medium leading-normal" href="#">Home</a>
+<span class="text-text-sub text-base font-medium leading-normal">/</span>
+<a class="text-text-sub hover:text-primary text-base font-medium leading-normal" href="#">Community</a>
+<span class="text-text-sub text-base font-medium leading-normal">/</span>
+<span class="text-text-main dark:text-white text-base font-medium leading-normal">Stories</span>
+</div>
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-3 p-4 mb-4">
+<div class="flex min-w-72 flex-col gap-3">
+<h1 class="text-text-main dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Student Transformation &amp; Success Gallery</h1>
+<p class="text-text-sub text-lg font-normal leading-normal max-w-3xl">Measuring Real-World Impact: From Baseline to Excellence across 9 Dimensions. Explore the journeys of our diverse community.</p>
+</div>
+</div>
+<!-- Stats / Impact Dashboard -->
+<div class="flex flex-wrap gap-4 p-4 mb-8">
+<div class="flex min-w-[158px] flex-1 flex-col justify-between gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-center gap-3">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<p class="text-text-sub text-sm font-medium leading-normal uppercase tracking-wider">Career Readiness</p>
+</div>
+<p class="text-text-main dark:text-white tracking-tight text-4xl font-bold leading-tight">92%</p>
+<p class="text-sm text-green-600 font-medium flex items-center gap-1"><span class="material-symbols-outlined text-sm">trending_up</span> +5% vs Last Year</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col justify-between gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-center gap-3">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">stacked_line_chart</span>
+</div>
+<p class="text-text-sub text-sm font-medium leading-normal uppercase tracking-wider">Avg. Dimensional Growth</p>
+</div>
+<p class="text-text-main dark:text-white tracking-tight text-4xl font-bold leading-tight">40%</p>
+<p class="text-sm text-text-sub font-medium">Across all 9 metrics</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col justify-between gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-center gap-3">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<p class="text-text-sub text-sm font-medium leading-normal uppercase tracking-wider">Alumni Stories</p>
+</div>
+<p class="text-text-main dark:text-white tracking-tight text-4xl font-bold leading-tight">450+</p>
+<p class="text-sm text-text-sub font-medium">Documented transformations</p>
+</div>
+</div>
+<!-- Transformation Map (Horizontal Timeline) -->
+<div class="p-4 mb-10">
+<h3 class="text-text-main dark:text-white text-xl font-bold mb-6">The Transformation Map</h3>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 overflow-x-auto">
+<div class="min-w-[700px] flex items-center justify-between relative">
+<!-- Connecting Line -->
+<div class="absolute top-6 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 -z-10 rounded-full"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="size-12 rounded-full bg-white dark:bg-gray-800 border-4 border-gray-300 group-hover:border-primary dark:border-gray-600 dark:group-hover:border-primary flex items-center justify-center transition-colors z-10">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors">pause_circle</span>
+</div>
+<div class="text-center">
+<p class="text-text-main dark:text-white font-bold text-sm">Baseline Assessment</p>
+<p class="text-text-sub text-xs">Entry Level</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="size-12 rounded-full bg-white dark:bg-gray-800 border-4 border-gray-300 group-hover:border-primary dark:border-gray-600 dark:group-hover:border-primary flex items-center justify-center transition-colors z-10">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors">hourglass_top</span>
+</div>
+<div class="text-center">
+<p class="text-text-main dark:text-white font-bold text-sm">Dimensional Growth</p>
+<p class="text-text-sub text-xs">Skill Acquisition</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="size-12 rounded-full bg-white dark:bg-gray-800 border-4 border-primary dark:border-primary flex items-center justify-center z-10 shadow-[0_0_0_4px_rgba(13,13,242,0.2)]">
+<span class="material-symbols-outlined text-primary icon-filled">rocket_launch</span>
+</div>
+<div class="text-center">
+<p class="text-text-main dark:text-white font-bold text-sm">Practical Application</p>
+<p class="text-text-sub text-xs">Real-world Projects</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="size-12 rounded-full bg-white dark:bg-gray-800 border-4 border-gray-300 group-hover:border-primary dark:border-gray-600 dark:group-hover:border-primary flex items-center justify-center transition-colors z-10">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors">stars</span>
+</div>
+<div class="text-center">
+<p class="text-text-main dark:text-white font-bold text-sm">Excellence Achieved</p>
+<p class="text-text-sub text-xs">Alumni Status</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filters -->
+<div class="px-4 mb-6">
+<div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-white text-sm font-bold whitespace-nowrap shadow-md shadow-blue-500/30">All Stories</button>
+<button class="px-5 py-2 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-sub text-sm font-medium border border-gray-200 dark:border-gray-700 whitespace-nowrap transition-colors">Entrepreneur</button>
+<button class="px-5 py-2 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-sub text-sm font-medium border border-gray-200 dark:border-gray-700 whitespace-nowrap transition-colors">Researcher</button>
+<button class="px-5 py-2 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-sub text-sm font-medium border border-gray-200 dark:border-gray-700 whitespace-nowrap transition-colors">Corporate Leader</button>
+<button class="px-5 py-2 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-sub text-sm font-medium border border-gray-200 dark:border-gray-700 whitespace-nowrap transition-colors">Social Impact</button>
+</div>
+</div>
+<!-- Success Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+<!-- Card 1 -->
+<div class="group bg-surface-light dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
+<div class="p-6 pb-4 flex items-start gap-4">
+<img class="size-16 rounded-full object-cover border-2 border-white shadow-md" data-alt="Portrait of Sarah Chen, a professional asian woman in business attire smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeQu5oZ0vgh5t4Tzf_uJrXBZ8AhdSwAZyR78AfxLpPzIeCs95dsJkCH3MveJXs8cNOG64Zg90_fqPkcbPElrhsMcze5n9AFqOHJnc7wM2AAUmjTpLHI41cfiLWoNKtxavtxgtLIXYCiUSmmSu8_mn5Sti_-EJodZjcfXXKcbEPYR9K8C_FUBGPL1rVyb2xkIhMGpg4yXnu0B1ak6NU2yCLTu1RaTZhANMEZnjEqzlZE6wpRIwbDpBEGFAiMvGkNoUFN7wJvMWMB9Y"/>
+<div>
+<h4 class="text-lg font-bold text-text-main dark:text-white">Sarah Chen</h4>
+<p class="text-sm text-primary font-medium">AI Ethics Researcher</p>
+<p class="text-xs text-text-sub mt-1">Class of 2023</p>
+</div>
+</div>
+<div class="px-6 py-2 flex-1">
+<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 flex flex-col items-center">
+<p class="text-xs font-semibold text-text-sub mb-2 uppercase tracking-wide">Growth Profile</p>
+<!-- Simple SVG Radar Chart Simulation -->
+<svg class="w-28 h-28 drop-shadow-sm transform group-hover:scale-105 transition-transform duration-500" viewbox="0 0 100 100">
+<!-- Grid -->
+<polygon fill="none" points="50,10 90,35 90,75 50,90 10,75 10,35" stroke="#e5e7eb" stroke-width="1"></polygon>
+<polygon fill="none" points="50,25 75,40 75,65 50,75 25,65 25,40" stroke="#e5e7eb" stroke-width="1"></polygon>
+<!-- Data Shape -->
+<polygon fill="rgba(13, 13, 242, 0.1)" points="50,15 85,38 75,70 50,85 20,70 25,30" stroke="#0d0df2" stroke-width="2"></polygon>
+</svg>
+<div class="flex gap-4 mt-2 text-xs text-text-sub">
+<span class="flex items-center gap-1"><span class="size-2 rounded-full bg-primary"></span> Leadership</span>
+<span class="flex items-center gap-1"><span class="size-2 rounded-full bg-primary/40"></span> Tech</span>
+</div>
+</div>
+<p class="text-sm text-text-main dark:text-white mt-4 line-clamp-2">"This program shifted my perspective from purely technical to holistic impact."</p>
+</div>
+<div class="p-6 pt-4 mt-auto">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2.5 text-sm font-bold text-text-main dark:text-white transition-colors group-hover:border-primary group-hover:text-primary">
+<span class="material-symbols-outlined icon-filled text-[20px]">play_circle</span>
+                                    Watch Story
+                                </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-light dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
+<div class="p-6 pb-4 flex items-start gap-4">
+<img class="size-16 rounded-full object-cover border-2 border-white shadow-md" data-alt="Portrait of Marcus Johnson, a confident black man in a suit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc_V41BpIxRRVBqLPsF92LK2b3-m5UG0MiNfCAONePVXZNzTAILCNVobwW5W1EvUYOWWv_FSdJqHBpyEcztvWKiIlHPBBd3woUFFf8nVhYBW4ZYK_wNFfIA1svHd-6pJIWQ_5aboyQg8fu-V4kWAAFhBIhndJCJYsCH3Ez8IIZzK0gScCnfItv2eHdO17VfWKXARxGP5dWix8qRy5WqjFacMPo39EAS1CZd7kpzrlwp7_ebRTgivFWwDK0DQO2UPICirryGMYQTj4"/>
+<div>
+<h4 class="text-lg font-bold text-text-main dark:text-white">Marcus Johnson</h4>
+<p class="text-sm text-primary font-medium">FinTech Founder</p>
+<p class="text-xs text-text-sub mt-1">Class of 2022</p>
+</div>
+</div>
+<div class="px-6 py-2 flex-1">
+<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 flex flex-col items-center">
+<p class="text-xs font-semibold text-text-sub mb-2 uppercase tracking-wide">Growth Profile</p>
+<svg class="w-28 h-28 drop-shadow-sm transform group-hover:scale-105 transition-transform duration-500" viewbox="0 0 100 100">
+<polygon fill="none" points="50,10 90,35 90,75 50,90 10,75 10,35" stroke="#e5e7eb" stroke-width="1"></polygon>
+<polygon fill="none" points="50,25 75,40 75,65 50,75 25,65 25,40" stroke="#e5e7eb" stroke-width="1"></polygon>
+<!-- Data Shape: High on right side -->
+<polygon fill="rgba(13, 13, 242, 0.1)" points="50,30 88,35 88,75 50,80 15,60 25,40" stroke="#0d0df2" stroke-width="2"></polygon>
+</svg>
+<div class="flex gap-4 mt-2 text-xs text-text-sub">
+<span class="flex items-center gap-1"><span class="size-2 rounded-full bg-primary"></span> Innovation</span>
+<span class="flex items-center gap-1"><span class="size-2 rounded-full bg-primary/40"></span> Strategy</span>
+</div>
+</div>
+<p class="text-sm text-text-main dark:text-white mt-4 line-clamp-2">"The mentorship network was invaluable. I found my co-founder here."</p>
+</div>
+<div class="p-6 pt-4 mt-auto">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2.5 text-sm font-bold text-text-main dark:text-white transition-colors group-hover:border-primary group-hover:text-primary">
+<span class="material-symbols-outlined icon-filled text-[20px]">play_circle</span>
+                                    Watch Story
+                                </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-light dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
+<div class="p-6 pb-4 flex items-start gap-4">
+<img class="size-16 rounded-full object-cover border-2 border-white shadow-md" data-alt="Portrait of Elena Rodriguez, a smiling woman with glasses in a lab coat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_eDMAB_0u0Il6ZxZbzHQDV-ISWsLJirSgasJBJBn7FcPB-nNt-X7QDIY5m-Y-Gu1cDUr-pEt6j75XU8TD2IM84NMFHo8kLskPlz-HJEW6uYdyHMwjVBveK5wJSEG5QJBeqVKS-UXV1-OG8_0ThPTn9Fj-z94j1CuN7Nz3oWYW3Rgk1iHUZU5jcLANDYGmTIxFLn7eXjxxomPvpcrMZtptCZpYn5xlM5nYoe6InEmQvIESR3hFTN7be1P714QkRiYlDpYx2sOtFEY"/>
+<div>
+<h4 class="text-lg font-bold text-text-main dark:text-white">Elena Rodriguez</h4>
+<p class="text-sm text-primary font-medium">Head of Sustainability</p>
+<p class="text-xs text-text-sub mt-1">Class of 2021</p>
+</div>
+</div>
+<div class="px-6 py-2 flex-1">
+<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 flex flex-col items-center">
+<p class="text-xs font-semibold text-text-sub mb-2 uppercase tracking-wide">Growth Profile</p>
+<svg class="w-28 h-28 drop-shadow-sm transform group-hover:scale-105 transition-transform duration-500" viewbox="0 0 100 100">
+<polygon fill="none" points="50,10 90,35 90,75 50,90 10,75 10,35" stroke="#e5e7eb" stroke-width="1"></polygon>
+<polygon fill="none" points="50,25 75,40 75,65 50,75 25,65 25,40" stroke="#e5e7eb" stroke-width="1"></polygon>
+<!-- Data Shape: Balanced -->
+<polygon fill="rgba(13, 13, 242, 0.1)" points="50,10 85,40 85,70 50,90 15,70 15,40" stroke="#0d0df2" stroke-width="2"></polygon>
+</svg>
+<div class="flex gap-4 mt-2 text-xs text-text-sub">
+<span class="flex items-center gap-1"><span class="size-2 rounded-full bg-primary"></span> Resilience</span>
+<span class="flex items-center gap-1"><span class="size-2 rounded-full bg-primary/40"></span> Ethics</span>
+</div>
+</div>
+<p class="text-sm text-text-main dark:text-white mt-4 line-clamp-2">"I learned to balance profit with purpose, a skill crucial for my role today."</p>
+</div>
+<div class="p-6 pt-4 mt-auto">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2.5 text-sm font-bold text-text-main dark:text-white transition-colors group-hover:border-primary group-hover:text-primary">
+<span class="material-symbols-outlined icon-filled text-[20px]">play_circle</span>
+                                    Watch Story
+                                </button>
+</div>
+</div>
+</div>
+<!-- Footer / CTA -->
+<div class="p-4 mt-8">
+<div class="rounded-2xl bg-primary text-white p-10 md:p-14 text-center relative overflow-hidden">
+<!-- Abstract Background Pattern -->
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 10% 20%, white 0%, transparent 20%), radial-gradient(circle at 90% 80%, white 0%, transparent 20%);"></div>
+<div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center gap-6">
+<h2 class="text-3xl md:text-4xl font-bold">Start Your Own Transformation</h2>
+<p class="text-blue-100 text-lg">Join a community of changemakers. Apply for the upcoming cohort or nominate an outstanding peer.</p>
+<div class="flex flex-wrap justify-center gap-4 mt-2">
+<button class="bg-white text-primary hover:bg-blue-50 px-8 py-3 rounded-lg font-bold text-base transition-colors shadow-lg">Apply Now</button>
+<button class="bg-blue-800 text-white hover:bg-blue-900 px-8 py-3 rounded-lg font-bold text-base transition-colors border border-blue-700">Submit a Story</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Simple Footer -->
+<footer class="p-4 mt-10 border-t border-gray-200 dark:border-gray-800">
+<div class="flex flex-col md:flex-row justify-between items-center text-text-sub text-sm gap-4">
+<p>© 2024 PPSDM KMM. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary" href="#">Privacy Policy</a>
+<a class="hover:text-primary" href="#">Terms of Service</a>
+<a class="hover:text-primary" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</div>
+</div>
+</body></html>

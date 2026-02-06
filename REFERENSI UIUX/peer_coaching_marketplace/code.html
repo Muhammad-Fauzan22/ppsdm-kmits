@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Peer Coaching Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1313ec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111118", // Matching the provided components
+                        "surface-dark": "#1c1c27",
+                        "border-dark": "#282839",
+                        "text-secondary": "#9d9db9"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-dark text-white font-display overflow-hidden antialiased selection:bg-primary/30">
+<div class="flex h-screen w-full">
+<!-- Left Sidebar -->
+<aside class="w-64 flex-shrink-0 border-r border-border-dark hidden md:flex flex-col bg-[#111118]">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- User Profile Snippet -->
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-inner border border-border-dark" data-alt="Profile picture of a student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAy5UyMTzS1EdNg-SkihrQZnCHr1vdJDtJu3en5_uJrllqVDMA3JrV1VInh-bGEeu5wkMNooTMY2ZbxYunFoMQUzaRhql0r0CkA6StEqFmf5cbDgTOjja2sS8GtDDkJ0Rj33N9bI1QaETKTmE39uUZj9tdC7op4BZ3DitWtXS8PupwQVBAH1rn1p86d02QWnCMpBXMlnvkms4wwt0e7M5TxN1F2LgnxbJxAwzAMhEYN6mb8kie3LamIKNC3mSZEB8SLCclK0GHJtg0");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-normal">Alex Chen</h1>
+<p class="text-text-secondary text-xs font-normal leading-normal">Level 8 Junior</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-dark transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">home</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal">Home</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-primary fill-1" style="font-size: 24px;">storefront</span>
+<p class="text-primary text-sm font-bold leading-normal">Marketplace</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-dark transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">calendar_month</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal">My Sessions</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-dark transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">trophy</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal">Leaderboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-dark transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">person</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal">Profile</p>
+</a>
+</nav>
+</div>
+<!-- XP Progress (Sidebar Bottom) -->
+<div class="flex flex-col gap-3 p-4 bg-surface-dark rounded-xl border border-border-dark">
+<div class="flex justify-between items-end">
+<p class="text-white text-sm font-bold">My XP</p>
+<p class="text-primary text-xs font-bold">Lvl 8</p>
+</div>
+<div class="relative w-full h-2 rounded-full bg-background-dark">
+<div class="absolute top-0 left-0 h-2 rounded-full bg-gradient-to-r from-blue-600 to-primary" style="width: 75%;"></div>
+</div>
+<p class="text-text-secondary text-xs">340 XP to Level 9</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+<!-- Header -->
+<header class="flex-shrink-0 flex items-center justify-between border-b border-border-dark px-6 py-4 bg-[#111118]/80 backdrop-blur-md z-10">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">school</span>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">PPSDM KMM</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-surface-dark text-white hover:bg-border-dark transition-colors relative">
+<span class="material-symbols-outlined" style="font-size: 20px;">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-surface-dark"></span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-surface-dark text-white hover:bg-border-dark transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="max-w-[1400px] mx-auto p-6 md:p-8 flex flex-col gap-8">
+<!-- Hero Section -->
+<div class="rounded-2xl overflow-hidden relative min-h-[320px] flex items-center justify-center p-6 md:p-12">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Abstract gradient background with blue and purple tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAodiIsK1GMpafdpBCuSZd9AOt5bzbTD7mXlJG9F6tmjtLe9JI02NbCe0W4XQ3t7IQMa06XfgmKudyiX7GxkpqZ8sq5ih_1RK2O5fN5pan272RRXkkopNjnqlfor0N3Xg1HQ36UsXoLRbdP9uEQuzNP0DqahhOUrbZc4MEcUTvv9l9rTNKkyEo9Fmy6hCrZLq4vO1kbrDy4lZtnoz7IuPZilo6mKxeXOs2mo-qiiFZUtMDVOtTmpk1Ea1gcF9b_iFMb-HzO2aNZ0Wc");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#111118] via-[#111118]/80 to-transparent"></div>
+<div class="absolute inset-0 bg-black/40"></div>
+<div class="relative z-10 flex flex-col items-center text-center gap-6 max-w-2xl">
+<div class="flex flex-col gap-2">
+<h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight">
+                                    Level Up with a Mentor
+                                </h1>
+<p class="text-gray-200 text-lg font-light max-w-lg mx-auto">
+                                    Find senior students to help you master new skills, debug code, or prepare for exams.
+                                </p>
+</div>
+<!-- Search Bar -->
+<div class="w-full max-w-lg flex items-center p-1 bg-surface-dark border border-border-dark rounded-xl shadow-2xl">
+<div class="px-3 text-text-secondary">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="flex-1 bg-transparent border-none text-white placeholder-text-secondary focus:ring-0 text-base h-12" placeholder="Search by skill (e.g., Python, Design)..." type="text"/>
+<button class="bg-primary hover:bg-blue-700 text-white font-bold h-10 px-6 rounded-lg transition-colors">
+                                    Find
+                                </button>
+</div>
+</div>
+</div>
+<!-- Marketplace Grid Container -->
+<div class="flex flex-col lg:flex-row gap-8 items-start">
+<!-- Left: Filters & Coach Grid -->
+<div class="flex-1 flex flex-col gap-6 w-full">
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-3 items-center">
+<span class="text-text-secondary text-sm font-medium mr-2">Popular:</span>
+<button class="flex h-9 items-center gap-2 rounded-full bg-surface-dark border border-border-dark px-4 hover:border-primary/50 hover:text-white transition-colors">
+<span class="text-sm font-medium">Python</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-full bg-surface-dark border border-border-dark px-4 hover:border-primary/50 hover:text-white transition-colors">
+<span class="text-sm font-medium">UI Design</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-full bg-primary text-white border border-primary px-4">
+<span class="text-sm font-medium">Public Speaking</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-full bg-surface-dark border border-border-dark px-4 hover:border-primary/50 hover:text-white transition-colors">
+<span class="text-sm font-medium">Level 5+ Only</span>
+</button>
+<button class="flex h-9 items-center gap-2 text-text-secondary hover:text-white ml-auto">
+<span class="material-symbols-outlined">tune</span>
+<span class="text-sm font-medium">All Filters</span>
+</button>
+</div>
+<!-- Grid Header -->
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-white">Recommended Mentors</h3>
+<span class="text-sm text-text-secondary">Showing 24 available</span>
+</div>
+<!-- Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+<!-- Card 1 -->
+<div class="group flex flex-col bg-surface-dark rounded-xl border border-border-dark p-5 hover:border-primary/50 hover:shadow-[0_4px_20px_rgba(19,19,236,0.1)] transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<div class="relative">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Portrait of a female mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuByOXamL-4wejK0Wz0A5z6mOzkXglqxuXnIUVU32pO7fWpEKDQNaynLAJRpeKV-Ug_A0f4wRcGR7s7DJ3fCjZy__iNGoqs1IE5SjBDhNSS8-VOTr06xrpWHfQ7XKyS0RSlt-ZlZvsWjJBQKFB8FDGocjBfBUtPU1TldbOvI3tCChXdbHkflJu8rtcd3iKpsKzqQaqSiBmizj4RkFiiWw4MQ7Xn59pi0wNCKC3nL1jT7AOfCkpN13k4W88vFE4xg9X6Em3C8Lkx-iF0");'></div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-surface-dark" title="Online"></div>
+</div>
+<div>
+<h4 class="font-bold text-white text-lg leading-tight">Sarah Jenkins</h4>
+<span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-primary/20 text-primary text-xs font-bold uppercase tracking-wide">
+<span class="material-symbols-outlined" style="font-size: 12px;">military_tech</span>
+                                                    Lvl 12
+                                                </span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined fill-1" style="font-size: 16px;">star</span>
+<span class="text-sm font-bold">4.9</span>
+</div>
+</div>
+<p class="text-text-secondary text-sm mb-4 line-clamp-2">
+                                        Expert in Public Speaking and Debate. I can help you structure your arguments and boost confidence.
+                                    </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Debate</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Speech</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Communication</span>
+</div>
+<div class="mt-auto flex items-center justify-between border-t border-border-dark pt-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-text-secondary uppercase font-bold">Session Cost</span>
+<span class="text-sm font-medium text-white">50 XP</span>
+</div>
+<button class="bg-white text-background-dark hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                                            Request
+                                        </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col bg-surface-dark rounded-xl border border-border-dark p-5 hover:border-primary/50 hover:shadow-[0_4px_20px_rgba(19,19,236,0.1)] transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<div class="relative">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Portrait of a male mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQ5WWyQyfQw3VNLVtLqYhM-1ZhxNwnsBoTqFSSndaLzS_dXoB2MXLjK2JwWuSdOyjFJhT5gD39XVUtzVGpw0tMyN3FAsPXH2PJQFJi4uB798Vj_r1fERs-dsvVq95zXw6TdWrlLpnkduifhThLppiaP1kxdEG2FlFp0uQlDGAML1N50p3-2vWki4MkC3fBwpzLC28vyXdNDyVR3EeHIE2eq8TgawS-LbEo3p6WUe8r53w2hFTzCgLjBZDZoU9xJaFVU2ejKJeT0zQ");'></div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-gray-500 border-2 border-surface-dark" title="Offline"></div>
+</div>
+<div>
+<h4 class="font-bold text-white text-lg leading-tight">David Kim</h4>
+<span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-wide">
+<span class="material-symbols-outlined" style="font-size: 12px;">diamond</span>
+                                                    Lvl 15
+                                                </span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined fill-1" style="font-size: 16px;">star</span>
+<span class="text-sm font-bold">5.0</span>
+</div>
+</div>
+<p class="text-text-secondary text-sm mb-4 line-clamp-2">
+                                        Senior CS student. Python &amp; Data Science wizard. Let's crack those algorithms together!
+                                    </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Python</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Data Science</span>
+</div>
+<div class="mt-auto flex items-center justify-between border-t border-border-dark pt-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-text-secondary uppercase font-bold">Session Cost</span>
+<span class="text-sm font-medium text-white">Free</span>
+</div>
+<button class="bg-primary text-white hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-blue-900/20">
+                                            Request
+                                        </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col bg-surface-dark rounded-xl border border-border-dark p-5 hover:border-primary/50 hover:shadow-[0_4px_20px_rgba(19,19,236,0.1)] transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<div class="relative">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Portrait of a female mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2CJelXys7TYHHiGC9gBegOQygcO7D5kl9q6snyGBBx2Rx_Rao75hiSB5Kkzvz-7ldH67oN6RYOW1_QkonKgQQ_M1GqQrolyGv958yNJHhOaK2SM_LiYzQCnkuk-sGj1G8T2johQCt7xvoZaufkICzbVxTaIKKqjgH72kV93THwjMo78_oUsQtf_Vm6n97paZKgn1C2zLoqlNmDb9bCf2iik3E4vF_bbMBGk_K2PuhyvqZgMp_5n3Wud_8ICWw6w8vpqR5Augz2oY");'></div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-surface-dark" title="Online"></div>
+</div>
+<div>
+<h4 class="font-bold text-white text-lg leading-tight">Maria Garcia</h4>
+<span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-wide">
+<span class="material-symbols-outlined" style="font-size: 12px;">bolt</span>
+                                                    Lvl 9
+                                                </span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined fill-1" style="font-size: 16px;">star</span>
+<span class="text-sm font-bold">4.7</span>
+</div>
+</div>
+<p class="text-text-secondary text-sm mb-4 line-clamp-2">
+                                        UI/UX Design enthusiast. I can review your portfolios and help with Figma basics.
+                                    </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Figma</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Prototyping</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Wireframing</span>
+</div>
+<div class="mt-auto flex items-center justify-between border-t border-border-dark pt-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-text-secondary uppercase font-bold">Session Cost</span>
+<span class="text-sm font-medium text-white">25 XP</span>
+</div>
+<button class="bg-white text-background-dark hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                                            Request
+                                        </button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group flex flex-col bg-surface-dark rounded-xl border border-border-dark p-5 hover:border-primary/50 hover:shadow-[0_4px_20px_rgba(19,19,236,0.1)] transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-3">
+<div class="relative">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Portrait of a male mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCnNl9kbcSLf5NJ4_nl99EQiKqbl0DsoDVMf3uVsAcfJFGBNf02SqjGwFMDFSyE-ewXbmB0u2mKhXuDR5kiqBRV1q7q68eASWqtM492QP-pQN9lx_0m1GZ2Osbl-nzvGkab4ndcyfdkKLk7nx7cuHo7CrZegTawD4G-E9W5L9RE78dYhLOLMIzUJlZxpalc9l3bj_X4CXnXhzxSu3kWphXqbC-LsL368l5audtUTiSkkowean09Da3Z0xXXeAaR5YNp0_UZnpYbW8");'></div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-surface-dark" title="Online"></div>
+</div>
+<div>
+<h4 class="font-bold text-white text-lg leading-tight">James Wilson</h4>
+<span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-primary/20 text-primary text-xs font-bold uppercase tracking-wide">
+<span class="material-symbols-outlined" style="font-size: 12px;">military_tech</span>
+                                                    Lvl 11
+                                                </span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined fill-1" style="font-size: 16px;">star</span>
+<span class="text-sm font-bold">4.8</span>
+</div>
+</div>
+<p class="text-text-secondary text-sm mb-4 line-clamp-2">
+                                        Need help with Java or C++? I have 3 years of experience in backend development.
+                                    </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Java</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">C++</span>
+<span class="px-2 py-1 rounded-md bg-[#282839] text-xs text-gray-300">Backend</span>
+</div>
+<div class="mt-auto flex items-center justify-between border-t border-border-dark pt-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-text-secondary uppercase font-bold">Session Cost</span>
+<span class="text-sm font-medium text-white">40 XP</span>
+</div>
+<button class="bg-white text-background-dark hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                                            Request
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Stats & Leaderboard (Desktop Only) -->
+<div class="hidden xl:flex flex-col w-80 gap-6 flex-shrink-0">
+<!-- Detailed XP Tracker -->
+<div class="bg-surface-dark rounded-2xl p-6 border border-border-dark flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<h3 class="text-white font-bold text-lg">Peer Coaching XP</h3>
+<div class="bg-primary/20 text-primary p-1 rounded-md">
+<span class="material-symbols-outlined" style="font-size: 20px;">trending_up</span>
+</div>
+</div>
+<div class="flex flex-col items-center py-2">
+<div class="text-4xl font-black text-white">1380</div>
+<div class="text-text-secondary text-sm">Total Earned XP</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-xs font-medium">
+<span class="text-white">Current Rank: Mentor</span>
+<span class="text-primary">Master</span>
+</div>
+<div class="h-3 w-full bg-[#111118] rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full relative" style="width: 80%;">
+<div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+</div>
+</div>
+<p class="text-xs text-text-secondary text-center mt-1">120 XP needed to level up!</p>
+</div>
+</div>
+<!-- Leaderboard Snippet -->
+<div class="bg-surface-dark rounded-2xl p-6 border border-border-dark flex flex-col gap-4">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-white font-bold text-lg">Top Mentors</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Rank 1 -->
+<div class="flex items-center gap-3">
+<div class="font-black text-yellow-400 w-4">1</div>
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Profile of top mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0NGnXf60ZnsdkCCGKyuumebwsf-k6_dTqxBXajiWlA952iM6hlNTHJTApjBAlgkPjoPYRhjtbrX8MC7w5SYf74yHbhVM1qTf8REH1Zaz-SqTz7iCiK6J98Iqb2Ite4-9WzxuDe-yJIlhWpoN_AmmqknXi-sx5yVQINnkxO2owSZiLj3TzSCzUFPLCtyYAGPVnZIsGtkqfzpwHYgKY1uHmlkjC-QEDjZ2jUHPLyBJScjn_mFKiUYFvYSn2Jr_O35jg9P7K_AwPNF8");'></div>
+<div class="flex flex-col flex-1">
+<span class="text-sm font-bold text-white">Anna K.</span>
+<span class="text-xs text-text-secondary">24 Sessions</span>
+</div>
+<div class="text-yellow-400 flex items-center gap-0.5 text-xs font-bold">
+<span class="material-symbols-outlined" style="font-size: 14px;">star</span> 5.0
+                                        </div>
+</div>
+<!-- Rank 2 -->
+<div class="flex items-center gap-3">
+<div class="font-black text-gray-300 w-4">2</div>
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Profile of second mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCE0YGkhH1f5Vjg1Ow9-KjkY6liuzaKUp6SM4Y1m9S98nbr-2FqHOQFBe-yEAzK9pAuq3cVbGiY0Nn18xQNaAKYcqtAnfbjXsYu2yOCuv9_r0r0tgwMPVzyDzP-Ug9XKW9geYIOOkBVQxhKlASZFxg0X68ZHEnc31DVGBUwVhu0rLRMF6xrsL2ElsLnx0jWx783J2I9Vpn_qjEaPdfBzziG6qsgKU7eO3TgOKGgFYrV8YoChtUr7hKk-8XvRVNBbZQCclPoKAH0lT4");'></div>
+<div class="flex flex-col flex-1">
+<span class="text-sm font-bold text-white">Mike T.</span>
+<span class="text-xs text-text-secondary">21 Sessions</span>
+</div>
+<div class="text-yellow-400 flex items-center gap-0.5 text-xs font-bold">
+<span class="material-symbols-outlined" style="font-size: 14px;">star</span> 4.9
+                                        </div>
+</div>
+<!-- Rank 3 -->
+<div class="flex items-center gap-3">
+<div class="font-black text-orange-400 w-4">3</div>
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Profile of third mentor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjvW54nBJHuvwIU_8ydJO0_HZh_m3YQs56H_yHDShe-mKSlWdCgvDHHht9sXZ3955DeY-1iKi_69icXUDccZY2JzCTEjml5Xdn2qOakbujBeVwcT541vV4WnMJS15ILlLpu7VcJ45Hrht0VNpRs5cfLGDaE3al7GDYXtFUNqzrzU6LYsnfsLPiHYYyoev93R46Isy0hVKgQSpUY4JzUKWpKW5XWdmkvw0RqqDoWbajzaDxvddlPpGs3jHw8y5F0Mh42l5LYjqfBdo");'></div>
+<div class="flex flex-col flex-1">
+<span class="text-sm font-bold text-white">Jessica L.</span>
+<span class="text-xs text-text-secondary">19 Sessions</span>
+</div>
+<div class="text-yellow-400 flex items-center gap-0.5 text-xs font-bold">
+<span class="material-symbols-outlined" style="font-size: 14px;">star</span> 4.8
+                                        </div>
+</div>
+</div>
+</div>
+<!-- CTA Card -->
+<div class="rounded-2xl p-6 bg-gradient-to-br from-primary to-blue-900 text-white flex flex-col gap-3 relative overflow-hidden">
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-white/10" style="font-size: 100px;">school</span>
+<h3 class="font-bold text-lg z-10">Become a Mentor</h3>
+<p class="text-sm text-blue-100 z-10">Share your knowledge, earn XP, and get badges!</p>
+<button class="mt-2 bg-white text-primary text-sm font-bold py-2 px-4 rounded-lg z-10 w-fit hover:bg-gray-100 transition-colors">Apply Now</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

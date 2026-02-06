@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Activity Management Portfolio</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#256af4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#111318",
+                        "card-dark": "#1d232e",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Navbar -->
+<div class="w-full border-b border-solid border-slate-200 dark:border-[#282e39] bg-white dark:bg-[#111318]">
+<div class="mx-auto flex max-w-[1280px] items-center justify-between px-4 py-3 lg:px-10">
+<div class="flex items-center gap-4">
+<div class="flex size-8 items-center justify-center rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">PPSDM KM ITS Activity Management</h2>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] sm:hidden">Activity Mgmt</h2>
+</div>
+<div class="flex items-center gap-4 lg:gap-8">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors text-slate-500 dark:text-slate-400" href="#">Dashboard</a>
+<a class="text-sm font-medium text-slate-900 dark:text-white" href="#">Kegiatan</a>
+<a class="text-sm font-medium hover:text-primary transition-colors text-slate-500 dark:text-slate-400" href="#">Profil</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="lg:hidden text-slate-500 dark:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 ring-2 ring-white dark:ring-[#282e39]" data-alt="User profile avatar showing a smiling student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjHwj6otugbkBfyc6czQ3YNk2WKqInYWMRJC4I3ke1_DpdAVBLUdQR3eCIQiSh9l49YphjUb-dXFZ1fJV9y-RSHUAiG6VcEJ-FJ3LHI0lKZd0V-MwLtoZilxK32zktTO74U2fwXUwTeD3NGAMb4lSXuQU6I-p6aROPWfMJ8byRmk8EJIJaiIwGonGH121ZTj1IJRsPl7AMEYKTrk4vPGn-GB83Q4FKyNipJyqzHt1m9rcn5sl07Q58jUzi8PkMyZOj3BtBZ0JYNkk");'>
+</div>
+<a class="hidden lg:block text-sm font-medium text-red-500 hover:text-red-400" href="#">Logout</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-[1280px] mx-auto px-4 lg:px-10 py-6 lg:py-10">
+<!-- Page Heading & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Manajemen Kegiatan</h1>
+<p class="text-slate-500 dark:text-[#9ca6ba] text-base font-normal max-w-2xl">
+                        Kelola portofolio kegiatan ekstrakurikuler Anda di sini. Pantau status validasi dan tambahkan pencapaian baru.
+                    </p>
+</div>
+<button class="group flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-white shadow-lg shadow-primary/20 hover:bg-blue-600 active:scale-95 transition-all w-full md:w-auto">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span class="font-bold text-sm tracking-wide">Tambah Baru</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="mb-8 border-b border-slate-200 dark:border-[#282e39]">
+<div class="flex gap-6 overflow-x-auto no-scrollbar">
+<a class="relative flex flex-col items-center justify-center pb-3 pt-2 text-primary border-b-2 border-primary" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Semua Kegiatan</p>
+</a>
+<a class="group relative flex flex-col items-center justify-center pb-3 pt-2 text-slate-500 dark:text-[#9ca6ba] hover:text-slate-700 dark:hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Menunggu Verifikasi</p>
+<span class="absolute bottom-[-2px] left-0 h-[2px] w-0 bg-slate-300 dark:bg-white transition-all group-hover:w-full"></span>
+</a>
+<a class="group relative flex flex-col items-center justify-center pb-3 pt-2 text-slate-500 dark:text-[#9ca6ba] hover:text-slate-700 dark:hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Disetujui</p>
+<span class="absolute bottom-[-2px] left-0 h-[2px] w-0 bg-slate-300 dark:bg-white transition-all group-hover:w-full"></span>
+</a>
+</div>
+</div>
+<!-- Activity Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Approved -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-card-dark shadow-sm border border-slate-200 dark:border-transparent hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all">
+<!-- Image Area -->
+<div class="h-48 w-full bg-cover bg-center relative" data-alt="Abstract academic background with books and glasses" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBq77XCgjSnBvkwjcOSwX5vHrgpLAAoajrBgDfAlZXKBibQA_HJYz4nFKLY-7mOI03zOI2g3-sjcfYdB4vsDggB_xtLfKwj7VZNpyT6qVJxvjkC6QELHo54gwjBUwJB8DWOCNdJNQC3PweRRinP1TmMwUbCmfwXZQHD6-DHoVvg3fTazjNuqOqhUfZ3oKDRljh_W-FLP8LjDYURREN3tCoJ09AzVEIXXLmI9jRpqP803RlscmIc7FY3TTZHa31AosN9rwiu3qnDKJE");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/20 px-2.5 py-1 text-xs font-semibold text-emerald-300 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                Disetujui
+                            </span>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex flex-1 flex-col justify-between p-5">
+<div class="flex flex-col gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Kompetisi Akademik</span>
+<h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                Lomba Karya Tulis Ilmiah Nasional 2023
+                            </h3>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>12 Oktober 2023</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+<span class="text-xs text-slate-400">ID: #LKTI-23-001</span>
+<button class="flex items-center gap-1 text-sm font-bold text-primary hover:text-blue-400 transition-colors">
+                                Detail
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Pending -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-card-dark shadow-sm border border-slate-200 dark:border-transparent hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all">
+<!-- Image Area -->
+<div class="h-48 w-full bg-cover bg-center relative" data-alt="Digital technology background representing blockchain" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAAoOpFJMAV8LXXdlcACenzs58-TP660dclsmwEm3q9qaKa_B_FGiw5zAmovb79pvwJancGNdG84m9FsGjrOdVByVGI2cwAQOscjV8ag_4lyY9fuvUWjyE9uPgPUDswkHMzFgng6AIGjCZgU8BuJcTfHbymHOiNPDTWhhi_dT14WLdKb4v4zHnFjH8olmFNKB03hAZgOGPcIK3HmNiHgFC71IGUnTYIO3Qf7cjrA4l5fIhnAsVK4ZuDndMHat-sVAJNm43KHeH1mmE");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 rounded-full bg-yellow-500/20 backdrop-blur-md border border-yellow-500/20 px-2.5 py-1 text-xs font-semibold text-yellow-300 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                Menunggu
+                            </span>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex flex-1 flex-col justify-between p-5">
+<div class="flex flex-col gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Pelatihan &amp; Sertifikasi</span>
+<h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                Webinar Teknologi Blockchain &amp; Masa Depan
+                            </h3>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>05 September 2023</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+<span class="text-xs text-slate-400">ID: #WEB-23-042</span>
+<button class="flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-300 transition-colors">
+                                Edit
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Rejected -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-card-dark shadow-sm border border-slate-200 dark:border-transparent hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all opacity-90 hover:opacity-100">
+<!-- Image Area -->
+<div class="h-48 w-full bg-cover bg-center relative" data-alt="Group of people in a meeting room" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDU89igOvo9eKccA_eIoMYv51MnSRX9sWcHNnfMdYH0g2v2iInuEUrWQz3_iGBQUwgLR9HfQv2lf1dMcjxlqDPABR5VCs6B_brO2tpYIurJ1gcU__PSHIqHR6EbU68jfH8aNGnoK7kINRUEG_34KFoFkCcpuIEIItOEcX8493PsT3VCatAXtOTVwICnQdHDgcInAWxiWstKSH3AaqBpCw0CFUjQ6kzL-kA5X5yBza7MMWivPs08-gRioLultFExkyXFUDzPhyuD1dk");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute inset-0 bg-slate-900/40 backdrop-grayscale-[0.5]"></div> <!-- Dimmed effect -->
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 rounded-full bg-red-500/20 backdrop-blur-md border border-red-500/20 px-2.5 py-1 text-xs font-semibold text-red-300 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">cancel</span>
+                                Ditolak
+                            </span>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex flex-1 flex-col justify-between p-5">
+<div class="flex flex-col gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Organisasi</span>
+<h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white group-hover:text-red-400 transition-colors">
+                                Staff Muda BEM ITS 2023
+                            </h3>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>20 Agustus 2023</span>
+</div>
+<p class="mt-2 text-xs text-red-400 bg-red-500/10 p-2 rounded border border-red-500/20">
+                                Alasan: Sertifikat yang diunggah tidak valid / buram.
+                            </p>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+<span class="text-xs text-slate-400">ID: #ORG-23-112</span>
+<button class="flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-300 transition-colors">
+                                Perbaiki
+                                <span class="material-symbols-outlined text-[18px]">build</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4: Approved -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-card-dark shadow-sm border border-slate-200 dark:border-transparent hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all">
+<!-- Image Area -->
+<div class="h-48 w-full bg-cover bg-center relative" data-alt="Volunteers planting trees in a park" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCQ_2JP8Zi2q3r5SSjQ0bU4X2bUcSZiXRhDmvc9YX1n2UjFOdppb-bXuKAhghJGXMEvNII82DGdQBz-RLUahvqhIfarSAa0V3ha8RJguLos0WDdiiSv5MmT2KVWZrFTdpadHuNFRnEUhA_NIOgx0E8tuztwLd4YesRQDOTIdSK00h8jgz5k2BaaNr0kkW_QBwPvDGi-BG5cH4YYnJKGxYvKMAkcC1pdXo3C9hUN--1dsbHN1e_ywx3b9gE_VwBcyrINWYxRsXS7H1k");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/20 px-2.5 py-1 text-xs font-semibold text-emerald-300 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                Disetujui
+                            </span>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex flex-1 flex-col justify-between p-5">
+<div class="flex flex-col gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Pengabdian Masyarakat</span>
+<h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                Volunteer Gerakan Tanam 1000 Pohon
+                            </h3>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>15 Juli 2023</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+<span class="text-xs text-slate-400">ID: #VOL-23-088</span>
+<button class="flex items-center gap-1 text-sm font-bold text-primary hover:text-blue-400 transition-colors">
+                                Detail
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5: Pending -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-card-dark shadow-sm border border-slate-200 dark:border-transparent hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all">
+<!-- Image Area -->
+<div class="h-48 w-full bg-cover bg-center relative" data-alt="Computer screen with code" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxBzW39HhxJGMN8bvROwom8KtTSvyU-ZGs627_qj0PjnZvv6feZdqhz_PQuOkBI2dWdJkzJwfs9PQsSbQen2a4E8LuN1eXq0viwEOvKXoYLB1_24WXwt8Ll_q7ZfwhrlFkxQv24gGvDFyvbnP-eIjc82nMTEG7idYWpy7w4R7qhnxpghGA5dgOT_CZ9dYnYtcc7hnRCFwR6my1JB27Hgmb4mxxjY1OgT2JQ2Ft6ssxS5IzHqisbhm-rcTBXdksicBS3QALU0I6xIw");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 rounded-full bg-yellow-500/20 backdrop-blur-md border border-yellow-500/20 px-2.5 py-1 text-xs font-semibold text-yellow-300 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                Menunggu
+                            </span>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex flex-1 flex-col justify-between p-5">
+<div class="flex flex-col gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Pelatihan &amp; Sertifikasi</span>
+<h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                Bootcamp Fullstack Developer Batch 5
+                            </h3>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>10 Juni 2023</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+<span class="text-xs text-slate-400">ID: #BOOT-23-010</span>
+<button class="flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-300 transition-colors">
+                                Edit
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Hidden Modal Structure (For reference/implementation) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" id="add-activity-modal">
+<div class="w-full max-w-lg rounded-xl bg-white dark:bg-[#1d232e] shadow-2xl overflow-hidden animate-fade-in-up">
+<!-- Modal Header -->
+<div class="flex items-center justify-between border-b border-slate-200 dark:border-[#282e39] px-6 py-4">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Tambah Kegiatan Baru</h3>
+<button class="flex items-center justify-center rounded-full p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-[#282e39] transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-6 flex flex-col gap-5">
+<!-- Title Input -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Nama Kegiatan</label>
+<input class="w-full rounded-lg border border-slate-300 dark:border-[#3b4354] bg-white dark:bg-[#111318] px-3 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Masukkan judul kegiatan..." type="text"/>
+</div>
+<!-- Date & Category Row -->
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Tanggal</label>
+<input class="w-full rounded-lg border border-slate-300 dark:border-[#3b4354] bg-white dark:bg-[#111318] px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" type="date"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Kategori</label>
+<select class="w-full rounded-lg border border-slate-300 dark:border-[#3b4354] bg-white dark:bg-[#111318] px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+<option>Kompetisi</option>
+<option>Organisasi</option>
+<option>Pelatihan</option>
+<option>Pengabdian</option>
+</select>
+</div>
+</div>
+<!-- File Upload -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Bukti Sertifikat</label>
+<div class="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 dark:border-[#3b4354] bg-slate-50 dark:bg-[#111318]/50 py-8 hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined mb-2 text-3xl text-slate-400">cloud_upload</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">Drag &amp; drop file or <span class="text-primary font-medium">browse</span></p>
+<p class="text-[10px] text-slate-400 mt-1">PDF, JPG up to 5MB</p>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="flex justify-end gap-3 border-t border-slate-200 dark:border-[#282e39] px-6 py-4 bg-slate-50 dark:bg-[#1d232e]">
+<button class="rounded-lg px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#282e39] transition-colors">Batal</button>
+<button class="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-blue-600 transition-colors">Simpan</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

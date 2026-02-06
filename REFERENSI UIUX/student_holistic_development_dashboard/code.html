@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Holistic Development Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#01377e",
+                        "secondary-gold": "#FFBD07",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1e293b",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for dark mode feeling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen flex overflow-hidden selection:bg-secondary-gold selection:text-black">
+<!-- Sidebar Navigation -->
+<aside class="w-20 lg:w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#101418] flex flex-col justify-between p-4 z-20 transition-all duration-300">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
+<span class="font-bold text-xl">I</span>
+</div>
+<div class="hidden lg:flex flex-col">
+<h1 class="text-base font-bold leading-tight tracking-tight">PPSDM KM ITS</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Student Dashboard</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-md shadow-primary/20 group" href="#">
+<span class="material-symbols-outlined group-hover:animate-pulse">dashboard</span>
+<span class="hidden lg:block text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="hidden lg:block text-sm font-medium">Activity Log</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="hidden lg:block text-sm font-medium">Transcript</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="hidden lg:block text-sm font-medium">Guide</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Actions -->
+<div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white transition-all mb-2" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="hidden lg:block text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="hidden lg:block text-sm font-medium">Logout</span>
+</a>
+<!-- User Mini Profile (Mobile/Collapsed fallback) -->
+<div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 lg:hidden flex justify-center">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User avatar small" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtdfyI2t70oDKC4mjXY4_W0Jjb_gJxGDJJh6JUn8QRmr0fkFDvFeOhApKMrJC2tGnzSBbQvizK9PF7XQkhdiacRnbXHA-1FKpGErU6Aabjlb_EQreXSW4MVjzhEyiR2-SXEZjeRH-9mpHqpLEvetw-963xZL481jJ4ymvCS1-agd9HxfD7pQdN4sBXHluqBxBuvTue7wOiKX_IQwPQlDVhqDQIJ2OH-_-mviwU5216I09TgJ5U5liX9AVDjcBgftg-HyafqPSSLGU');"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-4 lg:p-8 relative">
+<!-- Background Pattern (Gerigi/Gear subtle watermark) -->
+<div class="fixed right-0 bottom-0 opacity-[0.03] pointer-events-none z-0">
+<span class="material-symbols-outlined text-[600px] text-white">settings</span>
+</div>
+<div class="max-w-[1400px] mx-auto flex flex-col gap-6 relative z-10">
+<!-- Top Mobile Header -->
+<div class="lg:hidden flex justify-between items-center mb-2">
+<h1 class="text-xl font-bold text-white">Dashboard</h1>
+</div>
+<!-- Grid System -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Left Column (Profile & Charts) - 4 Columns -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Profile Card -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700/60 relative overflow-hidden group">
+<!-- Decorative Header Background -->
+<div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-primary to-blue-900"></div>
+<!-- Floating Gear Animation (Subtle) -->
+<div class="absolute -right-6 -top-6 text-white/10 animate-[spin_60s_linear_infinite]">
+<span class="material-symbols-outlined text-9xl">settings</span>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center mt-8">
+<!-- Avatar -->
+<div class="size-28 rounded-full p-1.5 bg-background-light dark:bg-surface-dark mb-4 shadow-xl">
+<div class="w-full h-full rounded-full bg-cover bg-center border-4 border-white dark:border-slate-700" data-alt="Student profile portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJiV_6gX1Zj0MktlScJfHmGsvcmz63FXn0IPysPikvIABvwGo64WET-LGb9sEocMlQpUWyI-j2sxV6DyLeyWaCkGz9pFZBSQD7dj8iO2n7fS7tH1aoiX1dV49JY6N5450TfGKCNGdpdmDW-7156Vj82_kYsPP5qyfqWe4Fqp8KUu4v3EP_6f4xiQvyW2j70m9C05N-kznh0li7w4Y5cUKcQTThw0NXkOTe5VR2qRRk3RYsPIN_yB3BUHFRZrdPdcLuJhWmlgFAHlE');"></div>
+</div>
+<!-- Identity -->
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Mahasiswa ITS</h2>
+<p class="text-base text-slate-500 dark:text-slate-400 font-medium">Department of Informatics</p>
+<div class="mt-3 inline-flex items-center px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                NRP: 5025201001
+                            </div>
+<!-- Holistic Score Section -->
+<div class="w-full mt-8 p-4 bg-slate-50 dark:bg-[#151e2b] rounded-lg border border-slate-200 dark:border-slate-700/50">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col items-start">
+<span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Holistic Score</span>
+<span class="text-sm font-medium text-primary dark:text-blue-400">Excellent</span>
+</div>
+<div class="text-right">
+<span class="text-2xl font-bold text-secondary-gold">780</span>
+<span class="text-xs text-slate-400 font-normal">/1000</span>
+</div>
+</div>
+<div class="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-gold rounded-full shadow-[0_0_10px_rgba(255,189,7,0.5)]" style="width: 78%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Radar Chart (Competence Map) -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700/60 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg">Competence Map</h3>
+<div class="p-1 rounded bg-slate-100 dark:bg-slate-800 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">more_horiz</span>
+</div>
+</div>
+<div class="relative w-full aspect-square max-h-[320px] self-center">
+<!-- SVG Radar Chart -->
+<svg class="w-full h-full drop-shadow-2xl" viewbox="0 0 100 100">
+<!-- Background Web -->
+<g fill="none" stroke="#334155" stroke-dasharray="1 2" stroke-width="0.3">
+<polygon points="50,10 85,25 90,50 85,75 50,90 15,75 10,50 15,25"></polygon>
+<polygon points="50,20 76,31 80,50 76,69 50,80 24,69 20,50 24,31"></polygon>
+<polygon points="50,30 67,37 70,50 67,63 50,70 33,63 30,50 33,37"></polygon>
+<polygon points="50,40 58,43 60,50 58,57 50,60 42,57 40,50 42,43"></polygon>
+</g>
+<!-- Axes -->
+<g stroke="#334155" stroke-width="0.3">
+<line x1="50" x2="50" y1="50" y2="10"></line>
+<line x1="50" x2="90" y1="50" y2="50"></line>
+<line x1="50" x2="50" y1="50" y2="90"></line>
+<line x1="50" x2="10" y1="50" y2="50"></line>
+<line x1="50" x2="85" y1="50" y2="25"></line>
+<line x1="50" x2="85" y1="50" y2="75"></line>
+<line x1="50" x2="15" y1="50" y2="75"></line>
+<line x1="50" x2="15" y1="50" y2="25"></line>
+</g>
+<!-- Data Shape -->
+<polygon fill="rgba(1, 55, 126, 0.4)" points="50,15 76,31 82,50 67,63 50,80 33,63 20,50 35,25" stroke="#FFBD07" stroke-linejoin="round" stroke-width="1.5"></polygon>
+<!-- Data Points -->
+<circle cx="50" cy="15" fill="#FFBD07" r="1.5"></circle>
+<circle cx="76" cy="31" fill="#FFBD07" r="1.5"></circle>
+<circle cx="82" cy="50" fill="#FFBD07" r="1.5"></circle>
+<circle cx="67" cy="63" fill="#FFBD07" r="1.5"></circle>
+<circle cx="50" cy="80" fill="#FFBD07" r="1.5"></circle>
+<circle cx="33" cy="63" fill="#FFBD07" r="1.5"></circle>
+<circle cx="20" cy="50" fill="#FFBD07" r="1.5"></circle>
+<circle cx="35" cy="25" fill="#FFBD07" r="1.5"></circle>
+<!-- Labels -->
+<g fill="#64748b" font-size="4" font-weight="500" text-anchor="middle">
+<text x="50" y="6">Leadership</text>
+<text text-anchor="start" x="94" y="25">Tech</text>
+<text text-anchor="start" x="96" y="52">Global</text>
+<text text-anchor="start" x="94" y="80">Social</text>
+<text x="50" y="96">Ethics</text>
+<text text-anchor="end" x="6" y="80">Spirit</text>
+<text text-anchor="end" x="4" y="52">Creative</text>
+<text text-anchor="end" x="6" y="25">Comms</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<!-- Right Column (Action & Data) - 8 Columns -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Welcome Banner -->
+<div class="relative rounded-xl overflow-hidden min-h-[260px] flex items-center shadow-lg group">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" data-alt="University campus blurred background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5Zh2pHniEd_MxubmhztkKEWG2_uVvRHH8WB68qXREYsjqe7YlIT8m1Pw0-SRNHzadSFvptrsBja7tOf_h_sSkvgCeDOfNK6dOBg271V9kSr7WILcMeitRbezRffSrGPxZMN2HV9WOmXiWuTd9GuUz_LDPa2qXEH1ajLqD5j_SaNWtlqJz7pwGIyEt7WdM8W2fj3awbfPCl6ec-rocsJMiCKHi80nmLA76PYBPDbjhm4dvVFAHKtk_aaIyPsj3sNGUdcNoGvNuD1U');">
+</div>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/30 dark:from-[#05111f]/95 dark:via-[#05111f]/70 dark:to-primary/20"></div>
+<!-- Content -->
+<div class="relative z-10 p-8 lg:p-10 w-full flex flex-col h-full justify-center">
+<div class="inline-flex items-center gap-2 mb-2">
+<span class="bg-secondary-gold text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Update</span>
+<span class="text-blue-100 text-xs">Term 2024/2025 Started</span>
+</div>
+<h1 class="text-3xl lg:text-4xl font-bold text-white mb-3 tracking-tight">Halo, Mahasiswa!</h1>
+<p class="text-blue-100/90 text-lg max-w-xl leading-relaxed mb-8">
+                                Siap kembangkan potensimu hari ini? Cek aktivitas terbaru atau input kegiatan barumu sekarang.
+                            </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-secondary-gold hover:bg-yellow-400 text-slate-900 font-bold px-6 py-3 rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-yellow-500/20">
+<span class="material-symbols-outlined">add_circle</span>
+                                    Input Kegiatan
+                                </button>
+<button class="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium px-6 py-3 rounded-lg transition-colors border border-white/20">
+                                    View Guidebook
+                                </button>
+</div>
+</div>
+</div>
+<!-- Action Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Action Card 1 -->
+<div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex items-center gap-4 hover:border-primary/50 dark:hover:border-blue-500/50 hover:shadow-md transition-all cursor-pointer group">
+<div class="size-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-primary dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined">edit_square</span>
+</div>
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">Input Kegiatan</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Log new achievement</p>
+</div>
+</div>
+<!-- Action Card 2 -->
+<div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex items-center gap-4 hover:border-emerald-500/50 hover:shadow-md transition-all cursor-pointer group">
+<div class="size-12 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined">visibility</span>
+</div>
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">Lihat Transkrip</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Check valid points</p>
+</div>
+</div>
+<!-- Action Card 3 -->
+<div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex items-center gap-4 hover:border-amber-500/50 hover:shadow-md transition-all cursor-pointer group">
+<div class="size-12 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors">Panduan</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Holistic handbook</p>
+</div>
+</div>
+</div>
+<!-- Recent Activities Table -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex-1 flex flex-col">
+<div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">history</span>
+<h3 class="font-bold text-lg text-slate-800 dark:text-white">Recent Activities</h3>
+</div>
+<a class="text-sm text-primary dark:text-blue-400 font-medium hover:underline flex items-center gap-1" href="#">
+                                View All <span class="material-symbols-outlined text-base">arrow_forward</span>
+</a>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-sm text-left whitespace-nowrap">
+<thead class="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 font-semibold tracking-wider">
+<tr>
+<th class="px-6 py-4">Activity Name</th>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4">Category</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Points</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">Staff of ITS Expo 2024</span>
+<span class="text-xs text-slate-400">Event Organizer</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">Oct 24, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 text-xs font-medium text-blue-700 dark:text-blue-300">
+                                                Leadership
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
+<span class="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Approved
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right font-bold text-emerald-600 dark:text-emerald-400">+25</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">Workshop: Data Science 101</span>
+<span class="text-xs text-slate-400">Training</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">Oct 20, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 text-xs font-medium text-purple-700 dark:text-purple-300">
+                                                Technology
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-500"></span> Pending
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right font-medium text-slate-400">--</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">Volunteering at Local Shelter</span>
+<span class="text-xs text-slate-400">Community Service</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">Sep 15, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-900/20 text-xs font-medium text-rose-700 dark:text-rose-300">
+                                                Social
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-500/20">
+<span class="material-symbols-outlined text-[10px] font-bold">close</span> Rejected
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right font-medium text-slate-400">0</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">National Debate Competition</span>
+<span class="text-xs text-slate-400">Competition</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">Aug 28, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20 text-xs font-medium text-indigo-700 dark:text-indigo-300">
+                                                Communication
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
+<span class="size-1.5 rounded-full bg-emerald-500"></span> Approved
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right font-bold text-emerald-600 dark:text-emerald-400">+50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
