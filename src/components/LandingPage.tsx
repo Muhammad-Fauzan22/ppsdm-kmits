@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Navbar from './landing-page/Navbar';
+import { ChevronDown, Download } from 'lucide-react';
 import HeroSection from './landing-page/HeroSection';
 // import Methodology from './landing-page/Methodology';
 import DimensionsGrid from './landing-page/DimensionsGrid';
