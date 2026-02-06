@@ -1,5 +1,5 @@
 /**
- * Dimension 4: Kesehatan Fisik & Vitalitas
+ * Dimension 4: Kesehatan Fisik
  * 
  * Halaman detail untuk Dimensi 4 dengan konten riset lengkap
  * Based on ASSESSMENT BROU/DIMENSI 4.txt

@@ -40,6 +40,8 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -676,21 +678,23 @@ export default function EbookProcessorPage() {
                   </Select>
 
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant={viewMode === 'grid' ? 'default' : 'outline'}
+                     <Button
+                      variant={viewMode === 'grid' ? 'primary' : 'outline'}
                       size="icon"
                       onClick={() => setViewMode('grid')}
                     >
                       <Grid className="w-4 h-4" />
                     </Button>
                     <Button
-                      variant={viewMode === 'list' ? 'default' : 'outline'}
+                      variant={viewMode === 'list' ? 'primary' : 'outline'}
                       size="icon"
                       onClick={() => setViewMode('list')}
                     >
                       <List className="w-4 h-4" />
                     </Button>
                   </div>
+
+
                 </div>
               </CardContent>
             </Card>

@@ -15,3 +15,4 @@ export { default as Methodology } from "./Methodology";
 export { default as MissionControlDemo } from "./MissionControlDemo";
 export { default as Navbar } from "./Navbar";
 export { default as PipelineShowcase } from "./PipelineShowcase";
+export { default as NewLandingPage } from "./NewLandingPage";

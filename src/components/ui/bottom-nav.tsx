@@ -26,7 +26,7 @@ export function BottomNav() {
             <div className="flex items-center justify-around h-16">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-                    const Icon = item.icon;
+                    const Icon = item.icon as any;
                     return (
                         <Link
                             key={item.href}
@@ -36,7 +36,7 @@ export function BottomNav() {
                                 : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                                 }`}
                         >
-                            <Icon className={`w-[22px] h-[22px] ${isActive ? "stroke-[2.5px]" : "stroke-2"}`} />
+                            <Icon className="w-[22px] h-[22px]" />
                             <span className="text-[10px] font-medium">{item.label}</span>
                             {isActive && (
                                 <span className="absolute top-1 w-1 h-1 bg-primary rounded-full"></span>

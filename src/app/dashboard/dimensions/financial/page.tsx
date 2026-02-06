@@ -1,5 +1,5 @@
 /**
- * Dimension 3: Kecerdasan Finansial
+ * Dimension 3: Kesejahteraan Keuangan
  * 
  * Halaman detail untuk Dimensi 3 dengan konten riset lengkap
  * Based on ASSESSMENT BROU/DIMENSI 3.txt

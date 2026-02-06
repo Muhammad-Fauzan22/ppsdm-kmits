@@ -1,5 +1,5 @@
 /**
- * Dimension 9: Manajemen Lingkungan & Gaya Hidup
+ * Dimension 9: Kesejahteraan Lingkungan
  * 
  * Halaman detail untuk Dimensi 9 dengan konten riset lengkap
  * Based on ASSESSMENT BROU/DIMENSI 9.txt

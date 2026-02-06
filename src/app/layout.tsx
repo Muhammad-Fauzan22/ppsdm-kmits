@@ -1,9 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Work_Sans, Space_Grotesk, Noto_Sans, Manrope, Merriweather, Lexend, Inter, Poppins } from "next/font/google"; // Font resmi sesuai Brand Guideline
 import "./globals.css";
 import "./accessibility.css";
 import { NudgeNotification } from "@/components/features/NudgeNotification";
 
+
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  variable: "--font-work-sans",
+  display: 'swap'
+});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -12,9 +18,42 @@ const spaceGrotesk = Space_Grotesk({
   weight: ['300', '400', '500', '600', '700']
 });
 
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  variable: "--font-noto-sans",
+  display: 'swap',
+  weight: ['400', '500', '700']
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: 'swap'
+});
+
+const merriweather = Merriweather({
+  weight: ['300', '400', '700', '900'],
+  subsets: ["latin"],
+  variable: "--font-merriweather",
+  display: 'swap'
+});
+
+const lexend = Lexend({
+  subsets: ["latin"],
+  variable: "--font-lexend",
+  display: 'swap'
+});
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: 'swap'
+});
+
+const poppins = Poppins({
+  weight: ['400', '500', '600'],
+  subsets: ["latin"],
+  variable: "--font-poppins",
   display: 'swap'
 });
 
@@ -30,8 +69,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://ppsdm.its.ac.id"),
   title: {
-    default: "PPSDM KM ITS | Ultimate Human Capital Platform",
-    template: "%s | PPSDM KM ITS",
+    default: "PPSDM KMM | Ultimate Human Capital Platform",
+    template: "%s | PPSDM KMM",
   },
   description: "Platform pengembangan terpadu berbasis data untuk mahasiswa ITS. Bangun portofolio kompetensi melalui asesmen presisi, roadmap terukur.",
   keywords: ["ITS", "PPSDM", "Mahasiswa", "Kaderisasi", "Surabaya", "KM ITS", "Pengembangan Diri"],
@@ -79,23 +118,50 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}>
+    <html lang="id" className={`${workSans.variable} ${spaceGrotesk.variable} ${notoSans.variable} ${manrope.variable} ${merriweather.variable} ${lexend.variable} ${inter.variable} ${poppins.variable} antialiased`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        {/* Preconnect to Google Fonts for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Material Symbols Outlined with proper loading strategy */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
-        <script defer data-domain="ppsdm.its.ac.id" src="https://plausible.io/js/script.js"></script>
-        {/* Skip to main content link for accessibility */}
+        {/* Fallback CSS for icon rendering */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          }
+          /* Fallback for when font fails to load */
+          .material-symbols-outlined:empty::before {
+            content: '•';
+            opacity: 0.5;
+          }
+        `}} />
+      </head>
+      <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
+        {/* Skip to main content link for accessibility - moved to body */}
         <a
           href="#main-content"
-          className="sr-only focus:not-focus:absolute focus:not-focus:top-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-opacity-100 focus:bg-white focus:p-4 focus:rounded-md focus:shadow-lg focus:z-50"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-slate-900 focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Skip to main content
         </a>
-      </head>
-      <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
         {children}
         <NudgeNotification />
       </body>

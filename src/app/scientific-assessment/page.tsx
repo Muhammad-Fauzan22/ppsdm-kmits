@@ -106,8 +106,9 @@ export default function ScientificAssessmentPage() {
                                 <h3 className="font-bold text-gray-800 mb-2">🔬 Validitas & Reliabilitas</h3>
                                 <div className="bg-blue-50 p-4 rounded-xl space-y-2">
                                     <p>• <strong>Sample validasi:</strong> 2,150 mahasiswa Indonesia</p>
-                                    <p>• <strong>Reliabilitas (Cronbach&apos;s α):</strong> 0.89-0.91 (Sangat Baik)</p>
-                                    <p>• <strong>Validitas (CFI):</strong> 0.93-0.94 (Excellent)</p>
+                                    <p>• <strong>Tingkat Keandalan:</strong> 89-91% (Sangat Baik)</p>
+                                    <p>• <strong>Tingkat Validitas:</strong> 93-94% (Sangat Baik)</p>
+
                                     <p>• <strong>Norma:</strong> Mahasiswa teknik Indonesia</p>
                                 </div>
                             </section>
@@ -347,7 +348,8 @@ export default function ScientificAssessmentPage() {
                                     <span className="text-3xl">{icon}</span>
                                     <div>
                                         <h3 className="font-bold text-gray-800">{name}</h3>
-                                        <p className="text-sm text-gray-500">α = {props.cronbachs_alpha} | n = {props.sample_size}</p>
+                                        <p className="text-sm text-gray-500">Keandalan: {Math.round(props.cronbachs_alpha * 100)}% | Sample: {props.sample_size} mahasiswa</p>
+
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -358,10 +360,11 @@ export default function ScientificAssessmentPage() {
 
                             {/* Confidence Interval */}
                             <div className="bg-gray-50 rounded-lg p-3 mb-4 text-sm">
-                                <span className="text-gray-600">95% CI: </span>
+                                <span className="text-gray-600">Rentang Skor: </span>
                                 <span className="font-medium">{result.confidence_interval[0]} - {result.confidence_interval[1]}</span>
-                                <span className="text-gray-500 ml-2">(SEM: ±{result.measurement_error})</span>
+                                <span className="text-gray-500 ml-2">(Margin Error: ±{result.measurement_error})</span>
                             </div>
+
 
                             {/* Subdimensions */}
                             <div className="space-y-3">
@@ -405,8 +408,9 @@ export default function ScientificAssessmentPage() {
                         <h4 className="font-bold text-yellow-800 mb-2">⚠️ Catatan Penting</h4>
                         <ul className="text-sm text-yellow-700 space-y-1">
                             <li>• Hasil merupakan estimasi berdasarkan self-report</li>
-                            <li>• Reliabilitas: α = 0.89-0.91 (Sangat Baik)</li>
-                            <li>• Standard Error of Measurement dihitung dalam confidence interval</li>
+                            <li>• Tingkat Keandalan: 89-91% (Sangat Baik)</li>
+                            <li>• Margin error dihitung dalam rentang skor</li>
+
                             <li>• Disarankan mengulang assessment dalam 3-6 bulan</li>
                         </ul>
                     </div>

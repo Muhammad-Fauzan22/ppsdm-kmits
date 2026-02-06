@@ -1,5 +1,5 @@
 /**
- * Dimension 1: Kognitif & Intelektual Development
+ * Dimension 1: Kognitif & Intelektual
  * 
  * Halaman detail untuk Dimensi 1 dengan konten riset lengkap
  * Based on ASSESSMENT BROU/DIMENSI 1.txt

@@ -1,0 +1,161 @@
+/* ==========================================
+   LAYOUT FIXES & CSS CONTAINMENT
+   Prevents layout shifting and overlapping
+   ========================================== */
+
+/* CSS Containment for Cards - Prevents layout recalculation */
+.card-contained {
+  contain: layout style paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 300px;
+}
+
+/* Aspect Ratio Boxes for Images - Prevents CLS */
+.aspect-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.aspect-box img,
+.aspect-box video,
+.aspect-box canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Common aspect ratios */
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-video { aspect-ratio: 16 / 9; }
+.aspect-portrait { aspect-ratio: 3 / 4; }
+.aspect-landscape { aspect-ratio: 4 / 3; }
+.aspect-ultrawide { aspect-ratio: 21 / 9; }
+
+/* Z-Index Layering System */
+.z-layer {
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+  --z-max: 9999;
+}
+
+/* Prevent overlapping with proper stacking */
+.stack-layer-base { z-index: var(--z-base); }
+.stack-layer-dropdown { z-index: var(--z-dropdown); }
+.stack-layer-sticky { z-index: var(--z-sticky); }
+.stack-layer-fixed { z-index: var(--z-fixed); }
+.stack-layer-modal { z-index: var(--z-modal); }
+.stack-layer-tooltip { z-index: var(--z-tooltip); }
+
+/* Spacing Scale - Consistent rhythm */
+.spacing-scale {
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+}
+
+/* Grid System with consistent gaps */
+.grid-contained {
+  display: grid;
+  gap: var(--space-6);
+  contain: layout;
+}
+
+/* Flexbox gap system */
+.flex-gap-1 { gap: var(--space-1); }
+.flex-gap-2 { gap: var(--space-2); }
+.flex-gap-3 { gap: var(--space-3); }
+.flex-gap-4 { gap: var(--space-4); }
+.flex-gap-6 { gap: var(--space-6); }
+.flex-gap-8 { gap: var(--space-8); }
+
+/* Prevent text overflow */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-truncate-multiline {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Loading Skeleton Animation */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .skeleton {
+    animation: none;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile touch targets - Minimum 44px */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Container queries for responsive components */
+@container (max-width: 400px) {
+  .card-responsive {
+    padding: var(--space-4);
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}

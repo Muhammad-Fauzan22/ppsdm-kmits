@@ -122,9 +122,10 @@ export default function SpiritualAssessmentPage() {
                                 <div className="bg-indigo-50 p-4 rounded-xl space-y-2">
                                     <p>• <strong>Sample validasi:</strong> 400 mahasiswa Indonesia (multi-agama)</p>
                                     <p>• <strong>Agama:</strong> Muslim (85%), Kristen (8%), Katolik (4%), Hindu (2%), Buddha (1%)</p>
-                                    <p>• <strong>Reliabilitas (α):</strong> 0.87 (Good)</p>
-                                    <p>• <strong>Validitas (CFI):</strong> 0.94 (Excellent)</p>
-                                    <p>• <strong>Test-Retest:</strong> 0.83 (2 minggu)</p>
+                                    <p>• <strong>Tingkat Keandalan:</strong> Tinggi (87%)</p>
+                                    <p>• <strong>Tingkat Validitas:</strong> Sangat Baik (94%)</p>
+                                    <p>• <strong>Konsistensi Hasil:</strong> 83% (pengukuran ulang setelah 2 minggu)</p>
+
                                 </div>
                             </section>
 
@@ -337,7 +338,8 @@ export default function SpiritualAssessmentPage() {
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="font-bold text-gray-800">📊 Profil Spiritual</h3>
-                            <span className="text-sm text-gray-500">α = {props.cronbachs_alpha} | n = {props.sample_size}</span>
+                            <span className="text-sm text-gray-500">Keandalan: {Math.round(props.cronbachs_alpha * 100)}% | Sample: {props.sample_size} mahasiswa</span>
+
                         </div>
 
                         <div className="space-y-4">

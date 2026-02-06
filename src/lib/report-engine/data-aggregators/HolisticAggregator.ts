@@ -8,6 +8,7 @@ export class HolisticAggregator {
   /**
    * Aggregate holistic assessment data from database
    */
+
   static async aggregate(assessmentId: string, userId: string): Promise<ReportData> {
     // TODO: Implement actual database query
     // This is a placeholder implementation

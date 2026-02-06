@@ -1,5 +1,5 @@
 /**
- * Dimension 5: Kecerdasan Emosional & Sosial
+ * Dimension 5: Kesejahteraan Emosional & Sosial
  * 
  * Halaman detail untuk Dimensi 5 dengan konten riset lengkap
  * Based on ASSESSMENT BROU/DIMENSI 5.txt

@@ -3,20 +3,23 @@
 import React from 'react';
 
 export default function Testimonials() {
+    // TODO: Replace with real testimonials from actual ITS students
+    // These are placeholder testimonials for demonstration purposes
     const testimonials = [
-        { name: "Budi Santoso", prodi: "Teknik Informatika '21", text: "The leadership module completely changed how I approach team projects.", color: "from-blue-500 to-purple-500" },
-        { name: "Siti Aminah", prodi: "Arsitektur '22", text: "PPSDM helped me balance my academic life with meaningful soft skill development.", color: "from-green-500 to-teal-500" },
-        { name: "Rizky Pratama", prodi: "Teknik Mesin '20", text: "The mentorship program connected me with alumni who guided my career path.", color: "from-orange-500 to-red-500" },
-        { name: "Dewi Lestari", prodi: "Statistika '23", text: "I discovered my passion for public speaking through the communication workshops.", color: "from-pink-500 to-rose-500" },
-        { name: "Andi Wijaya", prodi: "Sistem Informasi '22", text: "Understanding global mindset helped me secure my internship abroad.", color: "from-blue-500 to-purple-500" },
+        { name: "Mahasiswa Teknik", prodi: "Teknik Informatika", text: "Platform ini membantu saya memahami kekuatan dan area pengembangan diri secara lebih komprehensif.", color: "from-blue-500 to-purple-500" },
+        { name: "Mahasiswa Arsitektur", prodi: "Arsitektur", text: "Assessment yang diberikan sangat relevan dengan kebutuhan pengembangan soft skills di dunia kerja.", color: "from-green-500 to-teal-500" },
+        { name: "Mahasiswa Mesin", prodi: "Teknik Mesin", text: "Sistem roadmap membantu saya merencanakan pengembangan diri semester demi semester.", color: "from-orange-500 to-red-500" },
     ];
+
 
     return (
         <section className="py-20 border-t border-slate-200 dark:border-white/5 overflow-hidden bg-its-dark">
             <div className="flex flex-col items-center gap-4 text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-white">Student Voices</h2>
-                <p className="text-slate-400">Hear from those who have transformed their potential.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-white">Testimoni Mahasiswa</h2>
+                <p className="text-slate-400">Pengalaman mahasiswa ITS dalam menggunakan platform PPSDM KMITS.</p>
+                <span className="text-xs text-slate-500 bg-slate-800/50 px-3 py-1 rounded-full">* Data testimoni dalam tahap pengumpulan</span>
             </div>
+
 
             <div className="relative w-full max-w-[1920px] mx-auto mask-linear-fade">
                 {/* Tambahkan class 'animate-marquee' di tailwind.config.ts jika belum ada */}
@@ -30,7 +33,7 @@ export default function Testimonials() {
                                     <p className="text-xs text-slate-400">{item.prodi}</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-300 leading-relaxed">&quot;{item.text}&quot;</p>
+                            <p className="text-sm text-slate-300 leading-relaxed">"{item.text}"</p>
                         </div>
                     ))}
                 </div>

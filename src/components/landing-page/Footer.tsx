@@ -22,12 +22,13 @@ export default function Footer() {
                     <div>
                         <h3 className="text-white font-bold mb-6">Program</h3>
                         <ul className="space-y-4 text-sm text-slate-500">
-                            <li><Link className="hover:text-brand-accent transition-colors" href="#">Assessment Mandiri</Link></li>
-                            <li><Link className="hover:text-brand-accent transition-colors" href="#">Bootcamp Kompetensi</Link></li>
-                            <li><Link className="hover:text-brand-accent transition-colors" href="#">Mentorship Karir</Link></li>
-                            <li><Link className="hover:text-brand-accent transition-colors" href="#">Katalog Soft Skills</Link></li>
+                            <li><Link className="hover:text-brand-accent transition-colors" href="/assessment">Assessment Mandiri</Link></li>
+                            <li><Link className="hover:text-brand-accent transition-colors" href="/courses">Bootcamp Kompetensi</Link></li>
+                            <li><span className="text-slate-600 cursor-not-allowed">Mentorship Karir (Segera)</span></li>
+                            <li><span className="text-slate-600 cursor-not-allowed">Katalog Soft Skills (Segera)</span></li>
                         </ul>
                     </div>
+
                     <div>
                         <h3 className="text-white font-bold mb-6">Kontak</h3>
                         <ul className="space-y-4 text-sm text-slate-500">
@@ -40,10 +41,11 @@ export default function Footer() {
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold text-slate-600 uppercase tracking-widest">
                     <p>© 2024 PPSDM KMM ITS. Developed for Excellence.</p>
                     <div className="flex gap-8">
-                        <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
-                        <Link className="hover:text-white transition-colors" href="#">Cookie Policy</Link>
-                        <Link className="hover:text-white transition-colors" href="#">Accessibility</Link>
+                        <span className="text-slate-600 cursor-not-allowed">Privacy Policy (Segera)</span>
+                        <span className="text-slate-600 cursor-not-allowed">Cookie Policy (Segera)</span>
+                        <span className="text-slate-600 cursor-not-allowed">Accessibility (Segera)</span>
                     </div>
+
                 </div>
             </div>
         </footer>

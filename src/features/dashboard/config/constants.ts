@@ -12,7 +12,7 @@ export const DIMENSION_CONFIG = [
         description: "Cognitive capacity, creativity, and digital literacy.",
         icon: Zap,
         colorClass: "bg-blue-500",
-        href: "/dashboard/intellectual"
+        href: "/dashboard/dimensions/cognitive"
     },
     {
         id: "dim_self_mgmt",
@@ -20,7 +20,7 @@ export const DIMENSION_CONFIG = [
         description: "Productivity, habits, and time management.",
         icon: LayoutDashboard,
         colorClass: "bg-indigo-500",
-        href: "/dashboard/self-management"
+        href: "/dashboard/dimensions/self-management"
     },
     {
         id: "dim_financial",
@@ -28,7 +28,7 @@ export const DIMENSION_CONFIG = [
         description: "Budgeting, investment, and economic literacy.",
         icon: TrendingUp,
         colorClass: "bg-green-500",
-        href: "/dashboard/financial"
+        href: "/dashboard/dimensions/financial"
     },
     {
         id: "dim_physical",
@@ -36,7 +36,7 @@ export const DIMENSION_CONFIG = [
         description: "Health, vitality, sleep, and nutrition.",
         icon: PlayCircle,
         colorClass: "bg-red-500",
-        href: "/dashboard/physical"
+        href: "/dashboard/dimensions/physical"
     },
     {
         id: "dim_mental",
@@ -44,7 +44,7 @@ export const DIMENSION_CONFIG = [
         description: "Emotional resilience and stress management.",
         icon: AlertTriangle,
         colorClass: "bg-orange-500",
-        href: "/dashboard/mental"
+        href: "/dashboard/dimensions/mental-health"
     },
     {
         id: "dim_psychological",
@@ -52,7 +52,7 @@ export const DIMENSION_CONFIG = [
         description: "Self-esteem, well-being, and mindset.",
         icon: Sparkles,
         colorClass: "bg-purple-500",
-        href: "/dashboard/mental"
+        href: "/dashboard/dimensions/emotional-social"
     },
     {
         id: "dim_character",
@@ -60,7 +60,7 @@ export const DIMENSION_CONFIG = [
         description: "Ethics, integrity, and moral compass.",
         icon: CheckCircle2,
         colorClass: "bg-emerald-500",
-        href: "/dashboard/character"
+        href: "/dashboard/dimensions/character"
     },
     {
         id: "dim_spiritual",
@@ -68,7 +68,7 @@ export const DIMENSION_CONFIG = [
         description: "Purpose, meaning, and connection.",
         icon: Award,
         colorClass: "bg-sky-500",
-        href: "/dashboard/spiritual"
+        href: "/dashboard/dimensions/spiritual"
     },
     {
         id: "dim_environmental",
@@ -76,6 +76,6 @@ export const DIMENSION_CONFIG = [
         description: "Sustainability and living environment.",
         icon: Map,
         colorClass: "bg-teal-500",
-        href: "/dashboard/environmental"
+        href: "/dashboard/dimensions/environmental"
     },
 ];

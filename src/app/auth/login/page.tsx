@@ -148,11 +148,16 @@ export default function LoginPage() {
 
         <button
           type="button"
-          className="w-full bg-white text-its-dark font-bold py-3.5 rounded-xl hover:bg-slate-100 transition-all flex items-center justify-center gap-3"
+          onClick={() => {
+            // TODO: Implement actual myITS SSO OAuth flow
+            // window.location.href = 'https://sso.its.ac.id/oauth/authorize?client_id=...';
+            alert('Fitur SSO myITS sedang dalam pengembangan. Silakan gunakan login email/password untuk sementara.');
+          }}
+          className="w-full bg-white text-its-dark font-bold py-3.5 rounded-xl hover:bg-slate-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
         >
-          {/* Google Icon Placeholder */}
-          <span className="text-lg font-bold">G</span>
-          Masuk dengan myITS (SSO)
+          {/* myITS Icon */}
+          <span className="text-lg font-bold text-blue-600">ITS</span>
+          Masuk dengan SSO ITS (Segera)
         </button>
       </form>
 
