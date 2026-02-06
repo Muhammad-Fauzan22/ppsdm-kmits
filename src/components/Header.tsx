@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -114,8 +115,14 @@ export function Header({ variant = "light" }: HeaderProps) {
                     {/* LOGO */}
                     <Link href="/" className="flex items-center gap-3 group">
                         {/* ITS Logo Placeholder - Replace with Image if needed */}
-                        <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#013880] text-white rounded-xl shadow-lg shadow-blue-900/20 group-hover:scale-105 transition-transform duration-300">
-                            <School className="w-7 h-7 font-bold" />
+                        <div className="relative w-10 h-10 md:w-16 md:h-16 flex items-center justify-center bg-transparent group-hover:scale-105 transition-transform duration-300">
+                            <Image
+                                src="/images/logo-m-its-red-with-black-list.png"
+                                alt="PPSDM KM Logo"
+                                width={64}
+                                height={64}
+                                className="object-contain"
+                            />
                         </div>
                         <div className="flex flex-col">
                             <span className="text-lg md:text-xl font-bold text-[#013880] dark:text-blue-400 leading-none tracking-tight group-hover:text-blue-600 transition-colors">PPSDM KM</span>
