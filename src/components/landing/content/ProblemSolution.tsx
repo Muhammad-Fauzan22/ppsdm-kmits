@@ -4,103 +4,86 @@ import { motion } from "framer-motion";
 
 const problems = [
     {
-        title: "Pemahaman Diri yang Terfragmentasi",
-        description: "Kebanyakan mahasiswa hanya fokus pada IPK, tanpa memahami 8 dimensi perkembangan lainnya. Tidak ada alat untuk mengukur perkembangan karakter, kesehatan mental, dan kecerdasan finansial secara terintegrasi.",
-        icon: "psychology_alt"
+        title: "Disorientasi Akademik",
+        description: "Hanya 18% mahasiswa merasa jurusan mereka sesuai dengan passion. Kebanyakan 'hanyut' tanpa arah jelas.",
+        stat: "82% Mahasiswa Bingung",
+        color: "bg-red-500"
     },
     {
-        title: "Sistem Pendidikan yang Parsial",
-        description: "Kurikulum kampus sering kali fokus pada aspek kognitif, meninggalkan dimensi penting lainnya. Tidak ada roadmap pengembangan diri yang personal dan berbasis data.",
-        icon: "school"
+        title: "Kesenjangan Soft Skill",
+        description: "IPK 4.0 tidak menjamin karir. Industri butuh Leadership & Emotional Intelligence yang jarang diajarkan di kelas.",
+        stat: "Gap Kompetensi",
+        color: "bg-orange-500"
     },
     {
-        title: "Preparasi Karir yang Tidak Holistik",
-        description: "Lulusan teknik sering kali unggul teknis tetapi tertinggal dalam soft skills dan leadership. Kesenjangan antara kompetensi akademik dan kebutuhan dunia kerja yang kompleks.",
-        icon: "work_alert"
-    }
-];
-
-const solutions = [
-    {
-        title: "Assessment Berbasis Sains",
-        description: "72 pertanyaan psikometrik tervalidasi dengan reliabilitas α=0.87. Norma dari 2,000+ mahasiswa Indonesia dengan instant personalized feedback.",
-        icon: "science"
-    },
-    {
-        title: "Personalized Development Pathways",
-        description: "Rekomendasi intervensi yang disesuaikan dengan profil unik Anda. Learning path otomatis berdasarkan gap analysis dan progress tracking real-time.",
-        icon: "alt_route"
-    },
-    {
-        title: "Ecosystem Integration",
-        description: "Terhubung dengan sistem ITS, BEM, Himpunan, UKM. Jembatan alumni-mahasiswa dan industry partnership pathways.",
-        icon: "hub"
+        title: "Burnout & Stress",
+        description: "Tekanan akademik tinggi tanpa manajemen mental yang baik. Kesehatan mental menjadi isu utama mahasiswa teknik.",
+        stat: "High Stress Level",
+        color: "bg-brand-blue"
     }
 ];
 
 export function ProblemSolution() {
     return (
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-white relative">
+            <div className="absolute top-0 left-0 w-full h-full bg-slate-50 opacity-50 -z-10" />
+
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
-                {/* Problem Section */}
-                <div className="mb-24">
-                    <div className="text-center mb-16">
-                        <span className="text-brand-blue font-bold tracking-widest text-sm uppercase mb-2 block">The Challenge</span>
-                        <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-its-dark to-slate-700 mb-4">
-                            Tantangan Pengembangan Diri di Era Digital
-                        </h2>
-                        <div className="h-1 w-24 bg-brand-blue mx-auto rounded-full"></div>
+                <div className="flex flex-col md:flex-row gap-16 items-center mb-24">
+                    <div className="md:w-1/2">
+                        <motion.span
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            className="text-brand-blue font-bold tracking-widest text-sm uppercase mb-4 block"
+                        >
+                            The Reality Check
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-4xl md:text-5xl font-bold font-heading text-slate-900 leading-tight mb-6"
+                        >
+                            Kuliah Saja <span className="text-red-500 underline decoration-wavy decoration-2 underline-offset-4">Tidak Cukup</span> Untuk Bersaing di 2030.
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-lg text-slate-600 leading-relaxed"
+                        >
+                            Dunia berubah cepat. Lulusan teknik tidak hanya dinilai dari kemampuan menghitung beban struktur, tapi bagaimana mereka memimpin tim, mengelola stress, dan beradaptasi.
+                        </motion.p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="md:w-1/2 grid gap-6">
                         {problems.map((item, idx) => (
                             <motion.div
                                 key={idx}
-                                whileHover={{ y: -10 }}
-                                className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition-all duration-300"
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 + idx * 0.1 }}
+                                className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-start hover:shadow-md transition-shadow"
                             >
-                                <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center mb-6">
-                                    <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                                <div className={`w-1.5 h-16 rounded-full shrink-0 ${item.color}`} />
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
+                                    <p className="text-slate-500 text-sm leading-relaxed mb-2">{item.description}</p>
+                                    <span className={`text-[10px] font-bold uppercase tracking-wider py-1 px-2 rounded bg-slate-100 ${item.color.replace('bg-', 'text-')}`}>
+                                        {item.stat}
+                                    </span>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-800 mb-3">{item.title}</h3>
-                                <p className="text-gray-600 leading-relaxed text-sm">{item.description}</p>
                             </motion.div>
                         ))}
                     </div>
                 </div>
 
-                {/* Feature Divider */}
-                <div className="flex items-center justify-center mb-24">
-                    <div className="h-px bg-slate-200 w-full max-w-xs"></div>
-                    <div className="mx-4 text-slate-400 text-sm font-semibold tracking-widest uppercase">Memperkenalkan Solusi</div>
-                    <div className="h-px bg-slate-200 w-full max-w-xs"></div>
-                </div>
-
-                {/* Solution Section */}
-                <div>
-                    <div className="text-center mb-16">
-                        <span className="text-its-gold font-bold tracking-widest text-sm uppercase mb-2 block">The Solution</span>
-                        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-                            PPSDM KMITS: <span className="text-brand-blue">Sistem Saraf Digital</span> untuk Pengembangan Holistik
-                        </h2>
-                        <p className="text-gray-600 max-w-2xl mx-auto">Platform terintegrasi yang menjembatani kesenjangan antara potensi akademik dan kesuksesan kehidupan nyata.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {solutions.map((item, idx) => (
-                            <motion.div
-                                key={idx}
-                                whileHover={{ y: -10 }}
-                                className="p-8 rounded-3xl bg-gradient-to-br from-brand-blue/5 to-white border border-brand-blue/10 hover:border-brand-blue/30 transition-all duration-300 group"
-                            >
-                                <div className="w-14 h-14 rounded-2xl bg-brand-blue text-white flex items-center justify-center mb-6 shadow-lg shadow-brand-blue/20 group-hover:scale-110 transition-transform">
-                                    <span className="material-symbols-outlined text-3xl">{item.icon}</span>
-                                </div>
-                                <h3 className="text-xl font-bold text-brand-dark mb-3">{item.title}</h3>
-                                <p className="text-gray-600 leading-relaxed text-sm">{item.description}</p>
-                            </motion.div>
-                        ))}
-                    </div>
+                <div className="text-center max-w-3xl mx-auto">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-4">PPSDM KM ITS Hadir Sebagai Solusi</h3>
+                    <p className="text-slate-600">
+                        Kami menyediakan <span className="font-bold text-brand-blue">Ecosystem Support System</span> yang melengkapi kurikulum akademik ITS.
+                        Wadah untuk tumbuh menjadi manusia utuh.
+                    </p>
                 </div>
             </div>
         </section>

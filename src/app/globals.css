@@ -4,70 +4,59 @@
 
 @layer base {
   :root {
-    /* Background & Foreground - High Contrast */
+    /* Background & Foreground */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%; /* #0f172a - contrast 15:1 on white */
+    --foreground: 222.2 84% 4.9%;
 
-    /* Card Colors */
+    /* Card & Popover */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
-    /* Popover Colors */
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Primary - Blue #2563eb - contrast 4.5:1 on white */
-    --primary: 221.2 83.2% 53.3%;
+    /* Primary - ITS Blue */
+    --primary: 214 99% 25%; /* #013880 */
     --primary-foreground: 210 40% 98%;
 
-    /* Secondary */
-    --secondary: 210 40% 96.1%;
+    /* Secondary - ITS Gold */
+    --secondary: 47 100% 50%; /* #FFD700 */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    /* Muted - contrast 7:1 on white */
+    /* Muted */
     --muted: 215.4 16.3% 46.9%;
-    --muted-foreground: 215.4 16.3% 30%; /* #64748b - contrast 7:1 */
+    --muted-foreground: 215.4 16.3% 30%;
 
-    /* Accent */
-    --accent: 210 40% 96.1%;
+    /* Accent - Digital Blue */
+    --accent: 190 100% 50%; /* #00d4ff */
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    /* Destructive - Red with good contrast */
+    /* Destructive */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-
-    /* Success - Green with good contrast */
-    --success: 142.1 76.2% 36.3%;
-    --success-foreground: 355.7 100% 97.3%;
-
-    /* Warning - Orange/Yellow with good contrast */
-    --warning: 38 92% 50%;
-    --warning-foreground: 48 96% 89%;
+    --destructive-foreground: 210 40% 98%;
 
     /* Border & Input */
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --ring: 214 99% 25%;
 
     /* Chart Colors */
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
+    --chart-1: 214 99% 25%;
+    --chart-2: 47 100% 50%;
+    --chart-3: 190 100% 50%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    /* Radius */
     --radius: 0.5rem;
   }
+
   .dark {
-    /* Dark mode - High Contrast */
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 47% 7%; /* #0A0F1A */
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 47% 7%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 47% 7%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 210 40% 98%;
@@ -88,12 +77,6 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
   }
 }
 

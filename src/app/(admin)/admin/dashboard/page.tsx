@@ -262,7 +262,7 @@ export default function AdminDashboardPage() {
                             <div className="bg-[#0f141e] border border-slate-700/50 rounded-xl p-6 flex flex-col relative overflow-hidden shadow-sm group">
                                 <div className="absolute inset-0 bg-[#0f141e]">
                                     <div
-                                        className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity grayscale transition-transform duration-[60s] ease-linear group-hover:scale-110"
+                                        className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity grayscale transition-transform duration-[60000ms] ease-linear group-hover:scale-110"
                                         style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAHAmmx0st0OrZLYnWS4LjvqYDFmS2vBFwCEyNcyvAKNkiix0m8G2JQTrt3LSNCygaG-tLnyTnghnypYRvoLMEbmEEElLJhvnKZTuC2W1w4nwkxugiQGzbfG5E3t50nLgfDfK8F5IibllA3R_AGOdvzGx_Y5zssLR174sbKed2LoJe2lJbGa2FRCFYXnGWBocfJSMXOZMPsLiN2-Gp4ua36C9u5iuUkbab9AUVldL6-tKPt4B2OEv1m0KgVqqP0VwoIZ9fqOJTElDE')" }}
                                     ></div>
                                     <div className="absolute inset-0 bg-[linear-gradient(rgba(19,91,236,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(19,91,236,0.1)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
