@@ -144,8 +144,9 @@ export const FEATURES = {
 
 // Provider Health Check
 export async function checkProviderHealth(provider: keyof typeof AI_ENDPOINTS): Promise<boolean> {
-  const config = AI_ENDPOINTS[provider];
-  if (!config?.apiKey) return false;
+  const config = AI_ENDPOINTS[provider] as any;
+  const hasCredentials = config?.apiKey || config?.token;
+  if (!hasCredentials) return false;
   
   try {
     switch (provider) {

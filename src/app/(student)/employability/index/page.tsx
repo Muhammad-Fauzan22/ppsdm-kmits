@@ -1,5 +1,8 @@
 "use client";
 
+// Prevent static generation - this page requires runtime data
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 
 export default function EmployabilityIndexPage() {

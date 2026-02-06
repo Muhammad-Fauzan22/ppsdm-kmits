@@ -1,6 +1,7 @@
 /**
  * Dashboard Redis Cache Implementation
  * Uses Upstash Redis (free tier) for caching dashboard data
+ * Cache TTL: 5 minutes (300 seconds)
  */
 
 import { Redis } from '@upstash/redis';
@@ -11,59 +12,73 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN || '',
 });
 
+// Cache configuration
 const CACHE_TTL = 300; // 5 minutes in seconds
-const CACHE_KEY_PREFIX = 'dashboard:';
+const CACHE_PREFIX = 'dashboard:';
 
 /**
- * Get cached dashboard data for a user
+ * Dashboard data interface
  */
-export async function getCachedDashboardData(userId: string) {
+export interface DashboardData {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string;
+    level?: number;
+  };
+  radarData: Array<{
+    subject: string;
+    A: number;
+    fullMark: number;
+  }>;
+  greeting: string;
+  stats: {
+    overallScore: number;
+    completedAssessments: number;
+    streakDays: number;
+    totalXp: number;
+  };
+  recentActivity: Array<{
+    id: string;
+    type: string;
+    title: string;
+    timestamp: string;
+  }>;
+}
+
+/**
+ * Get cached dashboard data
+ */
+export async function getCachedDashboard(userId: string): Promise<DashboardData | null> {
   try {
-    if (!process.env.UPSTASH_REDIS_REST_URL) {
-      return null; // Redis not configured, skip caching
-    }
-    
-    const cacheKey = `${CACHE_KEY_PREFIX}${userId}`;
-    const cached = await redis.get(cacheKey);
-    
-    if (cached) {
-      return JSON.parse(cached as string);
-    }
-    
-    return null;
+    const cacheKey = `${CACHE_PREFIX}${userId}`;
+    const cached = await redis.get<DashboardData>(cacheKey);
+    return cached;
   } catch (error) {
     console.error('Redis get error:', error);
-    return null; // Fail silently, fetch fresh data
+    return null;
   }
 }
 
 /**
  * Set dashboard data in cache
  */
-export async function setCachedDashboardData(userId: string, data: any) {
+export async function setCachedDashboard(userId: string, data: DashboardData): Promise<void> {
   try {
-    if (!process.env.UPSTASH_REDIS_REST_URL) {
-      return; // Redis not configured, skip caching
-    }
-    
-    const cacheKey = `${CACHE_KEY_PREFIX}${userId}`;
+    const cacheKey = `${CACHE_PREFIX}${userId}`;
     await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(data));
   } catch (error) {
     console.error('Redis set error:', error);
-    // Fail silently
   }
 }
 
 /**
- * Invalidate dashboard cache for a user
+ * Invalidate dashboard cache
  */
-export async function invalidateDashboardCache(userId: string) {
+export async function invalidateDashboardCache(userId: string): Promise<void> {
   try {
-    if (!process.env.UPSTASH_REDIS_REST_URL) {
-      return;
-    }
-    
-    const cacheKey = `${CACHE_KEY_PREFIX}${userId}`;
+    const cacheKey = `${CACHE_PREFIX}${userId}`;
     await redis.del(cacheKey);
   } catch (error) {
     console.error('Redis delete error:', error);
@@ -71,33 +86,61 @@ export async function invalidateDashboardCache(userId: string) {
 }
 
 /**
- * Cache wrapper for any function
+ * Cache wrapper for dashboard data fetching
  */
-export function withCache<T extends (...args: any[]) => Promise<any>>(
-  fn: T,
-  keyGenerator: (...args: Parameters<T>) => string,
-  ttl: number = CACHE_TTL
-): T {
-  return (async (...args: Parameters<T>) => {
-    const cacheKey = keyGenerator(...args);
-    
-    try {
-      const cached = await redis.get(cacheKey);
-      if (cached) {
-        return JSON.parse(cached as string);
-      }
-    } catch (error) {
-      console.error('Cache get error:', error);
-    }
-    
-    const result = await fn(...args);
-    
-    try {
-      await redis.setex(cacheKey, ttl, JSON.stringify(result));
-    } catch (error) {
-      console.error('Cache set error:', error);
-    }
-    
-    return result;
-  }) as T;
+export async function getDashboardDataWithCache(
+  userId: string,
+  fetchFn: () => Promise<DashboardData>
+): Promise<DashboardData> {
+  // Try to get from cache first
+  const cached = await getCachedDashboard(userId);
+  if (cached) {
+    console.log(`[Cache] Dashboard data served from cache for user ${userId}`);
+    return cached;
+  }
+
+  // Fetch fresh data
+  const data = await fetchFn();
+  
+  // Store in cache
+  await setCachedDashboard(userId, data);
+  console.log(`[Cache] Dashboard data cached for user ${userId}`);
+  
+  return data;
+}
+
+/**
+ * Check Redis connection health
+ */
+export async function checkRedisHealth(): Promise<boolean> {
+  try {
+    await redis.ping();
+    return true;
+  } catch (error) {
+    console.error('Redis health check failed:', error);
+    return false;
+  }
+}
+
+/**
+ * Get cache statistics
+ */
+export async function getCacheStats(): Promise<{
+  connected: boolean;
+  keys: number;
+}> {
+  try {
+    const connected = await checkRedisHealth();
+    // Count dashboard keys
+    const keys = await redis.keys(`${CACHE_PREFIX}*`);
+    return {
+      connected,
+      keys: keys.length,
+    };
+  } catch (error) {
+    return {
+      connected: false,
+      keys: 0,
+    };
+  }
 }

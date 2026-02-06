@@ -1,110 +1,187 @@
-import { createClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { calculateDimensionScore, calculateHolisticScore } from '@/lib/assessment/engine';
 
-// POST - Complete assessment and calculate scores
-export async function POST(request: Request) {
-    try {
-        const supabase = await createClient();
-
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
-
-        const body = await request.json();
-        const { session_id } = body;
-
-        if (!session_id) {
-            return NextResponse.json(
-                { error: "Session ID required" },
-                { status: 400 }
-            );
-        }
-
-        // Call the database function to complete assessment
-        const { data, error } = await supabase
-            .rpc("complete_assessment_session", { p_session_id: session_id });
-
-        if (error) throw error;
-
-        return NextResponse.json({
-            success: true,
-            scores: data,
-        });
-    } catch (error) {
-        console.error("Error completing assessment:", error);
-        return NextResponse.json(
-            { error: "Failed to complete assessment" },
-            { status: 500 }
-        );
+export async function POST(request: NextRequest) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch {
+              // Ignore if called from server component
+            }
+          },
+        },
+      }
+    );
+    
+    const body = await request.json();
+    const { sessionId, dimension } = body;
+    
+    if (!sessionId || !dimension) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
     }
-}
-
-// GET - Get gap analysis results
-export async function GET(request: Request) {
-    try {
-        const supabase = await createClient();
-
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
-
-        const { searchParams } = new URL(request.url);
-        const sessionId = searchParams.get("session_id");
-
-        let query = supabase
-            .from("gap_analysis_results")
-            .select("*")
-            .eq("user_id", user.id)
-            .order("created_at", { ascending: false });
-
-        if (sessionId) {
-            query = query.eq("session_id", sessionId);
-        }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-
-        // Calculate summary
-        const summary = data.reduce((acc: any, item: any) => {
-            acc.totalGap += item.gap_score;
-            acc.averageScore += item.current_score;
-            acc.priorityCounts[item.priority_level] = (acc.priorityCounts[item.priority_level] || 0) + 1;
-            return acc;
-        }, {
-            totalGap: 0,
-            averageScore: 0,
-            priorityCounts: {} as Record<string, number>,
-        });
-
-        if (data.length > 0) {
-            summary.averageScore = Math.round(summary.averageScore / data.length);
-        }
-
-        // Get top priority dimensions
-        const criticalDimensions = data
-            .filter((d: any) => d.priority_level === "critical" || d.priority_level === "high")
-            .sort((a: any, b: any) => b.gap_score - a.gap_score)
-            .slice(0, 3);
-
-        return NextResponse.json({
-            success: true,
-            data,
-            summary: {
-                ...summary,
-                totalDimensions: data.length,
-            },
-            criticalDimensions,
-        });
-    } catch (error) {
-        console.error("Error fetching gap analysis:", error);
-        return NextResponse.json(
-            { error: "Failed to fetch gap analysis" },
-            { status: 500 }
-        );
+    
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Get all responses for this session and dimension
+    const { data: responses, error: responsesError } = await supabase
+      .from('assessment_responses')
+      .select('*')
+      .eq('session_id', sessionId)
+      .eq('dimension', dimension);
+    
+    if (responsesError) {
+      console.error('Error fetching responses:', responsesError);
+      return NextResponse.json(
+        { error: 'Failed to fetch responses' },
+        { status: 500 }
+      );
     }
+    
+    if (!responses || responses.length === 0) {
+      return NextResponse.json(
+        { error: 'No responses found for this dimension' },
+        { status: 400 }
+      );
+    }
+    
+    // Get questions for this dimension
+    const { data: questions, error: questionsError } = await supabase
+      .from('assessment_questions')
+      .select('*')
+      .eq('dimension', dimension);
+    
+    if (questionsError || !questions) {
+      console.error('Error fetching questions:', questionsError);
+      return NextResponse.json(
+        { error: 'Failed to fetch questions' },
+        { status: 500 }
+      );
+    }
+    
+    // Calculate scores using the assessment engine
+    const dimensionResult = calculateDimensionScore(responses, questions, dimension);
+    
+    // Save results
+    const { error: resultError } = await supabase
+      .from('assessment_results')
+      .upsert({
+        user_id: user?.id || null,
+        session_id: sessionId,
+        dimension,
+        raw_score: dimensionResult.rawScore,
+        normalized_score: dimensionResult.normalizedScore,
+        percentile: dimensionResult.percentile,
+        sub_dimension_scores: dimensionResult.subDimensionScores,
+        completed_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,session_id,dimension'
+      });
+    
+    if (resultError) {
+      console.error('Error saving results:', resultError);
+      return NextResponse.json(
+        { error: 'Failed to save results' },
+        { status: 500 }
+      );
+    }
+    
+    // Update progress
+    const { error: progressError } = await supabase
+      .from('assessment_progress')
+      .upsert({
+        user_id: user?.id || null,
+        dimension,
+        status: 'completed',
+        score: dimensionResult.normalizedScore,
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,dimension'
+      });
+    
+    if (progressError) {
+      console.error('Error updating progress:', progressError);
+    }
+    
+    // Check if all dimensions are completed
+    const { data: allProgress } = await supabase
+      .from('assessment_progress')
+      .select('dimension, status')
+      .eq('user_id', user?.id || 'anonymous');
+    
+    const completedDimensions = allProgress?.filter(p => p.status === 'completed').length || 0;
+    const totalDimensions = 9;
+    
+    // If all dimensions completed, calculate holistic score
+    if (completedDimensions >= totalDimensions) {
+      const { data: allResults } = await supabase
+        .from('assessment_results')
+        .select('*')
+        .eq('session_id', sessionId);
+      
+      if (allResults && allResults.length === totalDimensions) {
+        const holisticResult = calculateHolisticScore(allResults);
+        
+        await supabase
+          .from('holistic_assessment_results')
+          .upsert({
+            user_id: user?.id || null,
+            session_id: sessionId,
+            overall_score: holisticResult.overallScore,
+            dimension_scores: holisticResult.dimensionScores,
+            profile_type: holisticResult.profileType,
+            strengths: holisticResult.strengths,
+            growth_areas: holisticResult.growthAreas,
+            recommendations: holisticResult.recommendations,
+            completed_at: new Date().toISOString()
+          }, {
+            onConflict: 'user_id,session_id'
+          });
+      }
+    }
+    
+    // Update session status
+    await supabase
+      .from('assessment_sessions')
+      .update({
+        status: completedDimensions >= totalDimensions ? 'completed' : 'in_progress',
+        completed_at: completedDimensions >= totalDimensions ? new Date().toISOString() : null
+      })
+      .eq('id', sessionId);
+    
+    return NextResponse.json({
+      success: true,
+      result: dimensionResult,
+      progress: {
+        completed: completedDimensions,
+        total: totalDimensions,
+        isComplete: completedDimensions >= totalDimensions
+      }
+    });
+    
+  } catch (error) {
+    console.error('Assessment complete error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }

@@ -1,5 +1,8 @@
 "use client";
 
+// Prevent static generation - this page requires runtime data
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
 import FinancialAssessment from '@/components/assessment/FinancialAssessment';

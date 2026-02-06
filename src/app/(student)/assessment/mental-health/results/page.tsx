@@ -1,5 +1,8 @@
 "use client";
 
+// Prevent static generation - this page requires runtime data
+export const dynamic = 'force-dynamic';
+
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";

@@ -79,39 +79,45 @@ export function BoomerangVideo({ opacity = 0.3, className = '' }: BoomerangVideo
     const animate = (currentTime: number) => {
       if (!canvasRef.current) return;
       
+      const ctx = canvasRef.current.getContext('2d');
+      if (!ctx) return;
+      
       const deltaTime = currentTime - lastTime;
       
       if (deltaTime >= frameInterval) {
-        const ctx = canvasRef.current.getContext('2d');
-        if (ctx && images[frameRef.current]) {
-          ctx.drawImage(images[frameRef.current], 0, 0, 1920, 1080);
-          
-          // Update frame
-          frameRef.current += directionRef.current;
-          
-          // Reverse direction at ends
-          if (frameRef.current >= loadedFrames - 1) {
-            directionRef.current = -1;
-          } else if (frameRef.current <= 0) {
-            directionRef.current = 1;
-          }
+        // Update frame based on direction
+        frameRef.current += directionRef.current;
+        
+        // Boomerang logic: reverse direction at ends
+        if (frameRef.current >= loadedFrames - 1) {
+          frameRef.current = loadedFrames - 1;
+          directionRef.current = -1;
+        } else if (frameRef.current <= 0) {
+          frameRef.current = 0;
+          directionRef.current = 1;
         }
+        
+        // Draw current frame
+        const currentFrame = images[frameRef.current];
+        if (currentFrame && currentFrame.complete) {
+          ctx.clearRect(0, 0, 1920, 1080);
+          ctx.drawImage(currentFrame, 0, 0, 1920, 1080);
+        }
+        
         lastTime = currentTime;
       }
       
       animationId = requestAnimationFrame(animate);
     };
     
-    if (isLoaded) {
-      animationId = requestAnimationFrame(animate);
-    }
+    // Start animation
+    animationId = requestAnimationFrame(animate);
     
     return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
+      cancelAnimationFrame(animationId);
     };
   }, [loadedFrames, error, isLoaded, isHighResLoaded]);
+
 
   
   // Preload critical frames using Next.js Image with low priority

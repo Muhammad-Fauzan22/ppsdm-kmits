@@ -1,48 +1,61 @@
 "use client";
 
-import React from "react";
-import dynamic from "next/dynamic";
+import React, { Suspense, lazy } from "react";
 import { useDashboardData } from "@/features/dashboard/hooks/useDashboardData";
 import { AssetConfig } from "@/lib/dynamicAssets";
+import PsychometricRadar from "@/components/PsychometricRadar";
 
-// Lazy load heavy visualization components for better initial load performance
-const PsychometricRadar = dynamic(
-    () => import("@/components/PsychometricRadar"),
-    {
-        ssr: false,
-        loading: () => (
-            <div className="h-[300px] w-full flex items-center justify-center">
-                <div className="animate-pulse bg-slate-700/50 rounded-full h-48 w-48" />
-            </div>
-        ),
-    }
-);
 
-const DimensionGrid = dynamic(
-    () => import("@/features/dashboard/components/DimensionGrid").then(mod => ({ default: mod.DimensionGrid })),
-    {
-        ssr: false,
-        loading: () => (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[...Array(9)].map((_, i) => (
-                    <div key={i} className="animate-pulse bg-slate-700/30 rounded-2xl h-32" />
-                ))}
-            </div>
-        ),
-    }
-);
+// Lazy load heavy components for better performance
+const UserProfileCard = lazy(() => import("@/features/dashboard/components/UserProfileCard").then(mod => ({ default: mod.UserProfileCard })));
+const WelcomeBanner = lazy(() => import("@/features/dashboard/components/WelcomeBanner").then(mod => ({ default: mod.WelcomeBanner })));
+const DimensionGrid = lazy(() => import("@/features/dashboard/components/DimensionGrid").then(mod => ({ default: mod.DimensionGrid })));
+const LiveProcessingFeed = lazy(() => import("@/components/dashboard/LiveProcessingFeed").then(mod => ({ default: mod.LiveProcessingFeed })));
 
-// Components (non-heavy, keep static imports)
-import { UserProfileCard } from "@/features/dashboard/components/UserProfileCard";
-import { WelcomeBanner } from "@/features/dashboard/components/WelcomeBanner";
-import { LiveProcessingFeed } from "@/components/dashboard/LiveProcessingFeed";
+// Components
 import { FadeIn } from "@/components/Animations";
+
+// Skeleton components for loading states
+const ProfileSkeleton = () => (
+  <div className="rounded-2xl bg-[#0A0F1A]/50 p-6 shadow-xl border border-white/5 backdrop-blur-sm animate-pulse">
+    <div className="flex items-center gap-4">
+      <div className="w-16 h-16 rounded-full bg-slate-700/50" />
+      <div className="flex-1 space-y-2">
+        <div className="h-4 bg-slate-700/50 rounded w-3/4" />
+        <div className="h-3 bg-slate-700/50 rounded w-1/2" />
+      </div>
+    </div>
+  </div>
+);
+
+const BannerSkeleton = () => (
+  <div className="rounded-2xl bg-gradient-to-r from-[#003366]/20 to-[#1A4D80]/20 p-6 border border-white/5 animate-pulse">
+    <div className="h-6 bg-slate-700/30 rounded w-1/3 mb-2" />
+    <div className="h-4 bg-slate-700/30 rounded w-2/3" />
+  </div>
+);
+
+const GridSkeleton = () => (
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-pulse">
+    {[...Array(6)].map((_, i) => (
+      <div key={i} className="aspect-square rounded-xl bg-[#0A0F1A]/50 border border-white/5" />
+    ))}
+  </div>
+);
+
+const FeedSkeleton = () => (
+  <div className="space-y-3 animate-pulse">
+    {[...Array(3)].map((_, i) => (
+      <div key={i} className="h-12 bg-[#0A0F1A]/30 rounded-lg" />
+    ))}
+  </div>
+);
 
 interface DashboardClientProps {
     assets: AssetConfig;
 }
 
-export default function DashboardClient({ assets }: DashboardClientProps) {
+export function DashboardClient({ assets }: DashboardClientProps) {
     const { user, loading, radarData, greeting } = useDashboardData();
 
     return (
@@ -52,7 +65,9 @@ export default function DashboardClient({ assets }: DashboardClientProps) {
                 {/* === LEFT COLUMN (Sidebar Profile) === */}
                 <aside className="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
                     <FadeIn delay={0.1}>
-                        <UserProfileCard user={user} loading={loading} />
+                        <Suspense fallback={<ProfileSkeleton />}>
+                            <UserProfileCard user={user} loading={loading} />
+                        </Suspense>
                     </FadeIn>
 
                     {/* Radar Chart Card */}
@@ -78,17 +93,21 @@ export default function DashboardClient({ assets }: DashboardClientProps) {
 
                     {/* 1. Welcome Banner */}
                     <FadeIn delay={0.3}>
-                        <WelcomeBanner
-                            greeting={greeting}
-                            name={user?.name || "Mahasiswa"}
-                            suggestion="Tingkatkan Literasi Finansial Anda minggu ini."
-                        />
+                        <Suspense fallback={<BannerSkeleton />}>
+                            <WelcomeBanner
+                                greeting={greeting}
+                                name={user?.name || "Mahasiswa"}
+                                suggestion="Tingkatkan Literasi Finansial Anda minggu ini."
+                            />
+                        </Suspense>
                     </FadeIn>
 
                     {/* 2. Live Feed (Hidden on mobile maybe, or reduced) */}
                     <FadeIn delay={0.4}>
                         <div className="bg-[#0A0F1A]/30 border border-white/5 rounded-2xl p-6">
-                            <LiveProcessingFeed />
+                            <Suspense fallback={<FeedSkeleton />}>
+                                <LiveProcessingFeed />
+                            </Suspense>
                         </div>
                     </FadeIn>
 
@@ -106,7 +125,9 @@ export default function DashboardClient({ assets }: DashboardClientProps) {
                                     View All Metrics &rarr;
                                 </button>
                             </div>
-                            <DimensionGrid />
+                            <Suspense fallback={<GridSkeleton />}>
+                                <DimensionGrid />
+                            </Suspense>
                         </div>
                     </FadeIn>
 
@@ -115,3 +136,6 @@ export default function DashboardClient({ assets }: DashboardClientProps) {
         </div>
     );
 }
+
+// Export with React.memo for performance optimization
+export default React.memo(DashboardClient);
