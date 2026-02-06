@@ -35,14 +35,14 @@ export default function LandingPage() {
                                 <details className="group bg-card border border-border rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all hover:bg-muted/50">
                                     <summary className="flex items-center justify-between text-card-foreground font-bold list-none">
                                         Apakah program ini gratis untuk mahasiswa ITS?
-                                        <span className="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                                        <ChevronDown className="w-5 h-5 transition-transform group-open:rotate-180" />
                                     </summary>
                                     <p className="mt-4 text-muted-foreground text-sm leading-relaxed">Ya, seluruh fitur dasar, assessment, dan akses materi digital tersedia secara gratis bagi seluruh mahasiswa aktif ITS melalui SSO.</p>
                                 </details>
                                 <details className="group bg-card border border-border rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all hover:bg-muted/50">
                                     <summary className="flex items-center justify-between text-card-foreground font-bold list-none">
                                         Bagaimana cara mendapatkan bimbingan mentor?
-                                        <span className="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                                        <ChevronDown className="w-5 h-5 transition-transform group-open:rotate-180" />
                                     </summary>
                                     <p className="mt-4 text-muted-foreground text-sm leading-relaxed">Anda perlu menyelesaikan assessment awal dan mencapai &apos;Roadmap Level 3&apos; untuk membuka akses ke fitur penjadwalan mentor.</p>
                                 </details>

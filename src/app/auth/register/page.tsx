@@ -124,14 +124,14 @@ export default function RegisterPage() {
                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-white transition-colors"
                         >
-                            <span className="material-symbols-outlined text-xl">{showConfirmPassword ? 'visibility_off' : 'visibility'}</span>
+                            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
                     </div>
                 </div>
 
                 {error && (
                     <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm flex items-center gap-2">
-                        <span className="material-symbols-outlined text-lg">error</span>
+                        <AlertCircle className="w-5 h-5" />
                         {error}
                     </div>
                 )}

@@ -91,7 +91,7 @@ export default function LoginPage() {
           </div>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-slate-400 group-focus-within:text-brand-accent transition-colors">lock</span>
+              <Lock className="w-5 h-5 text-slate-400 group-focus-within:text-brand-accent transition-colors" />
             </div>
             <input
               type={showPassword ? "text" : "password"}
@@ -106,14 +106,14 @@ export default function LoginPage() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-white transition-colors"
             >
-              <span className="material-symbols-outlined text-xl">{showPassword ? 'visibility_off' : 'visibility'}</span>
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {error && (
           <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm flex items-center gap-2">
-            <span className="material-symbols-outlined text-lg">error</span>
+            <AlertCircle className="w-5 h-5" />
             {error}
           </div>
         )}
