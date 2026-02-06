@@ -326,13 +326,14 @@ Length: Approximately ${lengthMultipliers[request.length || 'medium']} words`;
           provider: 'error',
           model: 'none',
           latency: 0,
-        }))
+        })))
       );
       results.push(...batchResults);
     }
     
     return results;
   }
+
 
   getAvailableProviders(): string[] {
     return Array.from(this.providers.keys());
