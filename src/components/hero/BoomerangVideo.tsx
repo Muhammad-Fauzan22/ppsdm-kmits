@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 interface BoomerangVideoProps {
   opacity?: number;
@@ -9,173 +8,53 @@ interface BoomerangVideoProps {
 }
 
 export function BoomerangVideo({ opacity = 0.3, className = '' }: BoomerangVideoProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const frameRef = useRef(0);
-  const directionRef = useRef(1); // 1 = forward, -1 = reverse
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(false);
-  const [loadedFrames, setLoadedFrames] = useState(5); // Start with only 5 low-res frames
-  const [isHighResLoaded, setIsHighResLoaded] = useState(false);
-  
-  const TOTAL_FRAMES = 80;
-  const FRAME_RATE = 30;
-  const FRAME_PATH = '/assets/boomerang/A_seamless_hypnotic_1080p_202601282032_';
-  const LOW_RES_PATH = '/assets/boomerang/low-res/A_seamless_hypnotic_1080p_202601282032_';
-  
-  // Progressive loading - add more frames over time
-  useEffect(() => {
-    if (loadedFrames >= TOTAL_FRAMES) return;
-    
-    const timer = setTimeout(() => {
-      setLoadedFrames(prev => Math.min(prev + 5, TOTAL_FRAMES));
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, [loadedFrames]);
-  
-  // Load high-res images after low-res are loaded
-  useEffect(() => {
-    if (loadedFrames >= 20 && !isHighResLoaded) {
-      setIsHighResLoaded(true);
-    }
-  }, [loadedFrames, isHighResLoaded]);
-  
-  useEffect(() => {
-    // Preload images progressively - start with low-res
-    const images: HTMLImageElement[] = [];
-    let loadedCount = 0;
-    
-    const loadFrame = (index: number) => {
-      if (index >= loadedFrames) return;
-      
-      const img = document.createElement('img');
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === loadedFrames) {
-          setIsLoaded(true);
-        }
-      };
-      img.onerror = () => {
-        // If loading fails, just show gradient fallback
-        setError(true);
-      };
-      
-      // Use low-res path for initial frames, high-res for later frames
-      const useLowRes = index < 20 || !isHighResLoaded;
-      const framePath = useLowRes ? LOW_RES_PATH : FRAME_PATH;
-      img.src = `${framePath}${String(index).padStart(3, '0')}.jpg`;
-      images[index] = img;
-    };
-    
-    // Load frames up to current loadedFrames count
-    for (let i = 0; i < loadedFrames; i++) {
-      loadFrame(i);
-    }
-    
-    let animationId: number;
-    let lastTime = 0;
-    const frameInterval = 1000 / FRAME_RATE;
-    
-    const animate = (currentTime: number) => {
-      if (!canvasRef.current) return;
-      
-      const ctx = canvasRef.current.getContext('2d');
-      if (!ctx) return;
-      
-      const deltaTime = currentTime - lastTime;
-      
-      if (deltaTime >= frameInterval) {
-        // Update frame based on direction
-        frameRef.current += directionRef.current;
-        
-        // Boomerang logic: reverse direction at ends
-        if (frameRef.current >= loadedFrames - 1) {
-          frameRef.current = loadedFrames - 1;
-          directionRef.current = -1;
-        } else if (frameRef.current <= 0) {
-          frameRef.current = 0;
-          directionRef.current = 1;
-        }
-        
-        // Draw current frame
-        const currentFrame = images[frameRef.current];
-        if (currentFrame && currentFrame.complete) {
-          ctx.clearRect(0, 0, 1920, 1080);
-          ctx.drawImage(currentFrame, 0, 0, 1920, 1080);
-        }
-        
-        lastTime = currentTime;
-      }
-      
-      animationId = requestAnimationFrame(animate);
-    };
-    
-    // Start animation
-    animationId = requestAnimationFrame(animate);
-    
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
-  }, [loadedFrames, error, isLoaded, isHighResLoaded]);
-
-
-  
-  // Preload critical frames using Next.js Image with low priority
-  useEffect(() => {
-    const preloadCriticalFrames = () => {
-      // Preload first few frames with low priority
-      for (let i = 0; i < 5; i++) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = `${LOW_RES_PATH}${String(i).padStart(3, '0')}.jpg`;
-        document.head.appendChild(link);
-      }
-    };
-    
-    preloadCriticalFrames();
-  }, []);
-  
-  if (error || !isLoaded) {
-    return (
-      <div className={`absolute inset-0 bg-gradient-to-br from-its-blue/20 via-[#0A0F1A] to-brand-blue/10 ${className}`}>
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-its-blue/20 rounded-full blur-[120px] animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-brand-accent/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-        </div>
-        {/* Blur-up placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-br from-its-blue/10 to-transparent backdrop-blur-sm"></div>
-      </div>
-    );
-  }
-  
+  // Premium abstract animation replacing the heavy video
   return (
-    <>
-      {/* Hidden Next.js Image components for progressive loading with blur-up */}
-      <div className="hidden">
-        {Array.from({ length: Math.min(loadedFrames, 10) }).map((_, i) => (
-          <Image
-            key={i}
-            src={`${LOW_RES_PATH}${String(i).padStart(3, '0')}.jpg`}
-            alt=""
-            width={192}
-            height={108}
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgAB//2Q=="
-            placeholder="blur"
-          />
-        ))}
+    <div className={`absolute inset-0 overflow-hidden bg-[#0A0F1A] ${className}`}>
+      {/* Dynamic Background Mesh */}
+      <motion.div
+        className="absolute inset-0 opacity-40"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.4 }}
+        transition={{ duration: 1 }}
+      >
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-its-blue/30 rounded-full blur-[120px] mix-blend-screen animate-float-slow" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-brand-blue/20 rounded-full blur-[100px] mix-blend-screen animate-float-delayed" />
+        <div className="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-its-gold/10 rounded-full blur-[80px] mix-blend-screen animate-pulse-slow" />
+      </motion.div>
+
+      {/* Abstract Grid Pattern */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+
+      {/* Interactive Elements (Simulating the 'Boomerang' effect) */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div
+          className="w-[800px] h-[800px] border border-white/5 rounded-full"
+          animate={{
+            rotate: 360,
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            rotate: { duration: 60, repeat: Infinity, ease: "linear" },
+            scale: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
+        <motion.div
+          className="absolute w-[600px] h-[600px] border border-white/5 rounded-full"
+          animate={{
+            rotate: -360,
+            scale: [1, 0.95, 1],
+          }}
+          transition={{
+            rotate: { duration: 45, repeat: Infinity, ease: "linear" },
+            scale: { duration: 8, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
       </div>
-      <canvas
-        ref={canvasRef}
-        width={1920}
-        height={1080}
-        className={`absolute inset-0 w-full h-full object-cover ${className}`}
-        style={{ 
-          opacity,
-          mixBlendMode: 'screen'
-        }}
-      />
-    </>
+
+      {/* Glass Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0F1A]/50 to-[#0A0F1A]" />
+    </div>
   );
 }
 

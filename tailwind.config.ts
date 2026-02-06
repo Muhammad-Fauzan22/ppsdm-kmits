@@ -71,6 +71,9 @@ const config: Config = {
 				'fade-in': 'fadeIn 0.5s ease-in-out',
 				'slide-up': 'slideUp 0.6s ease-out',
 				'float': 'float 6s ease-in-out infinite',
+				'float-slow': 'float 15s ease-in-out infinite',
+				'float-delayed': 'float 18s ease-in-out infinite',
+				'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
 			},
 			keyframes: {
 				fadeIn: {

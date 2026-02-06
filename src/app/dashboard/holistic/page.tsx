@@ -8,18 +8,55 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { HolisticRadarChart } from '@/components/visualizations/HolisticRadarChart';
-import { CognitiveSunburst } from '@/components/holistic/CognitiveSunburst';
-import { SelfManagementTimeline } from '@/components/holistic/SelfManagementTimeline';
-import { FinancialWaterfall } from '@/components/holistic/FinancialWaterfall';
-import { PhysicalHealthGauges } from '@/components/holistic/PhysicalHealthGauges';
-import { EmotionalSocialNetwork } from '@/components/holistic/EmotionalSocialNetwork';
-import { MentalHealthBar } from '@/components/holistic/MentalHealthBar';
-import { CharacterFlower } from '@/components/holistic/CharacterFlower';
-import { SpiritualTree } from '@/components/holistic/SpiritualTree';
-import { EnvironmentalDashboard } from '@/components/holistic/EnvironmentalDashboard';
-import { DevelopmentCycle } from '@/components/holistic/DevelopmentCycle';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Dynamic Imports for Performance
+const HolisticRadarChart = dynamic(() => import('@/components/visualizations/HolisticRadarChart').then(mod => mod.HolisticRadarChart), {
+  loading: () => <Skeleton className="w-full h-[400px] rounded-2xl" />,
+  ssr: false
+});
+const CognitiveSunburst = dynamic(() => import('@/components/holistic/CognitiveSunburst').then(mod => mod.CognitiveSunburst), {
+  loading: () => <Skeleton className="w-full h-[400px] rounded-2xl" />,
+  ssr: false
+});
+const SelfManagementTimeline = dynamic(() => import('@/components/holistic/SelfManagementTimeline').then(mod => mod.SelfManagementTimeline), {
+  loading: () => <Skeleton className="w-full h-[300px] rounded-2xl" />,
+  ssr: false
+});
+const FinancialWaterfall = dynamic(() => import('@/components/holistic/FinancialWaterfall').then(mod => mod.FinancialWaterfall), {
+  loading: () => <Skeleton className="w-full h-[300px] rounded-2xl" />,
+  ssr: false
+});
+const PhysicalHealthGauges = dynamic(() => import('@/components/holistic/PhysicalHealthGauges').then(mod => mod.PhysicalHealthGauges), {
+  loading: () => <Skeleton className="w-full h-[300px] rounded-2xl" />,
+  ssr: false
+});
+const EmotionalSocialNetwork = dynamic(() => import('@/components/holistic/EmotionalSocialNetwork').then(mod => mod.EmotionalSocialNetwork), {
+  loading: () => <Skeleton className="w-full h-[300px] rounded-2xl" />,
+  ssr: false
+});
+const MentalHealthBar = dynamic(() => import('@/components/holistic/MentalHealthBar').then(mod => mod.MentalHealthBar), {
+  loading: () => <Skeleton className="w-full h-[200px] rounded-2xl" />,
+  ssr: false
+});
+const CharacterFlower = dynamic(() => import('@/components/holistic/CharacterFlower').then(mod => mod.CharacterFlower), {
+  loading: () => <Skeleton className="w-full h-[300px] rounded-2xl" />,
+  ssr: false
+});
+const SpiritualTree = dynamic(() => import('@/components/holistic/SpiritualTree').then(mod => mod.SpiritualTree), {
+  loading: () => <Skeleton className="w-full h-[300px] rounded-2xl" />,
+  ssr: false
+});
+const EnvironmentalDashboard = dynamic(() => import('@/components/holistic/EnvironmentalDashboard').then(mod => mod.EnvironmentalDashboard), {
+  loading: () => <Skeleton className="w-full h-[200px] rounded-2xl" />,
+  ssr: false
+});
+const DevelopmentCycle = dynamic(() => import('@/components/holistic/DevelopmentCycle').then(mod => mod.DevelopmentCycle), {
+  loading: () => <Skeleton className="w-full h-[400px] rounded-2xl" />,
+  ssr: false
+});
 import { dimensions } from '@/data/dimensions';
 import type { DimensionData } from '@/data/dimensions';
 
