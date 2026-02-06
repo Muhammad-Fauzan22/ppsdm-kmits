@@ -14,7 +14,33 @@ const milestones = [
     { year: "2025", title: "Mobile App", description: "Aplikasi mobile PWA" },
 ];
 
+import {
+    Brain,
+    Heart,
+    Activity,
+    User,
+    Users,
+    DollarSign,
+    Dumbbell,
+    ShieldCheck,
+    Leaf
+} from 'lucide-react';
+
+
+
 export default function AboutPage() {
+    const dimensions = [
+        { icon: Brain, name: "Kognitif", color: "bg-blue-500" },
+        { icon: Heart, name: "Afektif", color: "bg-pink-500" },
+        { icon: Activity, name: "Psikomotorik", color: "bg-orange-500" },
+        { icon: User, name: "Spiritual", color: "bg-purple-500" },
+        { icon: Users, name: "Sosial", color: "bg-cyan-500" },
+        { icon: DollarSign, name: "Finansial", color: "bg-green-500" },
+        { icon: Dumbbell, name: "Kesehatan", color: "bg-red-500" },
+        { icon: ShieldCheck, name: "Karakter", color: "bg-indigo-500" },
+        { icon: Leaf, name: "Lingkungan", color: "bg-teal-500" },
+    ];
+
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark text-neutral-dark dark:text-white font-display">
             {/* Hero */}
@@ -56,23 +82,17 @@ export default function AboutPage() {
                 <section>
                     <h2 className="text-2xl font-bold mb-6 text-center">9 Dimensi Pengembangan</h2>
                     <div className="grid grid-cols-3 gap-4">
-                        {[
-                            { icon: "psychology", name: "Kognitif", color: "bg-blue-500" },
-                            { icon: "favorite", name: "Afektif", color: "bg-pink-500" },
-                            { icon: "directions_run", name: "Psikomotorik", color: "bg-orange-500" },
-                            { icon: "self_improvement", name: "Spiritual", color: "bg-purple-500" },
-                            { icon: "groups", name: "Sosial", color: "bg-cyan-500" },
-                            { icon: "payments", name: "Finansial", color: "bg-green-500" },
-                            { icon: "fitness_center", name: "Kesehatan", color: "bg-red-500" },
-                            { icon: "verified_user", name: "Karakter", color: "bg-indigo-500" },
-                            { icon: "eco", name: "Lingkungan", color: "bg-teal-500" },
-                        ].map((dim) => (
+                        {dimensions.map((dim) => (
                             <div
                                 key={dim.name}
                                 className="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark p-4 text-center hover:shadow-md transition-shadow"
                             >
                                 <div className={`size-12 ${dim.color} rounded-xl flex items-center justify-center text-white mx-auto mb-2`}>
-                                    <span className="material-symbols-outlined">{dim.icon}</span>
+                                    {typeof dim.icon === 'string' ? (
+                                        <span className="material-symbols-outlined">{dim.icon}</span>
+                                    ) : (
+                                        <dim.icon className="w-6 h-6" />
+                                    )}
                                 </div>
                                 <span className="text-sm font-medium">{dim.name}</span>
                             </div>

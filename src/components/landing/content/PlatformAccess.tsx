@@ -1,5 +1,7 @@
 "use client";
 
+import { ShieldCheck, UserCog } from 'lucide-react';
+
 export function PlatformAccess() {
     return (
         <section className="py-24 bg-brand-blue text-white overflow-hidden relative">
@@ -16,14 +18,14 @@ export function PlatformAccess() {
                         </p>
                         <div className="space-y-4">
                             <div className="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/20">
-                                <span className="material-symbols-outlined text-brand-accent">verified_user</span>
+                                <ShieldCheck className="w-8 h-8 text-brand-accent" />
                                 <div>
                                     <h4 className="font-bold">Untuk Mahasiswa</h4>
                                     <p className="text-sm text-indigo-200">Akses penuh ke semua tes & materi</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/20">
-                                <span className="material-symbols-outlined text-brand-accent">supervisor_account</span>
+                                <UserCog className="w-8 h-8 text-brand-accent" />
                                 <div>
                                     <h4 className="font-bold">Untuk Dosen</h4>
                                     <p className="text-sm text-indigo-200">Dashboard monitoring kelas</p>

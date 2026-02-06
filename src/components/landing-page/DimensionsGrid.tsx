@@ -2,6 +2,29 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import {
+    Users,
+    Scale,
+    Cpu,
+    Globe,
+    Brain,
+    Lightbulb,
+    Handshake,
+    MessageSquare,
+    RefreshCw
+} from 'lucide-react';
+
+const iconMap: { [key: string]: any } = {
+    groups: Users,
+    balance: Scale,
+    memory: Cpu,
+    public: Globe,
+    psychology: Brain,
+    lightbulb: Lightbulb,
+    handshake: Handshake,
+    chat: MessageSquare,
+    autorenew: RefreshCw
+};
 
 export default function DimensionsGrid() {
     const dimensions = [
@@ -28,27 +51,30 @@ export default function DimensionsGrid() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {dimensions.map((dim, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                        className="group glass-card p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/50 relative overflow-hidden"
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="relative z-10 flex flex-col gap-4">
-                            <div className={`size-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${dim.bg} ${dim.color}`}>
-                                <span className="material-symbols-outlined text-3xl">{dim.icon}</span>
+                {dimensions.map((dim, index) => {
+                    const IconComponent = iconMap[dim.icon] || Lightbulb;
+                    return (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: index * 0.05 }}
+                            className="group glass-card p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/50 relative overflow-hidden"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="relative z-10 flex flex-col gap-4">
+                                <div className={`size-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${dim.bg} ${dim.color}`}>
+                                    <IconComponent className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white font-display">{dim.title}</h3>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-body">{dim.desc}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white font-display">{dim.title}</h3>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-body">{dim.desc}</p>
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
+                        </motion.div>
+                    );
+                })}
             </div>
         </section>
     );

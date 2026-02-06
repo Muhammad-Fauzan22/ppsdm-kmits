@@ -1,6 +1,19 @@
 "use client";
 
-import React from 'react';
+import {
+    Fingerprint,
+    Wallet,
+    Menu,
+    Activity,
+    Verified,
+    Share2,
+    Download,
+    Award,
+    History as HistoryIcon,
+    CheckCircle,
+    Plus,
+    Disc
+} from 'lucide-react';
 
 export default function PassportPage() {
     return (
@@ -10,7 +23,7 @@ export default function PassportPage() {
                 <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-[#f6f6f8]/80 dark:bg-[#101022]/80 backdrop-blur-md px-10 py-4">
                     <div className="flex items-center gap-4">
                         <div className="flex items-center justify-center size-10 rounded-lg bg-[#1313ec]/20 text-[#1313ec]">
-                            <span className="material-symbols-outlined">fingerprint</span>
+                            <Fingerprint className="w-6 h-6" />
                         </div>
                         <h2 className="text-xl font-bold leading-tight tracking-[-0.015em] dark:text-white text-slate-900">
                             PPSDM KMM <span className="text-[#1313ec] text-sm font-normal opacity-80 ml-2 border-l border-slate-600 pl-2">Future Tech</span>
@@ -32,13 +45,13 @@ export default function PassportPage() {
                                 <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Polygon Mainnet</span>
                             </div>
                             <button className="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-[#1313ec] text-white text-sm font-bold shadow-[0_0_15px_rgba(19,19,236,0.5)] hover:bg-blue-700 transition-all">
-                                <span className="material-symbols-outlined text-[18px]">wallet</span>
+                                <Wallet className="w-[18px] h-[18px]" />
                                 <span className="truncate">0x4a...e71f</span>
                             </button>
                         </div>
                     </div>
                     <button className="md:hidden text-slate-900 dark:text-white">
-                        <span className="material-symbols-outlined">menu</span>
+                        <Menu className="w-6 h-6" />
                     </button>
                 </header>
 
@@ -60,7 +73,7 @@ export default function PassportPage() {
                                             </div>
                                         </div>
                                         <div className="absolute bottom-0 right-0 bg-[#101022] p-1.5 rounded-full border border-slate-700">
-                                            <span className="material-symbols-outlined text-green-500 text-xl">verified</span>
+                                            <Verified className="text-green-500 w-5 h-5" />
                                         </div>
                                     </div>
                                     <h1 className="text-2xl font-bold text-white mb-1">Alex Chen</h1>
@@ -88,11 +101,11 @@ export default function PassportPage() {
                             {/* Action Buttons */}
                             <div className="flex flex-col gap-3">
                                 <button className="w-full flex items-center justify-center gap-3 rounded-xl h-12 bg-[#1313ec] text-white font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-900/20 group">
-                                    <span className="material-symbols-outlined group-hover:animate-pulse">share</span>
+                                    <Share2 className="w-5 h-5 group-hover:animate-pulse" />
                                     Share Passport Link
                                 </button>
                                 <button className="w-full flex items-center justify-center gap-3 rounded-xl h-12 bg-[#f6f6f8] dark:bg-[#1a1a2e] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-all">
-                                    <span className="material-symbols-outlined">download</span>
+                                    <Download className="w-5 h-5" />
                                     Download Proof (JSON)
                                 </button>
                             </div>
@@ -104,7 +117,7 @@ export default function PassportPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div className="bg-[#f6f6f8] dark:bg-[#1a1a2e] border border-slate-200 dark:border-slate-800 p-5 rounded-xl flex items-center gap-4">
                                     <div className="p-3 bg-purple-500/10 rounded-lg text-purple-500">
-                                        <span className="material-symbols-outlined text-3xl">hotel_class</span>
+                                        <Award className="w-8 h-8" />
                                     </div>
                                     <div>
                                         <h3 className="text-2xl font-bold dark:text-white text-slate-900">15</h3>
@@ -113,7 +126,7 @@ export default function PassportPage() {
                                 </div>
                                 <div className="bg-[#f6f6f8] dark:bg-[#1a1a2e] border border-slate-200 dark:border-slate-800 p-5 rounded-xl flex items-center gap-4">
                                     <div className="p-3 bg-blue-500/10 rounded-lg text-blue-500">
-                                        <span className="material-symbols-outlined text-3xl">history_edu</span>
+                                        <HistoryIcon className="w-8 h-8" />
                                     </div>
                                     <div>
                                         <h3 className="text-2xl font-bold dark:text-white text-slate-900">3 Years</h3>
@@ -122,7 +135,7 @@ export default function PassportPage() {
                                 </div>
                                 <div className="bg-[#f6f6f8] dark:bg-[#1a1a2e] border border-slate-200 dark:border-slate-800 p-5 rounded-xl flex items-center gap-4">
                                     <div className="p-3 bg-green-500/10 rounded-lg text-green-500">
-                                        <span className="material-symbols-outlined text-3xl">check_circle</span>
+                                        <CheckCircle className="w-8 h-8" />
                                     </div>
                                     <div>
                                         <h3 className="text-2xl font-bold dark:text-white text-slate-900">100%</h3>
@@ -158,7 +171,7 @@ export default function PassportPage() {
                                         <div className="p-5">
                                             <div className="flex justify-between items-start mb-2">
                                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#1313ec] transition-colors">Advanced Python</h3>
-                                                <span className="material-symbols-outlined text-green-500 text-lg" title="Verified on Blockchain">verified_user</span>
+                                                <Verified className="text-green-500 w-5 h-5" />
                                             </div>
                                             <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">Mastery of asynchronous programming, decorators, and data structures.</p>
                                             <div className="flex items-center justify-between text-xs font-mono text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-3">
@@ -179,7 +192,7 @@ export default function PassportPage() {
                                         <div className="p-5">
                                             <div className="flex justify-between items-start mb-2">
                                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#1313ec] transition-colors">Cloud Architecture</h3>
-                                                <span className="material-symbols-outlined text-green-500 text-lg" title="Verified on Blockchain">verified_user</span>
+                                                <Verified className="text-green-500 w-5 h-5" />
                                             </div>
                                             <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">AWS Certified Solutions Architect Associate level competency.</p>
                                             <div className="flex items-center justify-between text-xs font-mono text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-3">
@@ -200,7 +213,7 @@ export default function PassportPage() {
                                         <div className="p-5">
                                             <div className="flex justify-between items-start mb-2">
                                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#1313ec] transition-colors">Data Science Pro</h3>
-                                                <span className="material-symbols-outlined text-green-500 text-lg" title="Verified on Blockchain">verified_user</span>
+                                                <Verified className="text-green-500 w-5 h-5" />
                                             </div>
                                             <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">Statistical analysis and machine learning implementation project.</p>
                                             <div className="flex items-center justify-between text-xs font-mono text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-3">
@@ -221,7 +234,7 @@ export default function PassportPage() {
                                         <div className="p-5">
                                             <div className="flex justify-between items-start mb-2">
                                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#1313ec] transition-colors">Scrum Master</h3>
-                                                <span className="material-symbols-outlined text-green-500 text-lg" title="Verified on Blockchain">verified_user</span>
+                                                <Verified className="text-green-500 w-5 h-5" />
                                             </div>
                                             <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">Agile project management certification and team leadership.</p>
                                             <div className="flex items-center justify-between text-xs font-mono text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-3">
@@ -242,7 +255,7 @@ export default function PassportPage() {
                                         <div className="p-5">
                                             <div className="flex justify-between items-start mb-2">
                                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#1313ec] transition-colors">UI/UX Design</h3>
-                                                <span className="material-symbols-outlined text-green-500 text-lg" title="Verified on Blockchain">verified_user</span>
+                                                <Verified className="text-green-500 w-5 h-5" />
                                             </div>
                                             <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">Human-computer interaction principles and Figma mastery.</p>
                                             <div className="flex items-center justify-between text-xs font-mono text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-3">
@@ -255,7 +268,7 @@ export default function PassportPage() {
                                 {/* NFT Card 6 (Empty/Add New) */}
                                 <div className="group relative h-[340px] cursor-pointer border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center justify-center hover:border-[#1313ec] hover:bg-[#1313ec]/5 transition-all">
                                     <div className="p-4 bg-slate-200 dark:bg-slate-800 rounded-full mb-4 group-hover:bg-[#1313ec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-3xl text-slate-500 dark:text-slate-400 group-hover:text-white">add</span>
+                                        <Plus className="w-8 h-8 text-slate-500 dark:text-slate-400 group-hover:text-white" />
                                     </div>
                                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">Claim New Skill</h3>
                                     <p className="text-sm text-slate-500 text-center mt-2 px-8">Submit proof of work to mint a new skill asset.</p>
@@ -264,7 +277,7 @@ export default function PassportPage() {
                             {/* Activity Feed (Ticker) */}
                             <div className="mt-8 bg-black/20 rounded-lg p-4 border border-slate-800/50">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <span className="material-symbols-outlined text-[#1313ec] text-sm animate-pulse">radio_button_checked</span>
+                                    <Disc className="w-4 h-4 text-[#1313ec] animate-pulse" />
                                     <h4 className="text-xs font-mono uppercase text-slate-400 tracking-wider">Blockchain Activity Log</h4>
                                 </div>
                                 <div className="space-y-2 font-mono text-xs">

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BarChart2, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function Navbar() {
             <div className="flex h-20 items-center justify-between px-6 lg:px-12 max-w-7xl mx-auto">
                 <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue shadow-lg shadow-brand-blue/20">
-                        <span className="material-symbols-outlined text-white">analytics</span>
+                        <BarChart2 className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex flex-col">
                         <span className="text-xl font-bold font-heading tracking-tight text-white leading-none">PPSDM KMM</span>
@@ -38,9 +39,7 @@ export default function Navbar() {
                     className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full bg-white/5 active:scale-95 transition-transform"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
-                    <span className="material-symbols-outlined text-white">
-                        {isMobileMenuOpen ? 'close' : 'menu'}
-                    </span>
+                    {isMobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
                 </button>
             </div>
 

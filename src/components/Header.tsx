@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Search, User, LogOut, Menu, X, Globe, ExternalLink } from "lucide-react";
+import { ChevronDown, Search, User, LogOut, Menu, X, Globe, ExternalLink, School, LayoutDashboard } from "lucide-react";
 
 interface HeaderProps {
     variant?: "light" | "dark";
@@ -115,7 +115,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                     <Link href="/" className="flex items-center gap-3 group">
                         {/* ITS Logo Placeholder - Replace with Image if needed */}
                         <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#013880] text-white rounded-xl shadow-lg shadow-blue-900/20 group-hover:scale-105 transition-transform duration-300">
-                            <span className="material-symbols-outlined text-2xl font-bold">school</span>
+                            <School className="w-7 h-7 font-bold" />
                         </div>
                         <div className="flex flex-col">
                             <span className="text-lg md:text-xl font-bold text-[#013880] dark:text-blue-400 leading-none tracking-tight group-hover:text-blue-600 transition-colors">PPSDM KM</span>
@@ -194,7 +194,7 @@ export function Header({ variant = "light" }: HeaderProps) {
                                     href="/dashboard"
                                     className="px-5 py-2.5 bg-[#013880] hover:bg-blue-700 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-900/20 hover:shadow-blue-900/40 transition-all flex items-center gap-2"
                                 >
-                                    <span className="material-symbols-outlined text-lg">dashboard</span>
+                                    <LayoutDashboard className="w-5 h-5" />
                                     Dashboard
                                 </Link>
                                 <button
@@ -228,64 +228,66 @@ export function Header({ variant = "light" }: HeaderProps) {
                         {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
                     </button>
                 </div>
-            </div>
+            </div >
 
             {/* MOBILE MENU OVERLAY */}
             <AnimatePresence>
-                {mobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="lg:hidden bg-white dark:bg-[#0f172a] border-b border-gray-100 dark:border-gray-800 overflow-hidden shadow-xl"
-                    >
-                        <div className="p-4 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                            {menuItems.map((item) => (
-                                <div key={item.id} className="border-b border-gray-50 dark:border-gray-800 pb-2">
-                                    <div className="px-2 py-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
-                                        {item.label}
+                {
+                    mobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="lg:hidden bg-white dark:bg-[#0f172a] border-b border-gray-100 dark:border-gray-800 overflow-hidden shadow-xl"
+                        >
+                            <div className="p-4 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
+                                {menuItems.map((item) => (
+                                    <div key={item.id} className="border-b border-gray-50 dark:border-gray-800 pb-2">
+                                        <div className="px-2 py-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                            {item.label}
+                                        </div>
+                                        <div className="flex flex-col gap-1 pl-2">
+                                            {item.links.map((link) => (
+                                                <a
+                                                    key={link.label}
+                                                    href={link.href}
+                                                    target={link.external ? "_blank" : "_self"}
+                                                    className="block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg"
+                                                >
+                                                    {link.label}
+                                                </a>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div className="flex flex-col gap-1 pl-2">
-                                        {item.links.map((link) => (
-                                            <a
-                                                key={link.label}
-                                                href={link.href}
-                                                target={link.external ? "_blank" : "_self"}
-                                                className="block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg"
-                                            >
-                                                {link.label}
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
 
-                            <div className="pt-4 flex flex-col gap-3">
-                                {user ? (
-                                    <>
-                                        <Link href="/dashboard" className="w-full py-3 bg-[#013880] text-white font-bold rounded-xl text-center shadow-lg">
-                                            Go to Dashboard
-                                        </Link>
-                                        <button onClick={handleLogout} className="w-full py-3 bg-red-50 text-red-600 font-bold rounded-xl text-center border border-red-100">
-                                            Logout
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Link href="/auth/login" className="w-full py-3 bg-gray-100 text-slate-700 font-bold rounded-xl text-center">
-                                            Masuk Akun
-                                        </Link>
-                                        <Link href="/auth/register" className="w-full py-3 bg-[#FFD700] text-[#013880] font-bold rounded-xl text-center shadow-lg">
-                                            Daftar Sekarang
-                                        </Link>
-                                    </>
-                                )}
+                                <div className="pt-4 flex flex-col gap-3">
+                                    {user ? (
+                                        <>
+                                            <Link href="/dashboard" className="w-full py-3 bg-[#013880] text-white font-bold rounded-xl text-center shadow-lg">
+                                                Go to Dashboard
+                                            </Link>
+                                            <button onClick={handleLogout} className="w-full py-3 bg-red-50 text-red-600 font-bold rounded-xl text-center border border-red-100">
+                                                Logout
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link href="/auth/login" className="w-full py-3 bg-gray-100 text-slate-700 font-bold rounded-xl text-center">
+                                                Masuk Akun
+                                            </Link>
+                                            <Link href="/auth/register" className="w-full py-3 bg-[#FFD700] text-[#013880] font-bold rounded-xl text-center shadow-lg">
+                                                Daftar Sekarang
+                                            </Link>
+                                        </>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </header>
+                        </motion.div>
+                    )
+                }
+            </AnimatePresence >
+        </header >
     );
 }
 
