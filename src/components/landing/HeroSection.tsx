@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { BoomerangVideo } from "@/components/hero/BoomerangVideo";
+import { ArrowRight, Compass } from "lucide-react";
 
 export function HeroSection() {
     return (
@@ -60,16 +61,16 @@ export function HeroSection() {
                 >
                     <Link
                         href="/auth/register"
-                        className="w-full sm:w-auto px-8 py-4 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl transition-all hover:scale-105 shadow-lg shadow-brand-blue/25 flex items-center justify-center gap-3"
+                        className="w-full sm:w-auto px-8 py-4 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl transition-all hover:scale-105 shadow-lg shadow-brand-blue/25 flex items-center justify-center gap-3 group"
                     >
                         Mulai Asesmen Gratis
-                        <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                     <Link
                         href="#dimensions"
-                        className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl border border-white/10 backdrop-blur-sm transition-all flex items-center justify-center gap-3"
+                        className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl border border-white/10 backdrop-blur-sm transition-all flex items-center justify-center gap-3 group"
                     >
-                        <span className="material-symbols-outlined text-xl text-its-gold h-[20px] w-[20px]">explore</span>
+                        <Compass className="w-5 h-5 text-its-gold group-hover:rotate-12 transition-transform" />
                         Pelajari 9 Dimensi
                     </Link>
                 </motion.div>
