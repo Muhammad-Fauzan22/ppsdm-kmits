@@ -245,57 +245,69 @@ export function AssessmentEngineShowcase() {
               </ul>
             </div>
 
-            {/* Radar Chart Preview */}
-            <div className="relative">
-              <div className="aspect-square max-w-xs mx-auto bg-white/5 rounded-2xl p-8 flex items-center justify-center">
-                <svg viewBox="0 0 200 200" className="w-full h-full">
-                  {/* Grid circles */}
-                  {[0.25, 0.5, 0.75, 1].map((scale, i) => (
-                    <circle
-                      key={i}
-                      cx="100"
-                      cy="100"
-                      r={80 * scale}
-                      fill="none"
-                      stroke="rgba(255,255,255,0.1)"
-                      strokeWidth="0.5"
-                    />
-                  ))}
-                  {/* Axis lines */}
-                  {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-                    <line
-                      key={i}
-                      x1="100"
-                      y1="100"
-                      x2={100 + 80 * Math.cos((angle - 90) * Math.PI / 180)}
-                      y2={100 + 80 * Math.sin((angle - 90) * Math.PI / 180)}
-                      stroke="rgba(255,255,255,0.1)"
-                      strokeWidth="0.5"
-                    />
-                  ))}
-                  {/* Data polygon */}
-                  <polygon
-                    points="100,30 155,70 145,130 55,130 45,70"
-                    fill="rgba(139, 92, 246, 0.3)"
-                    stroke="rgba(139, 92, 246, 0.8)"
-                    strokeWidth="2"
-                  />
-                  {/* Data points */}
-                  {[
-                    [100, 30], [155, 70], [145, 130], [55, 130], [45, 70]
-                  ].map(([x, y], i) => (
-                    <circle
-                      key={i}
-                      cx={x}
-                      cy={y}
-                      r="4"
-                      fill="rgba(139, 92, 246, 1)"
-                    />
-                  ))}
-                </svg>
+            {/* 3D Radar Chart Preview */}
+            <div className="relative perspective-1000 group">
+              <div className="aspect-square max-w-xs mx-auto flex items-center justify-center transform-style-3d transition-transform duration-700 group-hover:rotate-y-12">
+
+                {/* Background Glow */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
+
+                {/* 3D Rotating Layers */}
+                <div className="relative w-64 h-64 transform-style-3d animate-[spin_30s_linear_infinite]">
+
+                  {/* Layer 1: Base Grid */}
+                  <div className="absolute inset-0 transform translate-z-0 opacity-30">
+                    <svg viewBox="0 0 200 200" className="w-full h-full text-slate-500">
+                      <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
+                      <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
+                      <circle cx="100" cy="100" r="30" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
+                      {[0, 45, 90, 135, 180, 225, 270, 315].map(deg => (
+                        <line key={deg} x1="100" y1="100" x2={100 + 90 * Math.cos(deg * Math.PI / 180)} y2={100 + 90 * Math.sin(deg * Math.PI / 180)} stroke="currentColor" strokeWidth="0.5" />
+                      ))}
+                    </svg>
+                  </div>
+
+                  {/* Layer 2: Data Polygon (Lower Confidence) */}
+                  <div className="absolute inset-0 transform translate-z-[20px] opacity-40">
+                    <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_10px_rgba(139,92,246,0.5)]">
+                      <polygon points="100,20 170,80 160,160 40,160 30,80" fill="rgba(139, 92, 246, 0.2)" stroke="rgba(139, 92, 246, 0.5)" strokeWidth="1" />
+                    </svg>
+                  </div>
+
+                  {/* Layer 3: Main Data Polygon (High Confidence) */}
+                  <div className="absolute inset-0 transform translate-z-[40px]">
+                    <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_15px_rgba(56,189,248,0.6)]">
+                      <polygon points="100,30 155,70 145,130 55,130 45,70" fill="rgba(56, 189, 248, 0.3)" stroke="#38BDF8" strokeWidth="2" />
+                      {[
+                        [100, 30], [155, 70], [145, 130], [55, 130], [45, 70]
+                      ].map(([x, y], i) => (
+                        <circle key={i} cx={x} cy={y} r="3" fill="#fff" className="animate-pulse" />
+                      ))}
+                    </svg>
+                  </div>
+
+                  {/* Floating Labels (3D) */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6 transform translate-z-[50px] bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] text-white border border-white/10">
+                    Cognitive
+                  </div>
+                  <div className="absolute bottom-10 right-0 transform translate-z-[50px] bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] text-white border border-white/10">
+                    Social
+                  </div>
+                  <div className="absolute bottom-10 left-0 transform translate-z-[50px] bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] text-white border border-white/10">
+                    Emotional
+                  </div>
+
+                </div>
               </div>
-              <div className="text-center mt-4">
-                <span className="text-white/50 text-sm">Contoh Radar Chart 9 Dimensi</span>
+
+              <div className="text-center mt-8">
+                <span className="inline-flex items-center gap-2 text-white/50 text-xs px-3 py-1 rounded-full bg-white/5 border border-white/5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
+                  </span>
+                  Interactive 3D Preview
+                </span>
               </div>
             </div>
           </div>

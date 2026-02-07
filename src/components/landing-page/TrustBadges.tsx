@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { BarChart2, Menu, X, Search, Bell, User, ChevronDown, Sparkles, Landmark, FlaskConical, ShieldCheck, Users } from 'lucide-react';
 
 /**
  * TrustBadges - Verifiable trust indicators to reduce buyer anxiety
@@ -12,7 +13,7 @@ interface TrustBadge {
     id: string;
     name: string;
     description: string;
-    icon: string;
+    icon: React.ReactNode;
     color: string;
 }
 
@@ -21,28 +22,28 @@ const defaultBadges: TrustBadge[] = [
         id: 'its',
         name: 'ITS Official',
         description: 'Didukung Institut Teknologi Sepuluh Nopember',
-        icon: '🏛️',
+        icon: <Landmark className="w-full h-full" />,
         color: 'from-blue-500 to-cyan-500',
     },
     {
         id: 'research',
         name: 'Research-Based',
         description: 'Berbasis riset psikometri tervalidasi',
-        icon: '🔬',
+        icon: <FlaskConical className="w-full h-full" />,
         color: 'from-purple-500 to-pink-500',
     },
     {
         id: 'secure',
         name: 'Data Aman',
         description: 'Enkripsi end-to-end & GDPR compliant',
-        icon: '🔒',
+        icon: <ShieldCheck className="w-full h-full" />,
         color: 'from-green-500 to-emerald-500',
     },
     {
         id: 'users',
         name: '5,000+ Users',
         description: 'Dipercaya ribuan mahasiswa ITS',
-        icon: '👥',
+        icon: <Users className="w-full h-full" />,
         color: 'from-amber-500 to-orange-500',
     },
 ];

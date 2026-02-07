@@ -90,7 +90,7 @@ export default function Navbar() {
                     </button>
 
                     {/* CTA Button with Sparkle Effect */}
-                    <Link href="/auth/login">
+                    <Link href="/try-assessment">
                         <motion.button
                             className="relative overflow-hidden bg-gradient-to-r from-brand-blue to-ml-cyan text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-blue/30 group"
                             whileHover={{ scale: 1.05 }}
@@ -163,7 +163,7 @@ export default function Navbar() {
                             <div className="h-px bg-white/10 my-2" />
 
                             {/* Mobile CTA */}
-                            <Link href="/auth/login" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/try-assessment" onClick={() => setIsMobileMenuOpen(false)}>
                                 <button className="w-full bg-gradient-to-r from-brand-blue to-ml-cyan text-white px-6 py-4 rounded-xl font-bold text-base transition-all shadow-lg shadow-brand-blue/30 active:scale-95 flex items-center justify-center gap-2">
                                     <Sparkles className="w-5 h-5" />
                                     Mulai Sekarang

@@ -8,6 +8,12 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer base {
   :root {
     /* Background & Foreground - High Contrast */
     --background: 0 0% 100%;

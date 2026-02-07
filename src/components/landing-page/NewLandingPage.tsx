@@ -14,7 +14,11 @@ import {
   ExitIntentPopup,
   UrgencyCountdown,
   MiniQuiz,
-  ROICalculator
+  ROICalculator,
+  StatsCounter,
+  FloatingCTA,
+  ScrollProgress,
+  GamificationBadges
 } from './index';
 
 /**
@@ -30,6 +34,8 @@ import {
 const NewLandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0A0F1A] text-white selection:bg-orange-500/30 selection:text-orange-200">
+      <ScrollProgress />
+
       {/* Navigation */}
       <Navbar />
 
@@ -43,6 +49,9 @@ const NewLandingPage: React.FC = () => {
           headline="Pendaftaran Program Mentoring Batch 5 Ditutup Dalam"
         />
 
+        {/* Quantitative Social Proof */}
+        <StatsCounter />
+
         {/* 9 Dimensions Grid - Netflix-style discovery */}
         <DimensionsGrid />
 
@@ -51,6 +60,9 @@ const NewLandingPage: React.FC = () => {
 
         {/* Value Demonstration - ROI Calculator */}
         <ROICalculator />
+
+        {/* Gamification Showcase */}
+        <GamificationBadges />
 
         {/* Social Proof - Video Testimonials */}
         <VideoTestimonials
@@ -88,6 +100,9 @@ const NewLandingPage: React.FC = () => {
         offer="Akses Gratis Validasi 24 Jam"
         ctaText="Klaim Analisis Gratis"
       />
+
+      {/* 3. Sticky Conversion: Floating Bottom-Right CTA */}
+      <FloatingCTA />
     </div>
   );
 };

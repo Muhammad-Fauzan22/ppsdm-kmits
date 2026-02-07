@@ -149,8 +149,8 @@ export function FAQSection() {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeCategory === category.id
-                  ? "bg-white text-[#0A0F1A]"
-                  : "bg-white/10 text-white/70 hover:bg-white/20"
+                ? "bg-white text-[#0A0F1A]"
+                : "bg-white/10 text-white/70 hover:bg-white/20"
                 }`}
             >
               {category.label} ({category.count})
@@ -158,18 +158,21 @@ export function FAQSection() {
           ))}
         </motion.div>
 
-        {/* FAQ List */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden"
-        >
+        {/* FAQ List - Grid for Symmetry */}
+        <div className="grid md:grid-cols-2 gap-6">
           {filteredFaqs.map((faq, index) => (
-            <FAQItem key={index} {...faq} index={index} />
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden h-fit"
+            >
+              <FAQItem {...faq} index={index} />
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Contact CTA */}
         <motion.div

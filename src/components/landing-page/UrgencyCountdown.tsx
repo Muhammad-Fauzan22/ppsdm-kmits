@@ -147,9 +147,26 @@ export function UrgencyCountdown({
                 </div>
 
                 {/* Scarcity text */}
-                <p className="mt-4 text-xs sm:text-sm text-slate-400">
+                {/* Scarcity text */}
+                <p className="mt-4 text-xs sm:text-sm text-slate-400 mb-2">
                     <span className="text-[#FF6B00] font-semibold">127 mahasiswa</span> sudah mendaftar dalam 24 jam terakhir
                 </p>
+
+                {/* Scarcity Progress Bar */}
+                <div className="w-full max-w-md mx-auto">
+                    <div className="flex justify-between text-[10px] text-slate-500 mb-1 px-1">
+                        <span>Kuota Tersisa: <span className="text-red-400 font-bold">15 Spots</span></span>
+                        <span>85% Terisi</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: '85%' }}
+                            transition={{ duration: 1.5, ease: 'easeOut' }}
+                            className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     );

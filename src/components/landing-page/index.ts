@@ -27,3 +27,7 @@ export { TrustBadges, InlineTrustIndicators } from "./TrustBadges";
 export { VideoTestimonials } from "./VideoTestimonials";
 export { MiniQuiz } from "./MiniQuiz";
 export { ROICalculator } from "./ROICalculator";
+export { default as StatsCounter } from "./StatsCounter";
+export { default as FloatingCTA } from "./FloatingCTA";
+export { default as ScrollProgress } from "./ScrollProgress";
+export { default as GamificationBadges } from "./GamificationBadges";
