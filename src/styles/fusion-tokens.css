@@ -155,6 +155,55 @@
 
     /* Activity Indicator */
     --activity-dot-size: 10px;
+
+    /* ==========================================
+   * NETFLIX INSPIRED AUTO-PREVIEW
+   * ========================================== */
+
+    /* Card Preview States */
+    --preview-scale: 1.05;
+    --preview-z-index: 50;
+    --preview-expand-duration: 300ms;
+    --preview-delay: 400ms;
+
+    /* Netflix Hover Shadow */
+    --netflix-shadow: 0 10px 40px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    --netflix-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+
+    /* ==========================================
+   * BLOOMBERG TICKER SYSTEM
+   * ========================================== */
+
+    /* Ticker Dimensions */
+    --ticker-height: 32px;
+    --ticker-speed: 30s;
+    --ticker-bg: var(--layer-1);
+    --ticker-border: 1px solid rgba(255, 255, 255, 0.1);
+
+    /* Priority Colors */
+    --ticker-critical: #FF4444;
+    --ticker-high: #FF9800;
+    --ticker-medium: #00BCD4;
+    --ticker-low: #A0A0A0;
+
+    /* ==========================================
+   * DISCORD NOTIFICATION SYSTEM
+   * ========================================== */
+
+    /* Notification Badge */
+    --notification-bg: #F04747;
+    --notification-size: 20px;
+    --notification-font: 11px;
+
+    /* Pulse Animation */
+    --notification-pulse-scale: 1.2;
+    --notification-pulse-duration: 2s;
+
+    /* Unread Indicator */
+    --unread-dot-size: 8px;
+    --unread-glow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* ==========================================
@@ -375,4 +424,199 @@
 
 .card-low-dense {
     padding: var(--card-padding-low);
+}
+
+/* ==========================================
+ * NETFLIX STYLE AUTO-PREVIEW CARDS
+ * ========================================== */
+
+.netflix-card {
+    position: relative;
+    transition: transform var(--preview-expand-duration) var(--ease-smooth),
+        box-shadow var(--preview-expand-duration) var(--ease-smooth),
+        z-index 0s var(--preview-expand-duration);
+    transform-origin: center center;
+    z-index: 1;
+}
+
+.netflix-card:hover {
+    transform: scale(var(--preview-scale));
+    box-shadow: var(--netflix-shadow-hover);
+    z-index: var(--preview-z-index);
+    transition: transform var(--preview-expand-duration) var(--ease-smooth) var(--preview-delay),
+        box-shadow var(--preview-expand-duration) var(--ease-smooth) var(--preview-delay),
+        z-index 0s 0s;
+}
+
+.netflix-card-preview {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, var(--layer-0) 0%, transparent 100%);
+    padding: var(--space-md);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-smooth);
+}
+
+.netflix-card:hover .netflix-card-preview {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================
+ * BLOOMBERG TICKER COMPONENT
+ * ========================================== */
+
+.bloomberg-ticker {
+    display: flex;
+    align-items: center;
+    height: var(--ticker-height);
+    background: var(--ticker-bg);
+    border-top: var(--ticker-border);
+    border-bottom: var(--ticker-border);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.bloomberg-ticker-track {
+    display: flex;
+    animation: ticker-scroll var(--ticker-speed) linear infinite;
+}
+
+.bloomberg-ticker:hover .bloomberg-ticker-track {
+    animation-play-state: paused;
+}
+
+.bloomberg-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--space-lg);
+    font-size: var(--text-tiny);
+    font-family: 'SF Mono', 'Roboto Mono', monospace;
+}
+
+.bloomberg-ticker-item.critical {
+    color: var(--ticker-critical);
+}
+
+.bloomberg-ticker-item.high {
+    color: var(--ticker-high);
+}
+
+.bloomberg-ticker-item.medium {
+    color: var(--ticker-medium);
+}
+
+.bloomberg-ticker-item.low {
+    color: var(--ticker-low);
+}
+
+@keyframes ticker-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ==========================================
+ * DISCORD NOTIFICATION SYSTEM
+ * ========================================== */
+
+.notification-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--notification-size);
+    height: var(--notification-size);
+    padding: 0 var(--space-xs);
+    background: var(--notification-bg);
+    border-radius: var(--notification-size);
+    font-size: var(--notification-font);
+    font-weight: var(--weight-bold);
+    color: white;
+}
+
+.notification-badge.pulse {
+    animation: notification-pulse var(--notification-pulse-duration) ease-in-out infinite;
+}
+
+@keyframes notification-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(240, 71, 71, 0.4);
+    }
+
+    50% {
+        transform: scale(var(--notification-pulse-scale));
+        box-shadow: 0 0 0 8px rgba(240, 71, 71, 0);
+    }
+}
+
+.unread-indicator {
+    width: var(--unread-dot-size);
+    height: var(--unread-dot-size);
+    background: white;
+    border-radius: 50%;
+    box-shadow: var(--unread-glow);
+    animation: unread-pulse 2s ease-in-out infinite;
+}
+
+@keyframes unread-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ==========================================
+ * APPLE-STYLE MICRO-INTERACTIONS
+ * ========================================== */
+
+.apple-button {
+    transition: transform var(--duration-fast) var(--ease-smooth),
+        background var(--duration-fast) var(--ease-smooth);
+}
+
+.apple-button:hover {
+    transform: scale(1.02);
+}
+
+.apple-button:active {
+    transform: scale(0.98);
+}
+
+.apple-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.apple-ripple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%),
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 60%);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity var(--duration-normal), transform var(--duration-slow);
+}
+
+.apple-ripple:active::after {
+    opacity: 1;
+    transform: scale(2);
+    transition: opacity 0s, transform 0s;
 }
