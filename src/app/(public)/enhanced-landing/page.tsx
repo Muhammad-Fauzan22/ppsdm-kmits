@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { 
-  HeroBoomerangVideo, 
-  ProblemSolutionSection, 
-  FAQSection, 
+import {
+  HeroSection,
+  ProblemSolution,
+  FAQSection,
   AssessmentEngineShowcase,
   CTASection,
   DimensionsGrid,
@@ -17,30 +16,30 @@ export default function EnhancedLandingPage() {
   return (
     <div className="min-h-screen bg-[#0A0F1A]">
       <Navbar />
-      
+
       <main>
-        {/* Hero Section with Boomerang Video */}
-        <HeroBoomerangVideo />
-        
+        {/* Hero Section */}
+        <HeroSection />
+
         {/* Problem/Solution Section */}
-        <ProblemSolutionSection />
-        
+        <ProblemSolution />
+
         {/* 9 Dimensions Grid */}
         <DimensionsGrid />
-        
+
         {/* Assessment Engine Showcase */}
         <AssessmentEngineShowcase />
-        
+
         {/* Testimonials */}
         <Testimonials />
-        
+
         {/* CTA Section */}
         <CTASection />
-        
+
         {/* FAQ Section */}
         <FAQSection />
       </main>
-      
+
       {/* Footer */}
       <Footer />
     </div>
