@@ -61,6 +61,24 @@ const config: Config = {
 				'success': '#10B981',
 				'warning': '#F59E0B',
 				'error': '#EF4444',
+				// Gamification Rarity Colors (Mobile Legends inspired)
+				'rarity-common': '#A0A0A0',
+				'rarity-rare': '#4CAF50',
+				'rarity-epic': '#9C27B0',
+				'rarity-legendary': '#FF9800',
+				'rarity-mythical': '#FF4081',
+				// Mobile Legends Accent Colors
+				'ml-orange': '#FF6B00',
+				'ml-pink': '#FF4081',
+				'ml-purple': '#7B1FA2',
+				'ml-cyan': '#00BCD4',
+				'ml-green': '#4CAF50',
+				'ml-gold': '#FFD700',
+				// Netflix Depth Layers
+				'layer-0': '#0A0A0A',
+				'layer-1': '#121212',
+				'layer-2': '#1E1E1E',
+				'layer-3': '#2D2D2D',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -74,6 +92,12 @@ const config: Config = {
 				'float-slow': 'float 15s ease-in-out infinite',
 				'float-delayed': 'float 18s ease-in-out infinite',
 				'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				// Fusion Animations
+				'shimmer': 'shimmer 1.5s infinite',
+				'legendary-pulse': 'legendaryPulse 2s ease-in-out infinite',
+				'mythical-glow': 'mythicalGlow 3s ease-in-out infinite',
+				'hover-lift': 'hoverLift 0.25s ease-out forwards',
+				'xp-fill': 'xpFill 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
 			},
 			keyframes: {
 				fadeIn: {
@@ -87,6 +111,27 @@ const config: Config = {
 				float: {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' },
+				},
+				// Fusion Keyframes
+				shimmer: {
+					'0%': { backgroundPosition: '200% 0' },
+					'100%': { backgroundPosition: '-200% 0' },
+				},
+				legendaryPulse: {
+					'0%, 100%': { boxShadow: '0 0 20px rgba(255, 152, 0, 0.5)' },
+					'50%': { boxShadow: '0 0 35px rgba(255, 152, 0, 0.8)' },
+				},
+				mythicalGlow: {
+					'0%, 100%': { boxShadow: '0 0 25px rgba(255, 64, 129, 0.6)', filter: 'hue-rotate(0deg)' },
+					'50%': { boxShadow: '0 0 40px rgba(123, 31, 162, 0.8)', filter: 'hue-rotate(15deg)' },
+				},
+				hoverLift: {
+					'0%': { transform: 'translateY(0) scale(1)' },
+					'100%': { transform: 'translateY(-4px) scale(1.02)' },
+				},
+				xpFill: {
+					'0%': { width: '0%' },
+					'100%': { width: 'var(--xp-width, 100%)' },
 				},
 			}
 		},

@@ -1,0 +1,378 @@
+/**
+ * PPSDM KMITS Fusion Design System Tokens
+ * Inspired by: Mobile Legends, Netflix, Bloomberg, Apple, Discord
+ * 
+ * Core Philosophy: "Dense but Delightful"
+ */
+
+:root {
+    /* ==========================================
+   * MOBILE LEGENDS INSPIRED COLORS
+   * ========================================== */
+
+    /* Primary Gradient Colors */
+    --ml-orange: #FF6B00;
+    --ml-pink: #FF4081;
+    --ml-purple: #7B1FA2;
+    --ml-cyan: #00BCD4;
+    --ml-green: #4CAF50;
+    --ml-gold: #FFD700;
+
+    /* Gamification Rarity Colors */
+    --rarity-common: #A0A0A0;
+    --rarity-rare: #4CAF50;
+    --rarity-epic: #9C27B0;
+    --rarity-legendary: #FF9800;
+    --rarity-mythical: #FF4081;
+
+    /* Gradient Presets */
+    --ml-gradient-primary: linear-gradient(135deg, var(--ml-orange) 0%, var(--ml-pink) 50%, var(--ml-purple) 100%);
+    --ml-gradient-success: linear-gradient(135deg, var(--ml-green) 0%, var(--ml-cyan) 100%);
+    --ml-gradient-gold: linear-gradient(135deg, var(--ml-gold) 0%, var(--ml-orange) 100%);
+
+    /* Glow Effects */
+    --ml-glow-orange: 0 0 20px rgba(255, 107, 0, 0.5);
+    --ml-glow-pink: 0 0 20px rgba(255, 64, 129, 0.5);
+    --ml-glow-cyan: 0 0 20px rgba(0, 188, 212, 0.5);
+    --ml-glow-gold: 0 0 20px rgba(255, 215, 0, 0.5);
+
+    /* ==========================================
+   * NETFLIX INSPIRED DEPTH SYSTEM
+   * ========================================== */
+
+    /* Layer Backgrounds */
+    --layer-0: #0A0A0A;
+    /* Netflix Black - Deepest */
+    --layer-1: #121212;
+    /* Discord Dark - Base cards */
+    --layer-2: #1E1E1E;
+    /* Spotify Card - Elevated */
+    --layer-3: #2D2D2D;
+    /* ML Popup - Floating */
+
+    /* Opacity Layers */
+    --layer-overlay-light: rgba(255, 255, 255, 0.05);
+    --layer-overlay-medium: rgba(255, 255, 255, 0.10);
+    --layer-overlay-strong: rgba(255, 255, 255, 0.15);
+
+    /* ==========================================
+   * BLOOMBERG INSPIRED TYPOGRAPHY
+   * ========================================== */
+
+    /* Dense Typography Scale */
+    --text-micro: 0.625rem;
+    /* 10px - Stats labels */
+    --text-tiny: 0.75rem;
+    /* 12px - Micro stats */
+    --text-small: 0.875rem;
+    /* 14px - Metadata */
+    --text-base: 1rem;
+    /* 16px - Netflix standard */
+    --text-medium: 1.25rem;
+    /* 20px - Subheaders */
+    --text-large: 1.75rem;
+    /* 28px - Headers */
+    --text-xl: 2.5rem;
+    /* 40px - ML impact */
+    --text-xxl: 4rem;
+    /* 64px - Apple premium */
+
+    /* Font Weights */
+    --weight-light: 300;
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+    --weight-black: 900;
+
+    /* ==========================================
+   * APPLE INSPIRED SPACING
+   * ========================================== */
+
+    /* Dense Spacing Scale */
+    --space-micro: 2px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    /* Bloomberg dense */
+    --space-md: 12px;
+    /* Comfortable */
+    --space-base: 16px;
+    /* Standard */
+    --space-lg: 24px;
+    /* Section */
+    --space-xl: 32px;
+    /* Major separation */
+    --space-xxl: 48px;
+    /* Hero spacing */
+
+    /* Card Density Presets */
+    --card-padding-ultra: var(--space-sm);
+    --card-padding-high: var(--space-md);
+    --card-padding-medium: var(--space-base);
+    --card-padding-low: var(--space-lg);
+
+    /* ==========================================
+   * MICRO-INTERACTION TIMINGS
+   * ========================================== */
+
+    /* Transition Durations */
+    --duration-instant: 100ms;
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+    --duration-reveal: 500ms;
+
+    /* Easing Functions */
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* ==========================================
+   * GAMIFICATION ELEMENTS
+   * ========================================== */
+
+    /* XP/Level Progress */
+    --xp-bar-height: 6px;
+    --xp-bar-radius: 3px;
+    --xp-bar-bg: var(--layer-2);
+    --xp-bar-fill: var(--ml-gradient-gold);
+
+    /* Badge Sizes */
+    --badge-sm: 24px;
+    --badge-md: 32px;
+    --badge-lg: 48px;
+    --badge-xl: 64px;
+
+    /* ==========================================
+   * DISCORD INSPIRED SOCIAL
+   * ========================================== */
+
+    /* Status Colors */
+    --status-online: #43B581;
+    --status-idle: #FAA61A;
+    --status-dnd: #F04747;
+    --status-offline: #747F8D;
+
+    /* Activity Indicator */
+    --activity-dot-size: 10px;
+}
+
+/* ==========================================
+ * DARK MODE ADJUSTMENTS
+ * ========================================== */
+.dark {
+    --layer-0: #000000;
+    --layer-1: #0A0A0A;
+    --layer-2: #141414;
+    --layer-3: #1E1E1E;
+}
+
+/* ==========================================
+ * FUSION UTILITY CLASSES
+ * ========================================== */
+
+/* Rarity Borders */
+.rarity-common {
+    border-color: var(--rarity-common);
+}
+
+.rarity-rare {
+    border-color: var(--rarity-rare);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.rarity-epic {
+    border-color: var(--rarity-epic);
+    box-shadow: 0 0 15px rgba(156, 39, 176, 0.4);
+}
+
+.rarity-legendary {
+    border-color: var(--rarity-legendary);
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
+    animation: legendary-pulse 2s ease-in-out infinite;
+}
+
+.rarity-mythical {
+    border: 2px solid transparent;
+    background: linear-gradient(var(--layer-1), var(--layer-1)) padding-box,
+        var(--ml-gradient-primary) border-box;
+    box-shadow: 0 0 25px rgba(255, 64, 129, 0.6);
+    animation: mythical-glow 3s ease-in-out infinite;
+}
+
+@keyframes legendary-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 35px rgba(255, 152, 0, 0.8);
+    }
+}
+
+@keyframes mythical-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 25px rgba(255, 64, 129, 0.6);
+        filter: hue-rotate(0deg);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(123, 31, 162, 0.8);
+        filter: hue-rotate(15deg);
+    }
+}
+
+/* Netflix-Style Hover Lift */
+.hover-lift {
+    transition: transform var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ML-Style Glow on Hover */
+.hover-glow-orange:hover {
+    box-shadow: var(--ml-glow-orange);
+}
+
+.hover-glow-cyan:hover {
+    box-shadow: var(--ml-glow-cyan);
+}
+
+.hover-glow-gold:hover {
+    box-shadow: var(--ml-glow-gold);
+}
+
+/* Apple-Style Scale Interaction */
+.press-scale {
+    transition: transform var(--duration-fast) var(--ease-smooth);
+}
+
+.press-scale:active {
+    transform: scale(0.97);
+}
+
+/* Shimmer Loading Effect */
+.shimmer {
+    background: linear-gradient(90deg,
+            var(--layer-1) 0%,
+            var(--layer-overlay-medium) 50%,
+            var(--layer-1) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Particle Explosion Effect (CSS fallback) */
+@keyframes particle-burst {
+    0% {
+        opacity: 1;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+.particle-effect::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, var(--ml-gold) 0%, transparent 70%);
+    border-radius: inherit;
+    animation: particle-burst 0.6s ease-out forwards;
+    pointer-events: none;
+}
+
+/* XP Progress Bar */
+.xp-bar {
+    height: var(--xp-bar-height);
+    background: var(--xp-bar-bg);
+    border-radius: var(--xp-bar-radius);
+    overflow: hidden;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: var(--xp-bar-fill);
+    border-radius: var(--xp-bar-radius);
+    transition: width var(--duration-slow) var(--ease-spring);
+}
+
+/* Level Badge */
+.level-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--badge-md);
+    height: var(--badge-md);
+    border-radius: 50%;
+    background: var(--ml-gradient-gold);
+    color: var(--layer-0);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-small);
+    box-shadow: var(--ml-glow-gold);
+}
+
+/* Status Indicator */
+.status-dot {
+    width: var(--activity-dot-size);
+    height: var(--activity-dot-size);
+    border-radius: 50%;
+    border: 2px solid var(--layer-1);
+}
+
+.status-dot.online {
+    background: var(--status-online);
+}
+
+.status-dot.idle {
+    background: var(--status-idle);
+}
+
+.status-dot.dnd {
+    background: var(--status-dnd);
+}
+
+.status-dot.offline {
+    background: var(--status-offline);
+}
+
+/* Dense Information Cards */
+.card-ultra-dense {
+    padding: var(--card-padding-ultra);
+}
+
+.card-high-dense {
+    padding: var(--card-padding-high);
+}
+
+.card-medium-dense {
+    padding: var(--card-padding-medium);
+}
+
+.card-low-dense {
+    padding: var(--card-padding-low);
+}

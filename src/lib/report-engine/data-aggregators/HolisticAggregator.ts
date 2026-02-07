@@ -34,82 +34,81 @@ export class HolisticAggregator {
   }
 
   /**
-   * Create score object
-   */
-  private static createScore(
-    score: number,
-    percentage: number,
-    dimension: string,
-    description: string
-  ): AssessmentScore {
-    return {
-      score: score || 0,
-      maxScore: 100,
-      percentage: percentage || 0,
-      dimension,
-      description,
-      level: this.getLevelLabel(percentage || 0),
-    };
-  }
-
-  /**
-   * Get level label based on percentage
-   */
-  private static getLevelLabel(percentage: number): 'excellent' | 'good' | 'average' | 'needs-improvement' {
-    if (percentage >= 80) return 'excellent';
-    if (percentage >= 60) return 'good';
-    if (percentage >= 40) return 'average';
-    return 'needs-improvement';
-  }
-
-  /**
    * Process scores from assessment data
    */
   private static processScores(data: any): Record<string, AssessmentScore> {
+    const createScore = (
+      score: number,
+      percentage: number,
+      dimension: string,
+      description: string
+    ): AssessmentScore => {
+      // Determine level based on percentage
+      let level: 'excellent' | 'good' | 'average' | 'needs-improvement';
+      if (percentage >= 80) {
+        level = 'excellent';
+      } else if (percentage >= 60) {
+        level = 'good';
+      } else if (percentage >= 40) {
+        level = 'average';
+      } else {
+        level = 'needs-improvement';
+      }
+
+      return {
+        score: score || 0,
+        maxScore: 100,
+        percentage: percentage || 0,
+        dimension,
+        level,
+        description,
+      };
+    };
+
     return {
-      cognitive: this.createScore(
+      cognitive: createScore(
         data.cognitive_score,
         data.cognitive_percentage,
         'cognitive',
         'Skor kognitif dan intelektual'
       ),
-      emotional: this.createScore(
+      emotional: createScore(
         data.emotional_score,
         data.emotional_percentage,
         'emotional',
         'Skor kecerdasan emosional'
       ),
-      social: this.createScore(
+      social: createScore(
         data.social_score,
         data.social_percentage,
         'social',
         'Skor keterampilan sosial'
       ),
-      physical: this.createScore(
+      physical: createScore(
         data.physical_score,
         data.physical_percentage,
         'physical',
         'Skor kesehatan fisik'
       ),
-      spiritual: this.createScore(
+      spiritual: createScore(
         data.spiritual_score,
         data.spiritual_percentage,
         'spiritual',
         'Skor spiritual'
       ),
-      character: this.createScore(
+      character: createScore(
         data.character_score,
         data.character_percentage,
         'character',
         'Skor karakter'
       ),
-      financial: this.createScore(
+      financial: createScore(
         data.financial_score,
         data.financial_percentage,
         'financial',
         'Skor literasi finansial'
       ),
-      selfManagement: this.createScore(
+      selfManagement: createScore(
         data.self_management_score,
         data.self_management_percentage,
         'selfManagement',
@@ -123,6 +122,14 @@ export class HolisticAggregator {
    */
   private static async fetchAssessmentData(assessmentId: string, userId: string): Promise<any> {
     // TODO: Implement actual Supabase query
+    // Example:
+    // const { data, error } = await supabase
+    //   .from('holistic_assessments')
+    //   .select('*')
+    //   .eq('id', assessmentId)
+    //   .eq('user_id', userId)
+    //   .single();
+
     // Placeholder data
     return {
       user_name: 'Mahasiswa ITS',

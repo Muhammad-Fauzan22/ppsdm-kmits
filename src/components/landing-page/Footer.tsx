@@ -15,12 +15,22 @@ export default function Footer() {
                         </div>
                         <p className="text-slate-500 text-sm max-w-sm leading-relaxed">Pusat Pengembangan Sumber Daya Manusia - KMM ITS berfokus pada integrasi pendidikan akademik dan pembentukan karakter unggul.</p>
                         <div className="flex gap-4">
-                            <Link className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" href="https://its.ac.id" target="_blank" rel="noopener noreferrer">
+                            <a 
+                                className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" 
+                                href="https://its.ac.id" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                aria-label="Website ITS"
+                            >
                                 <span className="material-symbols-outlined text-lg">public</span>
-                            </Link>
-                            <Link className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" href="mailto:ppsdm@its.ac.id">
+                            </a>
+                            <a 
+                                className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-blue/20 transition-all text-white" 
+                                href="mailto:ppsdm@its.ac.id"
+                                aria-label="Email PPSDM"
+                            >
                                 <span className="material-symbols-outlined text-lg">mail</span>
-                            </Link>
+                            </a>
                         </div>
                     </div>
                     <div>
