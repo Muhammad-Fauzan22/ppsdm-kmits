@@ -8,7 +8,4 @@
  * - Audit logging
  */
 
-export { DataManagementSection } from './DataManagementSection';
-
-// Re-export types
-export type { DeletionStatus } from './DataManagementSection';
+export * from './DataManagementSection';

@@ -15,7 +15,7 @@ import {
   Shield
 } from 'lucide-react';
 
-interface DeletionStatus {
+export interface DeletionStatus {
   hasPendingDeletion: boolean;
   status?: string;
   requestedAt?: string;
@@ -23,6 +23,7 @@ interface DeletionStatus {
   daysRemaining?: number;
   canCancel?: boolean;
 }
+
 
 export function DataManagementSection() {
   const [isExporting, setIsExporting] = useState(false);
