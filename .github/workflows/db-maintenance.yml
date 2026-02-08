@@ -1,0 +1,103 @@
+# Database Maintenance - Daily Cleanup & Optimization
+# ===================================================
+# Runs daily at 3 AM UTC to maintain database health
+
+name: Database Maintenance
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Daily at 3 AM UTC
+  workflow_dispatch:
+
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+jobs:
+  maintenance:
+    name: 🔧 Database Maintenance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install supabase python-dotenv
+      
+      - name: Run Maintenance
+        run: |
+          python << 'EOF'
+          import os
+          from datetime import datetime, timedelta
+          from supabase import create_client
+
+          supabase = create_client(
+              os.environ['NEXT_PUBLIC_SUPABASE_URL'],
+              os.environ['SUPABASE_SERVICE_ROLE_KEY']
+          )
+
+          # 1. Refresh materialized views
+          print("📊 Refreshing materialized views...")
+          try:
+              supabase.rpc('refresh_content_analytics').execute()
+              print("  ✅ Views refreshed")
+          except:
+              print("  ⚠️ Views not available yet")
+
+          # 2. Clean old generation logs (keep 30 days)
+          cutoff = (datetime.utcnow() - timedelta(days=30)).isoformat()
+          try:
+              result = supabase.table('generation_logs') \
+                  .delete() \
+                  .lt('created_at', cutoff) \
+                  .execute()
+              print(f"  🗑️ Cleaned old logs")
+          except Exception as e:
+              print(f"  ⚠️ Log cleanup: {e}")
+
+          # 3. Mark stale raw materials as not relevant
+          stale_cutoff = (datetime.utcnow() - timedelta(days=90)).isoformat()
+          try:
+              result = supabase.table('raw_materials') \
+                  .update({'is_relevant': False}) \
+                  .eq('is_processed', False) \
+                  .lt('harvested_at', stale_cutoff) \
+                  .execute()
+              print(f"  🕐 Marked stale materials")
+          except:
+              pass
+
+          # 4. Log metrics
+          try:
+              # Count totals
+              raw = supabase.table('raw_materials').select('id', count='exact').execute()
+              modules = supabase.table('learning_modules').select('id', count='exact').execute()
+              interventions = supabase.table('interventions').select('id', count='exact').execute()
+              
+              print(f"\n📈 Database Stats:")
+              print(f"  Raw Materials: {raw.count}")
+              print(f"  Learning Modules: {modules.count}")
+              print(f"  Interventions: {interventions.count}")
+              
+              # Log to metrics
+              supabase.table('performance_metrics').insert([
+                  {'metric_name': 'total_raw_materials', 'value': raw.count or 0, 'metric_category': 'inventory'},
+                  {'metric_name': 'total_modules', 'value': modules.count or 0, 'metric_category': 'inventory'},
+                  {'metric_name': 'total_interventions', 'value': interventions.count or 0, 'metric_category': 'inventory'},
+              ]).execute()
+          except Exception as e:
+              print(f"  ⚠️ Metrics: {e}")
+
+          print("\n✅ Maintenance complete!")
+          EOF
+      
+      - name: Summary
+        run: |
+          echo "# 🔧 Database Maintenance Complete" >> $GITHUB_STEP_SUMMARY
+          echo "Run at: $(date)" >> $GITHUB_STEP_SUMMARY

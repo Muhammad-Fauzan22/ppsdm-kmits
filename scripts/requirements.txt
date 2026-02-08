@@ -1,16 +1,49 @@
+# Infinite Learning Factory - Python Dependencies
+# ================================================
+# All FREE tier compatible libraries
 
-google-generativeai
-supabase
-python-dotenv
-google-api-python-client
-google-auth
-google-auth-httplib2
-google-auth-oauthlib
-openai
-edge-tts
-pydub
-requests
-google-auth
-google-auth-oauthlib
-edge-tts
-pydub
+# Core
+python-dotenv==1.0.0
+supabase==2.3.4
+httpx>=0.24.0
+
+# AI Providers (multi-model fallback)
+google-generativeai>=0.3.0
+huggingface-hub>=0.20.0
+groq>=0.4.0
+
+# Web Harvesting
+feedparser==6.0.10
+yt-dlp>=2024.1.0
+youtube-transcript-api>=0.6.0
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+
+# NLP & Text Processing
+Sastrawi>=1.0.1
+langdetect>=1.0.9
+
+# Similarity & Deduplication
+datasketch>=1.6.0
+
+# Caching
+redis>=5.0.0
+
+# PDF Generation
+reportlab>=4.0.0
+fpdf2>=2.7.0
+
+# Audio (TTS)
+gTTS>=2.4.0
+
+# Monitoring
+sentry-sdk>=1.39.0
+
+# Utilities
+aiohttp>=3.9.0
+requests>=2.31.0
+tenacity>=8.2.0
+
+# Optional: Advanced embeddings (heavier, skip in CI)
+# sentence-transformers>=2.2.0
+# numpy>=1.24.0

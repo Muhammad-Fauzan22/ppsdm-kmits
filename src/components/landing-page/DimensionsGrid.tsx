@@ -4,6 +4,17 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import {
+    Brain,
+    Target,
+    Wallet,
+    Dumbbell,
+    Users,
+    Sparkles,
+    Shield,
+    Flower2,
+    Leaf
+} from 'lucide-react';
 
 /**
  * DimensionsGrid - 9 Dimensions with Netflix-style hover previews
@@ -16,7 +27,7 @@ interface Dimension {
     id: string;
     title: string;
     description: string;
-    icon: string;
+    icon: React.ReactNode;
     type: "hard Skill" | "soft Skill";
     validation: string;
     gradient: string;
@@ -57,7 +68,7 @@ const dimensions: Dimension[] = [
         id: "cognitive",
         title: "Kognitif & Intelektual",
         description: "Kemampuan berpikir kritis, kreativitas, dan mindset pembelajar untuk memecahkan masalah kompleks.",
-        icon: "psychology",
+        icon: <Brain className="w-6 h-6" />,
         type: "hard Skill",
         validation: "Reliability α = 0.87 (Excellent)",
         gradient: "from-violet-600 to-indigo-700",
@@ -69,7 +80,7 @@ const dimensions: Dimension[] = [
         id: "self-management",
         title: "Manajemen Diri",
         description: "Produktivitas, manajemen waktu, dan pembentukan kebiasaan positif untuk efektivitas tinggi.",
-        icon: "target",
+        icon: <Target className="w-6 h-6" />,
         type: "soft Skill",
         validation: "Reliability α = 0.87 (Excellent)",
         gradient: "from-blue-500 to-cyan-600",
@@ -81,7 +92,7 @@ const dimensions: Dimension[] = [
         id: "financial",
         title: "Kecerdasan Finansial",
         description: "Literasi keuangan, investasi dasar, dan perencanaan masa depan yang mandiri.",
-        icon: "monetization_on",
+        icon: <Wallet className="w-6 h-6" />,
         type: "hard Skill",
         validation: "Indonesian Norms (N=1500)",
         gradient: "from-emerald-500 to-teal-600",
@@ -93,7 +104,7 @@ const dimensions: Dimension[] = [
         id: "physical",
         title: "Kesehatan Fisik",
         description: "Kebugaran fisik, nutrisi, dan manajemen energi untuk performa puncak.",
-        icon: "fitness_center",
+        icon: <Dumbbell className="w-6 h-6" />,
         type: "soft Skill",
         validation: "Validation Study (r=0.48 with GPA)",
         gradient: "from-orange-500 to-amber-600",
@@ -105,7 +116,7 @@ const dimensions: Dimension[] = [
         id: "emotional-social",
         title: "Emotional & Social",
         description: "Kecerdasan emosi, empati, dan kemampuan membangun hubungan interpersonal yang kuat.",
-        icon: "handshake",
+        icon: <Users className="w-6 h-6" />,
         type: "soft Skill",
         validation: "Predicts Leadership (β=0.58)",
         gradient: "from-pink-500 to-rose-600",
@@ -117,7 +128,7 @@ const dimensions: Dimension[] = [
         id: "mental-health",
         title: "Kesehatan Mental",
         description: "Ketahanan mental, manajemen stres, dan kesejahteraan psikologis.",
-        icon: "self_improvement",
+        icon: <Sparkles className="w-6 h-6" />,
         type: "soft Skill",
         validation: "Clinical Screening Validity",
         gradient: "from-purple-500 to-fuchsia-600",
@@ -129,7 +140,7 @@ const dimensions: Dimension[] = [
         id: "character",
         title: "Karakter & Etika",
         description: "Integritas, keberanian moral, dan tanggung jawab etis dalam tindakan.",
-        icon: "shield",
+        icon: <Shield className="w-6 h-6" />,
         type: "soft Skill",
         validation: "Validated vs VIA-IS (r=0.70)",
         gradient: "from-red-500 to-orange-600",
@@ -141,7 +152,7 @@ const dimensions: Dimension[] = [
         id: "spiritual",
         title: "Spiritualitas",
         description: "Pencarian makna hidup, rasa syukur, dan koneksi dengan tujuan yang lebih besar.",
-        icon: "volunteer_activism",
+        icon: <Flower2 className="w-6 h-6" />,
         type: "soft Skill",
         validation: "Multicultural Validity",
         gradient: "from-amber-500 to-yellow-600",
@@ -153,7 +164,7 @@ const dimensions: Dimension[] = [
         id: "environmental",
         title: "Lingkungan & Gaya Hidup",
         description: "Kesadaran lingkungan, gaya hidup berkelanjutan, dan keseimbangan digital.",
-        icon: "eco",
+        icon: <Leaf className="w-6 h-6" />,
         type: "hard Skill",
         validation: "Validated vs NEP Scale",
         gradient: "from-green-500 to-emerald-600",
@@ -199,8 +210,8 @@ function DimensionCard({ dim, index }: { dim: Dimension; index: number }) {
                     <div className="relative z-10">
                         {/* Header: Icon + Rarity Badge */}
                         <div className="flex items-start justify-between mb-4">
-                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${dim.gradient} flex items-center justify-center shadow-lg`}>
-                                <span className="material-symbols-outlined text-white text-2xl">{dim.icon}</span>
+                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${dim.gradient} flex items-center justify-center shadow-lg group-hover:text-white transition-colors text-white/90`}>
+                                {dim.icon}
                             </div>
                             <span className={cn("text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded", rarity.badge)}>
                                 {dim.rarity}

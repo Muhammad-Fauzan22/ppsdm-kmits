@@ -6,23 +6,27 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { 
-  getDashboardDataWithCache, 
+import {
+  getDashboardDataWithCache,
   invalidateDashboardCache,
-  DashboardData 
+  DashboardData
 } from '@/lib/redis/dashboard-cache';
 
-// Initialize Supabase client - use public key if service key is not available
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Lazy Supabase initialization
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) throw new Error('Supabase not configured');
+  return createClient(url, key);
+}
 
 /**
  * Fetch dashboard data from database
  * This function performs 6 parallel queries for comprehensive dashboard data
  */
 async function fetchDashboardDataFromDB(userId: string): Promise<DashboardData> {
+  const supabase = getSupabaseClient();
+
   // Run all queries in parallel for better performance
   const [
     { data: userData },
@@ -38,7 +42,7 @@ async function fetchDashboardDataFromDB(userId: string): Promise<DashboardData> 
       .select('id, name, email, avatar_url, level')
       .eq('id', userId)
       .single(),
-    
+
     // 2. Recent assessments
     supabase
       .from('assessments')
@@ -46,7 +50,7 @@ async function fetchDashboardDataFromDB(userId: string): Promise<DashboardData> 
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(5),
-    
+
     // 3. Progress data
     supabase
       .from('progress')
@@ -54,7 +58,7 @@ async function fetchDashboardDataFromDB(userId: string): Promise<DashboardData> 
       .eq('user_id', userId)
       .order('date', { ascending: false })
       .limit(7),
-    
+
     // 4. Recent activities
     supabase
       .from('activities')
@@ -62,14 +66,14 @@ async function fetchDashboardDataFromDB(userId: string): Promise<DashboardData> 
       .eq('user_id', userId)
       .order('timestamp', { ascending: false })
       .limit(10),
-    
+
     // 5. User stats
     supabase
       .from('user_stats')
       .select('*')
       .eq('user_id', userId)
       .single(),
-    
+
     // 6. Dimension scores
     supabase
       .from('dimension_scores')
@@ -88,9 +92,9 @@ async function fetchDashboardDataFromDB(userId: string): Promise<DashboardData> 
 
   // Generate greeting based on time
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Selamat Pagi' : 
-                   hour < 18 ? 'Selamat Siang' : 
-                   'Selamat Malam';
+  const greeting = hour < 12 ? 'Selamat Pagi' :
+    hour < 18 ? 'Selamat Siang' :
+      'Selamat Malam';
 
   return {
     user: {
@@ -134,9 +138,9 @@ export async function GET(request: NextRequest) {
   try {
     // Get user ID from auth header or query param
     const authHeader = request.headers.get('authorization');
-    const userId = authHeader?.replace('Bearer ', '') || 
-                   request.nextUrl.searchParams.get('userId') || 
-                   'anonymous';
+    const userId = authHeader?.replace('Bearer ', '') ||
+      request.nextUrl.searchParams.get('userId') ||
+      'anonymous';
 
     // Fetch data with caching
     const data = await getDashboardDataWithCache(
@@ -179,9 +183,9 @@ export async function POST(request: NextRequest) {
     // Invalidate cache on data update
     if (action === 'invalidate') {
       await invalidateDashboardCache(userId);
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Cache invalidated' 
+      return NextResponse.json({
+        success: true,
+        message: 'Cache invalidated'
       });
     }
 

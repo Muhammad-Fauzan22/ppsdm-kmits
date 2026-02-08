@@ -1,193 +1,212 @@
-#!/usr/bin/env python3
 """
-Multi-Model Orchestrator (Super Version)
-Leverages Nemotron (Coding), DeepSeek (Reasoning), Mistral (Review), and GLM (Fallback)
+Master Orchestrator v2.0 - Infinite Learning Factory
+=====================================================
+Enhanced with proper error handling and monitoring.
 """
 
 import os
 import sys
-import json
+import time
+import logging
 import argparse
-from typing import Optional, Dict
 from datetime import datetime
+from typing import Dict, List
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from dotenv import load_dotenv
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Load env vars from .env.local
 load_dotenv('.env.local')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
-# Force UTF-8 on Windows
-if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding='utf-8')
-
-try:
-    from openai import OpenAI
-except ImportError:
-    print("Error: 'openai' package not installed. Run 'pip install openai'")
-    sys.exit(1)
-
-# Model Configurations
-MODELS = {
-    "nemotron": {
-        "id": "nvidia/nemotron-3-nano-30b-a3b",
-        "api_key_var": "NEMOTRON_API_KEY",
-        "role": "Coder/Executor",
-        "kwargs": {"extra_body": {"reasoning_budget": 16384, "chat_template_kwargs": {"enable_thinking": True}}}
-    },
-    "deepseek": {
-        "id": "deepseek-ai/deepseek-v3.2",
-        "api_key_var": "NVIDIA_MULTI_API_KEY",
-        "role": "Planner/Reasoning",
-        "kwargs": {"extra_body": {"chat_template_kwargs": {"thinking": True}}}
-    },
-    "mistral": {
-        "id": "mistralai/mistral-large-3-675b-instruct-2512",
-        "api_key_var": "NVIDIA_MULTI_API_KEY",
-        "role": "Reviewer/QA",
-        "kwargs": {} 
-    },
-    "glm": {
-        "id": "z-ai/glm4.7",
-        "api_key_var": "GLM_API_KEY",
-        "role": "Backup Planner",
-        "kwargs": {"extra_body": {"chat_template_kwargs": {"enable_thinking": True, "clear_thinking": False}}}
-    }
-}
-
-class ModelAgent:
-    def __init__(self, name: str, config: Dict):
-        self.name = name
-        self.model_id = config["id"]
-        self.role = config["role"]
-        self.api_key = os.getenv(config["api_key_var"])
-        self.kwargs = config["kwargs"]
-        self.base_url = "https://integrate.api.nvidia.com/v1"
-        self.client = None
-        self.alive = False
-
-        if self.api_key:
-            try:
-                self.client = OpenAI(base_url=self.base_url, api_key=self.api_key)
-                self.alive = True
-            except Exception as e:
-                print(f"⚠️ Failed to init {self.name}: {e}")
-        else:
-            print(f"⚠️ Missing key for {self.name} ({config['api_key_var']})")
-
-    def query(self, prompt: str, system_role: str = "You are a helpful assistant.", stream: bool = True) -> str:
-        if not self.alive or not self.client:
-            return ""
-        
-        print(f"\n🤖 {self.name} ({self.role}) Thinking...\n")
-        try:
-            completion = self.client.chat.completions.create(
-                model=self.model_id,
-                messages=[
-                    {"role": "system", "content": system_role},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.7,
-                top_p=0.9,
-                max_tokens=4096,
-                stream=stream,
-                **self.kwargs
-            )
-            
-            full_response = ""
-            if stream:
-                for chunk in completion:
-                    if not chunk.choices: continue
-                    delta = chunk.choices[0].delta
-                    content = delta.content
-                    if content:
-                        print(content, end="", flush=True)
-                        full_response += content
-                print("\n")
-            else:
-                full_response = completion.choices[0].message.content
-                print(full_response)
-                
-            return full_response
-        except Exception as e:
-            print(f"❌ Error querying {self.name}: {e}")
-            return ""
-
-    def ping(self) -> bool:
-        if not self.client: return False
-        try:
-            self.client.chat.completions.create(
-                model=self.model_id,
-                messages=[{"role":"user", "content":"Hi"}],
-                max_tokens=5
-            )
-            return True
-        except Exception:
-            return False
 
 class Orchestrator:
+    """Pipeline orchestrator with phase control."""
+    
     def __init__(self):
-        self.agents = {}
-        for name, config in MODELS.items():
-            self.agents[name] = ModelAgent(name, config)
-
-    def health_check(self):
-        print("\n🏥 Performing Parallel Health Check...\n")
-        with ThreadPoolExecutor(max_workers=4) as executor:
-            futures = {executor.submit(agent.ping): name for name, agent in self.agents.items()}
-            for future in as_completed(futures):
-                name = futures[future]
-                is_alive = future.result()
-                status = "✅ ONLINE" if is_alive else "❌ OFFLINE"
-                print(f"{name.upper():<10} : {status} ({self.agents[name].model_id})")
-
-    def execute_task(self, task_description: str):
-        # 1. Plan (DeepSeek)
-        planner = self.agents["deepseek"] if self.agents["deepseek"].alive else self.agents["glm"]
+        self.stats = {
+            'start_time': datetime.utcnow().isoformat(),
+            'phases_run': [],
+            'errors': [],
+            'totals': {}
+        }
+    
+    def run_phase(self, phase: str, func, *args, **kwargs) -> Dict:
+        """Run a phase with error handling."""
+        logger.info(f"\n{'='*60}")
+        logger.info(f"🚀 PHASE: {phase}")
+        logger.info('='*60)
         
-        print(f"\n=== STEP 1: Planning with {planner.name} ===")
-        plan = planner.query(
-             f"Create a detailed implementation plan for: {task_description}. Focus on Next.js best practices.",
-             system_role="You are a Senior Architect."
-        )
+        start = time.time()
+        result = {}
         
-        if not plan:
-            print("Planning failed.")
-            return
+        try:
+            result = func(*args, **kwargs)
+            self.stats['phases_run'].append(phase)
+            self.stats['totals'][phase] = result
+            logger.info(f"✅ {phase} completed in {time.time()-start:.1f}s")
+        except Exception as e:
+            logger.error(f"❌ {phase} failed: {e}")
+            self.stats['errors'].append({'phase': phase, 'error': str(e)})
+        
+        return result
+    
+    def harvest(self) -> Dict:
+        """Phase 1: Harvest content from all sources."""
+        from harvesters import RSSAggregator, YouTubeHarvester, AcademicHarvester
+        
+        results = {}
+        
+        # RSS
+        try:
+            rss = RSSAggregator()
+            results['rss'] = rss.run()
+        except Exception as e:
+            logger.warning(f"RSS harvester error: {e}")
+        
+        # YouTube
+        try:
+            yt = YouTubeHarvester()
+            results['youtube'] = yt.run(max_videos_per_channel=3)
+        except Exception as e:
+            logger.warning(f"YouTube harvester error: {e}")
+        
+        # Academic
+        try:
+            academic = AcademicHarvester()
+            results['academic'] = academic.run()
+        except Exception as e:
+            logger.warning(f"Academic harvester error: {e}")
+        
+        return results
+    
+    def process(self) -> Dict:
+        """Phase 2: Process and classify content."""
+        from processors import IndonesianQualityFilter, PlagiarismChecker
+        from processors.dimension_classifier import DimensionClassifier
+        
+        results = {}
+        
+        # Classify dimensions
+        try:
+            classifier = DimensionClassifier()
+            results['classifier'] = classifier.run(limit=30)
+        except Exception as e:
+            logger.warning(f"Classifier error: {e}")
+        
+        # Quality filter
+        try:
+            qf = IndonesianQualityFilter()
+            results['quality'] = qf.process_batch(limit=30)
+        except Exception as e:
+            logger.warning(f"Quality filter error: {e}")
+        
+        # Plagiarism check
+        try:
+            pc = PlagiarismChecker()
+            pc.load_existing_content(limit=200)
+            results['plagiarism'] = pc.get_stats()
+        except Exception as e:
+            logger.warning(f"Plagiarism checker error: {e}")
+        
+        return results
+    
+    def generate(self) -> Dict:
+        """Phase 3: Generate learning content."""
+        from generators import ModuleGenerator, QuizGenerator, InterventionGenerator
+        
+        results = {}
+        
+        # Modules
+        try:
+            mg = ModuleGenerator()
+            results['modules'] = mg.run(limit=5)
+        except Exception as e:
+            logger.warning(f"Module generator error: {e}")
+        
+        # Quizzes
+        try:
+            qg = QuizGenerator()
+            results['quizzes'] = qg.run(limit=5)
+        except Exception as e:
+            logger.warning(f"Quiz generator error: {e}")
+        
+        # Interventions
+        try:
+            ig = InterventionGenerator()
+            results['interventions'] = ig.run(limit=5)
+        except Exception as e:
+            logger.warning(f"Intervention generator error: {e}")
+        
+        return results
+    
+    def convert(self) -> Dict:
+        """Phase 4: Convert to alternative formats."""
+        # Import converters if available
+        results = {}
+        
+        try:
+            from generators.audio_factory import AudioFactory
+            af = AudioFactory()
+            results['audio'] = af.run(limit=3)
+        except Exception as e:
+            logger.warning(f"Audio factory error: {e}")
+        
+        try:
+            from generators.pdf_factory import PDFFactory
+            pf = PDFFactory()
+            results['pdf'] = pf.run(limit=3)
+        except Exception as e:
+            logger.warning(f"PDF factory error: {e}")
+        
+        return results
+    
+    def run_full_pipeline(self) -> Dict:
+        """Run all phases in sequence."""
+        logger.info("\n" + "🏭"*30)
+        logger.info("INFINITE LEARNING FACTORY v2.0")
+        logger.info("🏭"*30 + "\n")
+        
+        self.run_phase("HARVEST", self.harvest)
+        self.run_phase("PROCESS", self.process)
+        self.run_phase("GENERATE", self.generate)
+        self.run_phase("CONVERT", self.convert)
+        
+        self.stats['end_time'] = datetime.utcnow().isoformat()
+        
+        # Summary
+        logger.info("\n" + "="*60)
+        logger.info("📊 PIPELINE SUMMARY")
+        logger.info("="*60)
+        logger.info(f"Phases completed: {len(self.stats['phases_run'])}")
+        logger.info(f"Errors: {len(self.stats['errors'])}")
+        
+        return self.stats
 
-        # 2. Implement (Nemotron)
-        coder = self.agents["nemotron"]
-        if coder.alive:
-            print(f"\n=== STEP 2: Implementation with {coder.name} ===")
-            code = coder.query(
-                f"Implement the following plan:\n{plan}\n\nProvide the full code blocks.",
-                system_role="You are an Expert Developer."
-            )
-        else:
-            print("Coder (Nemotron) is offline.")
-            return
-
-        # 3. Review (Mistral)
-        reviewer = self.agents["mistral"]
-        if reviewer.alive:
-            print(f"\n=== STEP 3: Review with {reviewer.name} ===")
-            reviewer.query(
-                f"Review this code for errors, security, and accessibility:\n{code}",
-                system_role="You are a QA Engineer."
-            )
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("task", nargs="?", help="Task description")
-    parser.add_argument("--check", action="store_true", help="Run health check")
+    parser = argparse.ArgumentParser(description='Learning Factory Orchestrator')
+    parser.add_argument('--phase', choices=['harvest', 'process', 'generate', 'convert', 'all'],
+                       default='all', help='Pipeline phase to run')
     args = parser.parse_args()
-
+    
     orchestrator = Orchestrator()
     
-    if args.check or not args.task:
-        orchestrator.health_check()
-        
-    if args.task:
-        orchestrator.execute_task(args.task)
+    if args.phase == 'all':
+        orchestrator.run_full_pipeline()
+    elif args.phase == 'harvest':
+        orchestrator.run_phase("HARVEST", orchestrator.harvest)
+    elif args.phase == 'process':
+        orchestrator.run_phase("PROCESS", orchestrator.process)
+    elif args.phase == 'generate':
+        orchestrator.run_phase("GENERATE", orchestrator.generate)
+    elif args.phase == 'convert':
+        orchestrator.run_phase("CONVERT", orchestrator.convert)
+
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,193 @@
+# Infinite Learning Factory - 24/7 Autonomous Pipeline
+# ====================================================
+# Runs every 6 hours: Harvest → Classify → Generate → Convert
+# Free GitHub Actions minutes: 2000/month
+
+name: Learning Factory Pipeline
+
+on:
+  schedule:
+    # Run every 6 hours (4 times per day)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # Manual trigger
+    inputs:
+      phase:
+        description: 'Which phase to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - harvest
+          - process
+          - generate
+          - multiformat
+
+env:
+  PYTHON_VERSION: '3.11'
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+jobs:
+  # ========================================
+  # PHASE 1: HARVEST - Collect Raw Content
+  # ========================================
+  harvest:
+    name: 🌾 Harvest Content
+    runs-on: ubuntu-latest
+    if: github.event.inputs.phase == 'all' || github.event.inputs.phase == 'harvest' || github.event_name == 'schedule'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+      
+      - name: Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+      
+      - name: Run RSS Aggregator
+        run: python scripts/harvesters/rss_aggregator.py
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      
+      - name: Run Academic Harvester
+        run: python scripts/harvesters/academic_harvester.py
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      
+      # YouTube is optional due to rate limits
+      # - name: Run YouTube Harvester
+      #   run: python scripts/harvesters/youtube_harvester.py
+
+  # ========================================
+  # PHASE 2: PROCESS - Classify & Filter
+  # ========================================
+  process:
+    name: 🧠 Process & Classify
+    runs-on: ubuntu-latest
+    needs: harvest
+    if: always() && (needs.harvest.result == 'success' || needs.harvest.result == 'skipped')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+      
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+      
+      - name: Run Dimension Classifier
+        run: python scripts/processors/dimension_classifier.py
+        env:
+          CLASSIFIER_BATCH_SIZE: 15
+      
+      - name: Run Quality Filter
+        run: python scripts/processors/quality_filter.py
+
+  # ========================================
+  # PHASE 3: GENERATE - Create Modules
+  # ========================================
+  generate:
+    name: 📚 Generate Modules
+    runs-on: ubuntu-latest
+    needs: process
+    if: always() && (needs.process.result == 'success' || needs.process.result == 'skipped')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+      
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+      
+      - name: Run Module Generator
+        run: python scripts/generators/module_generator.py --auto-mode --limit 10
+      
+      - name: Run Quiz Generator
+        run: python scripts/generators/quiz_generator.py
+        env:
+          QUIZ_BATCH_SIZE: 10
+      
+      - name: Run Intervention Generator
+        run: python scripts/generators/intervention_generator.py
+        env:
+          INTERVENTIONS_PER_DIM: 6
+
+  # ========================================
+  # PHASE 4: MULTIFORMAT - Audio & PDF
+  # ========================================
+  multiformat:
+    name: 🎨 Multi-Format Export
+    runs-on: ubuntu-latest
+    needs: generate
+    if: always() && (needs.generate.result == 'success' || needs.generate.result == 'skipped')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+      
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+      
+      - name: Run Audio Factory
+        run: python scripts/generators/audio_factory.py
+        env:
+          AUDIO_BATCH_SIZE: 5
+      
+      - name: Run PDF Factory
+        run: python scripts/generators/pdf_factory.py
+        env:
+          PDF_BATCH_SIZE: 10
+
+  # ========================================
+  # NOTIFY - Send completion summary
+  # ========================================
+  notify:
+    name: 📊 Pipeline Summary
+    runs-on: ubuntu-latest
+    needs: [harvest, process, generate, multiformat]
+    if: always()
+    
+    steps:
+      - name: Summary Report
+        run: |
+          echo "# 🏭 Learning Factory Pipeline Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Phase | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌾 Harvest | ${{ needs.harvest.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧠 Process | ${{ needs.process.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📚 Generate | ${{ needs.generate.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎨 Multiformat | ${{ needs.multiformat.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Run completed at: $(date)" >> $GITHUB_STEP_SUMMARY
