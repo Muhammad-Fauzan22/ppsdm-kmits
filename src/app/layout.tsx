@@ -1,28 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google"; // Font resmi sesuai Brand Guideline - Optimized: 2 fonts only
+import { Space_Grotesk, Inter } from "next/font/google"; // Optimized: Only 2 fonts instead of 8
 import "./globals.css";
 import "./accessibility.css";
 import { NudgeNotification } from "@/components/features/NudgeNotification";
-
-
-// Optimized: Only 2 fonts for better performance
-// Inter: Primary font for body text
-// Space Grotesk: Headings and display text
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: 'swap',
-  preload: true,
-  weight: ['400', '500', '600', '700']
-});
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
   display: 'swap',
-  preload: true,
   weight: ['300', '400', '500', '600', '700']
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: 'swap'
 });
 
 // 1. Viewport Configuration (Penting untuk Mobile & PWA)
@@ -58,14 +51,14 @@ export const metadata: Metadata = {
     locale: "id_ID",
     url: "https://ppsdm.its.ac.id",
     title: "PPSDM KM ITS - Platform Pengembangan Mahasiswa",
-    description: "Platform pengembangan holistik 9 dimensi untuk mahasiswa ITS. Asesmen, pembelajaran, dan portofolio kompetensi.",
+    description: "Platform pengembangan holistik 9 dimensi untuk mahasiswa ITS",
     siteName: "PPSDM KM ITS",
     images: [
       {
-        url: "/og-image.jpg", // Wajib ada di folder public/
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "PPSDM KM ITS Dashboard Preview",
+        alt: "PPSDM KM ITS Platform",
       },
     ],
   },
@@ -74,44 +67,82 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "PPSDM KM ITS",
-    description: "Portal Pengembangan Sumber Daya Mahasiswa ITS.",
+    description: "Platform pengembangan holistik 9 dimensi untuk mahasiswa ITS",
     images: ["/og-image.jpg"],
   },
 
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png", // Icon untuk "Add to Home Screen" di iPhone
+  // Robots & Canonical
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
+
+  // Verification (untuk Google Search Console, dll)
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
+
+  // Icons
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/safari-pinned-tab.svg",
+        color: "#013880",
+      },
+    ],
+  },
+
+  // Alternates (Canonical URL)
+  alternates: {
+    canonical: "https://ppsdm.its.ac.id",
+    languages: {
+      'id-ID': 'https://ppsdm.its.ac.id',
+    },
+  },
+
+  // Category
+  category: "education",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="id" className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
+    <html lang="id" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="manifest" href="/manifest.json" />
-        {/* Preconnect to Google Fonts for faster loading */}
+        {/* Preconnect to Google Fonts for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Preload Material Symbols for faster icon rendering */}
+        
+        {/* Material Symbols Outlined - Load only needed icons */}
         <link 
-          rel="preload" 
-          href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v192/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA.woff2" 
-          as="font" 
-          type="font/woff2" 
-          crossOrigin="anonymous" 
+          rel="stylesheet" 
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
         />
-        {/* Material Symbols Outlined with proper loading strategy */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-        />
-        {/* Critical CSS for icon rendering - prevents FOIT and ensures fallback */}
+        
+        {/* Inline critical CSS for Material Symbols */}
         <style dangerouslySetInnerHTML={{ __html: `
-          /* Material Symbols font face with swap display */
           @font-face {
             font-family: 'Material Symbols Outlined';
             font-style: normal;
-            font-weight: 100 700;
+            font-weight: 400;
             font-display: swap;
             src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v192/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA.woff2) format('woff2');
           }
@@ -165,7 +196,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         `}} />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden`}>
+      <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
         {/* Skip to main content link for accessibility - moved to body */}
         <a
           href="#main-content"
@@ -173,7 +204,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to main content
         </a>
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
         <NudgeNotification />
       </body>
     </html>
