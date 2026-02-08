@@ -25,11 +25,11 @@ export async function POST(request: NextRequest) {
         },
       }
     );
-    
+
     // Parse request body
     const body = await request.json();
-    const { sessionId, dimension, questionId, responseValue, timeSpentMs } = body;
-    
+    const { sessionId, dimension, questionId, responseValue, timeSpentMs, sessionToken } = body;
+
     // Validate required fields
     if (!sessionId || !dimension || !questionId || responseValue === undefined) {
       return NextResponse.json(
@@ -37,30 +37,30 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     // Get current user (if authenticated)
     const { data: { user } } = await supabase.auth.getUser();
-    
+    const userId = user?.id || null;
+
     // Check if session exists or create new one
     const { data: session, error: sessionError } = await supabase
       .from('assessment_sessions')
       .select('id, user_id')
       .eq('id', sessionId)
       .single();
-    
+
     if (sessionError || !session) {
       // Create new session if not exists
-      const { data: newSession, error: createError } = await supabase
+      const { error: createError } = await supabase
         .from('assessment_sessions')
         .insert({
           id: sessionId,
-          user_id: user?.id || null,
+          user_id: userId,
+          session_token: !userId ? sessionToken : null, // Store token for anon
           started_at: new Date().toISOString(),
           status: 'in_progress'
-        })
-        .select()
-        .single();
-      
+        });
+
       if (createError) {
         console.error('Error creating session:', createError);
         return NextResponse.json(
@@ -69,12 +69,12 @@ export async function POST(request: NextRequest) {
         );
       }
     }
-    
-    // Upsert response (insert or update)
+
+    // Upsert response (using session_id + question_id uniqueness)
     const { error: responseError } = await supabase
       .from('assessment_responses')
       .upsert({
-        user_id: user?.id || null,
+        user_id: userId,
         session_id: sessionId,
         dimension,
         question_id: questionId,
@@ -82,9 +82,9 @@ export async function POST(request: NextRequest) {
         time_spent_ms: timeSpentMs || 0,
         answered_at: new Date().toISOString()
       }, {
-        onConflict: 'user_id,session_id,question_id'
+        onConflict: 'session_id,question_id' // Changed from user_id,session_id,question_id
       });
-    
+
     if (responseError) {
       console.error('Error saving response:', responseError);
       return NextResponse.json(
@@ -92,28 +92,46 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-    
+
     // Update progress
-    const { error: progressError } = await supabase
-      .from('assessment_progress')
-      .upsert({
-        user_id: user?.id || null,
-        dimension,
-        status: 'in_progress',
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id,dimension'
-      });
-    
-    if (progressError) {
-      console.error('Error updating progress:', progressError);
+    // For anonymous, we need a way to track uniqueness. 
+    // If logged in: user_id + dimension.
+    // If anon: session_token + dimension.
+
+    const progressData: any = {
+      dimension,
+      status: 'in_progress',
+      updated_at: new Date().toISOString()
+    };
+
+    let conflictTarget = '';
+
+    if (userId) {
+      progressData.user_id = userId;
+      conflictTarget = 'user_id,dimension';
+    } else if (sessionToken) {
+      // Only update progress if we have a session token for anon
+      progressData.session_token = sessionToken;
+      conflictTarget = 'session_token,dimension';
     }
-    
+
+    if (conflictTarget) {
+      const { error: progressError } = await supabase
+        .from('assessment_progress')
+        .upsert(progressData, {
+          onConflict: conflictTarget
+        });
+
+      if (progressError) {
+        console.error('Error updating progress:', progressError);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Response saved successfully'
     });
-    
+
   } catch (error) {
     console.error('Assessment submit error:', error);
     return NextResponse.json(

@@ -226,3 +226,60 @@ export interface ProgressLog {
     created_at: string;
 }
 
+
+// LMS Types
+export interface Course {
+    id: string;
+    title: string;
+    slug: string;
+    description: string;
+    short_description?: string;
+    cover_image?: string;
+    thumbnail_image?: string;
+    category: string;
+    subcategory?: string;
+    level: 'beginner' | 'intermediate' | 'advanced' | 'all_levels';
+    duration?: number; // minutes
+    xp_reward?: number;
+    certificate_enabled?: boolean;
+    passing_score?: number;
+    status: 'draft' | 'published' | 'archived';
+    featured?: boolean;
+    created_by: string;
+    created_at: string;
+    updated_at: string;
+    published_at?: string;
+    metadata?: Record<string, any>;
+}
+
+export interface Module {
+    id: string;
+    course_id: string;
+    title: string;
+    description?: string;
+    order_index: number;
+    xp_reward?: number;
+    duration?: number;
+    is_published?: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Lesson {
+    id: string;
+    module_id: string;
+    title: string;
+    description?: string;
+    content?: string;
+    content_type: 'text' | 'video' | 'audio' | 'pdf' | 'interactive' | 'quiz' | 'assignment';
+    video_url?: string;
+    video_duration?: number;
+    pdf_url?: string;
+    external_resource_url?: string;
+    order_index: number;
+    is_published?: boolean;
+    xp_reward?: number;
+    estimated_time?: number;
+    created_at: string;
+    updated_at: string;
+}

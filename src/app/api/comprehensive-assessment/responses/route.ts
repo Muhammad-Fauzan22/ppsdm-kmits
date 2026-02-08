@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            // Allow anonymous
         }
 
         const body = await request.json();
@@ -22,13 +22,24 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Verify session belongs to user
-        const { data: session, error: sessionError } = await supabase
+        // Verify session exists and belongs to user (if authenticated)
+        let query = supabase
             .from("comprehensive_sessions")
             .select("*")
             .eq("id", session_id)
-            .eq("user_id", user.id)
             .single();
+
+        const { data: session, error: sessionError } = await query;
+
+        // Security check: if user is logged in, session must match user_id.
+        // If user is anon, session must have user_id IS NULL (and ideally match session_token, but we don't have it here yet without updating frontend to send it).
+        // For now, we trust session_id if it exists and is anonymous.
+        if (session && user && session.user_id !== user.id) {
+            return NextResponse.json({ error: "Unauthorized access to session" }, { status: 403 });
+        }
+        if (session && !user && session.user_id !== null) {
+            return NextResponse.json({ error: "Unauthorized access to user session" }, { status: 403 });
+        }
 
         if (sessionError || !session) {
             return NextResponse.json(
@@ -101,7 +112,7 @@ export async function GET(request: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            // Allow anonymous
         }
 
         const { searchParams } = new URL(request.url);

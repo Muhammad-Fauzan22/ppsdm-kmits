@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useAnonymousSession } from "@/hooks/useAnonymousSession";
 
 interface Question {
     id: string;
@@ -53,9 +54,13 @@ export default function ComprehensiveAssessmentPage() {
     const [showComplete, setShowComplete] = useState(false);
     const [startTime, setStartTime] = useState<Date | null>(null);
 
+    const { sessionToken, isInitialized } = useAnonymousSession();
+
     useEffect(() => {
-        loadQuestions();
-    }, []);
+        if (isInitialized) {
+            loadQuestions();
+        }
+    }, [isInitialized]);
 
     const loadQuestions = async () => {
         try {
@@ -71,7 +76,10 @@ export default function ComprehensiveAssessmentPage() {
             const sessionRes = await fetch("/api/comprehensive-assessment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_type: "initial" }),
+                body: JSON.stringify({
+                    session_type: "initial",
+                    session_token: sessionToken
+                }),
             });
             const sessionData = await sessionRes.json();
 
@@ -252,10 +260,10 @@ export default function ComprehensiveAssessmentPage() {
                                 }
                             }}
                             className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition ${index === currentModuleIndex
-                                    ? "bg-[var(--its-blue)] text-white shadow-lg"
-                                    : index < currentModuleIndex
-                                        ? "bg-green-100 text-green-700"
-                                        : "bg-gray-100 text-gray-400"
+                                ? "bg-[var(--its-blue)] text-white shadow-lg"
+                                : index < currentModuleIndex
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-gray-100 text-gray-400"
                                 }`}
                             disabled={index > currentModuleIndex}
                         >
@@ -301,8 +309,8 @@ export default function ComprehensiveAssessmentPage() {
                                         key={option.value}
                                         onClick={() => handleAnswer(option.value)}
                                         className={`w-full p-4 rounded-xl border-2 text-left transition-all ${isSelected
-                                                ? "border-[var(--its-blue)] bg-blue-50 shadow-md"
-                                                : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                                            ? "border-[var(--its-blue)] bg-blue-50 shadow-md"
+                                            : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                                             }`}
                                     >
                                         <div className="flex items-center gap-4">

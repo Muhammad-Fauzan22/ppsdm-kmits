@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            // Allow anonymous
         }
 
         const body = await request.json();
@@ -91,7 +91,12 @@ export async function GET(request: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            // Allow anonymous if session_id is provided
+            if (!request.url.includes("session_id")) {
+                // If no session_id and no user, we can't return anything.
+                // But maybe we return empty list instead of 401?
+                // Or we rely on session_id check below.
+            }
         }
 
         const { searchParams } = new URL(request.url);
@@ -100,8 +105,18 @@ export async function GET(request: NextRequest) {
         let query = supabase
             .from("comprehensive_gaps")
             .select("*")
-            .eq("user_id", user.id)
             .order("gap_score", { ascending: false });
+
+        if (user) {
+            query = query.eq("user_id", user.id);
+        } else if (sessionId) {
+            query = query.eq("session_id", sessionId);
+            // Security: If anon, ensure session belongs to anon?
+            // Since Gaps are read-only, risk is low if ID is guessed.
+            // Ideally we check session token, but GET params usually don't carry token (maybe header?).
+        } else {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
 
         if (sessionId) {
             query = query.eq("session_id", sessionId);

@@ -78,8 +78,58 @@ const nextConfig = {
     ];
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/assessment/:path*',
+        destination: '/dashboard/assessment/:path*',
+        permanent: true,
+      },
+      {
+        source: '/roadmap',
+        destination: '/dashboard/roadmap',
+        permanent: true,
+      },
+      {
+        source: '/pos',
+        destination: '/dashboard/pos',
+        permanent: true,
+      },
+      {
+        source: '/mentorship',
+        destination: '/dashboard/mentoring',
+        permanent: true,
+      },
+      {
+        source: '/profile/scholar',
+        destination: '/dashboard/profile',
+        permanent: true,
+      },
+      {
+        source: '/profile',
+        destination: '/dashboard/profile',
+        permanent: true,
+      },
+      {
+        source: '/portfolio/:path*',
+        destination: '/dashboard/portfolio/:path*',
+        permanent: true,
+      },
+      {
+        source: '/community',
+        destination: '/dashboard/community',
+        permanent: true,
+      },
+      {
+        source: '/settings',
+        destination: '/dashboard/settings',
+        permanent: true,
+      }
+    ];
+  },
+
   // Image optimization
-   images: {
+  images: {
     domains: ['lh3.googleusercontent.com', 'integrate.api.nvidia.com', 'ppsdm.its.ac.id', 'images.unsplash.com', 'drive.google.com'],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
