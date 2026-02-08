@@ -5,12 +5,13 @@ import { dimensions } from "@/features/assessment-engine/config/dimensions";
 import { AssessmentRunner } from "@/features/assessment-engine/core/AssessmentRunner";
 
 interface PageProps {
-    params: {
+    params: Promise<{
         dimension: string;
-    }
+    }>
 }
 
-export default function DimensionAssessmentPage({ params }: PageProps) {
+export default async function DimensionAssessmentPage(props: PageProps) {
+    const params = await props.params;
     const config = dimensions[params.dimension];
 
     if (!config) {
