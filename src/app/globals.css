@@ -1,24 +1,15 @@
 /* Design System Tokens - WCAG 2.1 AA Compliant */
 @import '../styles/design-tokens.css';
-/* Fusion Design System - ML/Netflix/Bloomberg/Apple/Discord Inspired */
-@import '../styles/fusion-tokens.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-@layer base {
   :root {
     /* Background & Foreground - High Contrast */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    /* #0f172a - contrast 15:1 on white */
+    --foreground: 222.2 84% 4.9%; /* #0f172a - contrast 15:1 on white */
 
     /* Card Colors */
     --card: 0 0% 100%;
@@ -38,8 +29,7 @@
 
     /* Muted - contrast 7:1 on white */
     --muted: 215.4 16.3% 46.9%;
-    --muted-foreground: 215.4 16.3% 30%;
-    /* #64748b - contrast 7:1 */
+    --muted-foreground: 215.4 16.3% 30%; /* #64748b - contrast 7:1 */
 
     /* Accent */
     --accent: 210 40% 96.1%;
@@ -72,7 +62,6 @@
     /* Radius */
     --radius: 0.5rem;
   }
-
   .dark {
     /* Dark mode - High Contrast */
     --background: 222.2 84% 4.9%;
@@ -122,7 +111,6 @@
 }
 
 @layer utilities {
-
   /* Glass Card Utilities */
   .glass-card {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
@@ -209,40 +197,14 @@ html {
 }
 
 /* Minimal styles for code highlighting (avoid importing external css during build) */
-pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
-}
-
-code.hljs {
-  padding: 3px 5px;
-}
-
-.hljs {
-  color: #c9d1d9;
-  background: #0d1117
-}
+pre code.hljs { display:block; overflow-x:auto; padding:1em; }
+code.hljs { padding:3px 5px; }
+.hljs { color: #c9d1d9; background: #0d1117 }
 
 /* Minimal styles for audio player */
-.rhap_container {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 8px;
-  background: #fff;
-}
-
-.rhap_progress-bar {
-  height: 5px;
-  background: #ddd;
-  border-radius: 2px;
-}
-
-.rhap_main-controls-button {
-  font-size: 20px;
-}
+.rhap_container { box-sizing: border-box; display:flex; flex-direction:column; width:100%; padding:8px; background:#fff; }
+.rhap_progress-bar { height:5px; background:#ddd; border-radius:2px; }
+.rhap_main-controls-button { font-size:20px; }
 
 /* Hero Boomerang Video Styles */
 .hero-boomerang-canvas {
@@ -258,7 +220,6 @@ code.hljs {
     opacity: 0;
     transform: scale(1.05);
   }
-
   to {
     opacity: 1;
     transform: scale(1);
@@ -271,12 +232,9 @@ code.hljs {
 
 /* Pulse glow animation untuk indicator */
 @keyframes pulse-glow {
-
-  0%,
-  100% {
+  0%, 100% {
     box-shadow: 0 0 5px rgba(74, 222, 128, 0.4);
   }
-
   50% {
     box-shadow: 0 0 20px rgba(74, 222, 128, 0.8);
   }
@@ -298,12 +256,9 @@ code.hljs {
 
 /* Dimension Detail Page Styles */
 @keyframes gradient-border {
-
-  0%,
-  100% {
+  0%, 100% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
@@ -325,18 +280,15 @@ code.hljs {
   z-index: 1;
 }
 
-.holographic-border>* {
+.holographic-border > * {
   position: relative;
   z-index: 2;
 }
 
 @keyframes float {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0px);
   }
-
   50% {
     transform: translateY(-10px);
   }
@@ -347,12 +299,9 @@ code.hljs {
 }
 
 @keyframes pulse-glow-dim {
-
-  0%,
-  100% {
+  0%, 100% {
     box-shadow: 0 0 20px rgba(19, 91, 236, 0.3);
   }
-
   50% {
     box-shadow: 0 0 40px rgba(19, 91, 236, 0.6);
   }
