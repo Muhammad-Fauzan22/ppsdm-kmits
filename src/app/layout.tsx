@@ -1,16 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Work_Sans, Space_Grotesk, Noto_Sans, Manrope, Merriweather, Lexend, Inter, Poppins } from "next/font/google"; // Font resmi sesuai Brand Guideline
+import { Space_Grotesk, Inter } from "next/font/google"; // Optimized fonts
 import "./globals.css";
 import "./accessibility.css";
 import { NudgeNotification } from "@/components/features/NudgeNotification";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 
-const workSans = Work_Sans({
-  subsets: ["latin"],
-  variable: "--font-work-sans",
-  display: 'swap'
-});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -19,42 +14,9 @@ const spaceGrotesk = Space_Grotesk({
   weight: ['300', '400', '500', '600', '700']
 });
 
-const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  variable: "--font-noto-sans",
-  display: 'swap',
-  weight: ['400', '500', '700']
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: 'swap'
-});
-
-const merriweather = Merriweather({
-  weight: ['300', '400', '700', '900'],
-  subsets: ["latin"],
-  variable: "--font-merriweather",
-  display: 'swap'
-});
-
-const lexend = Lexend({
-  subsets: ["latin"],
-  variable: "--font-lexend",
-  display: 'swap'
-});
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: 'swap'
-});
-
-const poppins = Poppins({
-  weight: ['400', '500', '600'],
-  subsets: ["latin"],
-  variable: "--font-poppins",
   display: 'swap'
 });
 
@@ -119,7 +81,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${workSans.variable} ${spaceGrotesk.variable} ${notoSans.variable} ${manrope.variable} ${merriweather.variable} ${lexend.variable} ${inter.variable} ${poppins.variable} antialiased`}>
+    <html lang="id" className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         {/* Preconnect to Google Fonts for faster loading */}
