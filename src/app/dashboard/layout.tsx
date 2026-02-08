@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#070B14] text-slate-200 font-sans selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-slate-100 dark:bg-[#070B14] text-slate-800 dark:text-slate-200 font-sans selection:bg-cyan-500/30 transition-colors duration-300">
       <Sidebar />
       <div className="lg:pl-72 flex flex-col min-h-screen transition-all duration-300 ease-in-out">
         <Header />
         <main className="flex-1 p-6 md:p-8 overflow-x-hidden relative">
-          {/* Background Ambiance */}
-          <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-brand-blue/5 to-transparent pointer-events-none" />
+          {/* Background Ambiance - only in dark mode */}
+          <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-brand-blue/5 to-transparent pointer-events-none dark:block hidden" />
 
           {children}
         </main>

@@ -1,5 +1,5 @@
-export { Header } from "./Header";
-export { Sidebar } from "./Sidebar";
+export { Header } from "./layout/Header";
+export { Sidebar } from "./layout/Sidebar";
 export { GrowthLineChart, DimensionRadarChart, ProgressBar, StatCard } from "./Charts";
 export {
     FadeIn,

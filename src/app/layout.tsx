@@ -3,6 +3,7 @@ import { Work_Sans, Space_Grotesk, Noto_Sans, Manrope, Merriweather, Lexend, Int
 import "./globals.css";
 import "./accessibility.css";
 import { NudgeNotification } from "@/components/features/NudgeNotification";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 
 const workSans = Work_Sans({
@@ -125,12 +126,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Preload Material Symbols for faster icon rendering */}
-        <link 
-          rel="preload" 
-          href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v192/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA.woff2" 
-          as="font" 
-          type="font/woff2" 
-          crossOrigin="anonymous" 
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v192/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
         {/* Material Symbols Outlined with proper loading strategy */}
         <link
@@ -138,7 +139,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
         {/* Critical CSS for icon rendering - prevents FOIT and ensures fallback */}
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           /* Material Symbols font face with swap display */
           @font-face {
             font-family: 'Material Symbols Outlined';
@@ -197,16 +199,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         `}} />
       </head>
-      <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
-        {/* Skip to main content link for accessibility - moved to body */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-slate-900 focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Skip to main content
-        </a>
-        {children}
-        <NudgeNotification />
+      <body className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300">
+        <ThemeProvider>
+          {/* Skip to main content link for accessibility - moved to body */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-slate-900 focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Skip to main content
+          </a>
+          {children}
+          <NudgeNotification />
+        </ThemeProvider>
       </body>
     </html>
   );
