@@ -195,10 +195,10 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                             {currentQuestion.options?.map((opt) => (
                                 <button
                                     key={opt.id}
-                                    onClick={() => handleAnswer(typeof opt.id === 'string' ? opt.id : opt.value || 0)}
+                                    onClick={() => handleAnswer(opt.value || (typeof opt.id === 'number' ? opt.id : 0))}
                                     className={cn(
                                         "w-full text-left p-4 rounded-xl border-2 transition-all",
-                                        responses[currentQuestion.id] === (typeof opt.id === 'string' ? opt.id : opt.value)
+                                        responses[currentQuestion.id] === (opt.value || (typeof opt.id === 'number' ? opt.id : 0))
                                             ? "border-blue-600 bg-blue-50 text-blue-700"
                                             : "border-slate-200 hover:border-blue-200 hover:bg-slate-50"
                                     )}
