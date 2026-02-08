@@ -5,7 +5,6 @@ import { cookies } from 'next/headers';
 /**
  * UU PDP Compliance: Cancel Account Deletion Endpoint
  * Allows users to cancel deletion request within grace period
- * Reference: UU No. 27 Tahun 2022, Pasal 38
  */
 
 export async function POST(request: NextRequest) {
@@ -32,108 +31,92 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    // Verify user authentication
+    // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized. Please login to cancel deletion.' },
         { status: 401 }
       );
     }
 
     const userId = user.id;
 
-    // Parse request body
-    const body = await request.json();
-    const { deletionId, reason } = body;
-
-    if (!deletionId) {
-      return NextResponse.json(
-        { error: 'Deletion ID is required' },
-        { status: 400 }
-      );
-    }
-
-    // Verify the deletion request belongs to this user and is still pending
-    const { data: deletionRequest, error: fetchError } = await supabase
+    // Find pending deletion request
+    const { data: deletionRequest, error: findError } = await supabase
       .from('account_deletion_requests')
       .select('*')
-      .eq('id', deletionId)
       .eq('user_id', userId)
       .eq('status', 'pending')
       .single();
 
-    if (fetchError || !deletionRequest) {
+    if (findError || !deletionRequest) {
       return NextResponse.json(
-        { 
-          error: 'Deletion request not found or already processed',
-          code: 'NOT_FOUND'
-        },
+        { error: 'No pending deletion request found' },
         { status: 404 }
       );
     }
 
-    // Check if grace period is still valid
-    const scheduledDate = new Date(deletionRequest.scheduled_deletion_date);
+    // Check if still within grace period
     const now = new Date();
+    const scheduledDate = new Date(deletionRequest.scheduled_deletion_date);
     
     if (now > scheduledDate) {
       return NextResponse.json(
-        {
-          error: 'Grace period has expired. Account deletion cannot be cancelled.',
-          code: 'GRACE_PERIOD_EXPIRED',
-          scheduledDeletionDate: deletionRequest.scheduled_deletion_date
-        },
+        { error: 'Grace period has expired. Account deletion cannot be cancelled.' },
         { status: 410 }
       );
     }
 
-    // Cancel the deletion request
-    const { error: cancelError } = await supabase
+    // Update deletion request status
+    const { error: updateError } = await supabase
       .from('account_deletion_requests')
       .update({
         status: 'cancelled',
         cancelled_at: new Date().toISOString(),
-        cancellation_reason: reason || 'User requested cancellation'
+        cancellation_reason: 'User requested cancellation'
       })
-      .eq('id', deletionId);
+      .eq('id', deletionRequest.id);
 
-    if (cancelError) {
-      console.error('Error cancelling deletion:', cancelError);
+    if (updateError) {
+      console.error('Error cancelling deletion:', updateError);
       return NextResponse.json(
         { error: 'Failed to cancel deletion request' },
         { status: 500 }
       );
     }
 
-    // Log the cancellation for compliance audit
+    // Log cancellation for compliance audit
     await supabase.from('compliance_audit_logs').insert({
       user_id: userId,
       action: 'ACCOUNT_DELETION_CANCELLED',
       resource: 'account_deletion_requests',
-      resource_id: deletionId,
       metadata: {
+        original_request_id: deletionRequest.id,
         original_scheduled_date: deletionRequest.scheduled_deletion_date,
-        cancellation_reason: reason || 'User requested cancellation',
-        days_remaining: Math.ceil((scheduledDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+        cancelled_at: new Date().toISOString()
       },
       ip_address: request.headers.get('x-forwarded-for') || 'unknown',
-      user_agent: request.headers.get('user-agent') || 'unknown'
+      user_agent: request.headers.get('user-agent'),
     });
 
     return NextResponse.json({
       success: true,
       message: 'Account deletion cancelled successfully',
-      deletionId,
+      originalScheduledDate: deletionRequest.scheduled_deletion_date,
       cancelledAt: new Date().toISOString(),
-      legalNotice: 'Your account deletion request has been cancelled. Your data will be retained and you can continue using the platform normally.'
+      instructions: [
+        'Your account deletion has been cancelled',
+        'All your data remains intact and accessible',
+        'You can continue using the platform normally'
+      ]
     });
 
   } catch (error) {
     console.error('Cancel deletion error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to cancel deletion. Please try again later.' },
       { status: 500 }
     );
   }

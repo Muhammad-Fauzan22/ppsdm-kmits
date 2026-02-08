@@ -165,7 +165,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         `}} />
       </head>
-      <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
+      <body className={`${inter.variable} ${spaceGrotesk.variable} bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden`}>
         {/* Skip to main content link for accessibility - moved to body */}
         <a
           href="#main-content"

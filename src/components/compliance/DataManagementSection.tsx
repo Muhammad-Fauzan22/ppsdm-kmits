@@ -1,65 +1,51 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
 import { 
   Download, 
   Trash2, 
   AlertTriangle, 
-  FileText, 
-  Shield, 
-  Clock,
-  CheckCircle,
+  Clock, 
+  CheckCircle, 
   XCircle,
-  Loader2
+  FileText,
+  Shield
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
-
-
-/**
- * Data Management Section Component
- * UU PDP Compliance: Data Export & Deletion (Pasal 35-40)
- */
 
 interface DeletionStatus {
   hasPendingDeletion: boolean;
-  deletionId?: string;
+  status?: string;
+  requestedAt?: string;
   scheduledDeletionDate?: string;
   daysRemaining?: number;
   canCancel?: boolean;
 }
 
 export function DataManagementSection() {
-
   const [isExporting, setIsExporting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [deletionStatus, setDeletionStatus] = useState<DeletionStatus | null>(null);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const [confirmationText, setConfirmationText] = useState('');
   const [deleteReason, setDeleteReason] = useState('');
-  const [deleteFeedback, setDeleteFeedback] = useState('');
-  const [cancelReason, setCancelReason] = useState('');
+  
+  // Dialog states
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [showExportSuccess, setShowExportSuccess] = useState(false);
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+  const [showCancelSuccess, setShowCancelSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Check deletion status on mount
-  React.useEffect(() => {
-    checkDeletionStatus();
+  // Fetch deletion status on mount
+  useEffect(() => {
+    fetchDeletionStatus();
   }, []);
 
-  const checkDeletionStatus = async () => {
+  const fetchDeletionStatus = async () => {
     try {
       const response = await fetch('/api/user/delete');
       if (response.ok) {
@@ -67,118 +53,80 @@ export function DataManagementSection() {
         setDeletionStatus(data);
       }
     } catch (error) {
-      console.error('Error checking deletion status:', error);
+      console.error('Error fetching deletion status:', error);
     }
   };
-
-  const [showExportSuccess, setShowExportSuccess] = useState(false);
-  const [showExportError, setShowExportError] = useState(false);
 
   const handleExportData = async () => {
     setIsExporting(true);
     try {
       const response = await fetch('/api/user/export', {
-        method: 'GET',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ format: 'pdf' })
       });
 
       if (!response.ok) {
         throw new Error('Failed to export data');
       }
 
-      // Get the blob from the response
+      // Download the PDF
       const blob = await response.blob();
-      
-      // Create a download link
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `ppsdm-data-export-${new Date().toISOString().split('T')[0]}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ppsdm-data-export-${new Date().toISOString().split('T')[0]}.pdf`;
+      document.body.appendChild(a);
+      a.click();
       window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
 
       setShowExportSuccess(true);
     } catch (error) {
-      setShowExportError(true);
+      console.error('Export error:', error);
+      setErrorMessage('Gagal mengekspor data. Silakan coba lagi.');
+      setShowError(true);
     } finally {
       setIsExporting(false);
     }
   };
 
-
-  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
-  const [showDeleteError, setShowDeleteError] = useState(false);
-  const [deleteErrorMessage, setDeleteErrorMessage] = useState('');
-
   const handleDeleteAccount = async () => {
-    if (confirmationText !== 'DELETE_MY_ACCOUNT') {
-      setDeleteErrorMessage('Please type "DELETE_MY_ACCOUNT" exactly to confirm.');
-      setShowDeleteError(true);
-      return;
-    }
-
     setIsDeleting(true);
     try {
       const response = await fetch('/api/user/delete', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          confirmation: confirmationText,
-          reason: deleteReason,
-          feedback: deleteFeedback,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          confirmDelete: true,
+          reason: deleteReason 
+        })
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to schedule account deletion');
+        throw new Error(data.error || 'Failed to delete account');
       }
 
-      setDeletionStatus({
-        hasPendingDeletion: true,
-        deletionId: data.deletionId,
-        scheduledDeletionDate: data.scheduledDeletionDate,
-        daysRemaining: data.daysRemaining,
-        canCancel: true,
-      });
-
-      setShowDeleteDialog(false);
-      setConfirmationText('');
-      setDeleteReason('');
-      setDeleteFeedback('');
-
       setShowDeleteSuccess(true);
-    } catch (error: any) {
-      setDeleteErrorMessage(error.message || 'Failed to schedule account deletion.');
-      setShowDeleteError(true);
+      await fetchDeletionStatus();
+    } catch (error) {
+      console.error('Delete error:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Gagal menghapus akun');
+      setShowError(true);
     } finally {
       setIsDeleting(false);
+      setShowDeleteConfirm(false);
     }
   };
 
-
-  const [showCancelSuccess, setShowCancelSuccess] = useState(false);
-  const [showCancelError, setShowCancelError] = useState(false);
-  const [cancelErrorMessage, setCancelErrorMessage] = useState('');
-
   const handleCancelDeletion = async () => {
-    if (!deletionStatus?.deletionId) return;
-
     setIsCancelling(true);
     try {
       const response = await fetch('/api/user/delete/cancel', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          deletionId: deletionStatus.deletionId,
-          reason: cancelReason,
-        }),
+        headers: { 'Content-Type': 'application/json' }
       });
 
       const data = await response.json();
@@ -187,326 +135,237 @@ export function DataManagementSection() {
         throw new Error(data.error || 'Failed to cancel deletion');
       }
 
-      setDeletionStatus({
-        hasPendingDeletion: false,
-      });
-
-      setShowCancelDialog(false);
-      setCancelReason('');
-
       setShowCancelSuccess(true);
-    } catch (error: any) {
-      setCancelErrorMessage(error.message || 'Failed to cancel deletion request.');
-      setShowCancelError(true);
+      await fetchDeletionStatus();
+    } catch (error) {
+      console.error('Cancel error:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Gagal membatalkan penghapusan');
+      setShowError(true);
     } finally {
       setIsCancelling(false);
+      setShowCancelConfirm(false);
     }
   };
 
-
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="border-b pb-4">
-        <h2 className="text-2xl font-bold text-slate-900">Data Management</h2>
-        <p className="text-slate-600 mt-1">
-          Manage your personal data in accordance with UU No. 27 Tahun 2022 (Perlindungan Data Pribadi)
-        </p>
-      </div>
-
-      {/* Pending Deletion Alert */}
-      {deletionStatus?.hasPendingDeletion && (
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-          <div className="flex items-start gap-3">
-            <Clock className="w-5 h-5 text-amber-600 mt-0.5" />
-            <div className="flex-1">
-              <h3 className="font-semibold text-amber-900">Account Deletion Scheduled</h3>
-              <p className="text-amber-800 text-sm mt-1">
-                Your account is scheduled for deletion on{' '}
-                {deletionStatus.scheduledDeletionDate && 
-                  new Date(deletionStatus.scheduledDeletionDate).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })
-                }{' '}
-                ({deletionStatus.daysRemaining} days remaining).
-              </p>
-              {deletionStatus.canCancel && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-3 border-amber-300 text-amber-700 hover:bg-amber-100"
-                  onClick={() => setShowCancelDialog(true)}
-                >
-                  Cancel Deletion Request
-                </Button>
-              )}
-            </div>
+      {/* UU PDP Compliance Header */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-start gap-3">
+          <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
+          <div>
+            <h3 className="font-semibold text-blue-900">Kepatuhan UU PDP No. 27 Tahun 2022</h3>
+            <p className="text-sm text-blue-700 mt-1">
+              Platform ini mematuhi Undang-Undang Perlindungan Data Pribadi Indonesia. 
+              Anda memiliki hak untuk mengakses, mengekspor, dan menghapus data pribadi Anda.
+            </p>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Data Export Card */}
-      <div className="bg-white border rounded-lg p-6">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-blue-50 rounded-lg">
-            <Download className="w-6 h-6 text-blue-600" />
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Download className="w-5 h-5" />
+            Ekspor Data Pribadi (Pasal 35-37 UU PDP)
+          </CardTitle>
+          <CardDescription>
+            Unduh semua data pribadi Anda dalam format PDF. Dokumen ini berisi riwayat asesmen, 
+            profil, dan aktivitas Anda di platform.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 text-sm text-gray-600">
+              <FileText className="w-4 h-4" />
+              <span>Format: PDF dengan branding resmi KMITS</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-gray-600">
+              <Clock className="w-4 h-4" />
+<span>Waktu pemrosesan: {'< 2 menit'}</span>
+
+            </div>
+            <Button 
+              onClick={handleExportData} 
+              disabled={isExporting}
+              className="w-full sm:w-auto"
+            >
+              {isExporting ? (
+                <>Memproses...</>
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  Ekspor Data Saya
+                </>
+              )}
+            </Button>
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-slate-900">Export Your Data</h3>
-            <p className="text-slate-600 text-sm mt-1">
-              Download a copy of all your personal data stored on our platform. 
-              This includes your profile, assessment results, progress, and activity history.
-            </p>
-            <div className="mt-4 flex items-center gap-3">
-              <Button
-                onClick={handleExportData}
-                disabled={isExporting}
-                className="bg-blue-600 hover:bg-blue-700"
+        </CardContent>
+      </Card>
+
+      {/* Account Deletion Card */}
+      <Card className={deletionStatus?.hasPendingDeletion ? 'border-orange-200' : 'border-red-200'}>
+        <CardHeader>
+          <CardTitle className={`flex items-center gap-2 ${deletionStatus?.hasPendingDeletion ? 'text-orange-700' : 'text-red-700'}`}>
+            {deletionStatus?.hasPendingDeletion ? (
+              <Clock className="w-5 h-5" />
+            ) : (
+              <Trash2 className="w-5 h-5" />
+            )}
+            {deletionStatus?.hasPendingDeletion 
+              ? 'Penghapusan Akun Dijadwalkan' 
+              : 'Hapus Akun (Pasal 38-40 UU PDP)'}
+          </CardTitle>
+          <CardDescription>
+            {deletionStatus?.hasPendingDeletion 
+              ? `Akun Anda akan dihapus secara permanen dalam ${deletionStatus.daysRemaining} hari.`
+              : 'Hapus akun dan semua data pribadi Anda dari platform. Proses ini memiliki masa tenggang 14 hari.'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {deletionStatus?.hasPendingDeletion ? (
+            <div className="space-y-4">
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-orange-900">Penghapusan Dijadwalkan</p>
+                    <p className="text-sm text-orange-700 mt-1">
+                      Tanggal penghapusan: {new Date(deletionStatus.scheduledDeletionDate!).toLocaleDateString('id-ID')}
+                    </p>
+                    <p className="text-sm text-orange-700">
+                      Sisa waktu: {deletionStatus.daysRemaining} hari
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowCancelConfirm(true)}
+                disabled={isCancelling}
+                className="w-full sm:w-auto"
               >
-                {isExporting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Generating PDF...
-                  </>
+                {isCancelling ? (
+                  <>Membatalkan...</>
                 ) : (
                   <>
-                    <FileText className="w-4 h-4 mr-2" />
-                    Export as PDF
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Batalkan Penghapusan
                   </>
                 )}
               </Button>
-              <span className="text-xs text-slate-500 flex items-center gap-1">
-                <Shield className="w-3 h-3" />
-                UU PDP Pasal 35 - Hak Portabilitas Data
-              </span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Account Deletion Card */}
-      <div className="bg-white border rounded-lg p-6">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-red-50 rounded-lg">
-            <Trash2 className="w-6 h-6 text-red-600" />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-slate-900">Delete Your Account</h3>
-            <p className="text-slate-600 text-sm mt-1">
-              Permanently delete your account and all associated data. 
-              You have a 14-day grace period to cancel this action.
-            </p>
-            <div className="mt-4">
-              <Button
-                variant="destructive"
-                onClick={() => setShowDeleteDialog(true)}
-                disabled={deletionStatus?.hasPendingDeletion}
-                className="bg-red-600 hover:bg-red-700"
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-red-900">Peringatan</p>
+                    <p className="text-sm text-red-700 mt-1">
+                      Penghapusan akun bersifat permanen setelah masa tenggang 14 hari. 
+                      Data yang dihapus tidak dapat dipulihkan.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Alasan penghapusan (opsional):</label>
+                <textarea
+                  value={deleteReason}
+                  onChange={(e) => setDeleteReason(e.target.value)}
+                  placeholder="Beritahu kami mengapa Anda ingin menghapus akun..."
+                  className="w-full p-3 border rounded-lg text-sm min-h-[80px]"
+                />
+              </div>
+              <Button 
+                variant="destructive" 
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={isDeleting}
+                className="w-full sm:w-auto"
               >
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                {deletionStatus?.hasPendingDeletion 
-                  ? 'Deletion Already Scheduled' 
-                  : 'Delete Account'}
+                {isDeleting ? (
+                  <>Memproses...</>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Hapus Akun Saya
+                  </>
+                )}
               </Button>
-              <p className="text-xs text-slate-500 mt-2 flex items-center gap-1">
-                <Shield className="w-3 h-3" />
-                UU PDP Pasal 38 - Hak Penghapusan Data
-              </p>
             </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </CardContent>
+      </Card>
 
-      {/* Legal Notice */}
-      <div className="bg-slate-50 border rounded-lg p-4 text-sm text-slate-600">
-        <h4 className="font-semibold text-slate-900 mb-2">Your Rights Under UU No. 27 Tahun 2022</h4>
-        <ul className="space-y-1 list-disc list-inside">
-          <li>
-            <strong>Data Portability (Pasal 35):</strong> You have the right to obtain and reuse your personal data 
-            across different services.
-          </li>
-          <li>
-            <strong>Right to Deletion (Pasal 38):</strong> You have the right to request deletion of your personal data, 
-            subject to legal retention requirements.
-          </li>
-          <li>
-            <strong>Grace Period:</strong> A 14-day grace period allows you to cancel deletion requests.
-          </li>
-        </ul>
-      </div>
-
-      {/* Delete Account Dialog */}
-      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-red-600">
-              <AlertTriangle className="w-5 h-5" />
-              Delete Your Account
-            </DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. Your account will be permanently deleted after a 14-day grace period.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4 py-4">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-sm text-red-800">
-                <strong>Warning:</strong> All your data will be permanently deleted including:
-              </p>
-              <ul className="text-sm text-red-700 mt-2 list-disc list-inside">
-                <li>Profile information</li>
-                <li>Assessment results and history</li>
-                <li>Progress and achievements</li>
-                <li>Journal entries</li>
-                <li>Goals and activities</li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="reason">Reason for leaving (optional)</Label>
-              <select
-                id="reason"
-                className="w-full border rounded-md p-2 text-sm"
-                value={deleteReason}
-                onChange={(e) => setDeleteReason(e.target.value)}
-              >
-                <option value="">Select a reason...</option>
-                <option value="not_useful">Platform not useful for me</option>
-                <option value="privacy_concerns">Privacy concerns</option>
-                <option value="found_alternative">Found alternative platform</option>
-                <option value="graduating">Graduating/leaving ITS</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="feedback">Additional feedback (optional)</Label>
-              <Textarea
-                id="feedback"
-                placeholder="Tell us how we can improve..."
-                value={deleteFeedback}
-                onChange={(e) => setDeleteFeedback(e.target.value)}
-                className="text-sm"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmation">
-                Type <code className="bg-slate-100 px-1 rounded">DELETE_MY_ACCOUNT</code> to confirm
-              </Label>
-              <Input
-                id="confirmation"
-                value={confirmationText}
-                onChange={(e) => setConfirmationText(e.target.value)}
-                placeholder="DELETE_MY_ACCOUNT"
-                className="text-sm"
-              />
-            </div>
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteAccount}
-              disabled={isDeleting || confirmationText !== 'DELETE_MY_ACCOUNT'}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              {isDeleting ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                'Delete Account'
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Cancel Deletion Confirmation Dialog */}
+      {/* Confirmation Dialogs */}
       <ConfirmationDialog
-        isOpen={showCancelDialog}
-        onClose={() => setShowCancelDialog(false)}
-        onConfirm={handleCancelDeletion}
-        title="Cancel Account Deletion?"
-        description={`Your account is scheduled for deletion in ${deletionStatus?.daysRemaining} days. You can cancel this request to keep your account and all your data.`}
-        confirmText={isCancelling ? 'Cancelling...' : 'Yes, Keep My Account'}
-        cancelText="Keep Deletion"
-        variant="default"
+        isOpen={showDeleteConfirm}
+        onCancel={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDeleteAccount}
+        title="Konfirmasi Penghapusan Akun"
+        message={`Apakah Anda yakin ingin menghapus akun Anda? Akun akan dihapus secara permanen dalam 14 hari. Tindakan ini tidak dapat dibatalkan setelah masa tenggang berakhir.`}
+        confirmText="Ya, Hapus Akun"
+        cancelText="Batal"
+        variant="danger"
       />
 
-      {/* Success/Error Dialogs */}
+      <ConfirmationDialog
+        isOpen={showCancelConfirm}
+        onCancel={() => setShowCancelConfirm(false)}
+        onConfirm={handleCancelDeletion}
+        title="Batalkan Penghapusan Akun"
+        message="Apakah Anda yakin ingin membatalkan permintaan penghapusan akun? Semua data Anda akan tetap aman dan Anda dapat menggunakan platform kembali."
+        confirmText="Ya, Batalkan"
+        cancelText="Tutup"
+        variant="info"
+      />
+
       <ConfirmationDialog
         isOpen={showExportSuccess}
-        onClose={() => setShowExportSuccess(false)}
+        onCancel={() => setShowExportSuccess(false)}
         onConfirm={() => setShowExportSuccess(false)}
-        title="Data Exported Successfully"
-        description="Your personal data has been exported as a PDF file."
+        title="Ekspor Data Berhasil"
+        message="Data pribadi Anda telah berhasil diekspor. File PDF telah diunduh ke perangkat Anda."
         confirmText="OK"
         cancelText=""
-        variant="default"
-      />
-
-      <ConfirmationDialog
-        isOpen={showExportError}
-        onClose={() => setShowExportError(false)}
-        onConfirm={() => setShowExportError(false)}
-        title="Export Failed"
-        description="Failed to export your data. Please try again later."
-        confirmText="OK"
-        cancelText=""
-        variant="destructive"
+        variant="info"
       />
 
       <ConfirmationDialog
         isOpen={showDeleteSuccess}
-        onClose={() => setShowDeleteSuccess(false)}
+        onCancel={() => setShowDeleteSuccess(false)}
         onConfirm={() => setShowDeleteSuccess(false)}
-        title="Account Deletion Scheduled"
-        description={`Your account will be deleted in ${deletionStatus?.daysRemaining} days. You can cancel this anytime before then.`}
-        confirmText="OK"
+        title="Penghapusan Dijadwalkan"
+        message="Akun Anda telah dijadwalkan untuk dihapus dalam 14 hari. Anda akan menerima email konfirmasi. Anda dapat membatalkan penghapusan kapan saja sebelum tanggal yang dijadwalkan."
+        confirmText="Mengerti"
         cancelText=""
-        variant="default"
-      />
-
-      <ConfirmationDialog
-        isOpen={showDeleteError}
-        onClose={() => setShowDeleteError(false)}
-        onConfirm={() => setShowDeleteError(false)}
-        title="Deletion Failed"
-        description={deleteErrorMessage}
-        confirmText="OK"
-        cancelText=""
-        variant="destructive"
+        variant="info"
       />
 
       <ConfirmationDialog
         isOpen={showCancelSuccess}
-        onClose={() => setShowCancelSuccess(false)}
+        onCancel={() => setShowCancelSuccess(false)}
         onConfirm={() => setShowCancelSuccess(false)}
-        title="Deletion Cancelled"
-        description="Your account deletion request has been cancelled. Your data is safe."
+        title="Penghapusan Dibatalkan"
+        message="Permintaan penghapusan akun Anda telah berhasil dibatalkan. Semua data Anda tetap aman dan Anda dapat melanjutkan menggunakan platform."
         confirmText="OK"
         cancelText=""
-        variant="default"
+        variant="info"
       />
 
       <ConfirmationDialog
-        isOpen={showCancelError}
-        onClose={() => setShowCancelError(false)}
-        onConfirm={() => setShowCancelError(false)}
-        title="Cancellation Failed"
-        description={cancelErrorMessage}
+        isOpen={showError}
+        onCancel={() => setShowError(false)}
+        onConfirm={() => setShowError(false)}
+        title="Terjadi Kesalahan"
+        message={errorMessage}
         confirmText="OK"
         cancelText=""
-        variant="destructive"
+        variant="danger"
       />
+
     </div>
   );
 }

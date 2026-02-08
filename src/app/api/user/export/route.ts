@@ -4,9 +4,8 @@ import { cookies } from 'next/headers';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 /**
- * UU PDP Compliance: Data Export Endpoint
- * Allows users to download all their personal data as PDF
- * Reference: UU No. 27 Tahun 2022, Pasal 35-37
+ * UU PDP Compliance: Data Export Endpoint (Pasal 35-37)
+ * Generates PDF report of all user data
  */
 
 export async function GET(request: NextRequest) {
@@ -33,9 +32,9 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    // Verify user authentication
+    // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to export your data.' },
@@ -44,10 +43,8 @@ export async function GET(request: NextRequest) {
     }
 
     const userId = user.id;
-    const exportTimestamp = new Date().toISOString();
-    const reportId = `EXP-${Date.now()}`;
 
-    // Fetch all user data from various tables
+    // Fetch all user data in parallel
     const [
       profileData,
       assessmentSessions,
@@ -56,396 +53,154 @@ export async function GET(request: NextRequest) {
       progressData,
       gamificationData,
       journalEntries,
-      goalsData
+      goalsData,
+      activitiesData
     ] = await Promise.all([
       // User profile
-      supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single(),
+      supabase.from('profiles').select('*').eq('id', userId).single(),
 
       // Assessment sessions
-      supabase
-        .from('assessment_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .order('started_at', { ascending: false }),
+      supabase.from('assessment_sessions').select('*').eq('user_id', userId),
 
       // Assessment responses
-      supabase
-        .from('assessment_responses')
-        .select('*')
-        .eq('user_id', userId)
-        .order('answered_at', { ascending: false }),
+      supabase.from('assessment_responses').select('*').eq('user_id', userId),
 
       // Assessment results
-      supabase
-        .from('assessment_results')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false }),
+      supabase.from('assessment_results').select('*').eq('user_id', userId),
 
-      // Progress tracking
-      supabase
-        .from('assessment_progress')
-        .select('*')
-        .eq('user_id', userId),
+      // Progress
+      supabase.from('assessment_progress').select('*').eq('user_id', userId),
 
-      // Gamification data
-      supabase
-        .from('user_gamification')
-        .select('*')
-        .eq('user_id', userId)
-        .single(),
+      // Gamification
+      supabase.from('user_gamification').select('*').eq('user_id', userId).single(),
 
-      // Journal entries
-      supabase
-        .from('journal_entries')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false }),
+      // Journal
+      supabase.from('journal_entries').select('*').eq('user_id', userId),
 
       // Goals
-      supabase
-        .from('goals')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
+      supabase.from('user_goals').select('*').eq('user_id', userId),
+
+      // Activities
+      supabase.from('user_activities').select('*').eq('user_id', userId)
     ]);
 
-    // Generate PDF Report
+    // Create PDF document
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([595.276, 841.89]); // A4 size
     const { width, height } = page.getSize();
-    
+
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    
+
     let yPosition = height - 50;
-    const lineHeight = 20;
     const margin = 50;
+    const lineHeight = 20;
+
+    // Helper function to add text
+    const addText = (text: string, x: number, y: number, options: { size?: number; bold?: boolean; color?: any } = {}) => {
+      const { size = 12, bold = false, color = rgb(0, 0, 0) } = options;
+      page.drawText(text, {
+        x,
+        y,
+        size,
+        font: bold ? fontBold : font,
+        color,
+      });
+    };
+
+    // Helper function to add section
+    const addSection = (title: string, data: any) => {
+      if (yPosition < 100) {
+        // Add new page if running out of space
+        const newPage = pdfDoc.addPage([595.276, 841.89]);
+        yPosition = newPage.getSize().height - 50;
+      }
+
+      addText(title, margin, yPosition, { size: 16, bold: true, color: rgb(0.1, 0.3, 0.6) });
+      yPosition -= lineHeight * 1.5;
+
+      if (data && Object.keys(data).length > 0) {
+        const jsonString = JSON.stringify(data, null, 2);
+        const lines = jsonString.split('\n').slice(0, 30); // Limit to 30 lines per section
+
+        lines.forEach((line) => {
+          if (yPosition < 50) {
+            const newPage = pdfDoc.addPage([595.276, 841.89]);
+            yPosition = newPage.getSize().height - 50;
+          }
+
+          addText(line.substring(0, 80), margin + 10, yPosition, { size: 9 });
+          yPosition -= 12;
+        });
+      } else {
+        addText('No data available', margin + 10, yPosition, { size: 10, color: rgb(0.5, 0.5, 0.5) });
+        yPosition -= lineHeight;
+      }
+
+      yPosition -= lineHeight; // Space between sections
+    };
 
     // Header
-    page.drawText('PPSDM KM ITS - DATA EXPORT REPORT', {
-      x: margin,
-      y: yPosition,
-      size: 18,
-      font: fontBold,
-      color: rgb(0.004, 0.22, 0.5), // ITS Blue
-    });
+    addText('PPSDM KM ITS - Data Export Report', width / 2 - 150, yPosition, { size: 20, bold: true, color: rgb(0.1, 0.3, 0.6) });
     yPosition -= lineHeight * 2;
 
-    // Report metadata
-    page.drawText(`Report ID: ${reportId}`, {
-      x: margin,
-      y: yPosition,
-      size: 10,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
+    // Export metadata
+    addText(`Generated: ${new Date().toLocaleString('id-ID')}`, margin, yPosition);
     yPosition -= lineHeight;
-
-    page.drawText(`Generated: ${new Date(exportTimestamp).toLocaleString('id-ID')}`, {
-      x: margin,
-      y: yPosition,
-      size: 10,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
+    addText(`User ID: ${userId}`, margin, yPosition);
     yPosition -= lineHeight;
-
-    page.drawText(`User ID: ${userId}`, {
-      x: margin,
-      y: yPosition,
-      size: 10,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
+    addText(`Email: ${user.email}`, margin, yPosition);
     yPosition -= lineHeight * 2;
 
-    // Legal Notice
-    page.drawText('LEGAL NOTICE:', {
-      x: margin,
-      y: yPosition,
-      size: 11,
-      font: fontBold,
-      color: rgb(0.8, 0, 0),
-    });
+    // Legal notice
+    addText('This report is generated in compliance with UU No. 27 Tahun 2022 (Perlindungan Data Pribadi)', margin, yPosition, { size: 10, color: rgb(0.4, 0.4, 0.4) });
     yPosition -= lineHeight;
-
-    page.drawText('This report contains personal data as defined under UU No. 27 Tahun 2022', {
-      x: margin,
-      y: yPosition,
-      size: 9,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
-    yPosition -= lineHeight;
-
-    page.drawText('on Personal Data Protection (Perlindungan Data Pribadi).', {
-      x: margin,
-      y: yPosition,
-      size: 9,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
+    addText('Pasal 35-37: Hak Subjek Data untuk mengakses dan memperoleh data pribadi', margin, yPosition, { size: 10, color: rgb(0.4, 0.4, 0.4) });
     yPosition -= lineHeight * 2;
 
-    // User Profile Section
-    if (profileData.data) {
-      page.drawText('1. USER PROFILE', {
-        x: margin,
-        y: yPosition,
-        size: 14,
-        font: fontBold,
-        color: rgb(0, 0, 0),
-      });
-      yPosition -= lineHeight * 1.5;
-
-      const profile = profileData.data;
-      const profileFields = [
-        `Full Name: ${profile.full_name || 'N/A'}`,
-        `Email: ${user.email || 'N/A'}`,
-        `NRP: ${profile.nrp || 'N/A'}`,
-        `Department: ${profile.department || 'N/A'}`,
-        `Faculty: ${profile.faculty || 'N/A'}`,
-        `Study Program: ${profile.study_program || 'N/A'}`,
-        `Entry Year: ${profile.entry_year || 'N/A'}`,
-        `Phone: ${profile.phone || 'N/A'}`,
-        `Date of Birth: ${profile.date_of_birth || 'N/A'}`,
-        `Account Created: ${new Date(user.created_at).toLocaleString('id-ID')}`,
-        `Last Sign In: ${user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString('id-ID') : 'N/A'}`,
-      ];
-
-      for (const field of profileFields) {
-        if (yPosition < 100) {
-          // Add new page if running out of space
-          const newPage = pdfDoc.addPage([595.276, 841.89]);
-          yPosition = newPage.getSize().height - 50;
-        }
-        
-        page.drawText(field, {
-          x: margin + 10,
-          y: yPosition,
-          size: 10,
-          font,
-          color: rgb(0.2, 0.2, 0.2),
-        });
-        yPosition -= lineHeight;
-      }
-      yPosition -= lineHeight;
-    }
-
-    // Assessment Summary
-    const sessionCount = assessmentSessions.data?.length || 0;
-    const responseCount = assessmentResponses.data?.length || 0;
-    const resultsCount = assessmentResults.data?.length || 0;
-
-    if (yPosition < 150) {
-      const newPage = pdfDoc.addPage([595.276, 841.89]);
-      yPosition = newPage.getSize().height - 50;
-    }
-
-    page.drawText('2. ASSESSMENT SUMMARY', {
-      x: margin,
-      y: yPosition,
-      size: 14,
-      font: fontBold,
-      color: rgb(0, 0, 0),
-    });
-    yPosition -= lineHeight * 1.5;
-
-    const assessmentSummary = [
-      `Total Assessment Sessions: ${sessionCount}`,
-      `Total Responses Recorded: ${responseCount}`,
-      `Completed Assessments: ${resultsCount}`,
-    ];
-
-    for (const item of assessmentSummary) {
-      page.drawText(item, {
-        x: margin + 10,
-        y: yPosition,
-        size: 10,
-        font,
-        color: rgb(0.2, 0.2, 0.2),
-      });
-      yPosition -= lineHeight;
-    }
-    yPosition -= lineHeight;
-
-    // Detailed Assessment Results
-    if (assessmentResults.data && assessmentResults.data.length > 0) {
-      if (yPosition < 200) {
-        const newPage = pdfDoc.addPage([595.276, 841.89]);
-        yPosition = newPage.getSize().height - 50;
-      }
-
-      page.drawText('3. ASSESSMENT RESULTS', {
-        x: margin,
-        y: yPosition,
-        size: 14,
-        font: fontBold,
-        color: rgb(0, 0, 0),
-      });
-      yPosition -= lineHeight * 1.5;
-
-      for (const result of assessmentResults.data.slice(0, 20)) { // Limit to 20 results
-        if (yPosition < 100) {
-          const newPage = pdfDoc.addPage([595.276, 841.89]);
-          yPosition = newPage.getSize().height - 50;
-        }
-
-        const resultText = `${result.dimension?.toUpperCase() || 'Unknown'} - Score: ${result.score || 'N/A'}/100`;
-        page.drawText(resultText, {
-          x: margin + 10,
-          y: yPosition,
-          size: 10,
-          font: fontBold,
-          color: rgb(0.1, 0.1, 0.1),
-        });
-        yPosition -= lineHeight;
-
-        const dateText = `  Completed: ${result.created_at ? new Date(result.created_at).toLocaleString('id-ID') : 'N/A'}`;
-        page.drawText(dateText, {
-          x: margin + 10,
-          y: yPosition,
-          size: 9,
-          font,
-          color: rgb(0.4, 0.4, 0.4),
-        });
-        yPosition -= lineHeight;
-
-        if (result.interpretation) {
-          const interpretationText = `  Interpretation: ${result.interpretation.substring(0, 80)}${result.interpretation.length > 80 ? '...' : ''}`;
-          page.drawText(interpretationText, {
-            x: margin + 10,
-            y: yPosition,
-            size: 9,
-            font,
-            color: rgb(0.3, 0.3, 0.3),
-          });
-          yPosition -= lineHeight;
-        }
-        yPosition -= lineHeight / 2;
-      }
-    }
-
-    // Progress Data
-    if (progressData.data && progressData.data.length > 0) {
-      if (yPosition < 150) {
-        const newPage = pdfDoc.addPage([595.276, 841.89]);
-        yPosition = newPage.getSize().height - 50;
-      }
-
-      page.drawText('4. PROGRESS TRACKING', {
-        x: margin,
-        y: yPosition,
-        size: 14,
-        font: fontBold,
-        color: rgb(0, 0, 0),
-      });
-      yPosition -= lineHeight * 1.5;
-
-      for (const progress of progressData.data) {
-        if (yPosition < 100) {
-          const newPage = pdfDoc.addPage([595.276, 841.89]);
-          yPosition = newPage.getSize().height - 50;
-        }
-
-        const progressText = `${progress.dimension?.toUpperCase() || 'Unknown'} - Status: ${progress.status || 'N/A'}`;
-        page.drawText(progressText, {
-          x: margin + 10,
-          y: yPosition,
-          size: 10,
-          font,
-          color: rgb(0.2, 0.2, 0.2),
-        });
-        yPosition -= lineHeight;
-      }
-      yPosition -= lineHeight;
-    }
-
-    // Gamification Data
-    if (gamificationData.data) {
-      if (yPosition < 150) {
-        const newPage = pdfDoc.addPage([595.276, 841.89]);
-        yPosition = newPage.getSize().height - 50;
-      }
-
-      page.drawText('5. GAMIFICATION STATUS', {
-        x: margin,
-        y: yPosition,
-        size: 14,
-        font: fontBold,
-        color: rgb(0, 0, 0),
-      });
-      yPosition -= lineHeight * 1.5;
-
-      const gamification = gamificationData.data;
-      const gamificationFields = [
-        `Current Level: ${gamification.current_level || 1}`,
-        `Total XP: ${gamification.total_xp || 0}`,
-        `Achievements Unlocked: ${gamification.achievements?.length || 0}`,
-        `Current Streak: ${gamification.current_streak || 0} days`,
-      ];
-
-      for (const field of gamificationFields) {
-        page.drawText(field, {
-          x: margin + 10,
-          y: yPosition,
-          size: 10,
-          font,
-          color: rgb(0.2, 0.2, 0.2),
-        });
-        yPosition -= lineHeight;
-      }
-      yPosition -= lineHeight;
-    }
+    // Add all data sections
+    addSection('1. User Profile', profileData.data);
+    addSection('2. Assessment Sessions', assessmentSessions.data);
+    addSection('3. Assessment Responses', assessmentResponses.data);
+    addSection('4. Assessment Results', assessmentResults.data);
+    addSection('5. Progress Data', progressData.data);
+    addSection('6. Gamification Data', gamificationData.data);
+    addSection('7. Journal Entries', journalEntries.data);
+    addSection('8. Goals', goalsData.data);
+    addSection('9. Activities', activitiesData.data);
 
     // Footer with legal text
-    const pages = pdfDoc.getPages();
-    for (const pdfPage of pages) {
-      const { height: pageHeight } = pdfPage.getSize();
-      pdfPage.drawText('© 2024 PPSDM KM ITS - Data Export under UU No. 27/2022', {
-        x: margin,
-        y: 30,
-        size: 8,
-        font,
-        color: rgb(0.5, 0.5, 0.5),
-      });
-      
-      pdfPage.drawText(`Page ${pages.indexOf(pdfPage) + 1} of ${pages.length}`, {
-        x: width - margin - 50,
-        y: 30,
-        size: 8,
-        font,
-        color: rgb(0.5, 0.5, 0.5),
-      });
-    }
+    const lastPage = pdfDoc.getPages()[pdfDoc.getPageCount() - 1];
+    lastPage.drawText('© 2024 PPSDM KM ITS - Data Export Report', {
+      x: margin,
+      y: 30,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
 
     // Generate PDF bytes
     const pdfBytes = await pdfDoc.save();
 
-    // Log export for compliance audit
-    await supabase.from('data_export_logs').insert({
+    // Log export request for compliance
+    await supabase.from('data_export_requests').insert({
       user_id: userId,
-      report_id: reportId,
-      exported_at: exportTimestamp,
+      format: 'PDF',
+      status: 'completed',
       ip_address: request.headers.get('x-forwarded-for') || 'unknown',
-      user_agent: request.headers.get('user-agent') || 'unknown',
-      data_categories: ['profile', 'assessments', 'progress', 'gamification', 'journal', 'goals']
+
+      user_agent: request.headers.get('user-agent'),
     });
 
-    // Return PDF as downloadable file
-    return new NextResponse(pdfBytes, {
+    // Return PDF
+    return new NextResponse(Buffer.from(pdfBytes) as any, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="ppsdm-data-export-${userId}-${new Date().toISOString().split('T')[0]}.pdf"`,
-        'Cache-Control': 'no-store, private',
+        'Content-Disposition': `attachment; filename="ppsdm-data-export-${new Date().toISOString().split('T')[0]}.pdf"`,
       },
     });
+
 
   } catch (error) {
     console.error('Data export error:', error);
