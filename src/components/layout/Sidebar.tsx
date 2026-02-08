@@ -15,10 +15,17 @@ import {
   MessageSquare,
   ChevronRight,
   PieChart,
-  Shield,
   Factory,
   Moon,
-  Sun
+  Sun,
+  Library,
+  Map,
+  Target,
+  Users,
+  ClipboardCheck,
+  GraduationCap,
+  Heart,
+  Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
@@ -27,7 +34,7 @@ const navigation = [
   {
     title: "Overview",
     items: [
-      { name: "Dashboard", href: "/dashboard", icon: Home },
+      { name: "Dashboard", href: "/dashboard/home", icon: Home },
       { name: "My Dimensions", href: "/dashboard/dimensions", icon: LayoutGrid },
       { name: "Analytics", href: "/dashboard/analytics", icon: PieChart },
     ]
@@ -35,17 +42,32 @@ const navigation = [
   {
     title: "Learning",
     items: [
+      { name: "Library & AI", href: "/dashboard/library", icon: Library },
       { name: "My Courses", href: "/dashboard/courses", icon: BookOpen },
-      { name: "Mentoring", href: "/dashboard/mentoring", icon: MessageSquare },
+      { name: "Assessments", href: "/dashboard/assessment", icon: ClipboardCheck },
+    ]
+  },
+  {
+    title: "Growth",
+    items: [
+      { name: "My Roadmap", href: "/dashboard/roadmap", icon: Map },
+      { name: "Personal OS", href: "/dashboard/pos", icon: Target },
+      { name: "Mentorship", href: "/dashboard/mentoring", icon: GraduationCap },
+    ]
+  },
+  {
+    title: "Community",
+    items: [
+      { name: "Study Groups", href: "/dashboard/community", icon: Users },
       { name: "Achievements", href: "/dashboard/achievements", icon: Trophy },
     ]
   },
   {
     title: "Account",
     items: [
-      { name: "Profile Settings", href: "/dashboard/profile", icon: User },
-      { name: "Help Center", href: "/help", icon: HelpCircle },
+      { name: "Profile", href: "/dashboard/profile", icon: User },
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
+      { name: "Help", href: "/help", icon: HelpCircle },
     ]
   },
   {
@@ -53,7 +75,6 @@ const navigation = [
     items: [
       { name: "Factory", href: "/admin/factory", icon: Factory },
     ],
-    adminOnly: true
   }
 ];
 
@@ -81,27 +102,26 @@ export const Sidebar = React.memo(function Sidebar() {
   return (
     <aside className="hidden lg:flex h-screen w-72 flex-col fixed left-0 top-0 bg-white dark:bg-[#070B14] border-r border-slate-200 dark:border-white/5 z-50 overflow-hidden transition-colors duration-300">
       {/* Logo Section */}
-      <div className="h-20 flex items-center px-8 border-b border-slate-200 dark:border-white/5 bg-white/50 dark:bg-[#070B14]/50 backdrop-blur-xl">
+      <div className="h-20 flex items-center px-6 border-b border-slate-200 dark:border-white/5 bg-white/50 dark:bg-[#070B14]/50 backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all duration-300">
             <span className="font-bold text-white text-xl">P</span>
           </div>
           <div className="flex flex-col">
             <span className="font-bold text-slate-800 dark:text-white tracking-tight group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">PPSDM KMITS</span>
-            <span className="text-[10px] text-slate-500 uppercase tracking-widest">Student Hub</span>
+            <span className="text-[10px] text-slate-500 uppercase tracking-widest">Student Portal</span>
           </div>
         </Link>
       </div>
 
       {/* Navigation Scroll Area */}
-      <nav className="flex-1 overflow-y-auto py-8 px-4 space-y-8 scrollbar-hide">
+      <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-6 scrollbar-hide">
         {navigation.map((section) => (
           <div key={section.title}>
-            <h3 className="px-4 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+            <h3 className="px-3 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
               {section.title}
-              <div className="h-px bg-slate-200 dark:bg-white/5 flex-grow" />
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {section.items.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
@@ -112,7 +132,7 @@ export const Sidebar = React.memo(function Sidebar() {
                   >
                     <div
                       className={cn(
-                        "relative flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300",
+                        "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300",
                         isActive
                           ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-600 dark:text-cyan-400"
                           : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5"
@@ -130,14 +150,14 @@ export const Sidebar = React.memo(function Sidebar() {
 
                       <item.icon
                         className={cn(
-                          "w-5 h-5 transition-colors duration-300",
+                          "w-4 h-4 transition-colors duration-300",
                           isActive ? "text-cyan-600 dark:text-cyan-400" : "text-slate-400 dark:text-slate-500 group-hover:text-cyan-500 dark:group-hover:text-cyan-400"
                         )}
                       />
                       <span className="flex-grow">{item.name}</span>
 
                       {isActive && (
-                        <ChevronRight className="w-4 h-4 text-cyan-500/50" />
+                        <ChevronRight className="w-3 h-3 text-cyan-500/50" />
                       )}
                     </div>
                   </Link>
@@ -149,24 +169,21 @@ export const Sidebar = React.memo(function Sidebar() {
       </nav>
 
       {/* User Footer */}
-      <div className="p-4 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#0A0F1A]">
-        <div className="flex items-center gap-3 mb-3">
+      <div className="p-3 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#0A0F1A]">
+        <div className="flex items-center gap-2 mb-2 px-1">
           <ThemeToggle />
-          <span className="text-xs text-slate-500">Toggle Theme</span>
+          <span className="text-[10px] text-slate-500">Theme</span>
         </div>
-        <Link href="/dashboard/profile" className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors group cursor-pointer">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 p-[2px]">
-            <div className="w-full h-full rounded-full bg-white dark:bg-[#0A0F1A] border border-transparent overflow-hidden">
-              <div className="w-full h-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-white font-bold">
-                U
-              </div>
+        <Link href="/dashboard/profile" className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors group cursor-pointer">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 p-[2px]">
+            <div className="w-full h-full rounded-full bg-white dark:bg-[#0A0F1A] flex items-center justify-center text-slate-700 dark:text-white font-bold text-sm">
+              U
             </div>
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-slate-800 dark:text-white truncate group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">Mahasiswa</p>
-            <p className="text-xs text-slate-500 truncate">S1 Informatika</p>
+            <p className="text-[10px] text-slate-500 truncate">S1 Informatika</p>
           </div>
-          <Settings className="w-5 h-5 text-slate-400 dark:text-slate-500 group-hover:rotate-90 transition-transform duration-500" />
         </Link>
       </div>
     </aside>
