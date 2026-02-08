@@ -1,18 +1,22 @@
-# Infinite Learning Factory - 24/7 Autonomous Pipeline
-# ====================================================
-# Runs every 6 hours: Harvest → Classify → Generate → Convert
-# Free GitHub Actions minutes: 2000/month
+# Infinite Learning Factory - Full Autonomous Pipeline v3.0
+# =========================================================
+# Complete 24/7 self-healing pipeline with:
+# - Scheduled runs every 6 hours
+# - Manual trigger via workflow_dispatch
+# - Repository dispatch for API triggers
+# - Smart error recovery and notifications
 
-name: Learning Factory Pipeline
+name: 🏭 Autonomous Learning Factory
 
 on:
   schedule:
-    # Run every 6 hours (4 times per day)
-    - cron: '0 */6 * * *'
-  workflow_dispatch:  # Manual trigger
+    # Run every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC
+    - cron: '0 0,6,12,18 * * *'
+  
+  workflow_dispatch:
     inputs:
       phase:
-        description: 'Which phase to run'
+        description: 'Pipeline phase to run'
         required: false
         default: 'all'
         type: choice
@@ -21,173 +25,103 @@ on:
           - harvest
           - process
           - generate
-          - multiformat
+          - export
+      
+      debug:
+        description: 'Enable debug mode'
+        required: false
+        default: false
+        type: boolean
+
+  repository_dispatch:
+    types: [learning-factory-trigger]
 
 env:
   PYTHON_VERSION: '3.11'
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+  HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+
+concurrency:
+  group: learning-factory
+  cancel-in-progress: false
 
 jobs:
   # ========================================
-  # PHASE 1: HARVEST - Collect Raw Content
+  # UNIFIED PIPELINE - All Phases Sequential
   # ========================================
-  harvest:
-    name: 🌾 Harvest Content
+  pipeline:
+    name: 🚀 Complete Pipeline
     runs-on: ubuntu-latest
-    if: github.event.inputs.phase == 'all' || github.event.inputs.phase == 'harvest' || github.event_name == 'schedule'
+    timeout-minutes: 30
     
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
       
-      - name: Setup Python
+      - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: scripts/requirements.txt
       
-      - name: Install dependencies
+      - name: 📦 Install Dependencies
         run: |
+          pip install --upgrade pip
           pip install -r scripts/requirements.txt
       
-      - name: Run RSS Aggregator
-        run: python scripts/harvesters/rss_aggregator.py
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      
-      - name: Run Academic Harvester
-        run: python scripts/harvesters/academic_harvester.py
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      
-      # YouTube is optional due to rate limits
-      # - name: Run YouTube Harvester
-      #   run: python scripts/harvesters/youtube_harvester.py
-
-  # ========================================
-  # PHASE 2: PROCESS - Classify & Filter
-  # ========================================
-  process:
-    name: 🧠 Process & Classify
-    runs-on: ubuntu-latest
-    needs: harvest
-    if: always() && (needs.harvest.result == 'success' || needs.harvest.result == 'skipped')
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: scripts/requirements.txt
-      
-      - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
-      
-      - name: Run Dimension Classifier
-        run: python scripts/processors/dimension_classifier.py
-        env:
-          CLASSIFIER_BATCH_SIZE: 15
-      
-      - name: Run Quality Filter
-        run: python scripts/processors/quality_filter.py
-
-  # ========================================
-  # PHASE 3: GENERATE - Create Modules
-  # ========================================
-  generate:
-    name: 📚 Generate Modules
-    runs-on: ubuntu-latest
-    needs: process
-    if: always() && (needs.process.result == 'success' || needs.process.result == 'skipped')
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: scripts/requirements.txt
-      
-      - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
-      
-      - name: Run Module Generator
-        run: python scripts/generators/module_generator.py --auto-mode --limit 10
-      
-      - name: Run Quiz Generator
-        run: python scripts/generators/quiz_generator.py
-        env:
-          QUIZ_BATCH_SIZE: 10
-      
-      - name: Run Intervention Generator
-        run: python scripts/generators/intervention_generator.py
-        env:
-          INTERVENTIONS_PER_DIM: 6
-
-  # ========================================
-  # PHASE 4: MULTIFORMAT - Audio & PDF
-  # ========================================
-  multiformat:
-    name: 🎨 Multi-Format Export
-    runs-on: ubuntu-latest
-    needs: generate
-    if: always() && (needs.generate.result == 'success' || needs.generate.result == 'skipped')
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: scripts/requirements.txt
-      
-      - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
-      
-      - name: Run Audio Factory
-        run: python scripts/generators/audio_factory.py
-        env:
-          AUDIO_BATCH_SIZE: 5
-      
-      - name: Run PDF Factory
-        run: python scripts/generators/pdf_factory.py
-        env:
-          PDF_BATCH_SIZE: 10
-
-  # ========================================
-  # NOTIFY - Send completion summary
-  # ========================================
-  notify:
-    name: 📊 Pipeline Summary
-    runs-on: ubuntu-latest
-    needs: [harvest, process, generate, multiformat]
-    if: always()
-    
-    steps:
-      - name: Summary Report
+      - name: 🔧 Determine Phase
+        id: phase
         run: |
-          echo "# 🏭 Learning Factory Pipeline Complete" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            PHASE="${{ github.event.client_payload.phase || 'all' }}"
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            PHASE="${{ github.event.inputs.phase }}"
+          else
+            PHASE="all"
+          fi
+          echo "phase=$PHASE" >> $GITHUB_OUTPUT
+          echo "Running phase: $PHASE"
+      
+      - name: 🏭 Run Autonomous Orchestrator
+        run: |
+          cd scripts
+          python orchestrator.py --phase ${{ steps.phase.outputs.phase }}
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts
+          PYTHONIOENCODING: utf-8
+      
+      - name: 📊 Generate Summary
+        if: always()
+        run: |
+          echo "# 🏭 Learning Factory Run Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Phase | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 🌾 Harvest | ${{ needs.harvest.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🧠 Process | ${{ needs.process.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📚 Generate | ${{ needs.generate.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🎨 Multiformat | ${{ needs.multiformat.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "**Run ID:** ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Phase:** ${{ steps.phase.outputs.phase }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Run completed at: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "## Next Scheduled Run" >> $GITHUB_STEP_SUMMARY
+          echo "The next automatic run will be in approximately 6 hours." >> $GITHUB_STEP_SUMMARY
+
+  # ========================================
+  # NOTIFICATION - On Failure Only
+  # ========================================
+  notify-failure:
+    name: ⚠️ Failure Alert
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: failure()
+    
+    steps:
+      - name: Send Failure Notification
+        run: |
+          echo "Pipeline failed at $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "Check the logs for details." >> $GITHUB_STEP_SUMMARY
+          # Optional: Add Slack/email notification here
+          # curl -X POST -H 'Content-type: application/json' \
+          #   --data '{"text":"🚨 Learning Factory Failed!"}' \
+          #   ${{ secrets.SLACK_WEBHOOK_URL }}
