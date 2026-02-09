@@ -8,10 +8,22 @@ import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, ArrowRight, Brain } from "lucide-react";
+import { ShieldCheck, ArrowRight, Brain, LucideIcon } from "lucide-react";
+import * as Icons from "lucide-react";
 
 interface AssessmentRunnerProps {
     config: DimensionConfig;
+}
+
+// Icon mapping helper
+function getIconComponent(iconName: string): LucideIcon {
+    const iconMap: Record<string, LucideIcon> = {
+        'brain': Brain,
+        'shield': ShieldCheck,
+        'arrow-right': ArrowRight,
+        // Add more mappings as needed
+    };
+    return iconMap[iconName] || Brain;
 }
 
 export function AssessmentRunner({ config }: AssessmentRunnerProps) {
@@ -28,7 +40,7 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
 
     // --- RENDER 1: EDUCATIONAL GUIDE ---
     if (step === 'guide') {
-        const GuideIcon = config.icon || Brain;
+        const GuideIcon = getIconComponent(config.icon);
 
         return (
             <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1120] p-6 lg:p-12 font-sans text-slate-900 dark:text-slate-50">
@@ -36,11 +48,12 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                     {/* Hero */}
                     <div className="space-y-4">
                         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-bold text-xs uppercase tracking-wide`}>
-                            {config.name} Assessment
+                            {config.title} Assessment
                         </div>
                         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-                            {config.guide?.title || config.name}
+                            {config.guide?.title || config.title}
                         </h1>
+
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
                             {config.guide?.description || config.description}
                         </p>
@@ -50,7 +63,6 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                     {/* Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {config.guide?.cards?.map((card, idx) => {
-
                             const CardIcon = card.icon || Brain;
                             return (
                                 <Card key={idx} className="border-0 shadow-lg bg-white dark:bg-[#151b26]">
@@ -65,6 +77,7 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                             );
                         })}
                     </div>
+
 
                     {/* Nav */}
                     <div className="flex justify-end pt-8">
@@ -139,10 +152,27 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
     }
 
     // --- RENDER 3: ASSESSMENT ---
-    const progress = ((currentQuestionIndex) / config.items.length) * 100;
-    const currentQuestion = config.items[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex === config.items.length - 1;
-    const canSubmit = Object.keys(responses).length === config.items.length;
+    const items = config.items || [];
+    const progress = items.length > 0 ? ((currentQuestionIndex) / items.length) * 100 : 0;
+    const currentQuestion = items[currentQuestionIndex];
+    const isLastQuestion = currentQuestionIndex === items.length - 1;
+    const canSubmit = Object.keys(responses).length === items.length;
+
+    // Safety check for empty items
+    if (!currentQuestion) {
+        return (
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6">
+                <Card className="w-full max-w-3xl shadow-2xl border-none">
+                    <CardHeader>
+                        <CardTitle>Tidak ada pertanyaan</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p>Assessment ini belum memiliki pertanyaan.</p>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6">
@@ -153,21 +183,22 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
             <Card className="w-full max-w-3xl shadow-2xl border-none">
                 <div className={`h-2 w-full ${config.color || 'bg-blue-600'}`}></div>
                 <CardHeader>
-                    <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">
-                        Item {currentQuestionIndex + 1} / {config.items.length}
-                    </div>
-                    <CardTitle className="text-2xl leading-tight">{currentQuestion.text}</CardTitle>
+                <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">
+                    Item {currentQuestionIndex + 1} / {items.length}
+                </div>
+
+                    <CardTitle className="text-2xl leading-tight">{currentQuestion?.text}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-8 pb-10">
                     {/* SCENARIO TYPE */}
-                    {currentQuestion.scenario && (
+                    {currentQuestion?.scenario && (
                         <div className="mb-6 bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-slate-700 dark:text-slate-300 italic border-l-4 border-blue-500">
                             {currentQuestion.scenario}
                         </div>
                     )}
 
                     {/* RENDER OPTIONS BASED ON TYPE */}
-                    {(!currentQuestion.type || currentQuestion.type === 'likert') && (
+                    {(!currentQuestion?.type || currentQuestion?.type === 'likert') && (
                         <>
                             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                                 {[1, 2, 3, 4, 5].map((val) => (
@@ -176,7 +207,7 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                                         onClick={() => handleAnswer(val)}
                                         className={cn(
                                             "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200",
-                                            responses[currentQuestion.id] === val
+                                            currentQuestion?.id && responses[currentQuestion.id] === val
                                                 ? `border-blue-600 bg-blue-50 text-blue-700`
                                                 : "border-slate-200 hover:border-blue-200 hover:bg-slate-50"
                                         )}
@@ -186,21 +217,21 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                                 ))}
                             </div>
                             <div className="flex justify-between text-xs text-slate-400 mt-2 px-1">
-                                <span>{currentQuestion.labels?.min || "Sangat Tdk Setuju"}</span>
-                                <span>{currentQuestion.labels?.max || "Sangat Setuju"}</span>
+                                <span>{currentQuestion?.labels?.min || "Sangat Tdk Setuju"}</span>
+                                <span>{currentQuestion?.labels?.max || "Sangat Setuju"}</span>
                             </div>
                         </>
                     )}
 
-                    {(currentQuestion.type === 'scenario' || currentQuestion.type === 'choice') && (
+                    {(currentQuestion?.type === 'scenario' || currentQuestion?.type === 'choice') && (
                         <div className="space-y-3">
-                            {currentQuestion.options?.map((opt) => (
+                            {currentQuestion?.options?.map((opt) => (
                                 <button
                                     key={opt.id}
                                     onClick={() => handleAnswer(opt.value || (typeof opt.id === 'number' ? opt.id : 0))}
                                     className={cn(
                                         "w-full text-left p-4 rounded-xl border-2 transition-all",
-                                        responses[currentQuestion.id] === (opt.value || (typeof opt.id === 'number' ? opt.id : 0))
+                                        currentQuestion?.id && responses[currentQuestion.id] === (opt.value || (typeof opt.id === 'number' ? opt.id : 0))
                                             ? "border-blue-600 bg-blue-50 text-blue-700"
                                             : "border-slate-200 hover:border-blue-200 hover:bg-slate-50"
                                     )}
@@ -211,16 +242,16 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                         </div>
                     )}
 
-                    {currentQuestion.type === 'behavioral' && (
+                    {currentQuestion?.type === 'behavioral' && (
                         <div className="space-y-3">
                             {/* Behavioral often uses Frequency Scale inside Options */}
-                            {currentQuestion.options?.map((opt) => (
+                            {currentQuestion?.options?.map((opt) => (
                                 <button
                                     key={opt.id}
                                     onClick={() => handleAnswer(opt.value || 0)} // Behavioral maps to score
                                     className={cn(
                                         "w-full text-left p-4 rounded-xl border-2 transition-all flex justify-between",
-                                        responses[currentQuestion.id] === opt.value
+                                        currentQuestion?.id && responses[currentQuestion.id] === opt.value
                                             ? "border-green-600 bg-green-50 text-green-700"
                                             : "border-slate-200 hover:border-green-200 hover:bg-slate-50"
                                     )}
@@ -232,6 +263,7 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                     )}
 
                 </CardContent>
+
                 <CardFooter className="flex justify-between border-t p-6">
                     <Button
                         variant="ghost"

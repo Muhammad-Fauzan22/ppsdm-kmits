@@ -4,7 +4,6 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { motion, HTMLMotionProps } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
 // ==========================================
@@ -107,7 +106,7 @@ const buttonVariants = cva(
 // ==========================================
 
 export interface ButtonProps
-  extends Omit<HTMLMotionProps<"button">, "ref" | "size">,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   isLoading?: boolean;
@@ -140,7 +139,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     iconOnly,
     ...props 
   }, ref) => {
-    const Comp = asChild ? Slot : motion.button;
+    const Comp = asChild ? Slot : "button";
     
     // Determine effective icon position
     const effectiveIconPosition = iconOnly ? "only" : rightIcon ? "right" : "left";
@@ -185,11 +184,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-disabled={isLoading || disabled}
         aria-busy={isLoading}
         aria-label={ariaLabel || (iconOnly && typeof children === 'string' ? children : undefined)}
-        // Enhanced focus and interaction states
-        whileTap={!isLoading && !disabled ? { scale: 0.97 } : undefined}
-        whileHover={!isLoading && !disabled ? { scale: 1.02 } : undefined}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        {...(props as any)}
+        {...props}
       >
         {/* Loading State */}
         {isLoading && (

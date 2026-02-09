@@ -10,8 +10,9 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useStudyGroups } from '@/lib/hooks/useStudyGroups';
-import { StudyGroupsSkeleton } from '@/components/dashboard/LoadingSkeletons';
+import { StudyGroupsListSkeleton } from '@/components/dashboard/LoadingSkeletons';
 import { ErrorDisplay } from '@/components/dashboard/ErrorDisplay';
+
 
 interface StudyGroup {
   id: string;
@@ -31,12 +32,14 @@ export function StudyGroups({ className }: { className?: string }) {
   const [activeTab, setActiveTab] = useState('all');
 
   if (isLoading) {
-    return <StudyGroupsSkeleton className={className} />;
+    return <StudyGroupsListSkeleton />;
   }
 
   if (error) {
-    return <ErrorDisplay error={error} className={className} />;
+    return <ErrorDisplay message={error.message} />;
   }
+
+
 
   if (!groups || groups.length === 0) {
     return (
