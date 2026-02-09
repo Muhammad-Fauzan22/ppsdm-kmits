@@ -56,15 +56,16 @@ export async function GET(request: NextRequest) {
     // Log export for compliance audit
     await logDataExport(supabase, user.id, 'pdf');
 
-    // Return PDF - Convert Uint8Array to ArrayBuffer for Blob compatibility
-    const pdfBuffer = pdfBytes.buffer.slice(pdfBytes.byteOffset, pdfBytes.byteOffset + pdfBytes.byteLength);
-    return new NextResponse(new Blob([pdfBuffer]), {
+    // Return PDF - Use Uint8Array with type assertion for Blob compatibility
+    return new NextResponse(new Blob([pdfBytes as unknown as BlobPart]), {
+
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="ppsdm-data-export-${new Date().toISOString().split('T')[0]}.pdf"`,
       },
     });
+
 
 
 

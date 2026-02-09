@@ -105,9 +105,15 @@ const buttonVariants = cva(
 // TYPES & INTERFACES
 // ==========================================
 
+export type ButtonVariant = "default" | "primary" | "secondary" | "outline" | "ghost" | "danger" | "destructive" | "success" | "glass" | "link";
+export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-sm" | "icon-lg";
+
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  fullWidth?: boolean;
+  iconPosition?: "left" | "right" | "only";
   asChild?: boolean;
   isLoading?: boolean;
   loadingText?: string;

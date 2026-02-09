@@ -119,44 +119,48 @@ export default function AITutorPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0 }}
-                                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                             >
-                                <div
-                                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${message.role === 'user'
-                                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm'
-                                            : 'bg-white shadow-md text-gray-800 rounded-bl-sm'
-                                        }`}
-                                >
-                                    {message.role === 'assistant' && (
-                                        <div className="flex items-center gap-2 mb-2 text-blue-600">
-                                            <span className="text-lg">🤖</span>
-                                            <span className="text-xs font-medium">AI Tutor</span>
-                                        </div>
-                                    )}
-                                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                                <div className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                    <div
+                                        className={`max-w-[85%] rounded-2xl px-4 py-3 ${message.role === 'user'
+                                                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm'
+                                                : 'bg-white shadow-md text-gray-800 rounded-bl-sm'
+                                            }`}
+                                    >
+                                        {message.role === 'assistant' && (
+                                            <div className="flex items-center gap-2 mb-2 text-blue-600">
+                                                <span className="text-lg">🤖</span>
+                                                <span className="text-xs font-medium">AI Tutor</span>
+                                            </div>
+                                        )}
+                                        <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
                     </AnimatePresence>
 
+
                     {isLoading && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="flex justify-start"
                         >
-                            <div className="bg-white shadow-md rounded-2xl px-4 py-3 rounded-bl-sm">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-lg">🤖</span>
-                                    <div className="flex gap-1">
-                                        <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                        <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                        <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                            <div className="flex justify-start">
+                                <div className="bg-white shadow-md rounded-2xl px-4 py-3 rounded-bl-sm">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-lg">🤖</span>
+                                        <div className="flex gap-1">
+                                            <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                            <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                            <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </motion.div>
                     )}
+
 
                     <div ref={messagesEndRef} />
                 </div>

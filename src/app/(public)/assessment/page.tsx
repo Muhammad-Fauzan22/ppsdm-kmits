@@ -78,44 +78,50 @@ export default function AssessmentPage() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">
-            Assessment 9 Dimensi
-          </h1>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Temukan kekuatan dan area pengembangan Anda melalui assessment holistik 
-            berbasis riset psikometrik dengan 72 pertanyaan teruji.
-          </p>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">
+              Assessment 9 Dimensi
+            </h1>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              Temukan kekuatan dan area pengembangan Anda melalui assessment holistik 
+              berbasis riset psikometrik dengan 72 pertanyaan teruji.
+            </p>
+          </div>
         </motion.div>
+
         
         {/* Progress Overview */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-12 glass-card rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-12 glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-4">
+
             <h2 className="text-lg font-semibold">Progress Assessment Anda</h2>
             <span className="text-2xl font-bold text-brand-accent">
               {completedCount}/9
             </span>
           </div>
-          <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-            <motion.div 
-              className="h-full bg-gradient-to-r from-its-blue to-brand-accent"
-              initial={{ width: 0 }}
-              animate={{ width: `${(completedCount / 9) * 100}%` }}
-              transition={{ duration: 0.5 }}
-            />
+            <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${(completedCount / 9) * 100}%` }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="h-full bg-gradient-to-r from-its-blue to-brand-accent w-full" />
+              </motion.div>
+            </div>
+            <p className="text-sm text-slate-500 mt-2">
+              {completedCount === 9 
+                ? 'Selamat! Anda telah menyelesaikan semua dimensi.' 
+                : `${9 - completedCount} dimensi lagi untuk menyelesaikan assessment.`}
+            </p>
           </div>
-          <p className="text-sm text-slate-500 mt-2">
-            {completedCount === 9 
-              ? 'Selamat! Anda telah menyelesaikan semua dimensi.' 
-              : `${9 - completedCount} dimensi lagi untuk menyelesaikan assessment.`}
-          </p>
         </motion.div>
+
         
         {/* Dimensions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -174,9 +180,10 @@ export default function AssessmentPage() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 text-center"
           >
-            <div className="glass-card rounded-3xl p-8 max-w-2xl mx-auto bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/30">
+            <div className="mt-12 text-center">
+              <div className="glass-card rounded-3xl p-8 max-w-2xl mx-auto bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/30">
+
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
                 <span className="material-symbols-outlined text-4xl text-green-400">celebration</span>
               </div>
@@ -185,16 +192,18 @@ export default function AssessmentPage() {
                 Anda telah menyelesaikan seluruh 9 dimensi assessment. 
                 Lihat hasil holistik lengkap Anda sekarang.
               </p>
-              <Link 
-                href="/assessment/results"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#0A0F1A] font-bold rounded-xl hover:scale-105 transition-transform"
-              >
-                Lihat Hasil Lengkap
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
+                <Link 
+                  href="/assessment/results"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#0A0F1A] font-bold rounded-xl hover:scale-105 transition-transform"
+                >
+                  Lihat Hasil Lengkap
+                  <span className="material-symbols-outlined">arrow_forward</span>
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
+
       </div>
       
       {/* Incomplete Assessment Modal */}

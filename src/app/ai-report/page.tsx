@@ -140,12 +140,14 @@ export default function AIReportPage() {
                                         initial={{ width: 0 }}
                                         animate={{ width: `${score}%` }}
                                         transition={{ duration: 0.8, delay: 0.1 }}
-                                        className={`h-full rounded-full ${score >= 75 ? 'bg-green-500' :
+                                    >
+                                        <div className={`h-full w-full rounded-full ${score >= 75 ? 'bg-green-500' :
                                                 score >= 60 ? 'bg-blue-500' :
                                                     score >= 45 ? 'bg-yellow-500' : 'bg-red-500'
-                                            }`}
-                                    />
+                                            }`} />
+                                    </motion.div>
                                 </div>
+
                                 <div className="w-12 text-right font-bold text-gray-800">{score}</div>
                             </div>
                         ))}
@@ -155,29 +157,33 @@ export default function AIReportPage() {
                 {/* Generate Report Button */}
                 {!hasGenerated && (
                     <div className="text-center mb-8">
-                        <motion.button
-                            onClick={generateReport}
-                            disabled={loading}
+                        <motion.div
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className={`px-8 py-4 rounded-xl font-bold text-lg shadow-lg transition ${loading
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-xl'
-                                }`}
                         >
-                            {loading ? (
-                                <span className="flex items-center gap-2">
-                                    <span className="animate-spin">⏳</span> Generating with AI...
-                                </span>
-                            ) : (
-                                <span className="flex items-center gap-2">
-                                    ✨ Generate AI Report (FREE)
-                                </span>
-                            )}
-                        </motion.button>
+                            <button
+                                onClick={generateReport}
+                                disabled={loading}
+                                className={`px-8 py-4 rounded-xl font-bold text-lg shadow-lg transition ${loading
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-xl'
+                                    }`}
+                            >
+                                {loading ? (
+                                    <span className="flex items-center gap-2">
+                                        <span className="animate-spin">⏳</span> Generating with AI...
+                                    </span>
+                                ) : (
+                                    <span className="flex items-center gap-2">
+                                        ✨ Generate AI Report (FREE)
+                                    </span>
+                                )}
+                            </button>
+                        </motion.div>
                         <p className="text-gray-500 text-sm mt-2">Powered by Llama 3.3 70B via Groq</p>
                     </div>
                 )}
+
 
                 {/* Error Message */}
                 {error && (
@@ -191,9 +197,10 @@ export default function AIReportPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-2xl p-8 shadow-lg"
                     >
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="bg-white rounded-2xl p-8 shadow-lg">
+                            <div className="flex items-center justify-between mb-6">
+
                             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                 📋 Laporan Personal
                             </h2>
@@ -223,9 +230,11 @@ export default function AIReportPage() {
                                     return <p key={index} className="text-gray-700 mb-3">{line}</p>;
                                 }
                             })}
+                            </div>
                         </div>
                     </motion.div>
                 )}
+
 
                 {/* Action Buttons */}
                 <div className="flex gap-4 mt-8">

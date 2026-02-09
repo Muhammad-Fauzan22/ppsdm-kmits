@@ -329,35 +329,41 @@ export default function DimensionInfoPage() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
         >
-          <Link 
-            href="/assessment"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <span className="material-symbols-outlined">arrow_back</span>
-            Kembali ke Assessment
-          </Link>
+          <div className="mb-6">
+            <Link 
+              href="/assessment"
+              className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+            >
+              <span className="material-symbols-outlined">arrow_back</span>
+              Kembali ke Assessment
+            </Link>
+          </div>
         </motion.div>
+
 
         {/* Main Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`glass-card rounded-3xl p-8 md:p-12 bg-gradient-to-br ${info.gradient} border border-${info.color}-500/30`}
         >
+          <div className={`glass-card rounded-3xl p-8 md:p-12 bg-gradient-to-br ${info.gradient} border border-${info.color}-500/30`}>
+
           {/* Title Section */}
           <div className="text-center mb-10">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2 }}
-              className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${info.gradient} flex items-center justify-center border border-${info.color}-500/30`}
             >
+              <div className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${info.gradient} flex items-center justify-center border border-${info.color}-500/30`}>
+
               <span className="material-symbols-outlined text-4xl text-${info.color}-400">
                 psychology
               </span>
+              </div>
             </motion.div>
+
             <h1 className="text-3xl md:text-4xl font-bold font-heading mb-3">
               {info.title}
             </h1>
@@ -384,8 +390,9 @@ export default function DimensionInfoPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="glass-card rounded-xl p-4 border border-white/5"
                 >
+                  <div className="glass-card rounded-xl p-4 border border-white/5">
+
                   <div className="flex items-start gap-3">
                     <div className={`w-10 h-10 rounded-lg bg-${info.color}-500/20 flex items-center justify-center flex-shrink-0`}>
                       <span className="material-symbols-outlined text-${info.color}-400">{sub.icon}</span>
@@ -395,8 +402,10 @@ export default function DimensionInfoPage() {
                       <p className="text-sm text-slate-400">{sub.description}</p>
                     </div>
                   </div>
+                  </div>
                 </motion.div>
               ))}
+
             </div>
           </div>
 
@@ -439,12 +448,14 @@ export default function DimensionInfoPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
-                  className="flex items-start gap-3"
                 >
-                  <span className={`material-symbols-outlined text-${info.color}-400 flex-shrink-0`}>check_circle</span>
-                  <span className="text-slate-300 text-sm">{benefit}</span>
+                  <div className="flex items-start gap-3">
+                    <span className={`material-symbols-outlined text-${info.color}-400 flex-shrink-0`}>check_circle</span>
+                    <span className="text-slate-300 text-sm">{benefit}</span>
+                  </div>
                 </motion.div>
               ))}
+
             </div>
           </div>
 
@@ -466,30 +477,35 @@ export default function DimensionInfoPage() {
 
           {/* Start Button */}
           <div className="text-center">
-            <motion.button
+            <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={handleStartAssessment}
-              disabled={isLoading}
-              className={`inline-flex items-center gap-3 px-10 py-5 bg-${info.color}-500 hover:bg-${info.color}-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-${info.color}-500/25 disabled:opacity-50`}
             >
-              {isLoading ? (
-                <>
-                  <span className="material-symbols-outlined animate-spin">refresh</span>
-                  Memulai...
-                </>
-              ) : (
-                <>
-                  Mulai Assessment
-                  <span className="material-symbols-outlined">arrow_forward</span>
-                </>
-              )}
-            </motion.button>
+              <button
+                onClick={handleStartAssessment}
+                disabled={isLoading}
+                className={`inline-flex items-center gap-3 px-10 py-5 bg-${info.color}-500 hover:bg-${info.color}-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-${info.color}-500/25 disabled:opacity-50`}
+              >
+                {isLoading ? (
+                  <>
+                    <span className="material-symbols-outlined animate-spin">refresh</span>
+                    Memulai...
+                  </>
+                ) : (
+                  <>
+                    Mulai Assessment
+                    <span className="material-symbols-outlined">arrow_forward</span>
+                  </>
+                )}
+              </button>
+            </motion.div>
             <p className="mt-4 text-sm text-slate-500">
               8 pertanyaan • Skala Likert 1-5 • ~2 menit
             </p>
           </div>
+          </div>
         </motion.div>
+
       </div>
     </div>
   );

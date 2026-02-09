@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
@@ -695,6 +695,8 @@ export default function EbookProcessorPage() {
                   </div>
 
 
+
+
                 </div>
               </CardContent>
             </Card>
@@ -706,16 +708,15 @@ export default function EbookProcessorPage() {
               </div>
             ) : viewMode === 'grid' ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filteredEbooks.map((ebook) => (
+              {filteredEbooks.map((ebook) => (
+                <div key={ebook.id} className="cursor-pointer" onClick={() => setSelectedEbook(ebook)}>
                   <motion.div
-                    key={ebook.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ scale: 1.02 }}
-                    className="cursor-pointer"
-                    onClick={() => setSelectedEbook(ebook)}
                   >
                     <Card className="bg-white h-full overflow-hidden group">
+
                       {/* Cover Image */}
                       <div className="aspect-[3/4] bg-gradient-to-br from-slate-200 to-slate-300 relative overflow-hidden">
                         {ebook.cover_image_url ? (
@@ -752,6 +753,7 @@ export default function EbookProcessorPage() {
                           {getStatusBadge(ebook.processing_status)}
                         </div>
 
+
                         {/* Favorite */}
                         {ebook.is_favorite && (
                           <div className="absolute top-2 left-2">
@@ -781,13 +783,16 @@ export default function EbookProcessorPage() {
                           {getDriveStatusBadge(ebook.drive_upload_status)}
                         </div>
 
+
                         {ebook.processing_progress > 0 && ebook.processing_progress < 100 && (
                           <Progress value={ebook.processing_progress} className="h-1 mt-3" />
                         )}
                       </CardContent>
                     </Card>
                   </motion.div>
-                ))}
+                </div>
+              ))}
+
               </div>
             ) : (
               // List View
@@ -840,7 +845,7 @@ export default function EbookProcessorPage() {
                             <Button
                               size="icon"
                               variant="ghost"
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 processSingleEbook(ebook.id);
                               }}
@@ -850,7 +855,7 @@ export default function EbookProcessorPage() {
                             <Button
                               size="icon"
                               variant="ghost"
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 fetchCover(ebook.id);
                               }}
@@ -861,7 +866,7 @@ export default function EbookProcessorPage() {
                               size="icon"
                               variant="ghost"
                               className={ebook.drive_upload_status === 'completed' ? 'text-green-600' : 'text-slate-400'}
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 if (ebook.drive_folder_url) {
                                   window.open(ebook.drive_folder_url, '_blank');
@@ -877,6 +882,7 @@ export default function EbookProcessorPage() {
                               )}
                             </Button>
                           </div>
+
                         </div>
                       </div>
                     ))}
@@ -1017,6 +1023,7 @@ export default function EbookProcessorPage() {
 
                 <div className="flex gap-2">
                   <Button
+                    variant="primary"
                     onClick={() => processSingleEbook(selectedEbook.id)}
                     className="flex-1"
                   >
@@ -1037,6 +1044,8 @@ export default function EbookProcessorPage() {
                     </a>
                   </Button>
                 </div>
+
+
 
                 {selectedEbook.last_error && (
                   <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -1098,7 +1107,7 @@ export default function EbookProcessorPage() {
                 <Switch
                   id="priorityOnly"
                   checked={processingConfig.priorityOnly}
-                  onCheckedChange={(checked) => setProcessingConfig(prev => ({
+                  onCheckedChange={(checked: boolean) => setProcessingConfig(prev => ({
                     ...prev,
                     priorityOnly: checked
                   }))}
@@ -1110,7 +1119,7 @@ export default function EbookProcessorPage() {
                 <Switch
                   id="fetchCovers"
                   checked={processingConfig.fetchCovers}
-                  onCheckedChange={(checked) => setProcessingConfig(prev => ({
+                  onCheckedChange={(checked: boolean) => setProcessingConfig(prev => ({
                     ...prev,
                     fetchCovers: checked
                   }))}
@@ -1122,12 +1131,13 @@ export default function EbookProcessorPage() {
                 <Switch
                   id="generateCourses"
                   checked={processingConfig.generateCourses}
-                  onCheckedChange={(checked) => setProcessingConfig(prev => ({
+                  onCheckedChange={(checked: boolean) => setProcessingConfig(prev => ({
                     ...prev,
                     generateCourses: checked
                   }))}
                 />
               </div>
+
             </div>
           </DialogContent>
         </Dialog>

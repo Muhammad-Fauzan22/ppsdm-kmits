@@ -1,5 +1,3 @@
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Enable compression
@@ -140,8 +138,9 @@ const nextConfig = {
 
   // Webpack configuration
   webpack: (config, { dev, isServer }) => {
-    // Bundle analyzer - always enabled in analyze mode
+    // Bundle analyzer - dynamically imported only when needed
     if (process.env.ANALYZE === 'true' && !dev && !isServer) {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
@@ -178,16 +177,6 @@ const nextConfig = {
     return config;
   },
 
-
-  // Turbopack configuration
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
 
   // Experimental features for performance
   experimental: {
