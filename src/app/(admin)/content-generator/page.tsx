@@ -195,13 +195,14 @@ export default function ContentGeneratorPage() {
                 <input {...getInputProps()} />
                 <p>{uploadedFile ? uploadedFile.name : "Drop PDF here"}</p>
               </div>
-              <button
+              <Button
                 onClick={handleGenerate}
                 disabled={isGenerating}
-                className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed bg-[#003366] text-white shadow-md hover:bg-[#004080] hover:shadow-lg hover:shadow-blue-900/20 active:bg-[#002244] focus-visible:ring-blue-600 border border-[#003366] h-12 px-6 text-base gap-2"
+                className="w-full"
               >
                 {isGenerating ? "Generating..." : "Generate Content"}
-              </button>
+              </Button>
+
 
 
             </CardContent>

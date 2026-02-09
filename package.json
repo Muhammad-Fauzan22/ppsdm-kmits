@@ -62,7 +62,7 @@
     "esbuild": "^0.25.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
-    "framer-motion": "11.15.0",
+    "framer-motion": "^11.18.0",
     "glob": "^11.0.0",
     "googleapis": "^170.1.0",
     "groq-sdk": "^0.3.3",
@@ -109,6 +109,7 @@
   "devDependencies": {
     "@jest/globals": "^30.2.0",
     "@next/bundle-analyzer": "^15.1.0",
+    "@next/swc-win32-x64-msvc": "^16.1.6",
     "@playwright/test": "^1.40.0",
     "@postgres-language-server/cli": "^0.19.0",
     "@tailwindcss/container-queries": "^0.1.1",
