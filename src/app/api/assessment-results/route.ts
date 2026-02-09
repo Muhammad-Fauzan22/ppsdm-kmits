@@ -1,16 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 // API Route for persisting assessment results
-// Uses Supabase for storage
-
-// Note: In production, use proper environment variable handling
-const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    ? createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    )
-    : null;
+// Uses Supabase for storage with proper authentication
 
 // Assessment result interface
 interface AssessmentResult {
@@ -27,6 +20,38 @@ interface AssessmentResult {
 // POST: Save assessment result
 export async function POST(request: NextRequest) {
     try {
+        const cookieStore = await cookies();
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    getAll() {
+                        return cookieStore.getAll();
+                    },
+                    setAll(cookiesToSet) {
+                        try {
+                            cookiesToSet.forEach(({ name, value, options }) =>
+                                cookieStore.set(name, value, options)
+                            );
+                        } catch {
+                            // Ignore if called from server component
+                        }
+                    },
+                },
+            }
+        );
+
+        // Get current user - require authentication
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        
+        if (authError || !user) {
+            return NextResponse.json(
+                { error: 'Unauthorized - Please login to save assessment results' },
+                { status: 401 }
+            );
+        }
+
         const body: AssessmentResult = await request.json();
 
         // Validate required fields
@@ -37,25 +62,11 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // If Supabase is not configured, use localStorage simulation
-        if (!supabase) {
-            console.log('[AssessmentAPI] Supabase not configured, using mock storage');
-            return NextResponse.json({
-                success: true,
-                message: 'Assessment saved (mock mode)',
-                data: {
-                    id: `mock_${Date.now()}`,
-                    ...body,
-                    savedAt: new Date().toISOString(),
-                }
-            });
-        }
-
-        // Save to Supabase
+        // Save to Supabase with authenticated user_id
         const { data, error } = await supabase
             .from('assessment_results')
             .insert([{
-                user_id: body.userId || 'anonymous',
+                user_id: user.id, // Use authenticated user ID
                 dimension: body.dimension,
                 score: body.score,
                 percentile: body.percentile,
@@ -69,16 +80,10 @@ export async function POST(request: NextRequest) {
 
         if (error) {
             console.error('[AssessmentAPI] Supabase error:', error);
-            // Fallback to mock on error
-            return NextResponse.json({
-                success: true,
-                message: 'Assessment saved (fallback mode)',
-                data: {
-                    id: `fallback_${Date.now()}`,
-                    ...body,
-                    savedAt: new Date().toISOString(),
-                }
-            });
+            return NextResponse.json(
+                { error: 'Failed to save assessment result' },
+                { status: 500 }
+            );
         }
 
         return NextResponse.json({
@@ -99,24 +104,46 @@ export async function POST(request: NextRequest) {
 // GET: Retrieve assessment results
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
-        const userId = searchParams.get('userId') || 'anonymous';
-        const dimension = searchParams.get('dimension');
+        const cookieStore = await cookies();
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    getAll() {
+                        return cookieStore.getAll();
+                    },
+                    setAll(cookiesToSet) {
+                        try {
+                            cookiesToSet.forEach(({ name, value, options }) =>
+                                cookieStore.set(name, value, options)
+                            );
+                        } catch {
+                            // Ignore if called from server component
+                        }
+                    },
+                },
+            }
+        );
 
-        // If Supabase is not configured, return mock data
-        if (!supabase) {
-            return NextResponse.json({
-                success: true,
-                data: getMockAssessmentData(dimension),
-                message: 'Mock data (Supabase not configured)'
-            });
+        // Get current user - require authentication
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        
+        if (authError || !user) {
+            return NextResponse.json(
+                { error: 'Unauthorized - Please login to view assessment results' },
+                { status: 401 }
+            );
         }
 
-        // Build query
+        const { searchParams } = new URL(request.url);
+        const dimension = searchParams.get('dimension');
+
+        // Build query - only fetch results for the authenticated user
         let query = supabase
             .from('assessment_results')
             .select('*')
-            .eq('user_id', userId)
+            .eq('user_id', user.id) // Use authenticated user ID
             .order('completed_at', { ascending: false });
 
         if (dimension) {
@@ -127,17 +154,17 @@ export async function GET(request: NextRequest) {
 
         if (error) {
             console.error('[AssessmentAPI] Supabase error:', error);
-            return NextResponse.json({
-                success: true,
-                data: getMockAssessmentData(dimension),
-                message: 'Mock data (Supabase error)'
-            });
+            return NextResponse.json(
+                { error: 'Failed to fetch assessment results' },
+                { status: 500 }
+            );
         }
 
+        // Return empty array if no results (user hasn't taken any assessments)
         return NextResponse.json({
             success: true,
-            data,
-            count: data.length
+            data: data || [],
+            count: data?.length || 0
         });
 
     } catch (error) {
@@ -147,47 +174,4 @@ export async function GET(request: NextRequest) {
             { status: 500 }
         );
     }
-}
-
-// Mock data for development
-function getMockAssessmentData(dimension?: string | null) {
-    const mockResults = [
-        {
-            id: 'mock_1',
-            dimension: 'cognitive',
-            score: 72,
-            percentile: 65,
-            category: 'Good',
-            completed_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-            id: 'mock_2',
-            dimension: 'financial',
-            score: 68,
-            percentile: 58,
-            category: 'Good',
-            completed_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-            id: 'mock_3',
-            dimension: 'emotional_intelligence',
-            score: 75,
-            percentile: 70,
-            category: 'Very Good',
-            completed_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-            id: 'mock_4',
-            dimension: 'physical_health',
-            score: 78,
-            percentile: 72,
-            category: 'Very Good',
-            completed_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-    ];
-
-    if (dimension) {
-        return mockResults.filter(r => r.dimension === dimension);
-    }
-    return mockResults;
 }

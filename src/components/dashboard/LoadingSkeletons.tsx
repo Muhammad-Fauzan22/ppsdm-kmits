@@ -501,3 +501,119 @@ export function ProgressPageSkeleton() {
     </div>
   );
 }
+
+/**
+ * Study Group Card Skeleton
+ */
+export function StudyGroupCardSkeleton() {
+  return (
+    <motion.div
+      variants={skeletonVariants}
+      initial="hidden"
+      animate="visible"
+      className="bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-xl p-5"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2">
+            <motion.div 
+              {...pulseAnimation}
+              className="h-5 w-32 bg-slate-600 rounded" 
+            />
+            <motion.div 
+              {...pulseAnimation}
+              className="h-5 w-16 bg-slate-700 rounded-full" 
+            />
+          </div>
+          <motion.div 
+            {...pulseAnimation}
+            className="h-3 w-full max-w-xs bg-slate-700 rounded mb-4" 
+          />
+          <div className="flex items-center gap-2 mb-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <motion.div 
+                key={i}
+                {...pulseAnimation}
+                className="h-5 w-16 bg-slate-700/50 rounded-full" 
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-4">
+            <motion.div 
+              {...pulseAnimation}
+              className="h-3 w-20 bg-slate-700 rounded" 
+            />
+            <motion.div 
+              {...pulseAnimation}
+              className="h-3 w-24 bg-slate-700 rounded" 
+            />
+          </div>
+        </div>
+        <motion.div 
+          {...pulseAnimation}
+          className="h-8 w-20 bg-slate-700 rounded-lg" 
+        />
+      </div>
+    </motion.div>
+  );
+}
+
+/**
+ * Study Groups List Skeleton
+ */
+export function StudyGroupsListSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div className="space-y-4">
+      {Array.from({ length: count }).map((_, i) => (
+        <StudyGroupCardSkeleton key={i} />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Study Groups Page Skeleton
+ */
+export function StudyGroupsPageSkeleton() {
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <motion.div 
+          {...pulseAnimation}
+          className="h-8 w-48 bg-slate-600 rounded" 
+        />
+        <motion.div 
+          {...pulseAnimation}
+          className="h-10 w-32 bg-slate-700 rounded" 
+        />
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-white/[0.08] pb-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <motion.div 
+            key={i}
+            {...pulseAnimation}
+            className="h-10 w-24 bg-slate-700/50 rounded-lg" 
+          />
+        ))}
+      </div>
+
+      {/* Search and Filter */}
+      <div className="flex gap-4">
+        <motion.div 
+          {...pulseAnimation}
+          className="h-10 flex-1 bg-slate-700/50 rounded-lg" 
+        />
+        <motion.div 
+          {...pulseAnimation}
+          className="h-10 w-32 bg-slate-700 rounded-lg" 
+        />
+      </div>
+
+      {/* Study Groups List */}
+      <StudyGroupsListSkeleton count={6} />
+    </div>
+  );
+}

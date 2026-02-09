@@ -10,8 +10,22 @@ import { DIMENSION_DATA } from '@/lib/dimensionData';
 
 export async function GET(request: NextRequest) {
   try {
+    // Validate DIMENSION_DATA is loaded
+    if (!DIMENSION_DATA || Object.keys(DIMENSION_DATA).length === 0) {
+      console.error('DIMENSION_DATA is empty or undefined');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Dimension data not loaded',
+          message: 'The dimension configuration data failed to load',
+        },
+        { status: 500 }
+      );
+    }
+
     // Transform dimension data for API response
     const dimensions = Object.values(DIMENSION_DATA).map(dim => ({
+
       id: dim.id,
       name: dim.name,
       nameEn: dim.nameEn,

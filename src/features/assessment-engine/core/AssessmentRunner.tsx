@@ -39,16 +39,18 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                             {config.name} Assessment
                         </div>
                         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-                            {config.guide.title}
+                            {config.guide?.title || config.name}
                         </h1>
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-                            {config.guide.description}
+                            {config.guide?.description || config.description}
                         </p>
+
                     </div>
 
                     {/* Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {config.guide.cards.map((card, idx) => {
+                        {config.guide?.cards?.map((card, idx) => {
+
                             const CardIcon = card.icon || Brain;
                             return (
                                 <Card key={idx} className="border-0 shadow-lg bg-white dark:bg-[#151b26]">

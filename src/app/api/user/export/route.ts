@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 
 /**
- * UU PDP Compliance: Data Export Endpoint (Pasal 35-37)
- * Generates PDF report of all user data
+ * UU PDP Compliance: Data Export Endpoint
+ * Generates PDF report of all user data including:
+ * - Profile information
+ * - Assessment results
+ * - Progress data
+ * - Activity logs
  */
 
 export async function GET(request: NextRequest) {
@@ -34,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-
+    
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to export your data.' },
@@ -51,153 +55,242 @@ export async function GET(request: NextRequest) {
       assessmentResponses,
       assessmentResults,
       progressData,
-      gamificationData,
-      journalEntries,
-      goalsData,
-      activitiesData
+      activityLogs
     ] = await Promise.all([
       // User profile
-      supabase.from('profiles').select('*').eq('id', userId).single(),
-
+      supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single(),
+      
       // Assessment sessions
-      supabase.from('assessment_sessions').select('*').eq('user_id', userId),
-
+      supabase
+        .from('assessment_sessions')
+        .select('*')
+        .eq('user_id', userId)
+        .order('started_at', { ascending: false }),
+      
       // Assessment responses
-      supabase.from('assessment_responses').select('*').eq('user_id', userId),
-
+      supabase
+        .from('assessment_responses')
+        .select('*')
+        .eq('user_id', userId)
+        .order('answered_at', { ascending: false }),
+      
       // Assessment results
-      supabase.from('assessment_results').select('*').eq('user_id', userId),
-
-      // Progress
-      supabase.from('assessment_progress').select('*').eq('user_id', userId),
-
-      // Gamification
-      supabase.from('user_gamification').select('*').eq('user_id', userId).single(),
-
-      // Journal
-      supabase.from('journal_entries').select('*').eq('user_id', userId),
-
-      // Goals
-      supabase.from('user_goals').select('*').eq('user_id', userId),
-
-      // Activities
-      supabase.from('user_activities').select('*').eq('user_id', userId)
+      supabase
+        .from('assessment_results')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false }),
+      
+      // Progress data
+      supabase
+        .from('assessment_progress')
+        .select('*')
+        .eq('user_id', userId),
+      
+      // Activity logs (if table exists)
+      supabase
+        .from('activity_logs')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(100)
     ]);
 
-    // Create PDF document
+    // Generate PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([595.276, 841.89]); // A4 size
+    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
     const { width, height } = page.getSize();
-
+    
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
+    
     let yPosition = height - 50;
     const margin = 50;
     const lineHeight = 20;
 
-    // Helper function to add text
-    const addText = (text: string, x: number, y: number, options: { size?: number; bold?: boolean; color?: any } = {}) => {
-      const { size = 12, bold = false, color = rgb(0, 0, 0) } = options;
-      page.drawText(text, {
-        x,
-        y,
-        size,
-        font: bold ? fontBold : font,
-        color,
-      });
-    };
-
-    // Helper function to add section
-    const addSection = (title: string, data: any) => {
-      if (yPosition < 100) {
-        // Add new page if running out of space
-        const newPage = pdfDoc.addPage([595.276, 841.89]);
-        yPosition = newPage.getSize().height - 50;
-      }
-
-      addText(title, margin, yPosition, { size: 16, bold: true, color: rgb(0.1, 0.3, 0.6) });
-      yPosition -= lineHeight * 1.5;
-
-      if (data && Object.keys(data).length > 0) {
-        const jsonString = JSON.stringify(data, null, 2);
-        const lines = jsonString.split('\n').slice(0, 30); // Limit to 30 lines per section
-
-        lines.forEach((line) => {
-          if (yPosition < 50) {
-            const newPage = pdfDoc.addPage([595.276, 841.89]);
-            yPosition = newPage.getSize().height - 50;
-          }
-
-          addText(line.substring(0, 80), margin + 10, yPosition, { size: 9 });
-          yPosition -= 12;
-        });
-      } else {
-        addText('No data available', margin + 10, yPosition, { size: 10, color: rgb(0.5, 0.5, 0.5) });
-        yPosition -= lineHeight;
-      }
-
-      yPosition -= lineHeight; // Space between sections
-    };
-
     // Header
-    addText('PPSDM KM ITS - Data Export Report', width / 2 - 150, yPosition, { size: 20, bold: true, color: rgb(0.1, 0.3, 0.6) });
-    yPosition -= lineHeight * 2;
-
-    // Export metadata
-    addText(`Generated: ${new Date().toLocaleString('id-ID')}`, margin, yPosition);
-    yPosition -= lineHeight;
-    addText(`User ID: ${userId}`, margin, yPosition);
-    yPosition -= lineHeight;
-    addText(`Email: ${user.email}`, margin, yPosition);
-    yPosition -= lineHeight * 2;
-
-    // Legal notice
-    addText('This report is generated in compliance with UU No. 27 Tahun 2022 (Perlindungan Data Pribadi)', margin, yPosition, { size: 10, color: rgb(0.4, 0.4, 0.4) });
-    yPosition -= lineHeight;
-    addText('Pasal 35-37: Hak Subjek Data untuk mengakses dan memperoleh data pribadi', margin, yPosition, { size: 10, color: rgb(0.4, 0.4, 0.4) });
-    yPosition -= lineHeight * 2;
-
-    // Add all data sections
-    addSection('1. User Profile', profileData.data);
-    addSection('2. Assessment Sessions', assessmentSessions.data);
-    addSection('3. Assessment Responses', assessmentResponses.data);
-    addSection('4. Assessment Results', assessmentResults.data);
-    addSection('5. Progress Data', progressData.data);
-    addSection('6. Gamification Data', gamificationData.data);
-    addSection('7. Journal Entries', journalEntries.data);
-    addSection('8. Goals', goalsData.data);
-    addSection('9. Activities', activitiesData.data);
-
-    // Footer with legal text
-    const lastPage = pdfDoc.getPages()[pdfDoc.getPageCount() - 1];
-    lastPage.drawText('© 2024 PPSDM KM ITS - Data Export Report', {
+    page.drawText('PPSDM KM ITS - Data Export Report', {
       x: margin,
-      y: 30,
+      y: yPosition,
+      size: 24,
+      font: fontBold,
+      color: rgb(0.07, 0.22, 0.5), // ITS Blue
+    });
+    yPosition -= 40;
+
+    // Timestamp
+    page.drawText(`Generated: ${new Date().toLocaleString('id-ID')}`, {
+      x: margin,
+      y: yPosition,
       size: 10,
       font,
-      color: rgb(0.5, 0.5, 0.5),
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPosition -= 30;
+
+    // User Info Section
+    page.drawText('User Information', {
+      x: margin,
+      y: yPosition,
+      size: 16,
+      font: fontBold,
+      color: rgb(0, 0, 0),
+    });
+    yPosition -= 25;
+
+    const userInfo = [
+      `User ID: ${userId}`,
+      `Email: ${user.email}`,
+      `Export Date: ${new Date().toISOString()}`,
+    ];
+
+    for (const info of userInfo) {
+      page.drawText(info, {
+        x: margin,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.2, 0.2, 0.2),
+      });
+      yPosition -= lineHeight;
+    }
+    yPosition -= 20;
+
+    // Assessment Sessions Summary
+    page.drawText('Assessment Sessions', {
+      x: margin,
+      y: yPosition,
+      size: 16,
+      font: fontBold,
+      color: rgb(0, 0, 0),
+    });
+    yPosition -= 25;
+
+    if (assessmentSessions.data && assessmentSessions.data.length > 0) {
+      page.drawText(`Total Sessions: ${assessmentSessions.data.length}`, {
+        x: margin,
+        y: yPosition,
+        size: 10,
+        font,
+      });
+      yPosition -= lineHeight;
+
+      // List recent sessions
+      assessmentSessions.data.slice(0, 5).forEach((session: any) => {
+        const text = `• ${session.dimension || 'General'} - ${session.status} (${new Date(session.started_at).toLocaleDateString('id-ID')})`;
+        page.drawText(text, {
+          x: margin + 10,
+          y: yPosition,
+          size: 9,
+          font,
+        });
+        yPosition -= 15;
+      });
+    } else {
+      page.drawText('No assessment sessions found.', {
+        x: margin,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= lineHeight;
+    }
+    yPosition -= 20;
+
+    // Assessment Results
+    page.drawText('Assessment Results', {
+      x: margin,
+      y: yPosition,
+      size: 16,
+      font: fontBold,
+      color: rgb(0, 0, 0),
+    });
+    yPosition -= 25;
+
+    if (assessmentResults.data && assessmentResults.data.length > 0) {
+      assessmentResults.data.slice(0, 5).forEach((result: any) => {
+        const dimension = result.dimension || 'Unknown';
+        const score = result.total_score || result.score || 'N/A';
+        const text = `• ${dimension}: ${score} points`;
+        page.drawText(text, {
+          x: margin + 10,
+          y: yPosition,
+          size: 9,
+          font,
+        });
+        yPosition -= 15;
+      });
+    } else {
+      page.drawText('No assessment results found.', {
+        x: margin,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= lineHeight;
+    }
+    yPosition -= 20;
+
+    // Progress Data
+    page.drawText('Progress Tracking', {
+      x: margin,
+      y: yPosition,
+      size: 16,
+      font: fontBold,
+      color: rgb(0, 0, 0),
+    });
+    yPosition -= 25;
+
+    if (progressData.data && progressData.data.length > 0) {
+      progressData.data.forEach((progress: any) => {
+        const text = `• ${progress.dimension}: ${progress.status}`;
+        page.drawText(text, {
+          x: margin + 10,
+          y: yPosition,
+          size: 9,
+          font,
+        });
+        yPosition -= 15;
+      });
+    } else {
+      page.drawText('No progress data found.', {
+        x: margin,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= lineHeight;
+    }
+
+    // Footer
+    page.drawText('This report was generated in compliance with UU No. 27 Tahun 2022 (Perlindungan Data Pribadi)', {
+      x: margin,
+      y: 30,
+      size: 8,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
     });
 
-    // Generate PDF bytes
+    // Serialize PDF
     const pdfBytes = await pdfDoc.save();
+    
+    // Convert to Buffer for NextResponse
+    const pdfBuffer = Buffer.from(pdfBytes);
 
-    // Log export request for compliance
-    await supabase.from('data_export_requests').insert({
-      user_id: userId,
-      format: 'PDF',
-      status: 'completed',
-      ip_address: request.headers.get('x-forwarded-for') || 'unknown',
-
-      user_agent: request.headers.get('user-agent'),
-    });
-
-    // Return PDF
-    return new NextResponse(Buffer.from(pdfBytes) as any, {
+    // Return PDF as download
+    return new NextResponse(pdfBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="ppsdm-data-export-${new Date().toISOString().split('T')[0]}.pdf"`,
+        'Content-Disposition': `attachment; filename="ppsdm-data-export-${userId.slice(0, 8)}-${Date.now()}.pdf"`,
+        'Cache-Control': 'no-store',
       },
     });
 
