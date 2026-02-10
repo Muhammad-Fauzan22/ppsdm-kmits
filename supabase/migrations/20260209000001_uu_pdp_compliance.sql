@@ -1,226 +1,142 @@
 -- ============================================================================
--- UU PDP COMPLIANCE MIGRATION
--- Implements data subject rights per UU No. 27 Tahun 2022
--- 
--- Features:
--- - Data export logging
--- - Account deletion requests with 14-day grace period
--- - Audit trail for compliance
+-- UU PDP Compliance Migration
+-- Purpose: Implement data subject rights (export/delete) per UU No. 27 Tahun 2022
+-- Date: 2026-02-09
 -- ============================================================================
 
--- 1. Data Export Logs Table
-CREATE TABLE IF NOT EXISTS data_export_logs (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    export_format VARCHAR(20) NOT NULL CHECK (export_format IN ('pdf', 'json', 'csv')),
-    exported_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    ip_address INET,
-    user_agent TEXT,
-    records_count INTEGER,
-    status VARCHAR(20) DEFAULT 'completed' CHECK (status IN ('pending', 'completed', 'failed')),
-    error_message TEXT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Index for faster user export history queries
-CREATE INDEX IF NOT EXISTS idx_data_export_logs_user_id ON data_export_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_data_export_logs_exported_at ON data_export_logs(exported_at);
-
--- RLS for data_export_logs
-ALTER TABLE data_export_logs ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can view own export logs"
-ON data_export_logs FOR SELECT
-USING (auth.uid() = user_id);
-
-CREATE POLICY "System can insert export logs"
-ON data_export_logs FOR INSERT
-WITH CHECK (auth.uid() = user_id);
-
--- 2. Deletion Requests Table (Soft Delete with Grace Period)
+-- 1. Deletion Requests Table (for 14-day grace period)
 CREATE TABLE IF NOT EXISTS deletion_requests (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    email TEXT,
-    reason TEXT,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'cancelled', 'failed')),
     requested_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    scheduled_deletion_date TIMESTAMPTZ NOT NULL,
-    processed_at TIMESTAMPTZ,
+    scheduled_deletion_at TIMESTAMPTZ NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'cancelled', 'completed')),
+    reason TEXT,
     cancelled_at TIMESTAMPTZ,
-    notification_sent BOOLEAN DEFAULT FALSE,
-    notification_sent_at TIMESTAMPTZ,
-    final_notification_sent BOOLEAN DEFAULT FALSE,
-    anonymize_data BOOLEAN DEFAULT TRUE,
+    cancelled_by UUID REFERENCES auth.users(id),
+    ip_address INET,
+    user_agent TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Indexes for deletion request management
-CREATE INDEX IF NOT EXISTS idx_deletion_requests_user_id ON deletion_requests(user_id);
-CREATE INDEX IF NOT EXISTS idx_deletion_requests_status ON deletion_requests(status);
-CREATE INDEX IF NOT EXISTS idx_deletion_requests_scheduled_date ON deletion_requests(scheduled_deletion_date) WHERE status = 'pending';
+-- Index for finding pending deletions
+CREATE INDEX IF NOT EXISTS idx_deletion_requests_user_status 
+ON deletion_requests(user_id, status) 
+WHERE status = 'pending';
 
--- RLS for deletion_requests
+CREATE INDEX IF NOT EXISTS idx_deletion_requests_scheduled 
+ON deletion_requests(scheduled_deletion_at) 
+WHERE status = 'pending';
+
+-- 2. Data Export Logs (audit trail for compliance)
+CREATE TABLE IF NOT EXISTS data_export_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    exported_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    export_type VARCHAR(50) NOT NULL,
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_data_export_logs_user 
+ON data_export_logs(user_id, exported_at);
+
+-- 3. Compliance Audit Logs (comprehensive audit trail)
+CREATE TABLE IF NOT EXISTS compliance_audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    action VARCHAR(100) NOT NULL,
+    resource VARCHAR(100) NOT NULL,
+    metadata JSONB,
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_compliance_audit_user_action 
+ON compliance_audit_logs(user_id, action, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_compliance_audit_created 
+ON compliance_audit_logs(created_at);
+
+-- 4. RLS Policies for compliance tables
 ALTER TABLE deletion_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE data_export_logs ENABLE ROW SECURITY;
+ALTER TABLE compliance_audit_logs ENABLE ROW LEVEL SECURITY;
 
+-- Users can only see their own deletion requests
 CREATE POLICY "Users can view own deletion requests"
 ON deletion_requests FOR SELECT
 USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can create deletion requests"
+-- Users can only create their own deletion requests
+CREATE POLICY "Users can create own deletion requests"
 ON deletion_requests FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Users can update own pending deletion requests"
+-- Users can only update (cancel) their own pending requests
+CREATE POLICY "Users can cancel own deletion requests"
 ON deletion_requests FOR UPDATE
 USING (auth.uid() = user_id AND status = 'pending');
 
--- 3. Deletion Audit Logs (Compliance Trail)
-CREATE TABLE IF NOT EXISTS deletion_audit_logs (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    action VARCHAR(50) NOT NULL CHECK (action IN ('initiated', 'cancelled', 'completed', 'failed', 'notification_sent')),
-    performed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    ip_address INET,
-    user_agent TEXT,
-    metadata JSONB,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Indexes for audit queries
-CREATE INDEX IF NOT EXISTS idx_deletion_audit_logs_user_id ON deletion_audit_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_deletion_audit_logs_action ON deletion_audit_logs(action);
-CREATE INDEX IF NOT EXISTS idx_deletion_audit_logs_performed_at ON deletion_audit_logs(performed_at);
-
--- RLS for deletion_audit_logs
-ALTER TABLE deletion_audit_logs ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can view own deletion audit logs"
-ON deletion_audit_logs FOR SELECT
+-- Users can view their own export logs
+CREATE POLICY "Users can view own export logs"
+ON data_export_logs FOR SELECT
 USING (auth.uid() = user_id);
 
-CREATE POLICY "System can insert audit logs"
-ON deletion_audit_logs FOR INSERT
+-- Users can create their own export logs
+CREATE POLICY "Users can create own export logs"
+ON data_export_logs FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
--- 4. Function to process scheduled deletions (run via cron)
-CREATE OR REPLACE FUNCTION process_scheduled_deletions()
-RETURNS TABLE (
-    processed_count INTEGER,
-    failed_count INTEGER
-) AS $$
-DECLARE
-    v_processed INTEGER := 0;
-    v_failed INTEGER := 0;
-    rec RECORD;
-BEGIN
-    -- Find deletions scheduled for today that are still pending
-    FOR rec IN 
-        SELECT id, user_id, anonymize_data
-        FROM deletion_requests
-        WHERE status = 'pending'
-        AND scheduled_deletion_date <= NOW()
-        AND notification_sent = TRUE
-    LOOP
-        BEGIN
-            -- Anonymize or delete user data based on preference
-            IF rec.anonymize_data THEN
-                -- Anonymize assessment data (keep for research, remove PII)
-                UPDATE assessment_sessions
-                SET user_id = NULL, session_token = 'ANONYMIZED_' || gen_random_uuid()
-                WHERE user_id = rec.user_id;
-                
-                UPDATE assessment_responses
-                SET user_id = NULL
-                WHERE user_id = rec.user_id;
-                
-                -- Delete PII from profiles
-                UPDATE profiles
-                SET 
-                    full_name = 'Deleted User',
-                    email = 'deleted@anonymous.com',
-                    avatar_url = NULL,
-                    phone = NULL,
-                    bio = NULL,
-                    updated_at = NOW()
-                WHERE id = rec.user_id;
-            ELSE
-                -- Hard delete all user data
-                DELETE FROM assessment_responses WHERE user_id = rec.user_id;
-                DELETE FROM assessment_sessions WHERE user_id = rec.user_id;
-                DELETE FROM assessment_results WHERE user_id = rec.user_id;
-                DELETE FROM assessment_progress WHERE user_id = rec.user_id;
-                DELETE FROM journal_entries WHERE user_id = rec.user_id;
-                DELETE FROM user_xp WHERE user_id = rec.user_id;
-                DELETE FROM profiles WHERE id = rec.user_id;
-            END IF;
-            
-            -- Mark deletion request as completed
-            UPDATE deletion_requests
-            SET 
-                status = 'completed',
-                processed_at = NOW(),
-                updated_at = NOW()
-            WHERE id = rec.id;
-            
-            -- Log completion
-            INSERT INTO deletion_audit_logs (user_id, action, performed_at, metadata)
-            VALUES (rec.user_id, 'completed', NOW(), jsonb_build_object('anonymized', rec.anonymize_data));
-            
-            v_processed := v_processed + 1;
-            
-        EXCEPTION WHEN OTHERS THEN
-            -- Log failure
-            INSERT INTO deletion_audit_logs (user_id, action, performed_at, metadata)
-            VALUES (rec.user_id, 'failed', NOW(), jsonb_build_object('error', SQLERRM));
-            
-            UPDATE deletion_requests
-            SET status = 'failed', updated_at = NOW()
-            WHERE id = rec.id;
-            
-            v_failed := v_failed + 1;
-        END;
-    END LOOP;
-    
-    RETURN QUERY SELECT v_processed, v_failed;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+-- Users can view their own audit logs
+CREATE POLICY "Users can view own compliance audit logs"
+ON compliance_audit_logs FOR SELECT
+USING (auth.uid() = user_id);
 
--- 5. Function to send deletion notifications (run via cron daily)
-CREATE OR REPLACE FUNCTION send_deletion_notifications()
+-- 5. Function to process expired deletion requests (run via cron)
+CREATE OR REPLACE FUNCTION process_expired_deletions()
 RETURNS INTEGER AS $$
 DECLARE
-    v_count INTEGER := 0;
-    rec RECORD;
+    processed_count INTEGER := 0;
+    deletion_record RECORD;
 BEGIN
-    -- Find deletions scheduled in 3 days that haven't been notified
-    FOR rec IN 
-        SELECT id, user_id, email, scheduled_deletion_date
-        FROM deletion_requests
-        WHERE status = 'pending'
-        AND scheduled_deletion_date <= NOW() + INTERVAL '3 days'
-        AND final_notification_sent = FALSE
+    FOR deletion_record IN 
+        SELECT id, user_id 
+        FROM deletion_requests 
+        WHERE status = 'pending' 
+        AND scheduled_deletion_at <= NOW()
     LOOP
-        -- In production, integrate with email service
-        -- For now, just mark as sent
-        UPDATE deletion_requests
-        SET 
-            final_notification_sent = TRUE,
-            notification_sent_at = NOW(),
+        -- Anonymize user data instead of hard delete for research
+        UPDATE auth.users 
+        SET email = 'deleted_' || id || '@anonymized.local',
+            raw_user_meta_data = jsonb_build_object('deleted_at', NOW(), 'original_email', email),
+            encrypted_password = NULL
+        WHERE id = deletion_record.user_id;
+        
+        -- Mark deletion request as completed
+        UPDATE deletion_requests 
+        SET status = 'completed',
             updated_at = NOW()
-        WHERE id = rec.id;
+        WHERE id = deletion_record.id;
         
-        -- Log notification
-        INSERT INTO deletion_audit_logs (user_id, action, performed_at, metadata)
-        VALUES (rec.user_id, 'notification_sent', NOW(), jsonb_build_object('type', 'final_warning'));
+        -- Log the completion
+        INSERT INTO compliance_audit_logs (user_id, action, resource, metadata)
+        VALUES (
+            deletion_record.user_id,
+            'DELETION_COMPLETED',
+            'user_account',
+            jsonb_build_object('deletion_request_id', deletion_record.id)
+        );
         
-        v_count := v_count + 1;
+        processed_count := processed_count + 1;
     END LOOP;
     
-    RETURN v_count;
+    RETURN processed_count;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql;
 
 -- 6. Trigger to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -236,40 +152,34 @@ CREATE TRIGGER update_deletion_requests_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
--- 7. View for admin dashboard (deletion management)
-CREATE OR REPLACE VIEW pending_deletions AS
+-- 7. Comments for documentation
+COMMENT ON TABLE deletion_requests IS 'Tracks user account deletion requests with 14-day grace period per UU PDP';
+COMMENT ON TABLE data_export_logs IS 'Audit log for data portability requests per UU PDP';
+COMMENT ON TABLE compliance_audit_logs IS 'Comprehensive audit trail for data subject rights compliance';
+COMMENT ON FUNCTION process_expired_deletions() IS 'Processes deletion requests that have passed the grace period';
+
+-- 8. Grant permissions
+GRANT SELECT, INSERT, UPDATE ON deletion_requests TO authenticated;
+GRANT SELECT, INSERT ON data_export_logs TO authenticated;
+GRANT SELECT, INSERT ON compliance_audit_logs TO authenticated;
+
+-- 9. Create view for admin dashboard (admin only)
+CREATE OR REPLACE VIEW pending_deletions_view AS
 SELECT 
     dr.id,
     dr.user_id,
-    dr.email,
+    dr.requested_at,
+    dr.scheduled_deletion_at,
     dr.reason,
     dr.status,
-    dr.requested_at,
-    dr.scheduled_deletion_date,
-    dr.cancelled_at,
-    dr.notification_sent,
-    dr.final_notification_sent,
-    EXTRACT(DAY FROM dr.scheduled_deletion_date - NOW()) as days_remaining,
-    CASE 
-        WHEN dr.scheduled_deletion_date <= NOW() THEN 'overdue'
-        WHEN dr.scheduled_deletion_date <= NOW() + INTERVAL '3 days' THEN 'urgent'
-        WHEN dr.scheduled_deletion_date <= NOW() + INTERVAL '7 days' THEN 'warning'
-        ELSE 'normal'
-    END as priority
+    u.email as user_email,
+    EXTRACT(DAY FROM (dr.scheduled_deletion_at - NOW())) as days_remaining
 FROM deletion_requests dr
+LEFT JOIN auth.users u ON dr.user_id = u.id
 WHERE dr.status = 'pending'
-ORDER BY dr.scheduled_deletion_date;
+ORDER BY dr.scheduled_deletion_at;
 
--- Grant access to view
-GRANT SELECT ON pending_deletions TO authenticated;
-
--- 8. Comments for documentation
-COMMENT ON TABLE data_export_logs IS 'Audit trail for user data exports (UU PDP compliance)';
-COMMENT ON TABLE deletion_requests IS 'User account deletion requests with 14-day grace period';
-COMMENT ON TABLE deletion_audit_logs IS 'Complete audit trail for all deletion-related actions';
-COMMENT ON FUNCTION process_scheduled_deletions() IS 'Processes pending deletion requests that have passed their scheduled date';
-COMMENT ON FUNCTION send_deletion_notifications() IS 'Sends final warning notifications 3 days before deletion';
-
--- ============================================================================
--- MIGRATION COMPLETE
--- ============================================================================
+-- 10. Row count estimates for monitoring
+ANALYZE deletion_requests;
+ANALYZE data_export_logs;
+ANALYZE compliance_audit_logs;

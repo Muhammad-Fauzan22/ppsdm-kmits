@@ -1,11 +1,7 @@
 /**
- * Compliance Components - UU PDP No. 27 Tahun 2022
+ * UU PDP Compliance Components
  * 
- * Komponen untuk kepatuhan Undang-Undang Perlindungan Data Pribadi Indonesia
- * - Data export (Pasal 35-37)
- * - Account deletion (Pasal 38-40)
- * - Consent management
- * - Audit logging
+ * Komponen untuk memenuhi UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi
  */
 
-export * from './DataManagementSection';
+export { DataManagementSection } from './DataManagementSection';

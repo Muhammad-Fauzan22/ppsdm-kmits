@@ -1,19 +1,15 @@
-/**
- * UU PDP Compliance - Data Export API
- * Implements user data export functionality per UU No. 27 Tahun 2022
- * 
- * Features:
- * - PDF report generation with KMITS branding
- * - JSON full data dump
- * - Async processing for large datasets
- * - Audit logging for compliance
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
+/**
+ * UU PDP Compliance - Data Export Endpoint
+ * Generates PDF report of all user data for data portability rights
+ * 
+ * @route GET /api/user/export
+ * @returns PDF file with all user assessment data
+ */
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
@@ -38,300 +34,225 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    // Verify authentication
+    // Verify user authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized. Please login to export your data.' },
+        { error: 'Unauthorized - Authentication required' },
         { status: 401 }
       );
     }
 
-    // Fetch all user data
-    const userData = await fetchUserData(supabase, user.id);
+    const userId = user.id;
 
-    // Generate PDF report
-    const pdfBytes = await generatePDFReport(userData, user);
+    // Fetch all user data in parallel
+    const [
+      profileData,
+      sessionsData,
+      responsesData,
+      resultsData,
+      progressData,
+      achievementsData
+    ] = await Promise.all([
+      // User profile
+      supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single(),
+      
+      // Assessment sessions
+      supabase
+        .from('assessment_sessions')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false }),
+      
+      // Assessment responses
+      supabase
+        .from('assessment_responses')
+        .select('*')
+        .eq('user_id', userId)
+        .order('answered_at', { ascending: false }),
+      
+      // Assessment results
+      supabase
+        .from('assessment_results')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false }),
+      
+      // Progress data
+      supabase
+        .from('assessment_progress')
+        .select('*')
+        .eq('user_id', userId),
+      
+      // Achievements
+      supabase
+        .from('user_achievements')
+        .select('*')
+        .eq('user_id', userId)
+    ]);
+
+    // Create PDF document
+    const pdfDoc = await PDFDocument.create();
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    
+    let page = pdfDoc.addPage([595.28, 841.89]); // A4 size
+    const { width, height } = page.getSize();
+    
+    let yPosition = height - 50;
+    
+    // Helper function to add text
+    const addText = (text: string, size: number, isBold = false, x = 50) => {
+      const font = isBold ? helveticaBold : helveticaFont;
+      page.drawText(text, {
+        x,
+        y: yPosition,
+        size,
+        font,
+        color: rgb(0, 0, 0),
+      });
+      yPosition -= size + 5;
+    };
+
+    // Helper function to add new page if needed
+    const checkNewPage = () => {
+      if (yPosition < 100) {
+        page = pdfDoc.addPage([595.28, 841.89]);
+        yPosition = height - 50;
+      }
+    };
+
+    // PDF Header
+    addText('PPSDM KM ITS - Data Export Report', 20, true);
+    addText(`Generated: ${new Date().toLocaleString('id-ID')}`, 12);
+    addText(`User ID: ${userId}`, 12);
+    addText(`Email: ${user.email}`, 12);
+    yPosition -= 20;
+
+    // Profile Section
+    addText('PROFIL PENGGUNA', 16, true);
+    if (profileData.data) {
+      const profile = profileData.data;
+      addText(`Nama: ${profile.full_name || 'N/A'}`, 11);
+      addText(`NRP: ${profile.nrp || 'N/A'}`, 11);
+      addText(`Fakultas: ${profile.fakultas || 'N/A'}`, 11);
+      addText(`Departemen: ${profile.departemen || 'N/A'}`, 11);
+      addText(`Angkatan: ${profile.angkatan || 'N/A'}`, 11);
+      addText(`Bergabung: ${profile.created_at ? new Date(profile.created_at).toLocaleDateString('id-ID') : 'N/A'}`, 11);
+    } else {
+      addText('Profil tidak ditemukan', 11);
+    }
+    yPosition -= 15;
+    checkNewPage();
+
+    // Assessment Sessions
+    addText('RIWAYAT ASESMEN', 16, true);
+    addText(`Total Sesi: ${sessionsData.data?.length || 0}`, 11);
+    yPosition -= 10;
+    
+    if (sessionsData.data && sessionsData.data.length > 0) {
+      sessionsData.data.slice(0, 10).forEach((session: any, index: number) => {
+        checkNewPage();
+        addText(`${index + 1}. Dimensi: ${session.dimension || 'N/A'}`, 10, true);
+        addText(`   Status: ${session.status || 'N/A'}`, 10);
+        addText(`   Mulai: ${session.started_at ? new Date(session.started_at).toLocaleString('id-ID') : 'N/A'}`, 10);
+        addText(`   Selesai: ${session.completed_at ? new Date(session.completed_at).toLocaleString('id-ID') : 'N/A'}`, 10);
+        yPosition -= 5;
+      });
+      
+      if (sessionsData.data.length > 10) {
+        addText(`... dan ${sessionsData.data.length - 10} sesi lainnya`, 10);
+      }
+    } else {
+      addText('Tidak ada riwayat asesmen', 11);
+    }
+    yPosition -= 15;
+    checkNewPage();
+
+    // Assessment Results
+    addText('HASIL ASESMEN', 16, true);
+    if (resultsData.data && resultsData.data.length > 0) {
+      resultsData.data.forEach((result: any, index: number) => {
+        checkNewPage();
+        addText(`${index + 1}. ${result.dimension || 'N/A'}`, 11, true);
+        addText(`   Skor: ${result.score || 'N/A'}`, 10);
+        addText(`   Kategori: ${result.category || 'N/A'}`, 10);
+        addText(`   Tanggal: ${result.created_at ? new Date(result.created_at).toLocaleDateString('id-ID') : 'N/A'}`, 10);
+        yPosition -= 5;
+      });
+    } else {
+      addText('Tidak ada hasil asesmen', 11);
+    }
+    yPosition -= 15;
+    checkNewPage();
+
+    // Progress Data
+    addText('PROGRESS PENGERJAAN', 16, true);
+    if (progressData.data && progressData.data.length > 0) {
+      progressData.data.forEach((progress: any) => {
+        checkNewPage();
+        addText(`- ${progress.dimension}: ${progress.status || 'N/A'}`, 10);
+      });
+    } else {
+      addText('Tidak ada data progress', 11);
+    }
+    yPosition -= 15;
+    checkNewPage();
+
+    // Achievements
+    addText('PENCAPAIAN', 16, true);
+    if (achievementsData.data && achievementsData.data.length > 0) {
+      addText(`Total Achievement: ${achievementsData.data.length}`, 11);
+      achievementsData.data.slice(0, 5).forEach((achievement: any, index: number) => {
+        checkNewPage();
+        addText(`${index + 1}. ${achievement.name || 'N/A'}`, 10, true);
+        addText(`   ${achievement.description || ''}`, 9);
+      });
+    } else {
+      addText('Tidak ada pencapaian', 11);
+    }
+    yPosition -= 15;
+    checkNewPage();
+
+    // Footer
+    addText('---', 12);
+    addText('Dokumen ini dibuat sesuai dengan UU No. 27 Tahun 2022', 9);
+    addText('tentang Perlindungan Data Pribadi (PDP)', 9);
+    addText('PPSDM KM ITS - Platform Pengembangan Mahasiswa', 9);
+
+    // Generate PDF bytes
+    const pdfBytes = await pdfDoc.save();
 
     // Log export for compliance audit
-    await logDataExport(supabase, user.id, 'pdf');
+    await supabase.from('data_export_logs').insert({
+      user_id: userId,
+      exported_at: new Date().toISOString(),
+      export_type: 'full_data_pdf',
+      ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+      user_agent: request.headers.get('user-agent') || 'unknown'
+    });
 
-    // Return PDF - Use Uint8Array with type assertion for Blob compatibility
-    return new NextResponse(new Blob([pdfBytes as unknown as BlobPart]), {
+    // Return PDF as downloadable file
+    return new NextResponse(Buffer.from(pdfBytes), {
 
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="ppsdm-data-export-${new Date().toISOString().split('T')[0]}.pdf"`,
+        'Content-Disposition': `attachment; filename="ppsdm-data-export-${userId}-${Date.now()}.pdf"`,
+        'Cache-Control': 'no-store, private',
       },
     });
-
-
-
 
   } catch (error) {
     console.error('Data export error:', error);
     return NextResponse.json(
-      { error: 'Failed to export data. Please try again later.' },
+      { error: 'Failed to generate data export' },
       { status: 500 }
     );
-  }
-}
-
-/**
- * Fetch comprehensive user data from all tables
- */
-async function fetchUserData(supabase: any, userId: string) {
-  const [
-    profileResult,
-    sessionsResult,
-    responsesResult,
-    resultsResult,
-    progressResult,
-    gamificationResult,
-    journalResult,
-  ] = await Promise.all([
-    // User profile
-    supabase.from('profiles').select('*').eq('id', userId).single(),
-    
-    // Assessment sessions
-    supabase.from('assessment_sessions').select('*').eq('user_id', userId),
-    
-    // Assessment responses
-    supabase.from('assessment_responses').select('*').eq('user_id', userId),
-    
-    // Assessment results
-    supabase.from('assessment_results').select('*').eq('user_id', userId),
-    
-    // Progress tracking
-    supabase.from('assessment_progress').select('*').eq('user_id', userId),
-    
-    // Gamification data
-    supabase.from('user_xp').select('*').eq('user_id', userId),
-    
-    // Journal entries
-    supabase.from('journal_entries').select('*').eq('user_id', userId),
-  ]);
-
-  return {
-    profile: profileResult.data,
-    sessions: sessionsResult.data || [],
-    responses: responsesResult.data || [],
-    results: resultsResult.data || [],
-    progress: progressResult.data || [],
-    gamification: gamificationResult.data || [],
-    journal: journalResult.data || [],
-    exportDate: new Date().toISOString(),
-    totalRecords: 
-      (sessionsResult.data?.length || 0) +
-      (responsesResult.data?.length || 0) +
-      (resultsResult.data?.length || 0) +
-      (progressResult.data?.length || 0),
-  };
-}
-
-/**
- * Generate PDF report with KMITS branding
- */
-async function generatePDFReport(userData: any, user: any): Promise<Uint8Array> {
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([595.276, 841.89]); // A4 size
-  const { width, height } = page.getSize();
-  
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-  const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-  
-  const margin = 50;
-  let y = height - margin;
-  
-  // Header with branding
-  page.drawText('PPSDM KM ITS', {
-    x: margin,
-    y,
-    size: 24,
-    font: fontBold,
-    color: rgb(0.004, 0.22, 0.5), // ITS Blue
-  });
-  
-  y -= 30;
-  
-  page.drawText('Data Export Report', {
-    x: margin,
-    y,
-    size: 18,
-    font: fontBold,
-    color: rgb(0, 0, 0),
-  });
-  
-  y -= 40;
-  
-  // User information
-  page.drawText('User Information', {
-    x: margin,
-    y,
-    size: 14,
-    font: fontBold,
-    color: rgb(0, 0, 0),
-  });
-  
-  y -= 20;
-  
-  page.drawText(`User ID: ${user.id}`, {
-    x: margin,
-    y,
-    size: 10,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  y -= 15;
-  
-  page.drawText(`Email: ${user.email || 'N/A'}`, {
-    x: margin,
-    y,
-    size: 10,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  y -= 15;
-  
-  page.drawText(`Export Date: ${new Date().toLocaleString('id-ID')}`, {
-    x: margin,
-    y,
-    size: 10,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  y -= 30;
-  
-  // Data Summary
-  page.drawText('Data Summary', {
-    x: margin,
-    y,
-    size: 14,
-    font: fontBold,
-    color: rgb(0, 0, 0),
-  });
-  
-  y -= 20;
-  
-  const summaryItems = [
-    `Assessment Sessions: ${userData.sessions.length}`,
-    `Assessment Responses: ${userData.responses.length}`,
-    `Assessment Results: ${userData.results.length}`,
-    `Progress Records: ${userData.progress.length}`,
-    `Journal Entries: ${userData.journal.length}`,
-    `Total Records: ${userData.totalRecords}`,
-  ];
-  
-  for (const item of summaryItems) {
-    page.drawText(item, {
-      x: margin,
-      y,
-      size: 10,
-      font,
-      color: rgb(0.2, 0.2, 0.2),
-    });
-    y -= 15;
-  }
-  
-  y -= 20;
-  
-  // Assessment Results Detail
-  if (userData.results.length > 0) {
-    page.drawText('Assessment Results', {
-      x: margin,
-      y,
-      size: 14,
-      font: fontBold,
-      color: rgb(0, 0, 0),
-    });
-    
-    y -= 20;
-    
-    for (const result of userData.results.slice(0, 10)) { // Limit to first 10
-      const dimension = result.dimension || 'Unknown';
-      const score = result.total_score || result.score || 'N/A';
-      const date = result.completed_at 
-        ? new Date(result.completed_at).toLocaleDateString('id-ID')
-        : 'N/A';
-      
-      page.drawText(`${dimension}: ${score} (${date})`, {
-        x: margin,
-        y,
-        size: 10,
-        font,
-        color: rgb(0.2, 0.2, 0.2),
-      });
-      y -= 15;
-      
-      if (y < margin + 50) {
-        // Add new page if running out of space
-        const newPage = pdfDoc.addPage([595.276, 841.89]);
-        y = newPage.getSize().height - margin;
-      }
-    }
-  }
-  
-  y -= 30;
-  
-  // Footer with legal notice
-  if (y < margin + 100) {
-    const newPage = pdfDoc.addPage([595.276, 841.89]);
-    y = newPage.getSize().height - margin;
-  }
-  
-  page.drawText('Legal Notice', {
-    x: margin,
-    y,
-    size: 12,
-    font: fontBold,
-    color: rgb(0, 0, 0),
-  });
-  
-  y -= 20;
-  
-  const legalText = [
-    'This document contains your personal data as requested under',
-    'UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi.',
-    '',
-    'Data Controller: PPSDM KM ITS',
-    'Contact: ppsdm@its.ac.id',
-    '',
-    `Generated: ${new Date().toISOString()}`,
-    'This export is for your personal records only.',
-  ];
-  
-  for (const line of legalText) {
-    page.drawText(line, {
-      x: margin,
-      y,
-      size: 9,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
-    y -= 12;
-  }
-  
-  return await pdfDoc.save();
-}
-
-/**
- * Log data export for compliance audit trail
- */
-async function logDataExport(supabase: any, userId: string, format: string) {
-  try {
-    await supabase.from('data_export_logs').insert({
-      user_id: userId,
-      export_format: format,
-      exported_at: new Date().toISOString(),
-      ip_address: null, // Will be set by trigger if available
-      user_agent: null, // Will be set by trigger if available
-    });
-  } catch (error) {
-    console.error('Failed to log data export:', error);
-    // Non-blocking - don't fail the export if logging fails
   }
 }

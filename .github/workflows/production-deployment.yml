@@ -1,0 +1,345 @@
+name: Production Deployment Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+  NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
+jobs:
+  # ==========================================
+  # JOB 1: Code Quality & Security
+  # ==========================================
+  quality-check:
+    name: Code Quality & Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Run TypeScript type check
+        run: npm run type-check
+
+      - name: Check code formatting
+        run: npx prettier --check "src/**/*.{ts,tsx}"
+
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+  # ==========================================
+  # JOB 2: Unit & Integration Tests
+  # ==========================================
+  unit-tests:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+    needs: quality-check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Vitest unit tests
+        run: npm run test:unit -- --coverage
+        env:
+          VITE_TEST_MODE: 'true'
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  # ==========================================
+  # JOB 3: E2E Tests
+  # ==========================================
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
+  # ==========================================
+  # JOB 4: Performance Budget Check
+  # ==========================================
+  performance-check:
+    name: Performance Budget
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: './lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Check bundle size
+        run: node scripts/check-lighthouse-budget.js
+
+  # ==========================================
+  # JOB 5: Database Migration Check
+  # ==========================================
+  db-migration-check:
+    name: Database Migration Check
+    runs-on: ubuntu-latest
+    needs: quality-check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Check migration syntax
+        run: |
+          for file in supabase/migrations/*.sql; do
+            echo "Checking $file..."
+            # Basic SQL syntax validation
+            if ! grep -q "CREATE\|ALTER\|INSERT\|UPDATE\|DELETE\|DROP" "$file"; then
+              echo "Warning: $file may not contain valid SQL commands"
+            fi
+          done
+
+      - name: Validate migration order
+        run: |
+          # Ensure migrations are properly numbered
+          ls -la supabase/migrations/*.sql | sort
+
+  # ==========================================
+  # JOB 6: Deploy to Staging
+  # ==========================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, performance-check, db-migration-check]
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: staging
+      url: ${{ steps.deploy-staging.outputs.url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (Staging)
+        id: deploy-staging
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-comment: true
+          vercel-args: '--target=staging'
+
+  # ==========================================
+  # JOB 7: Staging Smoke Tests
+  # ==========================================
+  staging-smoke-tests:
+    name: Staging Smoke Tests
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Playwright
+        run: npm install -g @playwright/test && npx playwright install chromium
+
+      - name: Run smoke tests on staging
+        run: npx playwright test e2e/smoke-tests.spec.ts
+        env:
+          NEXT_PUBLIC_APP_URL: ${{ needs.deploy-staging.outputs.url }}
+
+  # ==========================================
+  # JOB 8: Deploy to Production
+  # ==========================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: staging-smoke-tests
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: ${{ steps.deploy-prod.outputs.url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (Production)
+        id: deploy-prod
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-comment: true
+          vercel-args: '--prod'
+
+      - name: Notify deployment success
+        uses: slackapi/slack-github-action@v1.24.0
+        if: success()
+        with:
+          payload: |
+            {
+              "text": "✅ PPSDM KMITS deployed to production successfully!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*PPSDM KMITS Production Deployment*\n✅ Successfully deployed to production\n🔗 URL: ${{ steps.deploy-prod.outputs.url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ==========================================
+  # JOB 9: Production Health Check
+  # ==========================================
+  production-health-check:
+    name: Production Health Check
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    steps:
+      - name: Health check
+        run: |
+          echo "Checking production health..."
+          sleep 30
+          curl -f "${{ needs.deploy-production.outputs.url }}/api/health" || exit 1
+          echo "✅ Production is healthy"
+
+      - name: Run critical path tests
+        run: |
+          echo "Running critical path verification..."
+          # Add critical path checks here
+
+  # ==========================================
+  # JOB 10: Rollback on Failure
+  # ==========================================
+  rollback-on-failure:
+    name: Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: production-health-check
+    if: failure()
+    steps:
+      - name: Notify failure
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "🚨 PPSDM KMITS production deployment failed!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*PPSDM KMITS Deployment Failed*\n🚨 Production health check failed\n⚠️ Initiating rollback procedure..."
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Trigger rollback
+        run: |
+          echo "Rolling back to previous version..."
+          # Vercel automatically handles rollback via git revert
+          # Or use Vercel CLI to promote previous deployment

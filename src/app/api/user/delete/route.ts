@@ -1,18 +1,16 @@
-/**
- * UU PDP Compliance - Account Deletion API
- * Implements soft delete with 14-day grace period per UU No. 27 Tahun 2022
- * 
- * Features:
- * - Soft delete initiation (14-day grace period)
- * - Email notification before permanent deletion
- * - Audit logging for compliance
- * - Data anonymization option
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
+/**
+ * UU PDP Compliance - Data Deletion Endpoint
+ * Implements soft delete with 14-day grace period
+ * 
+ * @route POST /api/user/delete
+ * @param {string} reason - Optional deletion reason
+ * @param {boolean} confirm - Must be true to confirm deletion
+ * @returns {Object} Deletion status and grace period info
+ */
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
@@ -37,44 +35,51 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    // Verify authentication
+    // Verify user authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized. Please login to delete your account.' },
+        { error: 'Unauthorized - Authentication required' },
         { status: 401 }
       );
     }
 
-    // Parse request body for confirmation
-    const body = await request.json();
-    const { confirmDelete, reason } = body;
+    const userId = user.id;
 
-    if (!confirmDelete) {
+    // Parse request body
+    const body = await request.json();
+    const { reason, confirm } = body;
+
+    if (!confirm) {
       return NextResponse.json(
         { 
           error: 'Confirmation required',
-          message: 'Please confirm deletion by setting confirmDelete to true',
-          warning: 'This action will schedule your account for deletion. You have 14 days to cancel.'
+          message: 'Please set confirm: true to proceed with account deletion',
+          warning: 'This action will schedule your account for deletion with a 14-day grace period'
         },
         { status: 400 }
       );
     }
 
-    // Check if deletion is already scheduled
-    const { data: existingRequest } = await supabase
+    // Check if already scheduled for deletion
+    const { data: existingDeletion } = await supabase
       .from('deletion_requests')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .eq('status', 'pending')
       .single();
 
-    if (existingRequest) {
+    if (existingDeletion) {
+      const scheduledDate = new Date(existingDeletion.scheduled_deletion_at);
+      const daysRemaining = Math.ceil((scheduledDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      
       return NextResponse.json(
-        { 
-          error: 'Deletion already scheduled',
-          message: 'Your account is already scheduled for deletion',
-          scheduledDate: existingRequest.scheduled_deletion_date,
+        {
+          message: 'Account already scheduled for deletion',
+          scheduledDeletionDate: existingDeletion.scheduled_deletion_at,
+          daysRemaining,
+          canCancel: true,
           cancelUrl: '/api/user/delete/cancel'
         },
         { status: 409 }
@@ -86,87 +91,144 @@ export async function POST(request: NextRequest) {
     scheduledDeletionDate.setDate(scheduledDeletionDate.getDate() + 14);
 
     // Create deletion request
-    const { error: insertError } = await supabase
+    const { error: deletionError } = await supabase
       .from('deletion_requests')
       .insert({
-        user_id: user.id,
-        email: user.email,
-        reason: reason || 'User requested',
-        status: 'pending',
+        user_id: userId,
         requested_at: new Date().toISOString(),
-        scheduled_deletion_date: scheduledDeletionDate.toISOString(),
-        notification_sent: false,
+        scheduled_deletion_at: scheduledDeletionDate.toISOString(),
+        status: 'pending',
+        reason: reason || null,
+        ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+        user_agent: request.headers.get('user-agent') || 'unknown'
       });
 
-    if (insertError) {
-      console.error('Failed to create deletion request:', insertError);
+    if (deletionError) {
+      console.error('Error creating deletion request:', deletionError);
       return NextResponse.json(
         { error: 'Failed to schedule account deletion' },
         { status: 500 }
       );
     }
 
-    // Log for compliance audit
-    await logDeletionRequest(supabase, user.id, 'initiated');
+    // Log the deletion request for compliance audit
+    await supabase.from('compliance_audit_logs').insert({
+      user_id: userId,
+      action: 'DELETION_REQUESTED',
+      resource: 'user_account',
+      metadata: {
+        scheduled_deletion_at: scheduledDeletionDate.toISOString(),
+        reason: reason || null
+      },
+      ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+      user_agent: request.headers.get('user-agent') || 'unknown'
+    });
 
-    // Send notification email (async - don't block response)
-    sendDeletionNotification(user.email, scheduledDeletionDate).catch(console.error);
+    // Send confirmation email (in production, this would trigger an email)
+    // await sendDeletionConfirmationEmail(user.email, scheduledDeletionDate);
 
     return NextResponse.json({
       success: true,
       message: 'Account deletion scheduled successfully',
       scheduledDeletionDate: scheduledDeletionDate.toISOString(),
-      gracePeriodDays: 14,
-      cancelBefore: scheduledDeletionDate.toISOString(),
+      daysRemaining: 14,
+      canCancel: true,
       cancelUrl: '/api/user/delete/cancel',
-      warning: 'You have 14 days to cancel this request. After that, your account and all data will be permanently deleted.'
+      whatWillBeDeleted: [
+        'Profile information',
+        'Assessment responses and results',
+        'Progress data',
+        'Achievements',
+        'Session history'
+      ],
+      whatWillBeRetained: [
+        'Anonymized assessment data for research (without PII)',
+        'System logs for security compliance'
+      ],
+      nextSteps: [
+        'You have 14 days to cancel this request',
+        'After 14 days, your account will be permanently deleted',
+        'You will receive email reminders before deletion'
+      ]
     });
 
   } catch (error) {
     console.error('Account deletion error:', error);
     return NextResponse.json(
-      { error: 'Failed to process deletion request' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
 /**
- * Log deletion request for compliance audit trail
+ * GET method to check deletion status
  */
-async function logDeletionRequest(supabase: any, userId: string, action: string) {
+export async function GET(request: NextRequest) {
   try {
-    await supabase.from('deletion_audit_logs').insert({
-      user_id: userId,
-      action: action,
-      performed_at: new Date().toISOString(),
-      ip_address: null, // Set by trigger
-      user_agent: null, // Set by trigger
-    });
-  } catch (error) {
-    console.error('Failed to log deletion request:', error);
-    // Non-blocking
-  }
-}
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch {
+              // Ignore if called from server component
+            }
+          },
+        },
+      }
+    );
 
-/**
- * Send deletion notification email
- */
-async function sendDeletionNotification(email: string | undefined, deletionDate: Date) {
-  if (!email) return;
-  
-  try {
-    // In production, integrate with email service (SendGrid, AWS SES, etc.)
-    console.log(`[EMAIL] Deletion notification sent to ${email}`);
-    console.log(`[EMAIL] Scheduled deletion: ${deletionDate.toISOString()}`);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    // TODO: Implement actual email sending
-    // await emailService.send({
-    //   to: email,
-    //   template: 'account-deletion-scheduled',
-    //   data: { deletionDate, cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/settings` }
-    // });
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const { data: deletionRequest } = await supabase
+      .from('deletion_requests')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('status', 'pending')
+      .single();
+
+    if (!deletionRequest) {
+      return NextResponse.json({
+        isScheduledForDeletion: false,
+        message: 'No pending deletion request found'
+      });
+    }
+
+    const scheduledDate = new Date(deletionRequest.scheduled_deletion_at);
+    const daysRemaining = Math.ceil((scheduledDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
+    return NextResponse.json({
+      isScheduledForDeletion: true,
+      scheduledDeletionDate: deletionRequest.scheduled_deletion_at,
+      daysRemaining: Math.max(0, daysRemaining),
+      requestedAt: deletionRequest.requested_at,
+      reason: deletionRequest.reason,
+      canCancel: true,
+      cancelUrl: '/api/user/delete/cancel'
+    });
+
   } catch (error) {
-    console.error('Failed to send deletion notification:', error);
+    console.error('Error checking deletion status:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

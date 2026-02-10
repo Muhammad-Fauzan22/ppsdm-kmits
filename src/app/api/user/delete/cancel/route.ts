@@ -1,12 +1,14 @@
-/**
- * UU PDP Compliance - Cancel Account Deletion API
- * Allows users to cancel their scheduled account deletion within the 14-day grace period
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
+/**
+ * UU PDP Compliance - Cancel Deletion Endpoint
+ * Allows users to cancel their account deletion request within the grace period
+ * 
+ * @route POST /api/user/delete/cancel
+ * @returns {Object} Cancellation status
+ */
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
@@ -31,81 +33,80 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    // Verify authentication
+    // Verify user authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized. Please login to cancel deletion.' },
+        { error: 'Unauthorized - Authentication required' },
         { status: 401 }
       );
     }
 
-    // Find pending deletion request
-    const { data: deletionRequest, error: findError } = await supabase
+    const userId = user.id;
+
+    // Check if there's a pending deletion request
+    const { data: deletionRequest, error: fetchError } = await supabase
       .from('deletion_requests')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .eq('status', 'pending')
       .single();
 
-    if (findError || !deletionRequest) {
+    if (fetchError || !deletionRequest) {
       return NextResponse.json(
         { 
-          error: 'No pending deletion found',
-          message: 'There is no scheduled deletion to cancel'
+          error: 'No pending deletion request found',
+          message: 'There is no active deletion request to cancel'
         },
         { status: 404 }
       );
     }
 
-    // Update deletion request status
+    // Update deletion request status to cancelled
     const { error: updateError } = await supabase
       .from('deletion_requests')
       .update({
         status: 'cancelled',
         cancelled_at: new Date().toISOString(),
+        cancelled_by: userId
       })
       .eq('id', deletionRequest.id);
 
     if (updateError) {
-      console.error('Failed to cancel deletion:', updateError);
+      console.error('Error cancelling deletion:', updateError);
       return NextResponse.json(
         { error: 'Failed to cancel deletion request' },
         { status: 500 }
       );
     }
 
-    // Log cancellation for compliance audit
-    await logCancellation(supabase, user.id);
+    // Log the cancellation for compliance audit
+    await supabase.from('compliance_audit_logs').insert({
+      user_id: userId,
+      action: 'DELETION_CANCELLED',
+      resource: 'user_account',
+      metadata: {
+        original_request_date: deletionRequest.requested_at,
+        scheduled_deletion_date: deletionRequest.scheduled_deletion_at
+      },
+      ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+      user_agent: request.headers.get('user-agent') || 'unknown'
+    });
 
     return NextResponse.json({
       success: true,
-      message: 'Account deletion cancelled successfully',
-      previouslyScheduled: deletionRequest.scheduled_deletion_date,
+      message: 'Account deletion request cancelled successfully',
+      originalScheduledDate: deletionRequest.scheduled_deletion_at,
+      cancelledAt: new Date().toISOString(),
+      accountStatus: 'active'
     });
 
   } catch (error) {
     console.error('Cancel deletion error:', error);
     return NextResponse.json(
-      { error: 'Failed to process cancellation' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
-  }
-}
-
-/**
- * Log cancellation for compliance audit trail
- */
-async function logCancellation(supabase: any, userId: string) {
-  try {
-    await supabase.from('deletion_audit_logs').insert({
-      user_id: userId,
-      action: 'cancelled',
-      performed_at: new Date().toISOString(),
-      ip_address: null,
-      user_agent: null,
-    });
-  } catch (error) {
-    console.error('Failed to log cancellation:', error);
   }
 }
