@@ -1,8 +1,14 @@
 "use client";
 
 import { AssessmentRunner } from "@/features/assessment-engine/core/AssessmentRunner";
-import { mentalConfig } from "@/features/assessment-engine/config/dimensions";
+import { getDimensionById } from "@/features/assessment-engine/config/dimensions";
 
 export default function MentalHealthAssessmentPage() {
-    return <AssessmentRunner config={mentalConfig} />;
+    const config = getDimensionById("mental-health");
+    
+    if (!config) {
+        return <div>Error: Mental Health dimension configuration not found</div>;
+    }
+    
+    return <AssessmentRunner config={config} />;
 }

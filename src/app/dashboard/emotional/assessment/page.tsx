@@ -2,7 +2,10 @@
 
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
-import EmotionalAssessment from '@/components/assessment/EmotionalAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
+
+
 import { EMOTIONAL_RESEARCH_SLIDES } from '@/data/research_emotional';
 import { Heart } from 'lucide-react';
 
@@ -53,7 +56,9 @@ export default function EmotionalAssessmentPage() {
                     </div>
                 ) : (
                     <div className="animate-in zoom-in-95 duration-500">
-                        <EmotionalAssessment />
+                        <AssessmentRunner config={getDimensionById('emotional-social')!} />
+
+
                     </div>
                 )}
             </main>

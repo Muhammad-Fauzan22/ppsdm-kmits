@@ -2,72 +2,62 @@
 
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
-import SelfManagementAssessment from '@/components/assessment/SelfManagementAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
 import { SELF_MANAGEMENT_RESEARCH_SLIDES } from '@/data/research_self_management';
-import { Target, FileText, Activity } from 'lucide-react';
+import { Target } from 'lucide-react';
 
-export default function SelfManagementPage() {
-    const [activeTab, setActiveTab] = useState<'assessment' | 'research'>('research');
+export default function SelfManagementAssessmentPage() {
+    const [showAssessment, setShowAssessment] = useState(false);
 
     return (
-        <div className="min-h-screen bg-slate-950 p-6">
-            <div className="max-w-5xl mx-auto space-y-8">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-800 pb-6">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-500">
-                            <Target className="w-8 h-8" />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-black text-white tracking-tight">Self-Management & Productivity</h1>
-                            <p className="text-slate-400">Dimensi 2: Pengelolaan Diri & Kinerja</p>
-                        </div>
-                    </div>
-
-                    {/* Tab Switcher */}
-                    <div className="flex p-1 bg-slate-900 rounded-lg border border-slate-800">
-                        <button
-                            onClick={() => setActiveTab('research')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-bold transition-all ${activeTab === 'research'
-                                    ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                                    : 'text-slate-400 hover:text-white'
-                                }`}
-                        >
-                            <FileText className="w-4 h-4" />
-                            Scientific Basis
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('assessment')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-bold transition-all ${activeTab === 'assessment'
-                                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/20'
-                                    : 'text-slate-400 hover:text-white'
-                                }`}
-                        >
-                            <Activity className="w-4 h-4" />
-                            Start Assessment
-                        </button>
-                    </div>
-                </div>
-
-                {/* Content Area */}
-                <div className="animate-in fade-in duration-500">
-                    {activeTab === 'research' ? (
-                        <div className="space-y-6">
-                            <ResearchSlideshow slides={SELF_MANAGEMENT_RESEARCH_SLIDES} />
-                            <div className="flex justify-end">
-                                <button
-                                    onClick={() => setActiveTab('assessment')}
-                                    className="px-8 py-3 bg-white text-slate-900 font-bold rounded-lg hover:bg-emerald-50 transition-colors flex items-center gap-2"
-                                >
-                                    I've Reviewed the Research, Proceed to Assessment
-                                </button>
+        <div className="min-h-screen bg-gray-50 pb-20">
+            {/* Header */}
+            <header className="bg-white border-b border-gray-200 sticky top-0 z-10 transition-all duration-300 ease-in-out">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-16">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-indigo-100 p-2 rounded-xl">
+                                <Target className="h-6 w-6 text-indigo-600" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-bold text-gray-900 tracking-tight">Self-Management & Productivity</h1>
+                                <p className="text-xs text-gray-500 font-medium">Scientific Assessment Module 8.0</p>
                             </div>
                         </div>
-                    ) : (
-                        <SelfManagementAssessment onComplete={() => { }} />
-                    )}
+                        <div className="flex items-center gap-4">
+                            <div className="text-sm font-medium text-gray-400 hidden sm:block">
+                                PPSDM KMITS Integration
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </header>
+
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {!showAssessment ? (
+                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                        <div className="text-center max-w-2xl mx-auto mb-10">
+                            <h2 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                                Master Your <span className="text-indigo-600">Self-Management</span>
+                            </h2>
+                            <p className="text-lg text-gray-600 leading-relaxed">
+                                Manajemen diri adalah kunci produktivitas dan pencapaian tujuan.
+                                Mari evaluasi kemampuan manajemen diri Anda dengan pendekatan ilmiah.
+                            </p>
+                        </div>
+
+                        <ResearchSlideshow
+                            slides={SELF_MANAGEMENT_RESEARCH_SLIDES}
+                            onComplete={() => setShowAssessment(true)}
+                        />
+                    </div>
+                ) : (
+                    <div className="animate-in zoom-in-95 duration-500">
+                        <AssessmentRunner config={getDimensionById('self-management')!} />
+                    </div>
+                )}
+            </main>
         </div>
     );
 }

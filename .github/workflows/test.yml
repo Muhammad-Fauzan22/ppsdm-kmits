@@ -1,0 +1,388 @@
+# ============================================
+# PPSDM KMITS - Testing Workflow
+# ============================================
+# This workflow runs all tests on every push and pull request
+# Includes unit tests, integration tests, and E2E tests
+
+name: Test Suite
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Job 1: Lint and type check
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Check for security vulnerabilities
+        run: npm audit --audit-level=high
+
+  # Job 2: Unit tests with Vitest
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+        total-shards: [4]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests (shard ${{ matrix.shard }}/${{ matrix.total-shards }})
+        run: npm run test -- --run --shard=${{ matrix.shard }}/${{ matrix.total-shards }}
+
+      - name: Generate coverage report
+        if: matrix.shard == 1
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        if: matrix.shard == 1
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results-shard-${{ matrix.shard }}
+          path: coverage/
+          retention-days: 7
+
+  # Job 3: Integration tests
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: ppsdm_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup test database
+        run: |
+          psql -h localhost -U test -d ppsdm_test -c "CREATE TABLE IF NOT EXISTS test_table (id SERIAL PRIMARY KEY, data TEXT);"
+        env:
+          PGPASSWORD: test
+
+      - name: Run integration tests
+        run: npm run test -- tests/integration.test.ts --run
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/ppsdm_test
+          NEXT_PUBLIC_SUPABASE_URL: http://localhost:5432
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: test-key
+
+      - name: Upload integration test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: coverage/
+          retention-days: 7
+
+  # Job 4: E2E tests with Playwright
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox, webkit]
+        shard: [1, 2]
+        total-shards: [2]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.project }}
+
+      - name: Start development server
+        run: npm run dev &
+        env:
+          PORT: 3000
+
+      - name: Wait for server to be ready
+        run: |
+          timeout 60 bash -c 'until curl -s http://localhost:3000 > /dev/null; do sleep 2; done'
+
+      - name: Run E2E tests
+        run: npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shard }}/${{ matrix.total-shards }}
+        env:
+          CI: true
+
+      - name: Upload E2E test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-results-${{ matrix.project }}-shard-${{ matrix.shard }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+      - name: Upload E2E screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots-${{ matrix.project }}-shard-${{ matrix.shard }}
+          path: test-results/
+          retention-days: 7
+
+  # Job 5: Google Sheets integration tests
+  google-sheets-tests:
+    name: Google Sheets Integration Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Google Sheets tests
+        run: npm run test -- tests/google-sheets-integration.test.ts --run
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TEST_CREDENTIALS }}
+
+      - name: Upload Google Sheets test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: google-sheets-test-results
+          path: coverage/
+          retention-days: 7
+
+  # Job 6: Automation tests
+  automation-tests:
+    name: Automation Features Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run automation tests
+        run: npm run test -- tests/automation.test.ts --run
+
+      - name: Upload automation test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-test-results
+          path: coverage/
+          retention-days: 7
+
+  # Job 7: Performance tests
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          urls: |
+            http://localhost:3000
+          budgetPath: ./lighthouserc.json
+          configPath: ./lighthouserc.json
+
+  # Job 8: Test summary and report
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, e2e-tests, google-sheets-tests, automation-tests, performance-tests]
+    if: always()
+    
+    steps:
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          path: test-results/
+
+      - name: Generate test summary
+        run: |
+          echo "# Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.unit-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Integration Tests | ${{ needs.integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | ${{ needs.e2e-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Google Sheets Tests | ${{ needs.google-sheets-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Automation Tests | ${{ needs.automation-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance Tests | ${{ needs.performance-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check overall test status
+        run: |
+          if [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.integration-tests.result }}" != "success" ] || \
+             [ "${{ needs.e2e-tests.result }}" != "success" ]; then
+            echo "❌ Some tests failed"
+            exit 1
+          else
+            echo "✅ All tests passed"
+          fi
+
+  # Job 9: Comment on PR with test results
+  pr-comment:
+    name: Comment Test Results on PR
+    runs-on: ubuntu-latest
+    needs: [test-summary]
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const results = {
+              'Unit Tests': '${{ needs.unit-tests.result }}',
+              'Integration Tests': '${{ needs.integration-tests.result }}',
+              'E2E Tests': '${{ needs.e2e-tests.result }}',
+              'Google Sheets Tests': '${{ needs.google-sheets-tests.result }}',
+              'Automation Tests': '${{ needs.automation-tests.result }}',
+              'Performance Tests': '${{ needs.performance-tests.result }}'
+            };
+            
+            let comment = '## 🧪 Test Results\n\n';
+            comment += '| Test Suite | Status |\n';
+            comment += '|------------|--------|\n';
+            
+            for (const [name, result] of Object.entries(results)) {
+              const emoji = result === 'success' ? '✅' : '❌';
+              comment += `| ${name} | ${emoji} ${result} |\n`;
+            }
+            
+            comment += '\n---\n';
+            comment += `*Workflow run: ${context.payload.repository.html_url}/actions/runs/${context.runId}*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

@@ -3,7 +3,8 @@
 import { useParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { AssessmentRunner } from '@/features/assessment-engine';
-import { getDimensionConfig } from '@/features/assessment-engine/config/dimensions';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
+
 import { AssessmentResult } from '@/features/assessment-engine/core/types';
 
 // Inline skeleton component to avoid import issues
@@ -24,7 +25,8 @@ export default function DimensionAssessmentPage() {
   const dimensionId = params.dimension as string;
 
   // Get configuration for this dimension
-  const config = getDimensionConfig(dimensionId);
+  const config = getDimensionById(dimensionId);
+
 
   if (!config) {
     return (

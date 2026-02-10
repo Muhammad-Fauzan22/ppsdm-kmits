@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
-import EnvironmentalAssessment from '@/components/assessment/EnvironmentalAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
+
 import { ENVIRONMENTAL_RESEARCH_SLIDES } from '@/data/research_environmental';
 import { Leaf } from 'lucide-react';
 
@@ -53,7 +55,8 @@ export default function EnvironmentalAssessmentPage() {
                     </div>
                 ) : (
                     <div className="animate-in zoom-in-95 duration-500">
-                        <EnvironmentalAssessment />
+                        <AssessmentRunner config={getDimensionById('environmental')!} />
+
                     </div>
                 )}
             </main>

@@ -1,8 +1,10 @@
 "use client";
 
 import { AssessmentRunner } from "@/features/assessment-engine/core/AssessmentRunner";
-import { characterConfig } from "@/features/assessment-engine/config/dimensions";
+import { getDimensionById } from "@/features/assessment-engine/config/dimensions";
 
 export default function CharacterAssessmentPage() {
-    return <AssessmentRunner config={characterConfig} />;
+    const config = getDimensionById("character");
+    if (!config) return null;
+    return <AssessmentRunner config={config} />;
 }

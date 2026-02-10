@@ -17,6 +17,12 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
+
+# Google Sheets Credentials (NEVER COMMIT)
+credentials.json
+credentials.base64
+*.pem
 
 # Debug logs
 npm-debug.log*
@@ -43,6 +49,11 @@ next-env.d.ts
 # Testing
 coverage/
 .nyc_output/
+playwright-report/
+test-results/
+
+# Test artifacts
+CHANGELOG.md
 
 # Misc
 *.log

@@ -1,0 +1,195 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["sin1"],
+  "env": {
+    "NEXT_PUBLIC_APP_URL": {
+      "description": "Public URL of the application",
+      "value": "https://ppsdm-kmits.vercel.app"
+    },
+    "NEXT_PUBLIC_GOOGLE_SHEETS_SPREADSHEET_ID": {
+      "description": "Google Sheets Spreadsheet ID for data integration"
+    },
+    "GOOGLE_APPLICATION_CREDENTIALS": {
+      "description": "Path to Google Service Account credentials JSON",
+      "value": "/tmp/credentials.json"
+    },
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "description": "Supabase project URL"
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "description": "Supabase anonymous key"
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "description": "Supabase service role key (server-side only)"
+    },
+    "NEXT_PUBLIC_UPSTASH_REDIS_REST_URL": {
+      "description": "Upstash Redis REST URL"
+    },
+    "UPSTASH_REDIS_REST_TOKEN": {
+      "description": "Upstash Redis REST token"
+    },
+    "SENTRY_DSN": {
+      "description": "Sentry DSN for error tracking"
+    },
+    "SENTRY_AUTH_TOKEN": {
+      "description": "Sentry auth token for release tracking"
+    },
+    "NEXT_PUBLIC_AI_PROVIDER": {
+      "description": "Default AI provider (openai, groq, google)",
+      "value": "openai"
+    },
+    "OPENAI_API_KEY": {
+      "description": "OpenAI API key"
+    },
+    "GROQ_API_KEY": {
+      "description": "Groq API key"
+    },
+    "GOOGLE_AI_API_KEY": {
+      "description": "Google AI API key"
+    }
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_APP_URL": "https://ppsdm-kmits.vercel.app"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard/overview",
+      "permanent": true
+    },
+    {
+      "source": "/assessment",
+      "destination": "/dashboard/assessment",
+      "permanent": true
+    },
+    {
+      "source": "/reports",
+      "destination": "/dashboard/reports",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/google-sheets/:path*",
+      "destination": "/api/google-sheets/:path*"
+    },
+    {
+      "source": "/api/automation/:path*",
+      "destination": "/api/automation/:path*"
+    },
+    {
+      "source": "/api/reports/:path*",
+      "destination": "/api/reports/:path*"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/sync-google-sheets",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/generate-insights",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/send-notifications",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-cache",
+      "schedule": "0 3 * * 0"
+    }
+  ],
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 60
+    },
+    "app/api/google-sheets/**": {
+      "maxDuration": 120
+    },
+    "app/api/reports/**": {
+      "maxDuration": 180
+    },
+    "app/api/automation/**": {
+      "maxDuration": 300
+    }
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "develop": true
+    }
+  }
+}

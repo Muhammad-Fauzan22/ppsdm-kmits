@@ -1,7 +1,8 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import { dimensions } from "@/features/assessment-engine/config/dimensions";
+import { getDimensionById } from "@/features/assessment-engine/config/dimensions";
+
 import { AssessmentRunner } from "@/features/assessment-engine/core/AssessmentRunner";
 
 interface PageProps {
@@ -12,7 +13,8 @@ interface PageProps {
 
 export default async function DimensionAssessmentPage(props: PageProps) {
     const params = await props.params;
-    const config = dimensions[params.dimension];
+    const config = getDimensionById(params.dimension);
+
 
     if (!config) {
         notFound();

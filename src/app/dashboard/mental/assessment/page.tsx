@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
-import MentalAssessment from '@/components/assessment/MentalAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
 import { MENTAL_RESEARCH_SLIDES } from '@/data/research_mental';
 import { Brain } from 'lucide-react';
 
@@ -53,7 +54,7 @@ export default function MentalAssessmentPage() {
                     </div>
                 ) : (
                     <div className="animate-in zoom-in-95 duration-500">
-                        <MentalAssessment />
+                        <AssessmentRunner config={getDimensionById('mental-health')!} />
                     </div>
                 )}
             </main>

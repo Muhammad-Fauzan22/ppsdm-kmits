@@ -1,9 +1,11 @@
 #!/bin/bash
 
-/**
- * Deployment Script for PPSDM KMM
- * Optimized for Vercel Deployment
- */
+# ============================================
+# PPSDM KMITS - Deployment Script
+# ============================================
+# This script handles deployment to Vercel
+# Usage: ./scripts/deploy.sh [environment]
+# Environments: production, preview, development
 
 set -e  # Exit on error
 
@@ -15,229 +17,224 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_NAME="ppsdm-kmits"
-ENVIRONMENT=${1:-production}
-BUILD_COMMAND="npm run build"
-OUTPUT_DIRECTORY=".vercel/output"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+ENVIRONMENT="${1:-production}"
+VERCEL_CLI="vercel"
 
 # Functions
-print_step() {
-  echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-  echo -e "${BLUE}🚀 $1${NC}"
-  echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
 }
 
-print_success() {
-  echo -e "${GREEN}✅ $1${NC}"
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
-print_warning() {
-  echo -e "${YELLOW}⚠️  $1${NC}"
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
-print_error() {
-  echo -e "${RED}❌ $1${NC}"
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Pre-deployment checks
-pre_deployment_checks() {
-  print_step "Running Pre-deployment Checks"
-  
-  # Check Node.js version
-  NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
-  if [ "$NODE_VERSION" -lt 18 ]; then
-    print_error "Node.js version must be 18 or higher. Current: $(node -v)"
-    exit 1
-  fi
-  print_success "Node.js version check passed: $(node -v)"
-  
-  # Check if dependencies are installed
-  if [ ! -d "node_modules" ]; then
-    print_warning "Installing dependencies..."
-    npm install
-  fi
-  print_success "Dependencies check passed"
-  
-  # Check environment file
-  if [ ! -f ".env.local" ]; then
-    print_warning ".env.local not found. Creating from template..."
-    cp .env.example .env.local
-    print_warning "Please configure .env.local with your credentials"
-    exit 1
-  fi
-  print_success "Environment file check passed"
+check_dependencies() {
+    log_info "Checking dependencies..."
+    
+    # Check Node.js
+    if ! command -v node &> /dev/null; then
+        log_error "Node.js is not installed. Please install Node.js 18 or higher."
+        exit 1
+    fi
+    
+    # Check npm
+    if ! command -v npm &> /dev/null; then
+        log_error "npm is not installed."
+        exit 1
+    fi
+    
+    # Check Vercel CLI
+    if ! command -v $VERCEL_CLI &> /dev/null; then
+        log_warning "Vercel CLI is not installed. Installing..."
+        npm install -g vercel
+    fi
+    
+    log_success "All dependencies are installed."
 }
 
-# Database migration
-run_migrations() {
-  print_step "Running Database Migrations"
-  
-  # Check if Supabase CLI is available
-  if command -v supabase &> /dev/null; then
-    supabase db push --db-url "$SUPABASE_DB_URL"
-    print_success "Database migrations completed"
-  else
-    print_warning "Supabase CLI not found. Skipping migrations."
-    print_warning "Please run migrations manually: supabase db push"
-  fi
+validate_environment() {
+    log_info "Validating environment: $ENVIRONMENT"
+    
+    case $ENVIRONMENT in
+        production|preview|development)
+            ;;
+        *)
+            log_error "Invalid environment. Use: production, preview, or development"
+            exit 1
+            ;;
+    esac
+    
+    # Check if .env.production exists for production deployment
+    if [ "$ENVIRONMENT" = "production" ] && [ ! -f "$PROJECT_ROOT/.env.production" ]; then
+        log_warning ".env.production not found. Using Vercel environment variables."
+    fi
 }
 
-# Build application
-build_application() {
-  print_step "Building Application"
-  
-  # Run linting
-  print_warning "Running linting..."
-  npm run lint || true
-  
-  # Run tests
-  print_warning "Running tests..."
-  npm run test -- --run || true
-  
-  # Build application
-  print_warning "Building application..."
-  npm run build
-  print_success "Build completed successfully"
-}
-
-# Optimize build artifacts
-optimize_build() {
-  print_step "Optimizing Build Artifacts"
-  
-  # Analyze bundle size
-  if [ -f ".next/server/chunks" ]; then
-    print_warning "Bundle analysis:"
-    find .next/server -name "*.js" -exec ls -lh {} \; | sort -k5 -h | tail -10
-  fi
-  
-  # Check for large dependencies
-  print_warning "Checking for large dependencies..."
-  npm run analyze 2>/dev/null || true
-  
-  print_success "Build optimization completed"
-}
-
-# Deploy to Vercel
-deploy_to_vercel() {
-  print_step "Deploying to Vercel"
-  
-  if command -v vercel &> /dev/null; then
+run_tests() {
+    log_info "Running tests..."
+    
+    cd "$PROJECT_ROOT"
+    
+    # Run unit tests
+    log_info "Running unit tests with Vitest..."
+    npm run test -- --run
+    
+    # Run E2E tests if in production
     if [ "$ENVIRONMENT" = "production" ]; then
-      vercel --prod --yes
+        log_info "Running E2E tests with Playwright..."
+        npm run e2e
+    fi
+    
+    log_success "All tests passed."
+}
+
+build_project() {
+    log_info "Building project..."
+    
+    cd "$PROJECT_ROOT"
+    
+    # Install dependencies
+    log_info "Installing dependencies..."
+    npm ci
+    
+    # Build the project
+    log_info "Building Next.js application..."
+    npm run build
+    
+    log_success "Build completed successfully."
+}
+
+deploy_to_vercel() {
+    log_info "Deploying to Vercel ($ENVIRONMENT)..."
+    
+    cd "$PROJECT_ROOT"
+    
+    # Set deployment flags based on environment
+    if [ "$ENVIRONMENT" = "production" ]; then
+        $VERCEL_CLI --prod
     else
-      vercel --yes
+        $VERCEL_CLI
     fi
-    print_success "Deployment to Vercel completed"
-  else
-    print_warning "Vercel CLI not found. Please deploy manually."
-    print_warning "Run: npx vercel --prod"
-  fi
+    
+    log_success "Deployment completed successfully."
 }
 
-# Post-deployment verification
-post_deployment_verification() {
-  print_step "Post-deployment Verification"
-  
-  # Wait for deployment to be ready
-  print_warning "Waiting for deployment to be ready..."
-  sleep 10
-  
-  # Check health endpoint
-  HEALTH_URL=$(grep "NEXT_PUBLIC_APP_URL" .env.local | cut -d'=' -f2)
-  if [ -n "$HEALTH_URL" ]; then
-    if curl -s -o /dev/null -w "%{http_code}" "${HEALTH_URL}/api/health" | grep -q "200"; then
-      print_success "Health check passed"
+setup_google_sheets() {
+    log_info "Setting up Google Sheets integration..."
+    
+    # Check if credentials file exists
+    if [ -f "$PROJECT_ROOT/credentials.json" ]; then
+        log_info "Google Sheets credentials found."
+        
+        # Encode credentials to base64 for Vercel
+        ENCODED_CREDENTIALS=$(cat "$PROJECT_ROOT/credentials.json" | base64 -w 0)
+        log_info "Credentials encoded. Add this to Vercel environment variables:"
+        echo "GOOGLE_SERVICE_ACCOUNT_CREDENTIALS=$ENCODED_CREDENTIALS"
     else
-      print_warning "Health check failed or endpoint not available"
+        log_warning "Google Sheets credentials not found. Run setup-google-sheets.sh to set up."
     fi
-  fi
-  
-  # Check for JavaScript errors
-  print_warning "Checking for critical errors..."
-  # Add your monitoring integration here
-  
-  print_success "Post-deployment verification completed"
 }
 
-# Cache warming
-warm_cache() {
-  print_step "Warming Cache"
-  
-  # Warm critical API endpoints
-  print_warning "Warming critical caches..."
-  
-  # Warm dashboard data
-  curl -s "${NEXT_PUBLIC_APP_URL}/api/dashboard" > /dev/null || true
-  
-  # Warm user preferences
-  curl -s "${NEXT_PUBLIC_APP_URL}/api/user/preferences" > /dev/null || true
-  
-  # Warm assessment cache
-  curl -s "${NEXT_PUBLIC_APP_URL}/api/assessment" > /dev/null || true
-  
-  print_success "Cache warming completed"
-}
-
-# Generate deployment report
-generate_report() {
-  print_step "Generating Deployment Report"
-  
-  REPORT_FILE="deployment-report-$(date +%Y%m%d-%H%M%S).txt"
-  
-  {
-    echo "PPSDM KMM Deployment Report"
-    echo "============================"
-    echo "Date: $(date)"
-    echo "Environment: $ENVIRONMENT"
-    echo "Node Version: $(node -v)"
-    echo "NPM Version: $(npm -v)"
-    echo ""
-    echo "Build Statistics:"
-    if [ -d ".next/server" ]; then
-      echo "  Build Size: $(du -sh .next/server | cut -f1)"
-      echo "  Static Files: $(find .next/static -type f | wc -l) files"
+verify_deployment() {
+    log_info "Verifying deployment..."
+    
+    # Get the deployment URL from Vercel
+    DEPLOYMENT_URL=$($VERCEL_CLI ls --prod 2>/dev/null | head -n 2 | tail -n 1 | awk '{print $2}')
+    
+    if [ -n "$DEPLOYMENT_URL" ]; then
+        log_success "Deployment URL: $DEPLOYMENT_URL"
+        
+        # Wait for deployment to be ready
+        log_info "Waiting for deployment to be ready..."
+        sleep 10
+        
+        # Check if the site is accessible
+        if curl -f -s -o /dev/null "$DEPLOYMENT_URL"; then
+            log_success "Deployment is accessible and working."
+        else
+            log_warning "Deployment URL is not yet accessible. Please check manually."
+        fi
+    else
+        log_warning "Could not retrieve deployment URL."
     fi
-    echo ""
-    echo "Deployment completed successfully"
-  } > "$REPORT_FILE"
-  
-  print_success "Report saved to $REPORT_FILE"
 }
 
-# Main deployment flow
+cleanup() {
+    log_info "Cleaning up temporary files..."
+    
+    # Remove any temporary build files
+    rm -rf "$PROJECT_ROOT/.next"
+    rm -rf "$PROJECT_ROOT/node_modules/.cache"
+    
+    log_success "Cleanup completed."
+}
+
 main() {
-  echo ""
-  echo -e "${BLUE}╔═══════════════════════════════════════════════════════════╗${NC}"
-  echo -e "${BLUE}║                                                           ║${NC}"
-  echo -e "${BLUE}║          🚀 PPSDM KMM Deployment Script 🚀               ║${NC}"
-  echo -e "${BLUE}║                                                           ║${NC}"
-  echo -e "${BLUE}╚═══════════════════════════════════════════════════════════╝${NC}"
-  echo ""
-  
-  # Check for cleanup flag
-  if [ "$2" = "--clean" ]; then
-    print_warning "Cleaning build artifacts..."
-    rm -rf .next node_modules/.cache
-  fi
-  
-  # Run deployment pipeline
-  pre_deployment_checks
-  run_migrations
-  build_application
-  optimize_build
-  deploy_to_vercel
-  post_deployment_verification
-  warm_cache
-  generate_report
-  
-  echo ""
-  echo -e "${GREEN}╔═══════════════════════════════════════════════════════════╗${NC}"
-  echo -e "${GREEN}║                                                           ║${NC}"
-  echo -e "${GREEN}║          ✅ Deployment Completed Successfully!           ║${NC}"
-  echo -e "${GREEN}║                                                           ║${NC}"
-  echo -e "${GREEN}╚═══════════════════════════════════════════════════════════╝${NC}"
-  echo ""
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}PPSDM KMITS - Deployment Script${NC}"
+    echo -e "${BLUE}========================================${NC}"
+    echo ""
+    
+    # Change to project root
+    cd "$PROJECT_ROOT"
+    
+    # Run deployment steps
+    check_dependencies
+    validate_environment
+    run_tests
+    build_project
+    setup_google_sheets
+    deploy_to_vercel
+    verify_deployment
+    cleanup
+    
+    echo ""
+    log_success "Deployment process completed successfully!"
+    echo ""
+    log_info "Next steps:"
+    echo "  1. Verify the deployment URL"
+    echo "  2. Check environment variables in Vercel dashboard"
+    echo "  3. Test Google Sheets integration"
+    echo "  4. Monitor logs in Vercel dashboard"
+    echo ""
 }
+
+# Handle script arguments
+case "${1:-}" in
+    --help|-h)
+        echo "Usage: $0 [environment]"
+        echo ""
+        echo "Environments:"
+        echo "  production   Deploy to production (default)"
+        echo "  preview      Deploy to preview environment"
+        echo "  development  Deploy to development environment"
+        echo ""
+        echo "Options:"
+        echo "  --help, -h   Show this help message"
+        echo "  --skip-tests Skip running tests"
+        echo "  --skip-build Skip building the project"
+        exit 0
+        ;;
+    --skip-tests)
+        SKIP_TESTS=true
+        shift
+        ;;
+    --skip-build)
+        SKIP_BUILD=true
+        shift
+        ;;
+esac
 
 # Run main function
 main "$@"

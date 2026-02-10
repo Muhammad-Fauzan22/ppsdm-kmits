@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import CognitiveAssessment from '@/components/assessment/CognitiveAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
 import { COGNITIVE_RESEARCH_SLIDES } from '@/data/research_dimensi_1';
 import { Brain, FileText, Activity } from 'lucide-react';
@@ -64,7 +65,7 @@ export default function IntellectualAssessmentPage() {
                             </div>
                         </div>
                     ) : (
-                        <CognitiveAssessment onComplete={() => { }} />
+                        <AssessmentRunner config={getDimensionById('cognitive')!} />
                     )}
                 </div>
             </div>

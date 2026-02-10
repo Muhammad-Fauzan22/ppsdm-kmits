@@ -5,7 +5,9 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
-import FinancialAssessment from '@/components/assessment/FinancialAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
+
 import { FINANCIAL_RESEARCH_SLIDES } from '@/data/research_financial';
 import { Wallet, Sparkles } from 'lucide-react';
 
@@ -55,7 +57,8 @@ export default function FinancialAssessmentPage() {
                     </div>
                 ) : (
                     <div className="animate-in zoom-in-95 duration-500">
-                        <FinancialAssessment />
+                        <AssessmentRunner config={getDimensionById('financial')!} />
+
                     </div>
                 )}
             </main>

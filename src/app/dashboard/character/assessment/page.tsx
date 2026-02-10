@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import ResearchSlideshow from '@/components/education/ResearchSlideshow';
-import CharacterAssessment from '@/components/assessment/CharacterAssessment';
+import { AssessmentRunner } from '@/features/assessment-engine';
+import { getDimensionById } from '@/features/assessment-engine/config/dimensions';
+
 import { CHARACTER_RESEARCH_SLIDES } from '@/data/research_character';
 import { ShieldCheck } from 'lucide-react';
 
@@ -53,7 +55,9 @@ export default function CharacterAssessmentPage() {
                     </div>
                 ) : (
                     <div className="animate-in zoom-in-95 duration-500">
-                        <CharacterAssessment />
+                        <AssessmentRunner config={getDimensionById('character')!} />
+
+
                     </div>
                 )}
             </main>

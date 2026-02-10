@@ -1,8 +1,14 @@
 "use client";
 
 import { AssessmentRunner } from "@/features/assessment-engine/core/AssessmentRunner";
-import { environmentalConfig } from "@/features/assessment-engine/config/dimensions";
+import { getDimensionById } from "@/features/assessment-engine/config/dimensions";
 
 export default function EnvironmentalAssessmentPage() {
-    return <AssessmentRunner config={environmentalConfig} />;
+    const config = getDimensionById("environmental");
+    
+    if (!config) {
+        return <div>Error: Environmental dimension configuration not found</div>;
+    }
+    
+    return <AssessmentRunner config={config} />;
 }

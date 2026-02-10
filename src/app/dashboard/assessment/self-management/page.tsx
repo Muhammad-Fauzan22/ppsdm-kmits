@@ -1,8 +1,14 @@
 "use client";
 
 import { AssessmentRunner } from "@/features/assessment-engine/core/AssessmentRunner";
-import { selfManagementConfig } from "@/features/assessment-engine/config/dimensions";
+import { getDimensionById } from "@/features/assessment-engine/config/dimensions";
 
 export default function SelfManagementAssessmentPage() {
-    return <AssessmentRunner config={selfManagementConfig} />;
+    const config = getDimensionById("self-management");
+    
+    if (!config) {
+        return <div>Error: Self-management dimension configuration not found</div>;
+    }
+    
+    return <AssessmentRunner config={config} />;
 }
