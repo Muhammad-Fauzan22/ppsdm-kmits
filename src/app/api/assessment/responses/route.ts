@@ -63,7 +63,6 @@ export async function POST(request: Request) {
             progress: count,
         });
     } catch (error) {
-        console.error("Error submitting response:", error);
         return NextResponse.json(
             { error: "Failed to submit response" },
             { status: 500 }
@@ -114,7 +113,6 @@ export async function PUT(request: Request) {
             submitted: responses.length,
         });
     } catch (error) {
-        console.error("Error submitting batch responses:", error);
         return NextResponse.json(
             { error: "Failed to submit responses" },
             { status: 500 }

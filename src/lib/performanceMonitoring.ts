@@ -68,8 +68,7 @@ export function observePerformance(callback: (metric: PerformanceMetric) => void
         });
         lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
     } catch (e) {
-        console.debug('[Performance] LCP observer not supported');
-    }
+        }
 
     // Observe First Input Delay
     try {
@@ -88,8 +87,7 @@ export function observePerformance(callback: (metric: PerformanceMetric) => void
         });
         fidObserver.observe({ type: 'first-input', buffered: true });
     } catch (e) {
-        console.debug('[Performance] FID observer not supported');
-    }
+        }
 
     // Observe Cumulative Layout Shift
     try {
@@ -111,8 +109,7 @@ export function observePerformance(callback: (metric: PerformanceMetric) => void
         });
         clsObserver.observe({ type: 'layout-shift', buffered: true });
     } catch (e) {
-        console.debug('[Performance] CLS observer not supported');
-    }
+        }
 }
 
 // Track custom metric
@@ -127,8 +124,7 @@ export function trackMetric(name: string, value: number, unit: string = 'ms'): v
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-        console.log('[Performance]', name, value, unit);
-    }
+        }
 
     // Send to analytics (batch later)
     queueMetric(metric);
@@ -164,8 +160,7 @@ async function flushMetrics(): Promise<void> {
             keepalive: true,
         });
     } catch (error) {
-        console.error('[Performance] Failed to send metrics:', error);
-    }
+        }
 }
 
 // Track page view timing
@@ -217,8 +212,7 @@ export function trackInteraction(
 
     // Also log to console in dev
     if (process.env.NODE_ENV === 'development') {
-        console.log('[Interaction]', action, target, metadata);
-    }
+        }
 }
 
 // Memory usage tracking
@@ -265,8 +259,6 @@ export function trackError(error: Error, context?: Record<string, unknown>): voi
     queueMetric(metric);
 
     // Log to console
-    console.error('[Error Tracked]', error.message, context);
-
     // Would also send to Sentry in production:
     // Sentry.captureException(error, { extra: context });
 }

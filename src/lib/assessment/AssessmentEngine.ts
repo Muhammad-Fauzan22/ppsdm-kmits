@@ -52,8 +52,6 @@ export class AssessmentEngine {
         domain: AssessmentDomain,
         responses: Record<string, number>
     ) {
-        console.log(`Starting assessment for ${userId} in domain ${domain}`);
-
         const supabase = await this.getSupabase();
         const context = await this.getUserContext(userId);
         let scores, profile, recommendations, validity;
@@ -110,7 +108,6 @@ export class AssessmentEngine {
                     throw new Error(`Domain ${domain} not implemented yet`);
             }
         } catch (error: any) {
-            console.error(`Error calculating scores for ${domain}:`, error);
             if (error?.code === 'MODULE_NOT_FOUND' || error?.message?.includes('not found')) {
                 return { success: false, error: 'Scoring module missing or import failed' };
             }
@@ -130,7 +127,6 @@ export class AssessmentEngine {
             });
 
         if (dbError) {
-            console.error('Database save failed:', dbError);
             throw new Error('Failed to save assessment results');
         }
 

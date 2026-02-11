@@ -6,18 +6,26 @@ import { DynamicPageGenerator } from '../website-generator/dynamic-page-generato
  * Detects spreadsheet changes and automatically updates the website
  */
 export class RealTimeSyncEngine {
-  private sheetsService: GoogleSheetsService;
+  private sheetsService: GoogleSheetsService | null = null;
   private pageGenerator: DynamicPageGenerator;
   private watchedSheets: Map<string, any>;
   private syncIntervals: Map<string, NodeJS.Timeout>;
 
   constructor() {
-    this.sheetsService = GoogleSheetsService.getInstance();
     this.pageGenerator = new DynamicPageGenerator();
     this.watchedSheets = new Map();
     this.syncIntervals = new Map();
     this.setupGoogleSheetsWebhook();
     this.setupPeriodicSync();
+  }
+
+  /**
+   * Initialize the service
+   */
+  private async initialize(): Promise<void> {
+    if (!this.sheetsService) {
+      this.sheetsService = await GoogleSheetsService.getInstance();
+    }
   }
 
   /**
@@ -28,8 +36,7 @@ export class RealTimeSyncEngine {
     // to receive notifications when the spreadsheet changes
     
     // For now, we'll simulate webhook setup with periodic checking
-    console.log('Google Sheets webhook setup completed');
-  }
+    }
 
   /**
    * Setup periodic sync based on page rules
@@ -44,18 +51,15 @@ export class RealTimeSyncEngine {
         const syncInterval = setInterval(async () => {
           try {
             await this.pageGenerator.regeneratePageByRoute(route);
-            console.log(`Periodic sync completed for ${route}`);
-          } catch (error) {
-            console.error(`Periodic sync failed for ${route}:`, error);
-          }
+            } catch (error) {
+            }
         }, interval);
         
         this.syncIntervals.set(route, syncInterval);
       }
     });
 
-    console.log('Periodic sync setup completed');
-  }
+    }
 
   /**
    * Get interval duration in milliseconds
@@ -81,8 +85,6 @@ export class RealTimeSyncEngine {
   async onSpreadsheetChange(changeEvent: any): Promise<void> {
     const { spreadsheetId, sheetName, changes } = changeEvent;
     
-    console.log(`Spreadsheet change detected in ${sheetName}:`, changes);
-    
     // Determine which website pages need update based on sheet name
     const pagesToUpdate = this.mapSheetToPages(sheetName);
     
@@ -91,10 +93,8 @@ export class RealTimeSyncEngine {
       try {
         await this.pageGenerator.regeneratePageByRoute(route);
         await this.sendChangeNotifications(route, sheetName, changes);
-        console.log(`Successfully updated page ${route} due to changes in ${sheetName}`);
-      } catch (error) {
-        console.error(`Failed to update page ${route}:`, error);
-      }
+        } catch (error) {
+        }
     }
   }
 
@@ -123,8 +123,6 @@ export class RealTimeSyncEngine {
     // 2. Push notifications to members
     // 3. Slack/WhatsApp notifications to committee
     
-    console.log(`Sending notifications for changes in ${sheetName} affecting ${route}`);
-    
     // TODO: Implement actual notification system
   }
 
@@ -139,8 +137,7 @@ export class RealTimeSyncEngine {
     const sheets = this.watchedSheets.get(spreadsheetId);
     if (!sheets.has(sheetName)) {
       sheets.add(sheetName);
-      console.log(`Started watching sheet: ${sheetName} in spreadsheet: ${spreadsheetId}`);
-    }
+      }
   }
 
   /**
@@ -151,8 +148,7 @@ export class RealTimeSyncEngine {
       const sheets = this.watchedSheets.get(spreadsheetId);
       if (sheets.has(sheetName)) {
         sheets.delete(sheetName);
-        console.log(`Stopped watching sheet: ${sheetName} in spreadsheet: ${spreadsheetId}`);
-      }
+        }
     }
   }
 
@@ -173,8 +169,7 @@ export class RealTimeSyncEngine {
   stopSync(): void {
     this.syncIntervals.forEach((interval, route) => {
       clearInterval(interval);
-      console.log(`Stopped sync for route: ${route}`);
-    });
+      });
     this.syncIntervals.clear();
   }
 
@@ -204,8 +199,7 @@ export class RealTimeSyncEngine {
             });
           }
         } catch (error) {
-          console.error(`Error checking changes for ${sheetName}:`, error);
-        }
+          }
       }
     }
   }
@@ -231,13 +225,9 @@ export class RealTimeSyncEngine {
    * Manually trigger a sync for all pages
    */
   async triggerFullSync(): Promise<void> {
-    console.log('Full sync started');
-    
     try {
       await this.pageGenerator.generateAllPages();
-      console.log('Full sync completed');
-    } catch (error) {
-      console.error('Full sync failed:', error);
+      } catch (error) {
       throw new Error('Full sync failed');
     }
   }

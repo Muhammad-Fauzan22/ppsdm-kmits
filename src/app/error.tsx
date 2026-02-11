@@ -16,8 +16,7 @@ export default function GlobalError({
 
     useEffect(() => {
         // Log error ke monitoring service (misal: Sentry)
-        console.error("Quantum Engine Anomaly Detected:", error);
-    }, [error]);
+        }, [error]);
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 text-center">
@@ -44,7 +43,9 @@ export default function GlobalError({
                 </Button>
                 <Button
                     variant="outline"
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => {
+                        window.location.href = '/';
+                    }}
                     className="border-slate-300 text-slate-600 hover:bg-slate-100"
                 >
                     Kembali ke Beranda

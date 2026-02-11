@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const currentMemberId = memberId || 'current_member_id'; // In production, get from auth session
 
     // Initialize Google Sheets service
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
     const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
 
     // Fetch current activities data
@@ -131,7 +131,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error registering for activity:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -161,7 +160,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
     const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
 
     // Fetch activities data
@@ -200,7 +199,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error getting registration status:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -230,7 +228,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const currentMemberId = memberId || 'current_member_id';
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
     const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
 
     // Fetch activities data
@@ -305,7 +303,6 @@ export async function DELETE(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error cancelling registration:', error);
     return NextResponse.json(
       { 
         success: false, 

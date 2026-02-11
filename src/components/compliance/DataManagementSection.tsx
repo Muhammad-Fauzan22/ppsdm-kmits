@@ -43,8 +43,7 @@ export function DataManagementSection() {
         });
       }
     } catch (error) {
-      console.error('Error checking deletion status:', error);
-    }
+      }
   };
 
   const handleExportData = async () => {

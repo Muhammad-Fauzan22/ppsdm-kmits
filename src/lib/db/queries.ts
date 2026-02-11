@@ -107,7 +107,6 @@ export async function getUserAssessmentsOptimized(
 
   const { data, error } = await query;
   if (error) {
-    console.error('Error fetching user assessments:', error);
     return [];
   }
 
@@ -140,12 +139,9 @@ export async function getDimensionScoresOptimized(
   const cachedData = await getCache(cacheKey);
   
   if (cachedData) {
-    console.log('Cache hit for dimension scores:', userId);
     return cachedData;
   }
 
-  console.log('Cache miss for dimension scores:', userId);
-  
   const { data, error } = await db
     .from('dimension_scores')
     .select('id, cognitive, emotional, spiritual, physical, creative, professional, leadership, financial, environmental, overall_index, updated_at')
@@ -153,7 +149,6 @@ export async function getDimensionScoresOptimized(
     .limit(1);
 
   if (error) {
-    console.error('Error fetching dimension scores:', error);
     return null;
   }
 
@@ -198,12 +193,9 @@ export async function getUserProfileOptimized(
   const cachedData = await getCache(cacheKey);
   
   if (cachedData) {
-    console.log('Cache hit for user profile:', userId);
     return cachedData;
   }
 
-  console.log('Cache miss for user profile:', userId);
-  
   const { data, error } = await db
     .from('user_profiles')
     .select('id, full_name, nim, faculty, level, current_streak, total_xp')
@@ -211,7 +203,6 @@ export async function getUserProfileOptimized(
     .limit(1);
 
   if (error) {
-    console.error('Error fetching user profile:', error);
     return null;
   }
 
@@ -257,7 +248,6 @@ export async function getRecentActivitiesOptimized(
     .offset(offset);
 
   if (error) {
-    console.error('Error fetching recent activities:', error);
     return [];
   }
 
@@ -289,7 +279,6 @@ export async function getActiveGoalsOptimized(
     .limit(limit);
 
   if (error) {
-    console.error('Error fetching active goals:', error);
     return [];
   }
 
@@ -341,7 +330,6 @@ export async function getUserAchievementsWithDetails(
     .offset(offset);
 
   if (error) {
-    console.error('Error fetching user achievements:', error);
     return [];
   }
 
@@ -376,12 +364,9 @@ export async function getDashboardStats(
   const cachedData = await getCache(cacheKey);
   
   if (cachedData) {
-    console.log('Cache hit for dashboard stats:', userId);
     return cachedData;
   }
 
-  console.log('Cache miss for dashboard stats:', userId);
-  
   const [profile, scores, goalsSummary, activitiesSummary] = await Promise.all([
     getUserProfileOptimized(db, userId),
     getDimensionScoresOptimized(db, userId),
@@ -415,7 +400,6 @@ async function getGoalsSummary(db: any, userId: string) {
     .select('status, progress');
 
   if (error) {
-    console.error('Error fetching goals summary:', error);
     return { total: 0, active: 0, completed: 0, avgProgress: 0 };
   }
 
@@ -443,7 +427,6 @@ async function getActivityCountsByType(db: any, userId: string, since?: Date) {
   const { data, error } = await query;
 
   if (error) {
-    console.error('Error fetching activity counts:', error);
     return [];
   }
 

@@ -121,8 +121,7 @@ export async function auditAdminOperation(params: {
   } catch (error) {
     // Log to console if database insert fails
     // Don't throw - audit failures shouldn't break operations
-    console.error('Failed to audit admin operation:', error);
-  }
+    }
 }
 
 /**

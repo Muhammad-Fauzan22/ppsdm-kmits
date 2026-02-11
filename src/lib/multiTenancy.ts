@@ -287,8 +287,6 @@ export async function submitPartnerOnboarding(data: PartnerOnboardingData): Prom
     }
 
     // In production, save to database and send notification
-    console.log('[Partner Onboarding]', data);
-
     // Mock success response
     return {
         success: true,

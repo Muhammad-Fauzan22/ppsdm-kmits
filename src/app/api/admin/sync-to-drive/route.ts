@@ -1,16 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withAdminAuth } from '@/lib/admin-auth';
 import { createClient } from '@/lib/supabase/server';
 import { spawn } from 'child_process';
 import { join } from 'path';
+import { z } from 'zod';
+
+// Validation schema
+const syncSchema = z.object({
+  bookId: z.string().uuid().optional(),
+  syncAll: z.boolean().default(false),
+  dryRun: z.boolean().default(false)
+});
 
 /**
  * POST /api/admin/sync-to-drive
- * Sync a book or all pending books to Google Drive
+ * Sync a book or all pending books to Google Drive (Admin only)
  */
-export async function POST(req: NextRequest) {
+export const POST = withAdminAuth(async (req: NextRequest, admin) => {
   try {
     const body = await req.json();
-    const { bookId, syncAll = false, dryRun = false } = body;
+    
+    // Validate input
+    const { bookId, syncAll, dryRun } = syncSchema.parse(body);
 
     const supabase = await createClient();
 
@@ -31,7 +42,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         dryRun: true,
         wouldSync: pendingBooks?.length || 0,
-        books: pendingBooks || []
+        books: pendingBooks || [],
+        executedBy: admin.email
       });
     }
 
@@ -49,16 +61,21 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      // SECURITY: Use validated inputs only
+      const limit = Math.min(pendingBooks?.length || 10, 50); // Max 50 books
+      const targetQuality = 90;
+      
       // Start the Python batch processor with drive upload enabled
       const scriptPath = join(process.cwd(), 'scripts', 'batch_process_ebooks.py');
       
       const pythonProcess = spawn('python', [
         scriptPath,
-        '--limit', (pendingBooks?.length || 10).toString(),
-        '--target-quality', '90'
+        '--limit', limit.toString(),
+        '--target-quality', targetQuality.toString()
       ], {
         detached: true,
-        stdio: 'ignore'
+        stdio: 'ignore',
+        timeout: 300000 // 5 minute timeout
       });
 
       pythonProcess.unref();
@@ -67,16 +84,21 @@ export async function POST(req: NextRequest) {
         success: true,
         message: `Started batch sync for ${pendingBooks?.length || 0} books`,
         booksQueued: pendingBooks?.length || 0,
-        pid: pythonProcess.pid
+        pid: pythonProcess.pid,
+        executedBy: admin.email
       });
     }
 
     if (bookId) {
+      // Validate bookId format (UUID)
+      const uuidSchema = z.string().uuid();
+      const validatedBookId = uuidSchema.parse(bookId);
+      
       // Get book details
       const { data: book, error } = await supabase
         .from('ebooks')
         .select('*')
-        .eq('id', bookId)
+        .eq('id', validatedBookId)
         .single();
 
       if (error || !book) {
@@ -94,7 +116,7 @@ export async function POST(req: NextRequest) {
           drive_upload_progress: 0,
           updated_at: new Date().toISOString()
         })
-        .eq('id', bookId);
+        .eq('id', validatedBookId);
 
       // Start Python script for single book upload
       const scriptPath = join(process.cwd(), 'scripts', 'batch_process_ebooks.py');
@@ -108,8 +130,9 @@ export async function POST(req: NextRequest) {
         stdio: 'ignore',
         env: {
           ...process.env,
-          SINGLE_BOOK_ID: bookId
-        }
+          SINGLE_BOOK_ID: validatedBookId
+        },
+        timeout: 300000 // 5 minute timeout
       });
 
       pythonProcess.unref();
@@ -117,8 +140,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         message: `Started Drive sync for book: ${book.title}`,
-        bookId,
-        pid: pythonProcess.pid
+        bookId: validatedBookId,
+        pid: pythonProcess.pid,
+        executedBy: admin.email
       });
     }
 
@@ -127,19 +151,25 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   } catch (error) {
-    console.error('Error in sync-to-drive API:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid input data', details: error.errors },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
-}
+});
 
 /**
  * GET /api/admin/sync-to-drive
- * Get sync queue status
+ * Get sync queue status (Admin only)
  */
-export async function GET(req: NextRequest) {
+export const GET = withAdminAuth(async (req: NextRequest, admin) => {
   try {
     const supabase = await createClient();
 
@@ -171,19 +201,18 @@ export async function GET(req: NextRequest) {
       .limit(10);
 
     if (activeError) {
-      console.error('Error fetching active uploads:', activeError);
-    }
+      }
 
     return NextResponse.json({
       stats: stats || [],
       activeUploads: activeUploads || [],
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      accessedBy: admin.email
     });
   } catch (error) {
-    console.error('Error fetching sync status:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
-}
+});

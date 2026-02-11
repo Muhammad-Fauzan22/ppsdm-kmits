@@ -52,7 +52,6 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, data: parsedData });
     } catch (error) {
-        console.error("Vision API Error:", error);
         return NextResponse.json(
             { error: "Failed to analyze image", details: error instanceof Error ? error.message : "Unknown error" },
             { status: 500 }

@@ -71,9 +71,7 @@ class LocalMLService {
       await new Promise(resolve => setTimeout(resolve, 100));
       
       this.isInitialized = true;
-      console.log('Local ML service initialized');
-    } catch (error) {
-      console.warn('Local ML initialization warning:', error);
+      } catch (error) {
       this.isInitialized = true; // Mark as initialized to allow fallback
     }
   }

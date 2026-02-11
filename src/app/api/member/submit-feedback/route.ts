@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const currentMemberId = memberId || 'current_member_id'; // In production, get from auth session
 
     // Initialize Google Sheets service
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
     const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
 
     // Fetch current activities data
@@ -161,7 +161,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error submitting feedback:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -190,7 +189,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
     const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
 
     // Fetch feedback data
@@ -231,7 +230,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error getting feedback:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -275,7 +273,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
     const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
 
     // Fetch feedback data
@@ -338,7 +336,6 @@ export async function PUT(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error updating feedback:', error);
     return NextResponse.json(
       { 
         success: false, 

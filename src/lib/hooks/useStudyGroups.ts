@@ -67,8 +67,7 @@ export function useStudyGroups(): UseStudyGroupsReturn {
       queryClient.invalidateQueries({ queryKey: ['study-groups'] });
     },
     onError: (error: Error) => {
-      console.error('Failed to join group:', error);
-    },
+      },
   });
 
   const joinGroup = async (groupId: string) => {

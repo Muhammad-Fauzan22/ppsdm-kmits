@@ -25,22 +25,14 @@ const CSRF_SECRET = process.env.CSRF_SECRET || (() => {
   
   // Log warning in development mode
   if (process.env.NODE_ENV !== 'production') {
-    console.warn(
-      '⚠️  CSRF_SECRET environment variable not set. Using default secret for development. ' +
-      'For production, set CSRF_SECRET using: openssl rand -base64 32'
-    );
-  }
+    }
   
   return defaultSecret;
 })();
 
 // Validate secret length (only warn, don't throw error)
 if (CSRF_SECRET.length < 32) {
-  console.warn(
-    '⚠️  CSRF_SECRET must be at least 32 characters long for security. ' +
-    'Generate a secure secret using: openssl rand -base64 32'
-  );
-}
+  }
 
 /**
  * Token expiration time (1 hour)
@@ -107,7 +99,6 @@ export function validateCSRFToken(sessionId: string, token: string): boolean {
     
     return signature === expectedSignature;
   } catch (error) {
-    console.error('CSRF validation error:', error);
     return false;
   }
 }
@@ -334,7 +325,6 @@ export async function fetchCSRFToken(): Promise<string | null> {
     const data = await response.json();
     return data.csrfToken || null;
   } catch (error) {
-    console.error('Failed to fetch CSRF token:', error);
     return null;
   }
 }

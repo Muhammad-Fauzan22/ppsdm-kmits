@@ -46,7 +46,6 @@ export async function GET() {
             isNew: false,
         });
     } catch (error) {
-        console.error("Error fetching registration state:", error);
         return NextResponse.json(
             { error: "Failed to fetch registration state" },
             { status: 500 }
@@ -106,7 +105,6 @@ export async function POST(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error updating registration state:", error);
         return NextResponse.json(
             { error: "Failed to update registration state" },
             { status: 500 }

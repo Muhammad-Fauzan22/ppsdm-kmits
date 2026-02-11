@@ -92,8 +92,7 @@ function CognitiveResultsContent() {
                     setResult(calculatedResult);
                 }
             } catch (error) {
-                console.error('Error loading results:', error);
-            } finally {
+                } finally {
                 setIsLoading(false);
             }
         }

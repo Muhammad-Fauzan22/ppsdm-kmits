@@ -52,8 +52,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log error ke console
-    console.error('Error Boundary caught an error:', error, errorInfo);
-
     // Log error ke error tracking service (jika tersedia)
     if (typeof window !== 'undefined' && (window as any).Sentry) {
       (window as any).Sentry.captureException(error, {

@@ -47,7 +47,6 @@ export default function LibraryDetailPage() {
 
                 if (error) {
                     // Fallback to mock if API fails (for demo continuity if DB empty)
-                    console.warn("API fetch failed, checking if mock needed:", error);
                     // For now, throw to trigger mock fallback logic or error state
                     // In production, we'd just set error.
                     // But to satisfy "Replace hardcoded data", we prioritize API.
@@ -71,7 +70,6 @@ export default function LibraryDetailPage() {
                 }
 
             } catch (err: any) {
-                console.error("Error fetching course:", err);
                 // IF it fails (e.g. table doesn't exist yet or empty), we might want to keep the Mock Data as a fallback for the demo?
                 // The user requested "Replace hardcoded data".
                 // So I should ideally show the error or empty state if DB is empty.

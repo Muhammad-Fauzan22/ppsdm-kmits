@@ -34,7 +34,6 @@ export default function ProfileSettings() {
             window.URL.revokeObjectURL(url);
             a.remove();
         } catch (error) {
-            console.error('Export error:', error);
             alert('Failed to export data. Please try again.');
         } finally {
             setIsExporting(false);
@@ -64,7 +63,6 @@ export default function ProfileSettings() {
                 throw new Error(result.error);
             }
         } catch (error) {
-            console.error('Deletion error:', error);
             alert('Gagal memproses permintaan. Silakan coba lagi.');
         } finally {
             setIsDeleting(false);

@@ -58,13 +58,11 @@ export default function SpiritualResultsPage() {
                     .single();
 
                 if (error) {
-                    console.error("Error fetching results:", error);
-                } else {
+                    } else {
                     setResult(data);
                 }
             } catch (err) {
-                console.error(err);
-            } finally {
+                } finally {
                 setFetching(false);
             }
         };

@@ -40,7 +40,6 @@ export async function GET() {
             data: badgesWithStatus,
         });
     } catch (error) {
-        console.error("Error fetching badges:", error);
         return NextResponse.json(
             { error: "Failed to fetch badges" },
             { status: 500 }

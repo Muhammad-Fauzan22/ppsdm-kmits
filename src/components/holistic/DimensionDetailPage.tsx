@@ -45,17 +45,11 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
         const rawData = DIMENSIONS[dimensionId];
 
         if (!rawData) {
-          console.error(`[DEBUG] Dimension data not found for ID: ${dimensionId}`);
           setLoading(false);
           return;
         }
 
-        console.log('[DEBUG] Loading dimension data for ID:', dimensionId);
-        console.log('[DEBUG] Raw data:', rawData);
-        console.log('[DEBUG] Subdimensions:', (rawData as any)?.subdimensions);
-        console.log('[DEBUG] Scoring:', (rawData as any)?.scoring);
-        console.log('[DEBUG] Research:', rawData?.research);
-
+        // Data loaded successfully
         // Adapt raw data to match the expected DimensionData interface
         // This bridges the gap between the simple data structure and the detailed component requirements
         const adaptedData: DimensionData = {
@@ -108,7 +102,6 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
         
         setDimension(adaptedData);
       } catch (error) {
-        console.error('[ERROR] Error loading dimension data:', error);
         // Show error message to user
         // Could use a toast notification or error boundary
       } finally {

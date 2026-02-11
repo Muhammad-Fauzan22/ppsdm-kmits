@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { ShieldCheck, ArrowRight, Brain, LucideIcon } from "lucide-react";
 import * as Icons from "lucide-react";
+import DOMPurify from 'dompurify';
 
 interface AssessmentRunnerProps {
     config: DimensionConfig;
@@ -71,7 +72,7 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                                         <CardTitle>{card.title}</CardTitle>
                                     </CardHeader>
                                     <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                        <div dangerouslySetInnerHTML={{ __html: card.content }} />
+                                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(card.content) }} />
                                     </CardContent>
                                 </Card>
                             );

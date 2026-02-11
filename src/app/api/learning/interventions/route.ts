@@ -61,7 +61,6 @@ export async function GET(request: NextRequest) {
         });
 
     } catch (error: any) {
-        console.error('Interventions API error:', error);
         return NextResponse.json(
             { success: false, error: error.message },
             { status: 500 }

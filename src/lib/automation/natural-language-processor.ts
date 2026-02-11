@@ -321,11 +321,9 @@ Return only valid JSON.
           };
         }
       } catch (parseError) {
-        console.error('Error parsing AI command interpretation:', parseError);
-      }
+        }
     } catch (error) {
-      console.error('Error interpreting command with AI:', error);
-    }
+      }
 
     // Fallback to unknown command
     return {
@@ -347,7 +345,7 @@ Return only valid JSON.
     const { eventName, dateText, participants } = command.parameters;
 
     // Parse date
-    const date = this.parseDateText(dateText);
+    const date = await this.parseDateText(dateText);
     if (!date) {
       throw new Error(`Could not parse date: ${dateText}`);
     }
@@ -531,7 +529,7 @@ Return only valid JSON.
   /**
    * Parse date text
    */
-  private parseDateText(dateText: string): Date | null {
+  private async parseDateText(dateText: string): Promise<Date | null> {
     const now = new Date();
 
     // Handle relative dates
@@ -589,8 +587,7 @@ Return only valid JSON.
         return parsedDate;
       }
     } catch (error) {
-      console.error('Error parsing date with AI:', error);
-    }
+      }
 
     return null;
   }

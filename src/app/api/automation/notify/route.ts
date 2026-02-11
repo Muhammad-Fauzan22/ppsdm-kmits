@@ -88,7 +88,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<NotifyRes
       executionTime: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Error sending notifications:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -147,7 +146,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       executionTime: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Error fetching notification data:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

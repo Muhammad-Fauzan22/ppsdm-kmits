@@ -270,8 +270,7 @@ Return only the recommended amount as a number.
           recommendedAllocation = Math.min(aiRecommendation, availableBudget * 0.5); // Cap at 50% of available
         }
       } catch (error) {
-        console.error('Error generating budget recommendation:', error);
-      }
+        }
 
       const difference = recommendedAllocation - category.currentAllocation;
 
@@ -410,15 +409,13 @@ Format as JSON array with these fields.
           steps = JSON.parse(jsonMatch[0]);
         }
       } catch (parseError) {
-        console.error('Error parsing learning path JSON:', parseError);
-      }
+        }
 
       // Fallback if AI parsing fails
       if (steps.length === 0) {
         steps = this.generateDefaultLearningPath(targetSkill, currentLevel, targetLevel);
       }
     } catch (error) {
-      console.error('Error generating learning path:', error);
       steps = this.generateDefaultLearningPath(targetSkill, currentLevel, targetLevel);
     }
 
@@ -779,7 +776,6 @@ Provide 3 recommendations to address these risks. Format as a numbered list.
         .map(line => line.replace(/^\d+\.\s*/, '').trim())
         .slice(0, 3);
     } catch (error) {
-      console.error('Error generating team recommendations:', error);
       return ['Consider adding members with missing skills', 'Review team availability', 'Provide training for skill gaps'];
     }
   }

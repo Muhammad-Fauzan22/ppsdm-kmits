@@ -62,9 +62,7 @@ export default function IDPBuilderPage() {
             // In a real app, redirect to the generated IDP details page
             // router.push(`/idp/${result.data.id}`);
             alert('Holistic IDP Generated Successfully! (Mock Redirect)');
-            console.log(result);
-        } catch (error) {
-            console.error(error);
+            } catch (error) {
             alert('Failed to generate IDP');
         } finally {
             setLoading(false);

@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error processing ebook:', error);
     return NextResponse.json(
       { error: 'Failed to process ebook' },
       { status: 500 }

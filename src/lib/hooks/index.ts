@@ -63,11 +63,9 @@ export function useServiceWorker() {
                 .then((reg) => {
                     setRegistration(reg);
                     setIsRegistered(true);
-                    console.log("Service Worker registered:", reg);
-                })
+                    })
                 .catch((err) => {
-                    console.error("Service Worker registration failed:", err);
-                });
+                    });
         }
     }, []);
 
@@ -159,8 +157,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
                     setStoredValue(JSON.parse(item));
                 }
             } catch (error) {
-                console.error(error);
-            }
+                }
         }
     }, [key]);
 
@@ -172,8 +169,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
                 window.localStorage.setItem(key, JSON.stringify(valueToStore));
             }
         } catch (error) {
-            console.error(error);
-        }
+            }
     };
 
     return [storedValue, setValue] as const;

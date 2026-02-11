@@ -74,7 +74,6 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Report generation error:', error);
     return NextResponse.json(
       {
         success: false,

@@ -43,7 +43,9 @@ export class ResourceService {
                 .from('gre_quality_scores')
                 .upsert(qualityRecords, { onConflict: 'resource_id' });
 
-            if (qualityError) console.error('Error saving quality scores:', qualityError);
+            if (qualityError) {
+                console.error('Error upserting quality scores:', qualityError);
+            }
         }
 
         return { data: insertedResources, error: null };
@@ -66,7 +68,6 @@ export class ResourceService {
             .limit(limit);
 
         if (error) {
-            console.error('Search error:', error);
             return [];
         }
 

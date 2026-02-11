@@ -8,8 +8,6 @@ export async function middleware(request: NextRequest) {
     const results = await mcpIntegration.initialize()
     
     // Log connection status
-    console.log('MCP Integration Status:', results)
-
     // Example: Add MCP headers to responses
     const response = NextResponse.next()
     response.headers.set('X-MCP-Status', results.supabase && results.github ? 'OK' : 'ERROR')

@@ -24,8 +24,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: true, data: idp });
 
     } catch (error: unknown) {
-        console.error('IDP Generation API Error:', error);
-
         let errorMessage = 'Internal Server Error';
         if (error instanceof Error) {
             // Only expose message if safe or generic enough, otherwise default.

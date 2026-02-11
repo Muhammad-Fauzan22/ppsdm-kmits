@@ -27,7 +27,6 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error('Templates fetch error:', error);
     return NextResponse.json(
       {
         success: false,

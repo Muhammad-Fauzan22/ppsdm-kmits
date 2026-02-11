@@ -6,12 +6,11 @@ import { SheetParserEngine } from '../google-sheets/sheet-parser-engine';
  * Generates website pages automatically from spreadsheet data
  */
 export class DynamicPageGenerator {
-  private sheetsService: GoogleSheetsService;
+  private sheetsService: GoogleSheetsService | null = null;
   private parserEngine: SheetParserEngine;
   private pageRules: Record<string, any>;
 
   constructor() {
-    this.sheetsService = GoogleSheetsService.getInstance();
     this.parserEngine = new SheetParserEngine();
     
     // Define page generation rules
@@ -50,16 +49,25 @@ export class DynamicPageGenerator {
   }
 
   /**
+   * Initialize the service
+   */
+  private async initialize(): Promise<void> {
+    if (!this.sheetsService) {
+      this.sheetsService = await GoogleSheetsService.getInstance();
+    }
+  }
+
+  /**
    * Generate all website pages from spreadsheet data
    */
   async generateAllPages(): Promise<void> {
+    await this.initialize();
+    
     for (const [route, rule] of Object.entries(this.pageRules)) {
       try {
         await this.generatePage(route, rule);
-        console.log(`Successfully generated page: ${route}`);
-      } catch (error) {
-        console.error(`Failed to generate page ${route}:`, error);
-      }
+        } catch (error) {
+        }
     }
   }
 
@@ -445,8 +453,6 @@ export class DynamicPageGenerator {
   private async updateWebsitePage(route: string, html: string): Promise<void> {
     // In real implementation, this would update the website pages
     // For now, we'll just log the update
-    console.log(`Updated page ${route} with ${html.length} characters`);
-    
     // TODO: Implement actual page update logic
     // This could be writing to a static file, updating a CMS, or calling an API
   }

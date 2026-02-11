@@ -193,7 +193,6 @@ export function AssessmentRunner({
         timeSpentMs
       );
     } catch (err) {
-      console.error('Failed to submit response:', err);
       // Continue locally even if server fails
     }
 
@@ -258,8 +257,7 @@ export function AssessmentRunner({
       onComplete(assessmentResult);
     } catch (err) {
       setError('Gagal menyelesaikan assessment. Silakan coba lagi.');
-      console.error('Complete assessment error:', err);
-    } finally {
+      } finally {
       setIsSubmitting(false);
     }
   }, [isSubmitting, responses, questions, dimensionConfig, sessionId, completeAssessment, onComplete]);

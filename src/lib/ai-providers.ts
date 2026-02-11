@@ -181,7 +181,6 @@ export async function generateWithFallback(
 
       if (!enableFallback) break;
 
-      console.warn(`Provider ${providerName} failed:`, aiError.message);
       continue;
     }
   }

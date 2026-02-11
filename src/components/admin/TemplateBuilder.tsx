@@ -8,13 +8,13 @@ import React, { useState, useCallback, useRef } from 'react';
  * Drag-and-drop page components untuk membangun template website
  */
 
-interface TemplateBuilderProps {
+export interface TemplateBuilderProps {
   headers: string[];
   spreadsheetId: string;
   sheetName: string;
 }
 
-interface Component {
+export interface Component {
   id: string;
   type: 'header' | 'text' | 'image' | 'list' | 'table' | 'card' | 'hero' | 'footer' | 'form';
   name: string;
@@ -23,12 +23,12 @@ interface Component {
   config?: any;
 }
 
-interface PlacedComponent extends Component {
+export interface PlacedComponent extends Component {
   columnMapping: Record<string, string>;
   styles?: any;
 }
 
-interface PageTemplate {
+export interface PageTemplate {
   id: string;
   name: string;
   components: PlacedComponent[];
@@ -201,7 +201,6 @@ export function TemplateBuilder({ headers, spreadsheetId, sheetName }: TemplateB
         throw new Error(result.error || 'Export failed');
       }
     } catch (error) {
-      console.error('Error exporting template:', error);
       alert('Failed to export template');
     } finally {
       setIsExporting(false);

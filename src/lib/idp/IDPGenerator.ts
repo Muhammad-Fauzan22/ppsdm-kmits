@@ -45,8 +45,6 @@ export class IDPGenerator {
      * Generate Comprehensive Life Development Plan (Holistic IDP)
      */
     async generateIDP(config: HolisticIDPConfig) {
-        console.log(`Generating Holistic IDP for ${config.userId}`);
-
         const supabase = await createClient();
 
         // 1. Vision Decomposition
@@ -90,7 +88,6 @@ export class IDPGenerator {
             .single();
 
         if (error) {
-            console.error('Holistic IDP creation failed:', error);
             throw new Error('Failed to save Holistic IDP');
         }
 

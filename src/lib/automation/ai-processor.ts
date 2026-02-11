@@ -124,7 +124,6 @@ class AIProcessor {
         headers,
       };
     } catch (error) {
-      console.error('Error fetching spreadsheet data:', error);
       throw new Error(`Failed to fetch spreadsheet data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -415,8 +414,7 @@ Keep the response concise and actionable.
         }
       });
     } catch (error) {
-      console.error('Error generating AI insights:', error);
-    }
+      }
 
     return insights;
   }
@@ -456,9 +454,7 @@ Keep the response concise and actionable.
         },
       });
 
-      console.log(`Successfully wrote ${data.length} rows to spreadsheet`);
-    } catch (error) {
-      console.error('Error writing processed data:', error);
+      } catch (error) {
       throw new Error(`Failed to write processed data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }

@@ -47,8 +47,6 @@ export async function getOrCurateVideos(topic: string, category: 'HARDSKILL' | '
 export async function curateVideosForCourse(courseId: string, query: string) {
     if (!courseId || !query) return [];
 
-    console.log(`[VideoHunter] Curating for Course: ${courseId} / Query: ${query}`);
-
     // 1. Check existing videos for this course
     const { data: cached } = await supabase
         .from("video_resources")
@@ -57,7 +55,6 @@ export async function curateVideosForCourse(courseId: string, query: string) {
         .limit(10);
 
     if (cached && cached.length > 0) {
-        console.log(`[VideoHunter] Found cached videos for course ${courseId}`);
         return cached;
     }
 
@@ -79,7 +76,9 @@ export async function curateVideosForCourse(courseId: string, query: string) {
 
         const { error } = await supabase.from("video_resources").upsert(records, { onConflict: 'topic_key, youtube_video_id' });
 
-        if (error) console.error("Failed to save course videos:", error);
+        if (error) {
+            console.error('Error upserting videos:', error);
+        }
     }
 
     return videos;

@@ -64,7 +64,6 @@ export async function GET(request: NextRequest) {
             engine: "GRE v1.0 (Quantum-Enhanced)"
         });
     } catch (error) {
-        console.error("Error fetching resources:", error);
         return NextResponse.json(
             { error: "Failed to fetch resources" },
             { status: 500 }
@@ -153,7 +152,6 @@ export async function POST(request: NextRequest) {
             recommendation: result,
         });
     } catch (error) {
-        console.error("Error tracking resource:", error);
         return NextResponse.json(
             { error: "Failed to track resource" },
             { status: 500 }

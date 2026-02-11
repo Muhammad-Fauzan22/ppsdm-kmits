@@ -258,7 +258,6 @@ export async function GET(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error fetching progress:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }

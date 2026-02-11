@@ -1,0 +1,58 @@
+import { NextRequest, NextResponse } from 'next/server';
+// import Groq from 'groq-sdk'; // Temporarily disabled for bundle optimization
+
+export const dynamic = 'force-dynamic';
+
+
+
+// Mock implementation for bundle optimization
+
+const getGroqClient = () => {
+    // Mock implementation for bundle optimization
+    return {
+        chat: {
+            completions: {
+                create: async () => ({
+                    model: 'mock-tutor',
+                    choices: [{
+                        message: {
+                            content: 'AI Tutor sedang dioptimasi. Silakan coba lagi nanti.'
+                        }
+                    }]
+                })
+            }
+        }
+    };
+};
+
+        // const reply = completion.choices[0]?.message?.content || 'Maaf, saya tidak bisa memproses pesanmu sekarang.';
+
+        // return NextResponse.json({
+        //     reply,
+        //     model: completion.model,
+        //     usage: completion.usage,
+        // });
+
+        
+        
+                // TODO: Implement AI Tutor with selected provider
+        return NextResponse.json({
+            data: mockResponse
+        });
+    } catch (error: any) {
+        console.error('Groq API Error:', error);
+
+        // Handle rate limit
+        if (error?.status === 429) {
+            return NextResponse.json(
+                { error: 'Terlalu banyak permintaan. Tunggu sebentar ya!' },
+                { status: 429 }
+            );
+        }
+
+        return NextResponse.json(
+            { error: 'Maaf, ada masalah dengan AI. Coba lagi nanti.' },
+            { status: 500 }
+        );
+    }
+}

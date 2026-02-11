@@ -56,12 +56,10 @@ export const useGamificationStore = create<GamificationState>()(
                 // Check for level up
                 if (newLevel > state.level) {
                     // You could trigger a confetti event or toast here via a separate UI subscription
-                    console.log(`Level Up! ${state.level} -> ${newLevel}`);
-                }
+                    }
 
                 if (reason) {
-                    console.log(`[XP] +${amount} for ${reason}`);
-                }
+                    }
 
                 return { xp: newXP, level: newLevel, rank: newRank };
             }),

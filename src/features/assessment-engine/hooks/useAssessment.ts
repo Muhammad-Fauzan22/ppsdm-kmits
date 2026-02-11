@@ -143,7 +143,6 @@ export function useAssessment(config: DimensionConfig) {
 
 
         } catch (error) {
-            console.error("Assessment submission failed:", error);
             // Handle error state or toast
             alert("Gagal menyimpan assessment. Silakan coba lagi.");
         } finally {

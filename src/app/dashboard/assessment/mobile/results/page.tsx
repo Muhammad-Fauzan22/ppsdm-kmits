@@ -746,7 +746,7 @@ export default function MobileResultsPage() {
         <BottomNavigation
           items={NAVIGATION_ITEMS}
           activeItem="results"
-          onItemClick={(itemId) => console.log('Navigate to:', itemId)}
+          onItemClick={(itemId) => console.log(itemId)}
         />
 
         {/* Dimension Detail Modal */}

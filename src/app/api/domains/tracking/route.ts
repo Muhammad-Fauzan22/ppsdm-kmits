@@ -66,7 +66,6 @@ export async function GET(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error fetching tracking data:", error);
         return NextResponse.json(
             { error: "Failed to fetch tracking data" },
             { status: 500 }
@@ -134,7 +133,6 @@ export async function POST(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error creating tracking entry:", error);
         return NextResponse.json(
             { error: "Failed to create tracking entry" },
             { status: 500 }

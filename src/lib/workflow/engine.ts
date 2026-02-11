@@ -96,7 +96,6 @@ export class WorkflowEngine {
             await this.updateExecutionStatus(context.executionId, 'completed', context.variables);
 
         } catch (err: any) {
-            console.error('Workflow Execution Failed:', err);
             this.log(context, `ERROR: ${err.message}`);
             await this.updateExecutionStatus(context.executionId, 'failed', undefined, context.logs);
         }
@@ -160,7 +159,6 @@ export class WorkflowEngine {
 
     private log(context: ExecutionContext, message: string) {
         const timestamped = `[${new Date().toISOString()}] ${message}`;
-        console.log(timestamped);
         context.logs.push(timestamped);
     }
 

@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Preview generation error:', error);
     return NextResponse.json(
       {
         success: false,

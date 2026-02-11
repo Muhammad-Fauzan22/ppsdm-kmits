@@ -89,7 +89,6 @@ export function useImagePreloader({
                 }
                 return bitmap;
               } catch (err) {
-                console.warn(`Failed to load priority frame ${index}:`, err);
                 return null;
               }
             }
@@ -139,8 +138,7 @@ export function useImagePreloader({
                   }
                 }
               } catch (err) {
-                console.warn(`Failed to load frame ${index}:`, err);
-              }
+                }
             })
           );
         }

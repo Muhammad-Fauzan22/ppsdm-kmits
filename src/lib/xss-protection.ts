@@ -65,7 +65,6 @@ export function sanitizeHtml(dirty: string, options: any = {}): string {
     const config = { ...configureDOMPurify(), ...options };
     return DOMPurifyServer.sanitize(dirty, config) as unknown as string;
   } catch (error) {
-    console.error('HTML sanitization error:', error);
     // Return safe fallback
     return DOMPurifyServer.sanitize(dirty, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
   }
@@ -109,8 +108,7 @@ export const sanitizeInput = {
 
     // Ensure https for external links
     if (url.startsWith('http://')) {
-      console.warn('HTTP URL detected, consider upgrading to HTTPS:', url);
-    }
+      }
 
     return url;
   },

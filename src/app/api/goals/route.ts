@@ -58,8 +58,7 @@ export async function GET(request: NextRequest) {
             .eq('user_id', user.id)
 
         if (countError) {
-            console.error('Error counting goals:', countError)
-        }
+            }
 
         return NextResponse.json({
             success: true,
@@ -77,7 +76,6 @@ export async function GET(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error fetching goals:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }
@@ -160,7 +158,6 @@ export async function POST(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error creating goal:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }
@@ -269,7 +266,6 @@ export async function PATCH(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error updating goal:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }
@@ -320,7 +316,6 @@ export async function DELETE(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error deleting goal:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }

@@ -91,7 +91,6 @@ export async function POST(
       .single();
 
     if (error) {
-      console.error('Error creating enrollment:', error);
       return NextResponse.json(
         { error: 'Failed to create enrollment' },
         { status: 500 }
@@ -104,7 +103,6 @@ export async function POST(
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

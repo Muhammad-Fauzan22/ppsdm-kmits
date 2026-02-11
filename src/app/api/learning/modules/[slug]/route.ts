@@ -67,7 +67,6 @@ export async function GET(
         });
 
     } catch (error: any) {
-        console.error('Module detail API error:', error);
         return NextResponse.json(
             { success: false, error: error.message || 'Server error' },
             { status: 500 }

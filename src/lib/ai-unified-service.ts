@@ -264,10 +264,8 @@ export class UnifiedAIService {
         if (!isHealthy) continue;
 
         const response = await provider.generate(request);
-        console.log(`✅ AI generation successful via ${providerName}`);
         return response;
       } catch (error) {
-        console.warn(`⚠️ Provider ${providerName} failed:`, error);
         continue;
       }
     }

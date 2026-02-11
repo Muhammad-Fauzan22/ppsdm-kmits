@@ -24,7 +24,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ success: true, count: resources?.length, data: resources });
 
     } catch (error: any) {
-        console.error('Resource Search API Error:', error);
         return NextResponse.json(
             { error: error.message || 'Internal Server Error' },
             { status: 500 }

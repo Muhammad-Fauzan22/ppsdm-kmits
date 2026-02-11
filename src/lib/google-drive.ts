@@ -94,7 +94,6 @@ export async function listBooksInDrive(
         tags: extractTagsFromDescription(file.description),
       }));
   } catch (error) {
-    console.error('Error listing books from Drive:', error);
     throw new Error('Failed to list books from Google Drive');
   }
 }
@@ -126,7 +125,6 @@ export async function getBookDetails(fileId: string): Promise<DriveFile | null> 
       description: file.description || undefined,
     };
   } catch (error) {
-    console.error('Error getting book details:', error);
     return null;
   }
 }
@@ -145,7 +143,6 @@ export async function downloadBook(fileId: string): Promise<Buffer> {
 
     return Buffer.from(response.data as ArrayBuffer);
   } catch (error) {
-    console.error('Error downloading book:', error);
     throw new Error('Failed to download book from Google Drive');
   }
 }
@@ -164,7 +161,6 @@ export async function getBookStream(fileId: string): Promise<NodeJS.ReadableStre
 
     return response.data as NodeJS.ReadableStream;
   } catch (error) {
-    console.error('Error getting book stream:', error);
     throw new Error('Failed to get book stream from Google Drive');
   }
 }
@@ -201,7 +197,6 @@ export async function uploadBook(
 
     return response.data.id!;
   } catch (error) {
-    console.error('Error uploading book:', error);
     throw new Error('Failed to upload book to Google Drive');
   }
 }
@@ -236,7 +231,6 @@ export async function searchBooks(
         category: extractCategoryFromName(file.name || ''),
       }));
   } catch (error) {
-    console.error('Error searching books:', error);
     throw new Error('Failed to search books in Google Drive');
   }
 }
@@ -249,7 +243,6 @@ export async function deleteBook(fileId: string): Promise<void> {
     const drive = getDriveClient();
     await drive.files.delete({ fileId });
   } catch (error) {
-    console.error('Error deleting book:', error);
     throw new Error('Failed to delete book from Google Drive');
   }
 }
@@ -277,7 +270,6 @@ export async function createFolder(
 
     return response.data.id!;
   } catch (error) {
-    console.error('Error creating folder:', error);
     throw new Error('Failed to create folder in Google Drive');
   }
 }

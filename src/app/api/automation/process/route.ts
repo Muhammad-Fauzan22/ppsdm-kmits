@@ -77,7 +77,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<ProcessRe
       executionTime: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Error processing automation:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -129,7 +128,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       executionTime: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Error getting automation statistics:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

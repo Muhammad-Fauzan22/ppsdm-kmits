@@ -59,7 +59,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<InsightsR
       executionTime: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Error generating insights:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -111,7 +110,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       executionTime: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Error getting member insights:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

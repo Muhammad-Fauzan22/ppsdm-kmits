@@ -42,8 +42,7 @@ export function useDashboardData() {
                     cohortRank: 15
                 });
             } catch (error) {
-                console.error("Failed to fetch dashboard data", error);
-            } finally {
+                } finally {
                 setLoading(false);
             }
         };

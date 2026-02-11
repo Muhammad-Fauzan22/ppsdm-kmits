@@ -58,8 +58,7 @@ export async function GET(request: NextRequest) {
         const { count, error: countError } = await countQuery
 
         if (countError) {
-            console.error('Error counting activities:', countError)
-        }
+            }
 
         // Get activity summary by type
         const { data: summary, error: summaryError } = await supabase
@@ -91,7 +90,6 @@ export async function GET(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error fetching activities:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }
@@ -193,7 +191,6 @@ export async function POST(request: NextRequest) {
                 { status: 401 }
             )
         }
-        console.error('Error creating activity:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }

@@ -28,7 +28,6 @@ export default function CommunicationLab() {
                 videoRef.current.srcObject = mediaStream;
             }
         } catch (err) {
-            console.error("Error accessing camera:", err);
             alert("Camera access denied or unavailable. Using simulation mode.");
         }
     };

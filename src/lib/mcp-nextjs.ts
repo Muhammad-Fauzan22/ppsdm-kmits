@@ -21,7 +21,6 @@ export class MCPNextJS {
             this.initialized = true
             return results.supabase && results.github
         } catch (error) {
-            console.error('MCP Next.js initialization failed:', error)
             return false
         }
     }
@@ -46,7 +45,6 @@ export class MCPNextJS {
             )
             return result?.[0] || null
         } catch (error) {
-            console.error('Error getting user profile:', error)
             return null
         }
     }
@@ -59,7 +57,6 @@ export class MCPNextJS {
             )
             return result?.[0] || null
         } catch (error) {
-            console.error('Error updating user profile:', error)
             return null
         }
     }
@@ -72,7 +69,6 @@ export class MCPNextJS {
             )
             return result || []
         } catch (error) {
-            console.error('Error getting recent activities:', error)
             return []
         }
     }
@@ -85,7 +81,6 @@ export class MCPNextJS {
             )
             return result || []
         } catch (error) {
-            console.error('Error getting dimension scores:', error)
             return []
         }
     }
@@ -108,7 +103,6 @@ export class MCPNextJS {
             const result = await this.querySupabase(query, params)
             return result || []
         } catch (error) {
-            console.error('Error getting leaderboard:', error)
             return []
         }
     }
@@ -138,8 +132,7 @@ export class MCPNextJS {
                 return true
             }
         } catch (error) {
-            console.error('Error syncing user data:', error)
-        }
+            }
         
         return false
     }

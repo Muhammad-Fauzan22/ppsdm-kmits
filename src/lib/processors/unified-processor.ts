@@ -12,8 +12,6 @@ export class ContentAlchemyProcessor {
      * Orchestrates the 12-format generation.
      */
     async process(fileUrl: string, resourceId: string, options: ProcessingOptions = {}) {
-        console.log(`[Alchemy] Starting processing for ${resourceId}`);
-
         try {
             // 1. Update status to processing
             await this.updateStatus(resourceId, 'processing');
@@ -32,11 +30,9 @@ export class ContentAlchemyProcessor {
             // 5. Save Results
             await this.saveResults(resourceId, analysis);
 
-            console.log(`[Alchemy] Finished processing for ${resourceId}`);
             return { success: true };
 
         } catch (error) {
-            console.error(`[Alchemy] Failed processing ${resourceId}`, error);
             await this.updateStatus(resourceId, 'failed', error instanceof Error ? error.message : 'Unknown error');
             throw error;
         }
@@ -44,7 +40,7 @@ export class ContentAlchemyProcessor {
 
     private async updateStatus(id: string, status: ProcessingStatus, error?: string) {
         // Stub: Database update
-        console.log(`Status update: ${id} -> ${status} ${error ? `(${error})` : ''}`);
+        console.log(`Updating status for ${id}: ${status}${error ? ` - Error: ${error}` : ''}`);
     }
 
     private async extractContent(url: string) {
@@ -59,6 +55,6 @@ export class ContentAlchemyProcessor {
 
     private async saveResults(id: string, results: any) {
         // Stub: Save to DB
-        console.log(`Saving results for ${id}`);
+        console.log(`Saving results for ${id}:`, results);
     }
 }

@@ -39,7 +39,6 @@ export function HeroBoomerangBackground() {
           setIsLoaded(true);
         }
       } catch (error) {
-        console.warn('Some frames failed to load:', error);
         // Continue with whatever loaded
         if (isMounted && imagesRef.current.length > 0) {
           setIsLoaded(true);

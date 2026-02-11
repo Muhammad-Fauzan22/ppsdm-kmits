@@ -81,7 +81,6 @@ export async function POST(req: NextRequest) {
         return await importDirectResources(supabase, resources);
 
     } catch (error: any) {
-        console.error("[Library Import] Error:", error);
         return NextResponse.json(
             { success: false, error: error.message },
             { status: 500 }
@@ -179,7 +178,6 @@ export async function GET(req: NextRequest) {
         });
 
     } catch (error: any) {
-        console.error("[Library Import GET] Error:", error);
         return NextResponse.json(
             { success: false, error: error.message },
             { status: 500 }

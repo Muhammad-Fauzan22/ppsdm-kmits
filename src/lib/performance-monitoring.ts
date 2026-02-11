@@ -51,7 +51,6 @@ export class PerformanceMonitor {
 
   public startMonitoring(): void {
     if (this.isMonitoring) {
-      console.warn('Performance monitoring already active');
       return;
     }
 
@@ -125,12 +124,10 @@ export class PerformanceMonitor {
       }
     }
 
-    console.log('Performance monitoring started');
-  }
+    }
 
   public stopMonitoring(): void {
     if (!this.isMonitoring) {
-      console.warn('Performance monitoring not active');
       return;
     }
 
@@ -138,8 +135,7 @@ export class PerformanceMonitor {
     this.observers.forEach(observer => observer.disconnect());
     this.observers = [];
     
-    console.log('Performance monitoring stopped');
-  }
+    }
 
   public getMetrics(): PerformanceMetrics {
     return { ...this.metrics };

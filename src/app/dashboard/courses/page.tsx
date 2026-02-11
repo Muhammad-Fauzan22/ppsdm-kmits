@@ -78,7 +78,6 @@ export default function CoursesPage() {
       if (error) throw error;
       setCourses(data || []);
     } catch (error) {
-      console.error('Error fetching courses:', error);
       toast({
         title: 'Error',
         description: 'Failed to load courses',

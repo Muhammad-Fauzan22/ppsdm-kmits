@@ -25,8 +25,6 @@ export async function generateModuleContent(
   level: "beginner" | "intermediate" | "advanced"
 ) {
   try {
-    console.log(`[AI] Generating module content for: ${topic}`);
-
     const content = await generateLearningContent(topic, level);
 
     // Save to Supabase
@@ -48,7 +46,6 @@ export async function generateModuleContent(
       modulesUpdated: data?.length || 0,
     };
   } catch (error) {
-    console.error("[AI] Module content generation failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -65,8 +62,6 @@ export async function generateModuleQuiz(
   questionCount: number = 5
 ) {
   try {
-    console.log(`[AI] Generating ${questionCount} quiz questions for: ${topic}`);
-
     const questionsJson = await generateQuizQuestions(topic, questionCount);
 
     // Parse JSON questions
@@ -76,7 +71,6 @@ export async function generateModuleQuiz(
       const jsonMatch = questionsJson.match(/\[[\s\S]*\]/);
       questions = jsonMatch ? JSON.parse(jsonMatch[0]) : [];
     } catch (e) {
-      console.warn("[AI] Failed to parse quiz JSON, using raw response");
       questions = [{ text: questionsJson, type: "text" }];
     }
 
@@ -106,7 +100,6 @@ export async function generateModuleQuiz(
       questions,
     };
   } catch (error) {
-    console.error("[AI] Quiz generation failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -122,8 +115,6 @@ export async function generateCourseCurriculum(
   duration: string = "4 weeks"
 ) {
   try {
-    console.log(`[AI] Generating curriculum for: ${courseTitle}`);
-
     const curriculum = await generateCurriculum(courseTitle, duration);
 
     return {
@@ -131,7 +122,6 @@ export async function generateCourseCurriculum(
       curriculum,
     };
   } catch (error) {
-    console.error("[AI] Curriculum generation failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -148,8 +138,6 @@ export async function analyzeStudentResults(
   responses: Record<string, string>
 ) {
   try {
-    console.log(`[AI] Analyzing assessment for student: ${studentId}`);
-
     const analysis = await analyzeAssessment(responses, assessmentType);
 
     // Save analysis to Supabase
@@ -169,7 +157,6 @@ export async function analyzeStudentResults(
       saved: !!data,
     };
   } catch (error) {
-    console.error("[AI] Assessment analysis failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -186,8 +173,6 @@ export async function generateLearningRecommendations(
   assessmentResults: Record<string, number>
 ) {
   try {
-    console.log(`[AI] Generating recommendations for student: ${studentId}`);
-
     const prompt = `Based on the student's current courses (${currentCourses.join(", ")}) and assessment results (${JSON.stringify(assessmentResults)}), recommend 3-5 relevant courses and learning paths for continued growth. Consider:
 - Strength areas to build upon
 - Weakness areas to improve
@@ -211,7 +196,6 @@ Provide actionable, specific recommendations.`;
       recommendations: result.content,
     };
   } catch (error) {
-    console.error("[AI] Recommendation generation failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -228,8 +212,6 @@ export async function generateAdaptiveLearningPath(
   timeAvailable: string
 ) {
   try {
-    console.log(`[AI] Generating adaptive learning path`);
-
     const prompt = `Create a personalized adaptive learning path for a ${studentLevel} level student with these goals: ${goals.join(", ")}. 
 Available time: ${timeAvailable}.
 
@@ -258,7 +240,6 @@ Make it practical and achievable.`;
       model: result.model,
     };
   } catch (error) {
-    console.error("[AI] Learning path generation failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",

@@ -105,8 +105,7 @@ export default function LibraryPage() {
                     const videos = await getOrCurateVideos(searchQuery);
                     setRecVideos(videos);
                 } catch (e) {
-                    console.error("Video fetch error", e);
-                }
+                    }
             }
         };
         const timeoutId = setTimeout(fetchVideos, 1000);

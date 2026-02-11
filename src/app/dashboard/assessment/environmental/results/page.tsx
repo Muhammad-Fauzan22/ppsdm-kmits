@@ -65,8 +65,11 @@ export default function EnvironmentalResultsPage() {
                     .limit(1)
                     .single();
 
-                if (error) console.error(error);
-                else setResult(data);
+                if (error) {
+                    console.error(error);
+                } else {
+                    setResult(data);
+                }
             } finally {
                 setFetching(false);
             }

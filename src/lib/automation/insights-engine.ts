@@ -277,8 +277,7 @@ Predict the spending for the next month. Return only the number.
           prediction = predictedValue;
         }
       } catch (error) {
-        console.error('Error generating budget prediction:', error);
-      }
+        }
 
       patterns.push({
         category,
@@ -444,7 +443,6 @@ Provide 3 specific recommendations to close this skill gap. Format as a numbered
           .map(line => line.replace(/^\d+\.\s*/, '').trim())
           .slice(0, 3);
       } catch (error) {
-        console.error('Error generating skill gap recommendations:', error);
         recommendations = [
           `Organize training workshops for ${skill}`,
           `Create peer learning groups for ${skill}`,
@@ -596,8 +594,7 @@ Provide 3 personalized recommendations to improve their engagement. Format as a 
           .map(line => line.replace(/^\d+\.\s*/, '').trim())
           .slice(0, 3);
       } catch (error) {
-        console.error('Error generating member recommendations:', error);
-      }
+        }
     }
 
     return {

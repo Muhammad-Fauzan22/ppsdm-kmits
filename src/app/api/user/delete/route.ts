@@ -104,7 +104,6 @@ export async function POST(request: NextRequest) {
       });
 
     if (deletionError) {
-      console.error('Error creating deletion request:', deletionError);
       return NextResponse.json(
         { error: 'Failed to schedule account deletion' },
         { status: 500 }
@@ -153,7 +152,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Account deletion error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -225,7 +223,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error checking deletion status:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -10,8 +10,6 @@ const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN || 'r8_p
 export type SwarmTask = 'summary' | 'creative' | 'visual' | 'analysis';
 
 export async function swarmGenerate(task: SwarmTask, prompt: string, jsonMode: boolean = false): Promise<string> {
-    console.log(`[Swarm Router] Routing task '${task}'...`);
-
     try {
         switch (task) {
             case 'summary':
@@ -25,7 +23,6 @@ export async function swarmGenerate(task: SwarmTask, prompt: string, jsonMode: b
                 return await runGroq(prompt, jsonMode);
         }
     } catch (error) {
-        console.error(`[Swarm Error] Task ${task} failed:`, error);
         // Fallback Hierarchy
         if (task === 'summary') return await runHuggingFace(prompt);
         return "Generation Failed";

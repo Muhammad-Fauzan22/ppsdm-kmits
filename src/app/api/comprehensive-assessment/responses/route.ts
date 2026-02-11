@@ -96,7 +96,6 @@ export async function POST(request: NextRequest) {
             },
         });
     } catch (error) {
-        console.error("Error submitting responses:", error);
         return NextResponse.json(
             { error: "Failed to submit responses" },
             { status: 500 }
@@ -140,7 +139,6 @@ export async function GET(request: NextRequest) {
             responses,
         });
     } catch (error) {
-        console.error("Error fetching responses:", error);
         return NextResponse.json(
             { error: "Failed to fetch responses" },
             { status: 500 }

@@ -65,7 +65,6 @@ export async function GET() {
                 { status: 401 }
             )
         }
-        console.error('Error fetching dimension scores:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }
@@ -172,7 +171,6 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             )
         }
-        console.error('Error saving dimension scores:', error)
         return NextResponse.json(
             { success: false, error: 'Internal server error' },
             { status: 500 }

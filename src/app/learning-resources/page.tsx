@@ -47,7 +47,6 @@ export default function ResourcesPage() {
                     setResources(data.resources);
                 }
             } catch (error) {
-                console.error("Failed to fetch resources", error);
                 setResources(curatedFreeResources); // Fallback
             } finally {
                 setLoading(false);

@@ -160,13 +160,13 @@ export async function trackExperimentEvent(
     if (!variant) return;
 
     // In production, log to database or analytics service
-    console.log('[A/B Tracking]', {
-        userId,
-        experimentId,
-        variant,
-        metric,
-        value,
-        timestamp: new Date().toISOString(),
+    console.log('Experiment event tracked:', {
+      userId,
+      experimentId,
+      metric,
+      value,
+      variant,
+      timestamp: new Date().toISOString()
     });
 
     // Would save to Supabase:

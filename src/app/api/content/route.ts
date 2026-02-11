@@ -103,7 +103,6 @@ export async function GET(request: NextRequest) {
     const { data: contents, error, count } = await query;
 
     if (error) {
-      console.error('Database error:', error);
       return NextResponse.json(
         { error: 'Failed to fetch content', details: error.message },
         { status: 500 }
@@ -141,8 +140,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('API error:', error);
-    
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid query parameters', details: error.errors },
@@ -196,7 +193,6 @@ export async function POST(request: NextRequest) {
       });
 
     if (error) {
-      console.error('Failed to track interaction:', error);
       return NextResponse.json(
         { error: 'Failed to track interaction' },
         { status: 500 }
@@ -212,7 +208,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    console.error('API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -41,8 +41,7 @@ class AnalyticsTracker {
         }
 
         if (process.env.NODE_ENV === 'development') {
-            console.log('[Analytics]', event);
-        }
+            }
     }
 
     // Common tracking methods

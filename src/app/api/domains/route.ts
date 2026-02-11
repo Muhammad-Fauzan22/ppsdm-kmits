@@ -86,7 +86,6 @@ export async function GET(request: NextRequest) {
             });
         }
     } catch (error) {
-        console.error("Error fetching domain scores:", error);
         return NextResponse.json(
             { error: "Failed to fetch domain scores" },
             { status: 500 }
@@ -143,7 +142,6 @@ export async function POST(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error creating domain record:", error);
         return NextResponse.json(
             { error: "Failed to create record" },
             { status: 500 }

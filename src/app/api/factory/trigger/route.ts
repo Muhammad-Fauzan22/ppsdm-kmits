@@ -64,7 +64,6 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error: any) {
-        console.error('Factory trigger error:', error);
         return NextResponse.json({
             success: false,
             error: error.message || 'Failed to trigger pipeline'

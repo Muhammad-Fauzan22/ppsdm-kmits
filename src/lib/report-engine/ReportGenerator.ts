@@ -57,7 +57,6 @@ export class ReportGenerator {
         },
       };
     } catch (error) {
-      console.error('Report generation error:', error);
       throw new Error(`Failed to generate report: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -89,7 +88,6 @@ export class ReportGenerator {
       // Convert to string
       return buffer.toString('utf-8');
     } catch (error) {
-      console.error('Preview generation error:', error);
       throw new Error(`Failed to generate preview: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -117,7 +115,6 @@ export class ReportGenerator {
         const result = await this.generate(reportType, format, assessmentId, userId, options);
         results.push(result);
       } catch (error) {
-        console.error(`Failed to generate ${format} report:`, error);
         // Continue with other formats even if one fails
       }
     }

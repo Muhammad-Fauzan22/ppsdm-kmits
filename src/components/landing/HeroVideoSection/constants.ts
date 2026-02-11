@@ -60,7 +60,6 @@ export const LOADING_STATES = {
 export function getFramePath(frameIndex: number): string {
   const frameNumber = AVAILABLE_FRAMES[frameIndex];
   if (frameNumber === undefined) {
-    console.warn(`Invalid frame index: ${frameIndex}`);
     return "";
   }
   const paddedNumber = frameNumber.toString().padStart(3, "0");

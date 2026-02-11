@@ -121,6 +121,7 @@ export interface ButtonProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   iconOnly?: React.ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void | Promise<void>;
 }
 
 // ==========================================

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Search, BookOpen, Filter, Loader2, Sparkles, TrendingUp, Grid, List } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { BookCoverImage } from '@/components/ui/OptimizedImage';
 
 // Types
 type Book = {
@@ -47,8 +48,7 @@ export default function LibraryPage() {
                 setCategories(['All', ...uniqueCats]);
             }
         } catch (error) {
-            console.error('Error fetching books:', error);
-        } finally {
+            } finally {
             setLoading(false);
         }
     }
@@ -194,14 +194,11 @@ function BookCard({ book, index, viewMode }: { book: Book, index: number, viewMo
                 className="group flex gap-6 bg-white dark:bg-slate-900/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-800 hover:border-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300"
             >
                 <div className="w-24 h-36 shrink-0 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-800 shadow-md transform group-hover:scale-105 transition-transform duration-500">
-                    {book.cover_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={book.cover_url} alt={book.title} className="w-full h-full object-cover" />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400">
-                            <BookOpen className="w-8 h-8" />
-                        </div>
-                    )}
+                    <BookCoverImage 
+                        src={book.cover_url} 
+                        alt={book.title}
+                        className="rounded-lg"
+                    />
                 </div>
                 <div className="flex-1 flex flex-col justify-center">
                     <div className="flex items-start justify-between">
@@ -242,26 +239,11 @@ function BookCard({ book, index, viewMode }: { book: Book, index: number, viewMo
         >
             {/* Image Container with Dynamic Shadow */}
             <div className="aspect-[2/3] relative overflow-hidden bg-slate-100 dark:bg-slate-800">
-                {book.cover_url ? (
-                    <>
-                        {/* Blur Backlayer for Glow Effect */}
-                        <div
-                            className="absolute -inset-4 bg-cover bg-center blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-700"
-                            style={{ backgroundImage: `url(${book.cover_url})` }}
-                        />
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src={book.cover_url}
-                            alt={book.title}
-                            className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-                    </>
-                ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-slate-800/50">
-                        <BookOpen className="w-12 h-12 mb-3 opacity-50" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">{book.category}</span>
-                    </div>
-                )}
+                <BookCoverImage 
+                    src={book.cover_url} 
+                    alt={book.title}
+                    className="transition-transform duration-700 group-hover:scale-110"
+                />
 
                 {/* Modern Gradient Overlay */}
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300 z-20" />

@@ -171,7 +171,6 @@ export async function withCompression(
     return compressedResponse;
 
   } catch (error) {
-    console.error('Compression error:', error);
     // Return original response if compression fails
     return response;
   }
@@ -232,7 +231,7 @@ export function logCompressionPerformance(
 ) {
   const ratio = ((originalSize - compressedSize) / originalSize) * 100;
 
-  console.log(`Compression: ${algorithm} | Original: ${originalSize}B | Compressed: ${compressedSize}B | Ratio: ${ratio.toFixed(1)}% | Time: ${duration}ms`);
+  console.log(`Compression: ${algorithm} | Ratio: ${ratio.toFixed(2)}% | Time: ${duration}ms`);
 
   compressionStats.recordCompression(originalSize, compressedSize);
 }
@@ -316,9 +315,9 @@ export async function precompressAssets(assetPaths: string[]): Promise<void> {
         // Brotli not available, skip
       }
 
-      console.log(`Pre-compressed: ${path.basename(assetPath)}`);
+      console.log(`Pre-compressed: ${assetPath}`);
     } catch (error) {
-      console.error(`Failed to compress ${assetPath}:`, error);
+      console.error(`Failed to compress: ${assetPath}`, error);
     }
   }
 }

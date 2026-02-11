@@ -8,7 +8,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
  * Live spreadsheet interface dengan real-time preview dan validation
  */
 
-interface SheetData {
+export interface SheetData {
   spreadsheetId: string;
   sheetName: string;
   headers: string[];
@@ -16,21 +16,21 @@ interface SheetData {
   metadata?: any;
 }
 
-interface CellData {
+export interface CellData {
   value: string;
   isValid: boolean;
   validationMessage?: string;
   isModified: boolean;
 }
 
-interface ValidationRule {
+export interface ValidationRule {
   type: 'required' | 'email' | 'url' | 'number' | 'date' | 'regex' | 'enum';
   pattern?: string;
   values?: string[];
   message?: string;
 }
 
-interface ColumnConfig {
+export interface ColumnConfig {
   name: string;
   type: 'text' | 'number' | 'date' | 'boolean' | 'select';
   validation?: ValidationRule;
@@ -215,8 +215,7 @@ export function SpreadsheetEditor({ data, onUpdate, onRefresh }: SpreadsheetEdit
       // Reset modified flags
       setCells(prev => prev.map(row => row.map(cell => ({ ...cell, isModified: false }))));
     } catch (error) {
-      console.error('Error saving:', error);
-    } finally {
+      } finally {
       setIsSaving(false);
     }
   }, [cells, onUpdate]);

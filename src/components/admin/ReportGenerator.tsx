@@ -8,14 +8,14 @@ import React, { useState, useCallback } from 'react';
  * Automated report generator untuk PDF/PPT dari data spreadsheet
  */
 
-interface ReportGeneratorProps {
+export interface ReportGeneratorProps {
   headers: string[];
   rows: any[][];
   spreadsheetId: string;
   sheetName: string;
 }
 
-interface ReportTemplate {
+export interface ReportTemplate {
   id: string;
   name: string;
   type: 'pdf' | 'ppt' | 'excel';
@@ -24,7 +24,7 @@ interface ReportTemplate {
   config: any;
 }
 
-interface ReportSchedule {
+export interface ReportSchedule {
   id: string;
   name: string;
   frequency: 'daily' | 'weekly' | 'monthly';
@@ -177,7 +177,6 @@ export function ReportGenerator({ headers, rows, spreadsheetId, sheetName }: Rep
         throw new Error(result.error || 'Report generation failed');
       }
     } catch (error) {
-      console.error('Error generating report:', error);
       alert('Failed to generate report');
     } finally {
       setIsGenerating(false);

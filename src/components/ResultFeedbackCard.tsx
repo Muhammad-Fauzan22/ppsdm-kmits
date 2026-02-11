@@ -52,7 +52,9 @@ export function ResultFeedbackCard({ isCorrect, userChoiceText, feedbackTag, rem
                             size="sm"
                             variant="outline"
                             className="w-full mt-2 border-amber-200 hover:bg-amber-100 text-amber-800"
-                            onClick={() => window.open(`/library/${remedial.resource_id}`, '_blank')}
+                            onClick={() => {
+                                window.open(`/library/${remedial.resource_id}`, '_blank');
+                            }}
                         >
                             <BookOpen className="mr-2 h-4 w-4" />
                             Pelajari Konsep Ini (5 Menit)

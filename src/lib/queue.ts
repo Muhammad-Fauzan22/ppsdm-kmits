@@ -63,8 +63,6 @@ export async function enqueueBookProcessing(
     retries: 3,
   });
 
-  console.log(`Enqueued book ${bookId} for processing, messageId: ${result.messageId}`);
-
   return { messageId: result.messageId };
 }
 
@@ -152,8 +150,6 @@ export async function enqueueBatchProcessing(
     messageIds.push(...batchResults.map(r => r.messageId));
   }
 
-  console.log(`Enqueued ${bookIds.length} books in batches, total messages: ${messageIds.length}`);
-
   return { messageIds };
 }
 
@@ -173,8 +169,6 @@ export async function scheduleRecurringJob(
     body: JSON.stringify(payload || {}),
   });
 
-  console.log(`Scheduled recurring job ${jobType} with cron: ${cronExpression}`);
-
   return { scheduleId: result.scheduleId };
 }
 
@@ -183,8 +177,7 @@ export async function scheduleRecurringJob(
  */
 export async function deleteScheduledJob(scheduleId: string): Promise<void> {
   await qstash.schedules.delete(scheduleId);
-  console.log(`Deleted scheduled job: ${scheduleId}`);
-}
+  }
 
 /**
  * List all scheduled jobs

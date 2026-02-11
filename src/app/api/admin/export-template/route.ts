@@ -1,25 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withAdminAuth } from '@/lib/admin-auth';
 import { GoogleSheetsService } from '@/lib/google-sheets/google-sheets.service';
+import { z } from 'zod';
+
+// Validation schema
+const exportTemplateSchema = z.object({
+  template: z.object({
+    name: z.string().min(1).max(100),
+    components: z.array(z.any())
+  }),
+  spreadsheetId: z.string().min(1),
+  sheetName: z.string().min(1).max(100)
+});
 
 /**
- * Export Template API Route
- * =========================
+ * Export Template API Route (Admin only)
  * Export template sebagai website page
  */
-
-export async function POST(request: NextRequest) {
+export const POST = withAdminAuth(async (request: NextRequest, admin) => {
   try {
     const body = await request.json();
-    const { template, spreadsheetId, sheetName } = body;
+    
+    // Validate input
+    const { template, spreadsheetId, sheetName } = exportTemplateSchema.parse(body);
 
-    if (!template || !spreadsheetId || !sheetName) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required parameters' },
-        { status: 400 }
-      );
-    }
-
-    const sheetsService = GoogleSheetsService.getInstance();
+    const sheetsService = await GoogleSheetsService.getInstance();
 
     // Fetch data from spreadsheet
     const range = `${sheetName}!A1:Z1000`;
@@ -28,9 +33,13 @@ export async function POST(request: NextRequest) {
     // Generate page from template
     const pageContent = generatePageFromTemplate(template, data);
 
-    // Save page to file system or database
-    // TODO: Implement page saving logic
-    const pagePath = `/pages/generated/${template.name.toLowerCase().replace(/\s+/g, '-')}.tsx`;
+    // Create safe filename
+    const safeFilename = template.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    
+    const pagePath = `/pages/generated/${safeFilename}.tsx`;
 
     return NextResponse.json({
       success: true,
@@ -41,10 +50,24 @@ export async function POST(request: NextRequest) {
         componentsCount: template.components.length,
         rowsUsed: data.length,
         timestamp: new Date().toISOString(),
+        exportedBy: admin.email
       },
     });
   } catch (error) {
-    console.error('Error exporting template:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid input data',
+          details: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { 
         success: false, 
@@ -53,9 +76,14 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});
 
 function generatePageFromTemplate(template: any, data: any[]): string {
+  // SECURITY: Sanitize template name to prevent code injection
+  const sanitizedName = template.name
+    .replace(/[^a-zA-Z0-9\s-]/g, '')
+    .trim();
+
   // Generate React component from template
   const imports = `
 'use client';

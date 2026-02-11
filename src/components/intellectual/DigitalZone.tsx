@@ -11,7 +11,7 @@ export default function DigitalZone() {
     // Sandbox State
     const [htmlCode, setHtmlCode] = useState('<div class="hello">Hello World!</div>');
     const [cssCode, setCssCode] = useState('.hello { color: blue; font-size: 24px; font-weight: bold; text-align: center; margin-top: 20%; }');
-    const [jsCode, setJsCode] = useState('console.log("Welcome to the Digital Zone!");');
+    const [jsCode, setJsCode] = useState('');
     const [outputSrc, setOutputSrc] = useState('');
 
     // Resources State

@@ -94,7 +94,6 @@ export default function AIAnalytics({
         readingLevel,
       });
     } catch (err) {
-      console.error('Local ML analysis failed:', err);
       // Continue without local analysis
     }
   }, [data]);
@@ -158,7 +157,6 @@ Focus on:
         onInsightsGenerated(parsedInsights);
       }
     } catch (err) {
-      console.error('AI analysis failed:', err);
       setError('AI analysis temporarily unavailable. Showing rule-based insights.');
       
       // Fallback to rule-based insights

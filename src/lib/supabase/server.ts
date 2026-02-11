@@ -9,7 +9,6 @@ import { cache } from 'react'
 export async function createClient() {
     // Check if environment variables are configured
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-        console.warn('Supabase environment variables not configured, returning mock client')
         return {
             auth: {
                 getUser: async () => ({ data: { user: null }, error: null }),

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
+import DOMPurify from 'dompurify';
 
 interface MermaidViewerProps {
     chart: string;
@@ -31,7 +32,6 @@ export function MermaidViewer({ chart }: MermaidViewerProps) {
                 const { svg } = await mermaid.render(id, chart);
                 setSvg(svg);
             } catch (err: any) {
-                console.error("Mermaid Render Error:", err);
                 setError("Gagal merender diagram. Format mungkin tidak valid.");
             }
         };
@@ -46,7 +46,7 @@ export function MermaidViewer({ chart }: MermaidViewerProps) {
         <div
             ref={containerRef}
             className="w-full overflow-x-auto p-4 bg-white rounded-xl shadow-sm border border-slate-100 flex justify-center"
-            dangerouslySetInnerHTML={{ __html: svg }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(svg) }}
         />
     );
 }

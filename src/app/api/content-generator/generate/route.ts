@@ -52,7 +52,6 @@ export async function POST(req: NextRequest) {
       });
 
     if (insertError) {
-      console.error("Failed to create job:", insertError);
       return NextResponse.json({ error: "Failed to create job" }, { status: 500 });
     }
 
@@ -66,7 +65,6 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error("Content generation error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -129,8 +127,6 @@ async function processJob(jobId: string, params: any) {
       .eq("id", jobId);
 
   } catch (error) {
-    console.error("Job processing error:", error);
-    
     const supabase = await createClient();
     await supabase
       .from("content_generation_jobs")

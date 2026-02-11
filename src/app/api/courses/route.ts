@@ -71,7 +71,6 @@ export async function GET(request: NextRequest) {
     const { data: courses, error, count } = await query;
 
     if (error) {
-      console.error('Error fetching courses:', error);
       return NextResponse.json(
         { error: 'Failed to fetch courses' },
         { status: 500 }
@@ -89,7 +88,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -141,7 +139,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Error creating course:', error);
       return NextResponse.json(
         { error: 'Failed to create course' },
         { status: 500 }
@@ -160,7 +157,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

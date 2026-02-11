@@ -39,7 +39,6 @@ export class GlobalResourceEngine {
         const { data: rawResources, error } = await dbQuery;
 
         if (error) {
-            console.error('GRE Crawler Error:', error);
             return [];
         }
 

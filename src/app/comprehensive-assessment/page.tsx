@@ -88,8 +88,7 @@ export default function ComprehensiveAssessmentPage() {
                 setStartTime(new Date());
             }
         } catch (error) {
-            console.error("Error loading assessment:", error);
-        } finally {
+            } finally {
             setIsLoading(false);
         }
     };
@@ -165,8 +164,7 @@ export default function ComprehensiveAssessmentPage() {
                 setShowComplete(true);
             }
         } catch (error) {
-            console.error("Error submitting assessment:", error);
-        } finally {
+            } finally {
             setIsSubmitting(false);
         }
     };

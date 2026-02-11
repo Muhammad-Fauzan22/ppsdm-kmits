@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
             session,
         });
     } catch (error) {
-        console.error("Error creating session:", error);
         return NextResponse.json(
             { error: "Failed to create session" },
             { status: 500 }
@@ -102,7 +101,6 @@ export async function GET(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error("Error fetching questions:", error);
         return NextResponse.json({ error: "Failed to fetch questions" }, { status: 500 });
     }
 }

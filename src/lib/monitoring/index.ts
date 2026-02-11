@@ -296,8 +296,7 @@ function sendMetric(type: string, data: Record<string, any>) {
 
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[Metric] ${type}:`, data);
-  }
+    }
 }
 
 // ==========================================

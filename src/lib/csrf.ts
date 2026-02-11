@@ -158,7 +158,6 @@ export const csrfUtils = {
   addToFetchOptions(options: RequestInit = {}): RequestInit {
     const token = this.getTokenFromCookie();
     if (!token) {
-      console.warn('CSRF token not found in cookies');
       return options;
     }
 

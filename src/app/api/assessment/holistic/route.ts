@@ -86,7 +86,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (saveError) {
-      console.error('Error saving assessment:', saveError);
       return NextResponse.json(
         { error: 'Failed to save assessment result' },
         { status: 500 }
@@ -106,7 +105,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Holistic assessment error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -141,7 +139,6 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching assessments:', error);
       return NextResponse.json(
         { error: 'Failed to fetch assessment results' },
         { status: 500 }
@@ -161,7 +158,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Fetch assessments error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -202,7 +198,6 @@ async function GET_BY_DIMENSION(
       .limit(1);
 
     if (error) {
-      console.error('Error fetching dimension assessment:', error);
       return NextResponse.json(
         { error: 'Failed to fetch assessment result' },
         { status: 500 }
@@ -222,7 +217,6 @@ async function GET_BY_DIMENSION(
     });
 
   } catch (error) {
-    console.error('Fetch dimension assessment error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -294,7 +288,6 @@ async function GET_OVERVIEW(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Fetch overview error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -348,7 +341,6 @@ async function GET_GAP_ANALYSIS(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Gap analysis error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -402,7 +394,6 @@ async function GET_ROADMAP(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Roadmap error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

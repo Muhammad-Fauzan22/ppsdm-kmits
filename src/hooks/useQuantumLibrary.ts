@@ -36,7 +36,6 @@ export function useQuantumLibrary() {
             if (error) throw error;
             setBooks(data as LearningResource[]);
         } catch (err: any) {
-            console.error("Error fetching library:", err);
             setError(err.message);
         } finally {
             setIsLoading(false);
@@ -57,7 +56,6 @@ export function useQuantumLibrary() {
                     table: "learning_resources",
                 },
                 (payload: any) => {
-                    console.log("⚡ Realtime Update Detected:", payload);
                     // Strategi sederhana: Refetch ulang untuk konsistensi data
                     fetchBooks();
                 }

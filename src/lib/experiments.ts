@@ -56,7 +56,6 @@ export async function getExperiment(experimentId: string): Promise<Experiment | 
     const experiments = await edgeConfig.get<Record<string, Experiment>>('experiments');
     return experiments?.[experimentId] || null;
   } catch (error) {
-    console.error('Failed to fetch experiment:', error);
     return null;
   }
 }
@@ -164,13 +163,7 @@ export async function trackExperimentEvent(
   // Server-side tracking (if on server)
   if (typeof window === 'undefined') {
     // Log to your analytics service
-    console.log('[Experiment]', {
-      experimentId,
-      variant,
-      event,
-      metadata,
-    });
-  }
+    }
 }
 
 /**

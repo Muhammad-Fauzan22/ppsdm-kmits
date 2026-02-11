@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
                     timestamp: new Date().toISOString()
                 }
             });
-        } catch (e) { console.error("Audit fail", e); /* Non-blocking */ }
+        } catch (e) { /* Non-blocking */ }
 
         // Return as downloadable JSON
         return new NextResponse(JSON.stringify(exportData, null, 2), {
@@ -106,7 +106,6 @@ export async function GET(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('Data export error:', error);
         return NextResponse.json(
             { error: 'Failed to export data' },
             { status: 500 }
@@ -175,7 +174,6 @@ export async function DELETE(request: NextRequest) {
             .eq('id', user.id);
 
         if (updateError) {
-            console.error('Deletion request error:', updateError);
             return NextResponse.json(
                 { error: 'Failed to process deletion request' },
                 { status: 500 }
@@ -213,7 +211,6 @@ export async function DELETE(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('Deletion request error:', error);
         return NextResponse.json(
             { error: 'Failed to process deletion request' },
             { status: 500 }

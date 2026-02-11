@@ -47,21 +47,18 @@ export const CACHE_TTL = {
 // Helper function to set cache
 export async function setCache<T>(key: string, data: T, ttl: number = CACHE_TTL.medium): Promise<void> {
   if (!redis) {
-    console.warn('Redis not configured, skipping cache set');
     return;
   }
 
   try {
     await redis.set(key, data, { ex: ttl });
   } catch (error) {
-    console.error('Failed to set cache:', error);
-  }
+    }
 }
 
 // Helper function to get cache
 export async function getCache<T>(key: string): Promise<T | null> {
   if (!redis) {
-    console.warn('Redis not configured, skipping cache get');
     return null;
   }
 
@@ -69,7 +66,6 @@ export async function getCache<T>(key: string): Promise<T | null> {
     const data = await redis.get<T>(key);
     return data;
   } catch (error) {
-    console.error('Failed to get cache:', error);
     return null;
   }
 }
@@ -83,8 +79,7 @@ export async function deleteCache(key: string): Promise<void> {
   try {
     await redis.del(key);
   } catch (error) {
-    console.error('Failed to delete cache:', error);
-  }
+    }
 }
 
 // Helper function to check if cache exists
@@ -97,7 +92,6 @@ export async function cacheExists(key: string): Promise<boolean> {
     const exists = await redis.exists(key);
     return exists === 1;
   } catch (error) {
-    console.error('Failed to check cache existence:', error);
     return false;
   }
 }
@@ -112,7 +106,6 @@ export async function getMultiple<T>(keys: string[]): Promise<(T | null)[]> {
     const values = await redis.mget(...keys);
     return values as (T | null)[];
   } catch (error) {
-    console.error('Failed to get multiple keys:', error);
     return keys.map(() => null);
   }
 }
@@ -135,8 +128,7 @@ export async function setMultiple<T extends Record<string, any>>(
     
     await pipeline.exec();
   } catch (error) {
-    console.error('Failed to set multiple keys:', error);
-  }
+    }
 }
 
 // Cache key generators

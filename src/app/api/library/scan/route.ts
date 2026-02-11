@@ -32,8 +32,6 @@ export async function POST(req: NextRequest) {
         });
 
         const driveFiles = res.data.files || [];
-        console.log(`Found ${driveFiles.length} files in Drive`);
-
         // 2. Get existing files from DB to avoid duplicates
         const { data: existingBooks } = await supabase
             .from("books")
@@ -83,7 +81,6 @@ export async function POST(req: NextRequest) {
         });
 
     } catch (error: any) {
-        console.error("Scan Error:", error);
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 }

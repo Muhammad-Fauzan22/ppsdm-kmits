@@ -26,8 +26,6 @@ export interface VideoResult {
  * 3. Returns unique, high-quality results
  */
 export async function huntVideos(topic: string): Promise<VideoResult[]> {
-    console.log(`[VideoHunter] Hunting for: ${topic}`);
-
     try {
         // STEP 1: AI Query Optimization
         // We ask Gemini to convert a broad topic into specific educational search queries
@@ -45,8 +43,6 @@ export async function huntVideos(topic: string): Promise<VideoResult[]> {
         const text = response.text();
         const queries = text.split(",").map((q) => q.trim());
 
-        console.log(`[VideoHunter] Optimized Queries:`, queries);
-
         // STEP 2: The Hunt (Parallel Requests)
         // We fetch 2 top videos for each query to get a diverse mix
         const videoPromises = queries.map(async (q) => {
@@ -61,7 +57,6 @@ export async function huntVideos(topic: string): Promise<VideoResult[]> {
                 });
                 return response.data.items || [];
             } catch (err) {
-                console.error(`[VideoHunter] Error searching for "${q}":`, err);
                 return [];
             }
         });
@@ -89,7 +84,6 @@ export async function huntVideos(topic: string): Promise<VideoResult[]> {
         return Array.from(uniqueVideos.values()).slice(0, 6);
 
     } catch (error) {
-        console.error("[VideoHunter] Critical Error:", error);
         // Fallback: If AI fails, just search the raw topic one time
         try {
             const response = await youtube.search.list({

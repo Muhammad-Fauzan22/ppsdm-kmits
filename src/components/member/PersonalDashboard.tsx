@@ -13,7 +13,7 @@ import {
   ArrowRight,
   Download
 } from 'lucide-react';
-import { GoogleSheetsService } from '@/lib/google-sheets/google-sheets.service';
+
 
 // Types for data from Google Sheets
 interface AssessmentData {
@@ -68,56 +68,35 @@ export function PersonalDashboard() {
 
   const loadDashboardData = async () => {
     try {
-      const sheetsService = GoogleSheetsService.getInstance();
-      const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
+      // Load data via API calls instead of direct GoogleSheetsService
+      const [memberResponse, assessmentsResponse, activitiesResponse, knowledgeResponse] = await Promise.all([
+        fetch('/api/member/profile').then(r => r.json()).catch(() => null),
+        fetch('/api/member/assessments').then(r => r.json()).catch(() => null),
+        fetch('/api/member/activities').then(r => r.json()).catch(() => null),
+        fetch('/api/member/knowledge').then(r => r.json()).catch(() => null),
+      ]);
 
-      // Load member data from Members sheet
-      const membersData = await sheetsService.getSheetData(spreadsheetId, 'Members');
-      if (membersData.length > 0) {
-        // Parse member data (assuming first row is current user)
-        const member = membersData[0] as any;
-        setMemberData({
-          id: member.id || '',
-          name: member.name || 'Member',
-          email: member.email || '',
-          joinDate: member.joinDate || '',
-          status: member.status || 'active',
-          skills: parseSkills(member.skills || ''),
-        });
+      // Set member data
+      if (memberResponse?.success) {
+        setMemberData(memberResponse.data);
       }
 
-      // Load assessment data from Assessments sheet
-      const assessmentsData = await sheetsService.getSheetData(spreadsheetId, 'Assessments');
-      setAssessments(assessmentsData.map((a: any) => ({
-        id: a.id || '',
-        name: a.name || '',
-        status: a.status || 'not_started',
-        score: a.score ? parseInt(a.score) : undefined,
-        completedDate: a.completedDate || undefined,
-      })));
+      // Set assessment data
+      if (assessmentsResponse?.success) {
+        setAssessments(assessmentsResponse.data);
+      }
 
-      // Load activity data from Activities sheet
-      const activitiesData = await sheetsService.getSheetData(spreadsheetId, 'Activities');
-      setActivities(activitiesData.map((a: any) => ({
-        id: a.id || '',
-        name: a.name || '',
-        date: a.date || '',
-        status: a.status || 'registered',
-        category: a.category || '',
-      })));
+      // Set activity data
+      if (activitiesResponse?.success) {
+        setActivities(activitiesResponse.data);
+      }
 
-      // Load knowledge recommendations from Knowledge sheet
-      const knowledgeData = await sheetsService.getSheetData(spreadsheetId, 'Knowledge');
-      setRecommendations(knowledgeData.slice(0, 5).map((k: any) => ({
-        id: k.id || '',
-        title: k.title || '',
-        category: k.category || '',
-        difficulty: k.difficulty || 'beginner',
-        relevanceScore: k.relevanceScore ? parseFloat(k.relevanceScore) : 0,
-      })));
+      // Set knowledge recommendations
+      if (knowledgeResponse?.success) {
+        setRecommendations(knowledgeResponse.data);
+      }
 
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
       // Set mock data for demo
       setMockData();
     } finally {

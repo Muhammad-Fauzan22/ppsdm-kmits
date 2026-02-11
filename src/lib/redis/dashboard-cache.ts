@@ -56,7 +56,6 @@ export async function getCachedDashboard(userId: string): Promise<DashboardData 
     const cached = await redis.get<DashboardData>(cacheKey);
     return cached;
   } catch (error) {
-    console.error('Redis get error:', error);
     return null;
   }
 }
@@ -69,8 +68,7 @@ export async function setCachedDashboard(userId: string, data: DashboardData): P
     const cacheKey = `${CACHE_PREFIX}${userId}`;
     await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(data));
   } catch (error) {
-    console.error('Redis set error:', error);
-  }
+    }
 }
 
 /**
@@ -81,8 +79,7 @@ export async function invalidateDashboardCache(userId: string): Promise<void> {
     const cacheKey = `${CACHE_PREFIX}${userId}`;
     await redis.del(cacheKey);
   } catch (error) {
-    console.error('Redis delete error:', error);
-  }
+    }
 }
 
 /**
@@ -95,7 +92,6 @@ export async function getDashboardDataWithCache(
   // Try to get from cache first
   const cached = await getCachedDashboard(userId);
   if (cached) {
-    console.log(`[Cache] Dashboard data served from cache for user ${userId}`);
     return cached;
   }
 
@@ -104,8 +100,6 @@ export async function getDashboardDataWithCache(
   
   // Store in cache
   await setCachedDashboard(userId, data);
-  console.log(`[Cache] Dashboard data cached for user ${userId}`);
-  
   return data;
 }
 
@@ -117,7 +111,6 @@ export async function checkRedisHealth(): Promise<boolean> {
     await redis.ping();
     return true;
   } catch (error) {
-    console.error('Redis health check failed:', error);
     return false;
   }
 }

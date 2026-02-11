@@ -52,11 +52,9 @@ export class SwarmEngine {
             if (!PROVIDERS[providerKey].apiKey) continue;
 
             try {
-                console.log(`[Swarm] Routing to node: ${providerKey}`);
                 const result = await this.executeProvider(providerKey, prompt, systemPrompt);
                 return result;
             } catch (error) {
-                console.warn(`[Swarm] Node ${providerKey} failed or busy. Rolling over...`, error);
                 continue;
             }
         }
@@ -72,7 +70,6 @@ export class SwarmEngine {
             const clean = response.replace(/```json\n|\n```/g, '').replace(/```/g, '');
             return JSON.parse(clean);
         } catch (e) {
-            console.error("JSON Parse Error", e);
             throw e;
         }
     }

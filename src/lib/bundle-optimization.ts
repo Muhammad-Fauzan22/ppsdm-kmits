@@ -178,7 +178,7 @@ export const performanceMonitoring = {
   // Core Web Vitals tracking
   trackWebVitals: ({ name, value, id }: any) => {
     // Send to analytics service
-    console.log(`Web Vital: ${name} = ${value} (${id})`);
+    console.log('Web Vital:', { name, value, id });
 
     // In production, send to your analytics service
     if (process.env.NODE_ENV === 'production') {
@@ -189,21 +189,20 @@ export const performanceMonitoring = {
 
   // Bundle size monitoring
   trackBundleSize: (bundleName: string, size: number) => {
-    console.log(`Bundle: ${bundleName} = ${(size / 1024 / 1024).toFixed(2)}MB`);
+    const sizeMB = (size / 1024 / 1024).toFixed(2);
+    console.log(`Bundle size: ${bundleName} - ${sizeMB}MB`);
 
     // Alert if bundle is too large
     if (size > 500 * 1024) { // 500KB
-      console.warn(`⚠️  Large bundle detected: ${bundleName} (${(size / 1024 / 1024).toFixed(2)}MB)`);
+      console.warn(`Large bundle detected: ${bundleName} - ${sizeMB}MB`);
     }
   },
 
   // Loading performance
   trackComponentLoad: (componentName: string, loadTime: number) => {
-    console.log(`Component ${componentName} loaded in ${loadTime}ms`);
-
     // Alert for slow components
     if (loadTime > 1000) { // 1 second
-      console.warn(`🐌 Slow component load: ${componentName} (${loadTime}ms)`);
+      console.warn(`Slow component load: ${componentName} - ${loadTime}ms`);
     }
   },
 };

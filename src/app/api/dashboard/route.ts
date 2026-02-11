@@ -157,7 +157,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Dashboard API Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch dashboard data' },
       { status: 500 }
@@ -195,7 +194,6 @@ export async function POST(request: NextRequest) {
     );
 
   } catch (error) {
-    console.error('Dashboard POST Error:', error);
     return NextResponse.json(
       { error: 'Failed to process request' },
       { status: 500 }

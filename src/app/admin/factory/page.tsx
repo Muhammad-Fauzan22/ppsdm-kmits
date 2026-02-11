@@ -67,8 +67,7 @@ export default function FactoryCommandCenter() {
                 setStatistics(data.data.statistics);
             }
         } catch (error) {
-            console.error('Failed to fetch status:', error);
-        } finally {
+            } finally {
             setLoading(false);
         }
     }, []);

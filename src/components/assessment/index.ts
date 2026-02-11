@@ -6,13 +6,12 @@
 export { DimensionInfoPage } from './DimensionInfoPage';
 export { AssessmentQuestion } from './AssessmentQuestion';
 export { IncompleteAssessmentModal, useIncompleteModalStore, useIncompleteAssessmentReminder } from './IncompleteAssessmentModal';
-export { SelfManagementDashboard } from './SelfManagementDashboard';
+
 
 // Re-export from existing visualizations
 export { HolisticRadarChart } from '../visualizations/HolisticRadarChart';
 export { CognitiveSunburst } from './CognitiveSunburst';
-export { PhysicalHealthDashboard } from './PhysicalHealthDashboard';
-export { MentalHealthGauge } from './MentalHealthGauge';
+export { MentalHealthBar } from './MentalHealthBar';
 export { CharacterTree } from './CharacterTree';
 export { SpiritualSpiral } from './SpiritualSpiral';
 export { EnvironmentalEco } from './EnvironmentalEco';

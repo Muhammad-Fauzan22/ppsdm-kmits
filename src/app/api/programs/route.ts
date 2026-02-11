@@ -18,7 +18,6 @@ export async function GET() {
 
         return NextResponse.json({ success: true, data });
     } catch (error) {
-        console.error("Error fetching programs:", error);
         return NextResponse.json(
             { error: "Failed to fetch programs" },
             { status: 500 }

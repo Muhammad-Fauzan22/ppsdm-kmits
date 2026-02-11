@@ -128,9 +128,9 @@ export function ContentRow({
           >
             <ContentCard
               content={content}
-              onClick={() => console.log('Clicked:', content.id)}
-              onSave={() => console.log('Saved:', content.id)}
-              onShare={() => console.log('Shared:', content.id)}
+              onClick={() => console.log('clicked')}
+              onSave={() => console.log('saved')}
+              onShare={() => console.log('shared')}
             />
           </motion.div>
         ))}
@@ -213,9 +213,9 @@ export function ContentMasonryGrid({
               >
                 <ContentCard
                   content={content}
-                  onClick={() => console.log('Clicked:', content.id)}
-                  onSave={() => console.log('Saved:', content.id)}
-                  onShare={() => console.log('Shared:', content.id)}
+                  onClick={() => console.log('clicked')}
+                  onSave={() => console.log('saved')}
+                  onShare={() => console.log('shared')}
                 />
               </motion.div>
             ))}

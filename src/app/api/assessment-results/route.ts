@@ -79,7 +79,6 @@ export async function POST(request: NextRequest) {
             .single();
 
         if (error) {
-            console.error('[AssessmentAPI] Supabase error:', error);
             return NextResponse.json(
                 { error: 'Failed to save assessment result' },
                 { status: 500 }
@@ -93,7 +92,6 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('[AssessmentAPI] Error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
@@ -153,7 +151,6 @@ export async function GET(request: NextRequest) {
         const { data, error } = await query;
 
         if (error) {
-            console.error('[AssessmentAPI] Supabase error:', error);
             return NextResponse.json(
                 { error: 'Failed to fetch assessment results' },
                 { status: 500 }
@@ -168,7 +165,6 @@ export async function GET(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('[AssessmentAPI] Error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

@@ -91,7 +91,6 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error('Error fetching course:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -156,7 +155,6 @@ export async function PATCH(
       .single();
 
     if (error) {
-      console.error('Error updating course:', error);
       return NextResponse.json(
         { error: 'Failed to update course' },
         { status: 500 }
@@ -175,7 +173,6 @@ export async function PATCH(
         { status: 400 }
       );
     }
-    console.error('Error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -208,7 +205,6 @@ export async function DELETE(
       .eq('id', id);
 
     if (error) {
-      console.error('Error deleting course:', error);
       return NextResponse.json(
         { error: 'Failed to delete course' },
         { status: 500 }
@@ -220,7 +216,6 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

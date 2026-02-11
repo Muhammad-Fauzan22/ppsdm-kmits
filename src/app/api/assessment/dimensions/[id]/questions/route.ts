@@ -95,7 +95,6 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error('Error fetching questions:', error);
     return NextResponse.json(
       {
         success: false,

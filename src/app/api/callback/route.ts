@@ -13,8 +13,6 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { job_id, status, folder_link, confidence_score, evidence_level, vr_suitability_score } = body;
 
-        console.log(`Callback received for Job: ${job_id}, Status: ${status}`);
-
         // Update job in Supabase
         const { error } = await supabase
             .from('processing_jobs')
@@ -34,7 +32,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, message: 'Job updated successfully' });
 
     } catch (error: any) {
-        console.error('Callback error:', error);
         return NextResponse.json(
             { success: false, error: error.message },
             { status: 500 }

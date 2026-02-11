@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
   try {
     // Validate DIMENSION_DATA is loaded
     if (!DIMENSION_DATA || Object.keys(DIMENSION_DATA).length === 0) {
-      console.error('DIMENSION_DATA is empty or undefined');
       return NextResponse.json(
         {
           success: false,
@@ -63,7 +62,6 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error fetching dimensions:', error);
     return NextResponse.json(
       {
         success: false,

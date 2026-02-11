@@ -51,8 +51,6 @@ export async function POST(request: NextRequest) {
             }
         };
 
-        console.log(`🚀 Triggering Stepper Workflow: ${jobId}`);
-
         const stepperResponse = await fetch(stepperWebhookUrl, {
             method: 'POST',
             headers: {
@@ -66,10 +64,8 @@ export async function POST(request: NextRequest) {
             try {
                 stepperData = await stepperResponse.json();
             } catch (e) {
-                console.warn("Stepper response not JSON", e);
-            }
+                }
         } else {
-            console.error(`Stepper webhook failed: ${stepperResponse.status} ${stepperResponse.statusText}`);
             // We don't throw here to ensure we return the JobID to the client, but marking it.
             // Or should we throw? User code throws. Let's throw to be consistent.
             throw new Error(`Stepper webhook failed: ${stepperResponse.statusText}`);
@@ -90,7 +86,6 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error: any) {
-        console.error('Processing error:', error);
         return NextResponse.json(
             { success: false, error: error.message },
             { status: 500 }

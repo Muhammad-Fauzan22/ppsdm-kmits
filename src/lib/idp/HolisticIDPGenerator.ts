@@ -71,8 +71,6 @@ export interface HolisticIDPStructure {
 export class HolisticIDPGenerator {
 
     async generateCompleteIDP(input: HolisticIDPInput): Promise<any> {
-        console.log(`Generating Perfect Holistic IDP for ${input.userId}...`);
-
         const supabase = await createClient();
 
         // 1. Core Identity & Purpose Layer
@@ -118,7 +116,6 @@ export class HolisticIDPGenerator {
             .single();
 
         if (error) {
-            console.error('Error saving Holistic IDP:', error);
             throw new Error('Database save failed');
         }
 

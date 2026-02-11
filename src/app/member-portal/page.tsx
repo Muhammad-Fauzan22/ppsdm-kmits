@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { PersonalDashboard } from '@/components/member/PersonalDashboard';
 import { ActivityCalendar } from '@/components/member/ActivityCalendar';
-import { TransparencyPortal } from '@/components/member/TransparencyPortal';
-import { KnowledgeHub } from '@/components/member/KnowledgeHub';
+// import { TransparencyPortal } from '@/components/member/TransparencyPortal';
+// import { KnowledgeHub } from '@/components/member/KnowledgeHub';
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -14,7 +14,7 @@ import {
   LogOut
 } from 'lucide-react';
 
-type TabType = 'dashboard' | 'activities' | 'transparency' | 'knowledge';
+type TabType = 'dashboard' | 'activities'; // | 'transparency' | 'knowledge';
 
 export default function MemberPortalPage() {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -22,8 +22,8 @@ export default function MemberPortalPage() {
   const tabs = [
     { id: 'dashboard' as TabType, label: 'Dashboard', icon: LayoutDashboard },
     { id: 'activities' as TabType, label: 'Activities', icon: Calendar },
-    { id: 'transparency' as TabType, label: 'Transparency', icon: FileText },
-    { id: 'knowledge' as TabType, label: 'Knowledge Hub', icon: BookOpen },
+    // { id: 'transparency' as TabType, label: 'Transparency', icon: FileText },
+    // { id: 'knowledge' as TabType, label: 'Knowledge Hub', icon: BookOpen },
   ];
 
   return (
@@ -85,8 +85,8 @@ export default function MemberPortalPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'dashboard' && <PersonalDashboard />}
         {activeTab === 'activities' && <ActivityCalendar />}
-        {activeTab === 'transparency' && <TransparencyPortal />}
-        {activeTab === 'knowledge' && <KnowledgeHub />}
+        {/* {activeTab === 'transparency' && <TransparencyPortal />} */}
+        {/* {activeTab === 'knowledge' && <KnowledgeHub />} */}
       </main>
     </div>
   );

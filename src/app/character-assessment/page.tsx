@@ -217,11 +217,9 @@ export default function CharacterAssessmentPage() {
                             </div>
                         </div>
                         <div className="h-2 bg-white/30 rounded-full overflow-hidden">
-                            <motion.div
-                                className="h-full bg-white"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${progress}%` }}
-                                transition={{ duration: 0.3 }}
+<div 
+                                className="h-full bg-white transition-all duration-300"
+                                style={{ width: `${progress}%` }}
                             />
                         </div>
                     </div>
@@ -230,11 +228,8 @@ export default function CharacterAssessmentPage() {
                 {/* Question Card */}
                 <main className="max-w-3xl mx-auto px-4 py-8">
                     <AnimatePresence mode="wait">
-                        <motion.div
+<div
                             key={currentItemData.id}
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -50 }}
                             className="bg-white rounded-2xl shadow-xl p-8"
                         >
                             {/* Source */}
@@ -280,7 +275,7 @@ export default function CharacterAssessmentPage() {
                                     {Object.keys(responses).length}/{characterItems.length} dijawab
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     </AnimatePresence>
                 </main>
             </div>

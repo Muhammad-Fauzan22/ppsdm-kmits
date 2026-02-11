@@ -50,7 +50,6 @@ export async function completeModule(
             .single()
 
         if (progressError) {
-            console.error("Progress update error:", progressError)
             throw new Error("Failed to update progress")
         }
 
@@ -62,7 +61,6 @@ export async function completeModule(
             .single()
 
         if (fetchError) {
-            console.error("Fetch profile error:", fetchError)
             throw new Error("Failed to fetch profile")
         }
 
@@ -85,7 +83,6 @@ export async function completeModule(
             .eq("user_id", input.userId)
 
         if (updateError) {
-            console.error("Profile update error:", updateError)
             throw new Error("Failed to update profile")
         }
 
@@ -115,7 +112,6 @@ export async function completeModule(
                 : `✅ Module completed! +${input.xpEarned} XP`,
         }
     } catch (error) {
-        console.error("completeModule error:", error)
         return {
             success: false,
             message: error instanceof Error ? error.message : "Unknown error",
@@ -144,7 +140,6 @@ export async function getUserStats(userId: string) {
             xpToNextLevel: 100 - ((data?.xp || 0) % 100),
         }
     } catch (error) {
-        console.error("getUserStats error:", error)
         return {
             xp: 0,
             level: 1,
@@ -170,7 +165,6 @@ export async function getUserBadges(userId: string) {
 
         return data || []
     } catch (error) {
-        console.error("getUserBadges error:", error)
         return []
     }
 }
@@ -199,7 +193,6 @@ export async function getLeaderboard() {
             avatar: entry.avatar_url,
         }))
     } catch (error) {
-        console.error("getLeaderboard error:", error)
         return []
     }
 }

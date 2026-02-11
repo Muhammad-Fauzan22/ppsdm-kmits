@@ -26,7 +26,6 @@ export default function MCPExample() {
                     await mcpNextJS.getGitHubUser()
                     setConnections(prev => ({ ...prev, github: true }))
                 } catch (e) {
-                    console.error('GitHub connection check failed:', e)
                     setConnections(prev => ({ ...prev, github: false }))
                 }
                 
@@ -35,7 +34,6 @@ export default function MCPExample() {
                     await mcpNextJS.getUserProfile('user-id-here')
                     setConnections(prev => ({ ...prev, supabase: true }))
                 } catch (e) {
-                    console.error('Supabase connection check failed:', e)
                     setConnections(prev => ({ ...prev, supabase: false }))
                 }
                 
@@ -85,7 +83,6 @@ export default function MCPExample() {
                 'Test Issue from MCP Integration',
                 'This is a test issue created via MCP integration'
             )
-            console.log('Issue created:', issue)
             setStatus('ready')
         } catch (err) {
             setStatus('error')

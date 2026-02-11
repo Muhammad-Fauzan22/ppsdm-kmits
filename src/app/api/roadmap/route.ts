@@ -71,7 +71,6 @@ export async function GET(request: NextRequest) {
             learningPathway: pathway // Expose full structured pathway
         });
     } catch (error) {
-        console.error("Error fetching roadmap:", error);
         return NextResponse.json(
             { error: "Failed to fetch roadmap" },
             { status: 500 }
@@ -127,7 +126,6 @@ export async function PATCH(request: NextRequest) {
             roadmap: data,
         });
     } catch (error) {
-        console.error("Error updating roadmap:", error);
         return NextResponse.json(
             { error: "Failed to update roadmap" },
             { status: 500 }

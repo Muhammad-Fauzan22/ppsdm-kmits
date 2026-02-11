@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useFinancialStore } from '@/lib/stores/useFinancialStore';
 import { BookOpen, CheckCircle, Play, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import DOMPurify from 'dompurify';
 
 const MODULES = [
     {
@@ -111,7 +112,7 @@ export default function FinancialAcademy() {
                             className="prose prose-sm max-w-none text-gray-700"
                         >
                             {/* Rendering Markdown-like content safely */}
-                            <div dangerouslySetInnerHTML={{ __html: selectedModule.content.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/# (.*?)(<br\/>|$)/, '<h2 class="text-2xl font-bold mb-4 text-indigo-900">$1</h2>') }} />
+                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedModule.content.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/# (.*?)(<br\/>|$)/, '<h2 class="text-2xl font-bold mb-4 text-indigo-900">$1</h2>')) }} />
 
                             {!completedModules.includes(selectedModule.id) && (
                                 <div className="mt-8 pt-6 border-t border-gray-200">

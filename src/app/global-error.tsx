@@ -23,8 +23,6 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     // Log error ke console
-    console.error('Global error:', error);
-
     // Log error ke error tracking service (jika tersedia)
     if (typeof window !== 'undefined' && (window as any).Sentry) {
       (window as any).Sentry.captureException(error, {
@@ -101,7 +99,9 @@ export default function GlobalError({
                 Coba Lagi
               </Button>
               <Button
-                onClick={() => (window.location.href = '/')}
+                onClick={() => {
+                    window.location.href = '/';
+                }}
                 variant="outline"
                 className="w-full sm:w-auto border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
               >

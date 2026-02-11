@@ -75,7 +75,6 @@ export async function POST(request: NextRequest) {
             roadmap,
         });
     } catch (error) {
-        console.error("Error completing assessment:", error);
         return NextResponse.json(
             { error: "Failed to complete assessment" },
             { status: 500 }
@@ -148,7 +147,6 @@ export async function GET(request: NextRequest) {
             },
         });
     } catch (error) {
-        console.error("Error fetching gaps:", error);
         return NextResponse.json(
             { error: "Failed to fetch gap analysis" },
             { status: 500 }

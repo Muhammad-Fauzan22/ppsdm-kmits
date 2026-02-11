@@ -648,10 +648,6 @@ PPSDM KMITS Team
     textBody: string
   ): Promise<void> {
     // TODO: Integrate with actual email service (e.g., SendGrid, Mailgun, Nodemailer)
-    console.log(`Sending email to ${to}: ${subject}`);
-    console.log(`HTML body length: ${htmlBody.length}`);
-    console.log(`Text body length: ${textBody.length}`);
-
     // Placeholder implementation
     // In production, this would use an actual email service
     // Example with Nodemailer:
@@ -686,10 +682,8 @@ PPSDM KMITS Team
     try {
       const sheets = await this.getSheetsClient();
       // TODO: Implement actual spreadsheet update logic
-      console.log(`Updating reminder status for event ${eventId}, ${daysBefore} days before`);
-    } catch (error) {
-      console.error('Error updating reminder status:', error);
-    }
+      } catch (error) {
+      }
   }
 
   /**
@@ -703,10 +697,8 @@ PPSDM KMITS Team
     try {
       const sheets = await this.getSheetsClient();
       // TODO: Implement actual spreadsheet update logic
-      console.log(`Updating birthday status for member ${memberId}`);
-    } catch (error) {
-      console.error('Error updating birthday status:', error);
-    }
+      } catch (error) {
+      }
   }
 
   /**
@@ -721,10 +713,8 @@ PPSDM KMITS Team
     try {
       const sheets = await this.getSheetsClient();
       // TODO: Implement actual spreadsheet update logic
-      console.log(`Updating deadline status for ${deadlineId}, ${daysBefore} days before`);
-    } catch (error) {
-      console.error('Error updating deadline status:', error);
-    }
+      } catch (error) {
+      }
   }
 
   /**
@@ -738,10 +728,8 @@ PPSDM KMITS Team
     try {
       const sheets = await this.getSheetsClient();
       // TODO: Implement actual spreadsheet update logic
-      console.log(`Logging weekly digest sent for ${digest.weekStart} - ${digest.weekEnd}`);
-    } catch (error) {
-      console.error('Error logging digest sent:', error);
-    }
+      } catch (error) {
+      }
   }
 
   /**
@@ -780,7 +768,6 @@ PPSDM KMITS Team
 
       return reminders;
     } catch (error) {
-      console.error('Error fetching event reminders:', error);
       return [];
     }
   }
@@ -821,7 +808,6 @@ PPSDM KMITS Team
 
       return wishes;
     } catch (error) {
-      console.error('Error fetching birthday wishes:', error);
       return [];
     }
   }
@@ -861,7 +847,6 @@ PPSDM KMITS Team
 
       return deadlines;
     } catch (error) {
-      console.error('Error fetching deadline notifications:', error);
       return [];
     }
   }

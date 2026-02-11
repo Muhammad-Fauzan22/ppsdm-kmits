@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(result);
 
     } catch (error: any) {
-        console.error('Assessment API Error:', error);
         return NextResponse.json(
             { error: error.message || 'Internal Server Error' },
             { status: 500 }

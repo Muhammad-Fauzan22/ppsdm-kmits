@@ -120,8 +120,7 @@ export async function submitAssessment(
                 })
 
             if (assessmentError) {
-                console.error('Error creating assessment record:', assessmentError)
-            }
+                }
         }
 
         // Log activity
@@ -147,7 +146,6 @@ export async function submitAssessment(
             overallIndex,
         }
     } catch (error) {
-        console.error('Error in submitAssessment:', error)
         return { success: false, error: 'Internal server error' }
     }
 }
@@ -286,7 +284,6 @@ export async function updateGoalProgress(
 
         return { success: true, data: goal }
     } catch (error) {
-        console.error('Error in updateGoalProgress:', error)
         return { success: false, error: 'Internal server error' }
     }
 }
@@ -370,7 +367,6 @@ export async function logActivity(activityData: ActivityInput) {
 
         return { success: true, data: activity }
     } catch (error) {
-        console.error('Error in logActivity:', error)
         return { success: false, error: 'Internal server error' }
     }
 }
@@ -443,7 +439,6 @@ export async function createGoal(
 
         return { success: true, data: goal }
     } catch (error) {
-        console.error('Error in createGoal:', error)
         return { success: false, error: 'Internal server error' }
     }
 }
@@ -478,7 +473,6 @@ export async function deleteGoal(goalId: string) {
 
         return { success: true, data: { message: 'Goal deleted successfully' } }
     } catch (error) {
-        console.error('Error in deleteGoal:', error)
         return { success: false, error: 'Internal server error' }
     }
 }

@@ -17,8 +17,6 @@ export function useToast() {
         setToasts((prev) => [...prev, newToast])
 
         // Simple console log for now as fallback
-        console.log(`Toast: ${title} - ${description}`)
-
         // Auto dismiss
         setTimeout(() => {
             dismiss(id)

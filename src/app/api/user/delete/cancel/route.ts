@@ -74,7 +74,6 @@ export async function POST(request: NextRequest) {
       .eq('id', deletionRequest.id);
 
     if (updateError) {
-      console.error('Error cancelling deletion:', updateError);
       return NextResponse.json(
         { error: 'Failed to cancel deletion request' },
         { status: 500 }
@@ -103,7 +102,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Cancel deletion error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

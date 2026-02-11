@@ -108,8 +108,7 @@ export function QuizWidget({
           completed: true,
         }))
       } catch (error) {
-        console.error("Failed to save quiz completion:", error)
-      } finally {
+        } finally {
         setLoading(false)
       }
     }

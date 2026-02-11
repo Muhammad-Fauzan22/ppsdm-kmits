@@ -70,7 +70,6 @@ export default function MentalHealthAssessmentPage() {
             router.push(`/assessment/mental/results?id=${data.assessment_id}`);
 
         } catch (error) {
-            console.error(error);
             alert("Terjadi kesalahan saat menyimpan. Coba lagi.");
             setIsSubmitting(false);
         }

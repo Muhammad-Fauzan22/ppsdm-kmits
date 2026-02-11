@@ -5,12 +5,20 @@ import { GoogleSheetsService } from './google-sheets.service';
  * Handles parsing and validation of spreadsheet data
  */
 export class SheetParserEngine {
-  private sheetsService: GoogleSheetsService;
+  private sheetsService: GoogleSheetsService | null = null;
   private validationRules: Record<string, any>;
 
   constructor() {
-    this.sheetsService = GoogleSheetsService.getInstance();
     this.validationRules = this.getDefaultValidationRules();
+  }
+
+  /**
+   * Initialize the service
+   */
+  private async initialize(): Promise<void> {
+    if (!this.sheetsService) {
+      this.sheetsService = await GoogleSheetsService.getInstance();
+    }
   }
 
   /**
@@ -198,7 +206,9 @@ export class SheetParserEngine {
    * Parse and validate data from a specific sheet
    */
   async parseSheetData(spreadsheetId: string, sheetName: string): Promise<any[]> {
-    const rawData = await this.sheetsService.getSheetData(spreadsheetId, sheetName);
+    await this.initialize();
+    
+    const rawData = await this.sheetsService!.getSheetData(spreadsheetId, sheetName);
     const rules = this.validationRules[sheetName.toLowerCase()] || {};
     
     return rawData.map((item, index) => {
@@ -206,7 +216,7 @@ export class SheetParserEngine {
       const errors: string[] = [];
 
       // Validate each field
-      Object.entries(rules).forEach(([field, rule]) => {
+      Object.entries(rules).forEach(([field, rule]: [string, any]) => {
         const value = item[field];
         
         // Check required field

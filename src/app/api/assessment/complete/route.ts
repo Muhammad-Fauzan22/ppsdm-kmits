@@ -48,7 +48,6 @@ export async function POST(request: NextRequest) {
       .eq('dimension', dimension);
     
     if (responsesError) {
-      console.error('Error fetching responses:', responsesError);
       return NextResponse.json(
         { error: 'Failed to fetch responses' },
         { status: 500 }
@@ -69,7 +68,6 @@ export async function POST(request: NextRequest) {
       .eq('dimension', dimension);
     
     if (questionsError || !questions) {
-      console.error('Error fetching questions:', questionsError);
       return NextResponse.json(
         { error: 'Failed to fetch questions' },
         { status: 500 }
@@ -96,7 +94,6 @@ export async function POST(request: NextRequest) {
       });
     
     if (resultError) {
-      console.error('Error saving results:', resultError);
       return NextResponse.json(
         { error: 'Failed to save results' },
         { status: 500 }
@@ -118,8 +115,7 @@ export async function POST(request: NextRequest) {
       });
     
     if (progressError) {
-      console.error('Error updating progress:', progressError);
-    }
+      }
     
     // Check if all dimensions are completed
     const { data: allProgress } = await supabase
@@ -178,7 +174,6 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('Assessment complete error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

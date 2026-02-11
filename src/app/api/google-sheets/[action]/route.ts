@@ -4,18 +4,12 @@ import { SheetParserEngine } from '@/lib/google-sheets/sheet-parser-engine';
 import { DynamicPageGenerator } from '@/lib/website-generator/dynamic-page-generator';
 import { RealTimeSyncEngine } from '@/lib/real-time-sync/real-time-sync-engine';
 
-// Initialize services
-const sheetsService = GoogleSheetsService.getInstance();
-const parserEngine = new SheetParserEngine();
-const pageGenerator = new DynamicPageGenerator();
-const syncEngine = new RealTimeSyncEngine();
-
 /**
  * GET /api/google-sheets/[action]
  * Handles GET requests for Google Sheets operations
  */
-export async function GET(request: NextRequest, { params }: { params: { action: string } }) {
-  const { action } = params;
+export async function GET(request: NextRequest, { params }: { params: Promise<{ action: string }> }) {
+  const { action } = await params;
   
   try {
     switch (action) {
@@ -36,7 +30,7 @@ export async function GET(request: NextRequest, { params }: { params: { action: 
         );
     }
   } catch (error) {
-    console.error(`Google Sheets API error (${action}):`, error);
+    console.error(`Error in GET /api/google-sheets:`, error);
     return NextResponse.json(
       { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
@@ -48,8 +42,8 @@ export async function GET(request: NextRequest, { params }: { params: { action: 
  * POST /api/google-sheets/[action]
  * Handles POST requests for Google Sheets operations
  */
-export async function POST(request: NextRequest, { params }: { params: { action: string } }) {
-  const { action } = params;
+export async function POST(request: NextRequest, { params }: { params: Promise<{ action: string }> }) {
+  const { action } = await params;
   
   try {
     switch (action) {
@@ -74,7 +68,7 @@ export async function POST(request: NextRequest, { params }: { params: { action:
         );
     }
   } catch (error) {
-    console.error(`Google Sheets API error (${action}):`, error);
+    console.error(`Error in POST /api/google-sheets:`, error);
     return NextResponse.json(
       { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
@@ -97,6 +91,7 @@ async function handleGetSheetData(request: NextRequest) {
     );
   }
 
+  const sheetsService = await GoogleSheetsService.getInstance();
   const data = await sheetsService.getSheetData(
     process.env.SPREADSHEET_ID!,
     range ? range : sheetName
@@ -119,6 +114,7 @@ async function handleUpdateSheetData(request: NextRequest) {
     );
   }
 
+  const sheetsService = await GoogleSheetsService.getInstance();
   await sheetsService.updateSheetData(
     process.env.SPREADSHEET_ID!,
     range,
@@ -142,6 +138,7 @@ async function handleAppendSheetData(request: NextRequest) {
     );
   }
 
+  const sheetsService = await GoogleSheetsService.getInstance();
   await sheetsService.appendSheetData(
     process.env.SPREADSHEET_ID!,
     range || sheetName,
@@ -165,6 +162,7 @@ async function handleValidateSheetData(request: NextRequest) {
     );
   }
 
+  const parserEngine = new SheetParserEngine();
   const parsedData = await parserEngine.parseSheetData(
     process.env.SPREADSHEET_ID!,
     sheetName
@@ -183,6 +181,7 @@ async function handleValidateSheetData(request: NextRequest) {
  * Handle getting page rules
  */
 async function handleGetPageRules(request: NextRequest) {
+  const pageGenerator = new DynamicPageGenerator();
   return NextResponse.json({
     success: true,
     rules: pageGenerator.getPageRules()
@@ -193,6 +192,7 @@ async function handleGetPageRules(request: NextRequest) {
  * Handle getting sync status
  */
 async function handleGetSyncStatus(request: NextRequest) {
+  const syncEngine = new RealTimeSyncEngine();
   return NextResponse.json({
     success: true,
     status: syncEngine.getSyncStatus()
@@ -213,6 +213,7 @@ async function handleGetAnalytics(request: NextRequest) {
     );
   }
 
+  const parserEngine = new SheetParserEngine();
   const parsedData = await parserEngine.parseSheetData(
     process.env.SPREADSHEET_ID!,
     sheetName
@@ -224,22 +225,22 @@ async function handleGetAnalytics(request: NextRequest) {
   let analytics = {};
   switch (sheetName.toLowerCase()) {
     case 'activities':
-      analytics = pageGenerator['generateActivityAnalytics'](validatedData);
+      analytics = (new DynamicPageGenerator() as any).generateActivityAnalytics(validatedData);
       break;
     case 'members':
-      analytics = pageGenerator['generateMemberAnalytics'](validatedData);
+      analytics = (new DynamicPageGenerator() as any).generateMemberAnalytics(validatedData);
       break;
     case 'finances':
-      analytics = pageGenerator['generateFinancialAnalytics'](validatedData);
+      analytics = (new DynamicPageGenerator() as any).generateFinancialAnalytics(validatedData);
       break;
     case 'assessments':
-      analytics = pageGenerator['generateAssessmentAnalytics'](validatedData);
+      analytics = (new DynamicPageGenerator() as any).generateAssessmentAnalytics(validatedData);
       break;
     case 'knowledge':
-      analytics = pageGenerator['generateKnowledgeAnalytics'](validatedData);
+      analytics = (new DynamicPageGenerator() as any).generateKnowledgeAnalytics(validatedData);
       break;
     case 'projects':
-      analytics = pageGenerator['generateProjectAnalytics'](validatedData);
+      analytics = (new DynamicPageGenerator() as any).generateProjectAnalytics(validatedData);
       break;
   }
 
@@ -261,6 +262,8 @@ async function handleSync(request: NextRequest) {
   const body = await request.json();
   const { fullSync = false } = body;
 
+  const syncEngine = new RealTimeSyncEngine();
+  
   if (fullSync) {
     await syncEngine.triggerFullSync();
     return NextResponse.json({
@@ -290,6 +293,7 @@ async function handleRegeneratePage(request: NextRequest) {
     );
   }
 
+  const pageGenerator = new DynamicPageGenerator();
   await pageGenerator.regeneratePageByRoute(route);
 
   return NextResponse.json({
@@ -312,6 +316,7 @@ async function handleWatchSheet(request: NextRequest) {
     );
   }
 
+  const syncEngine = new RealTimeSyncEngine();
   syncEngine.watchSheet(process.env.SPREADSHEET_ID!, sheetName);
 
   return NextResponse.json({
@@ -334,6 +339,7 @@ async function handleUnwatchSheet(request: NextRequest) {
     );
   }
 
+  const syncEngine = new RealTimeSyncEngine();
   syncEngine.unwatchSheet(process.env.SPREADSHEET_ID!, sheetName);
 
   return NextResponse.json({

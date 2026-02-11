@@ -26,7 +26,6 @@ export function MindMapViewer({ chartCode }: { chartCode: string }) {
                     if (ref.current) ref.current.innerHTML = result.svg;
                 });
             } catch (e) {
-                console.error("Mermaid Render Error", e);
                 if (ref.current) ref.current.innerHTML = "<div class='text-red-400 p-4'>Gagal merender diagram. Format data tidak valid.</div>";
             }
         }

@@ -65,9 +65,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
     // Call custom error handler if provided
     this.props.onError?.(error, errorInfo);
 
-    console.error('Error caught by ErrorBoundary:', error);
-    console.error('Error info:', errorInfo);
-  }
+    }
 
   render() {
     if (this.state.hasError) {

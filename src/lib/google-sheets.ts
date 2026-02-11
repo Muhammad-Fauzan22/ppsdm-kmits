@@ -91,9 +91,7 @@ export async function logProcessingStatus(
       },
     });
 
-    console.log(`Logged processing status: ${status} for ${bookTitle}`);
-  } catch (error) {
-    console.error('Error logging to spreadsheet:', error);
+    } catch (error) {
     // Don't throw - logging failure shouldn't break processing
   }
 }
@@ -128,7 +126,6 @@ export async function getBookProcessingLogs(bookId: string): Promise<ProcessingL
         outputUrl: row[8] || undefined,
       }));
   } catch (error) {
-    console.error('Error getting book logs:', error);
     return [];
   }
 }
@@ -170,7 +167,6 @@ export async function getAllBookStatuses(): Promise<Record<string, ProcessingLog
 
     return statuses;
   } catch (error) {
-    console.error('Error getting all statuses:', error);
     return {};
   }
 }
@@ -231,9 +227,7 @@ export async function initializeSpreadsheet(): Promise<void> {
       },
     });
 
-    console.log('Spreadsheet initialized successfully');
-  } catch (error) {
-    console.error('Error initializing spreadsheet:', error);
+    } catch (error) {
     throw error;
   }
 }
@@ -265,7 +259,6 @@ export async function updateBookStatus(
     }
 
     if (rowIndex === -1) {
-      console.warn(`No existing log found for book ${bookId}`);
       return;
     }
 
@@ -296,7 +289,6 @@ export async function updateBookStatus(
       });
     }
   } catch (error) {
-    console.error('Error updating book status:', error);
     throw error;
   }
 }
@@ -338,7 +330,6 @@ export async function getProcessingStats(): Promise<{
       averageDuration,
     };
   } catch (error) {
-    console.error('Error getting processing stats:', error);
     return {
       total: 0,
       completed: 0,

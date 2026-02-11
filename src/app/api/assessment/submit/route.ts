@@ -62,7 +62,6 @@ export async function POST(request: NextRequest) {
         });
 
       if (createError) {
-        console.error('Error creating session:', createError);
         return NextResponse.json(
           { error: 'Failed to create assessment session' },
           { status: 500 }
@@ -86,7 +85,6 @@ export async function POST(request: NextRequest) {
       });
 
     if (responseError) {
-      console.error('Error saving response:', responseError);
       return NextResponse.json(
         { error: 'Failed to save response' },
         { status: 500 }
@@ -123,8 +121,7 @@ export async function POST(request: NextRequest) {
         });
 
       if (progressError) {
-        console.error('Error updating progress:', progressError);
-      }
+        }
     }
 
     return NextResponse.json({
@@ -133,7 +130,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Assessment submit error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

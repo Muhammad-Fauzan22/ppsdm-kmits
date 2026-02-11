@@ -43,8 +43,7 @@ export default function AdminDashboardPage() {
         e.preventDefault();
         if (searchQuery.trim()) {
             // Navigate to search results or filter dashboard
-            console.log("Searching for:", searchQuery);
-        }
+            }
     };
 
     const handleRefresh = useCallback(async () => {

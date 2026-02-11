@@ -25,7 +25,6 @@ export class ContinuousEvolutionSystem {
         if (impactScore === 'positive') {
             // 3. Recalibrate Quality
             // "Self-Improving Algorithms": Boost score if verified helpful
-            console.log(`[Evolution] Boosting quality for ${resourceId}`);
             // We reuse the logic from FeedbackService, but orchestrated here
             await this.feedbackService.submitFeedback(resourceId, 'system_evolution', 5);
         }

@@ -39,7 +39,6 @@ export async function GET(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error fetching goals:", error);
         return NextResponse.json(
             { error: "Failed to fetch goals" },
             { status: 500 }
@@ -91,7 +90,6 @@ export async function POST(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error creating goal:", error);
         return NextResponse.json(
             { error: "Failed to create goal" },
             { status: 500 }
@@ -135,7 +133,6 @@ export async function PATCH(request: NextRequest) {
             data,
         });
     } catch (error) {
-        console.error("Error updating goal:", error);
         return NextResponse.json(
             { error: "Failed to update goal" },
             { status: 500 }
@@ -176,7 +173,6 @@ export async function DELETE(request: NextRequest) {
             success: true,
         });
     } catch (error) {
-        console.error("Error deleting goal:", error);
         return NextResponse.json(
             { error: "Failed to delete goal" },
             { status: 500 }

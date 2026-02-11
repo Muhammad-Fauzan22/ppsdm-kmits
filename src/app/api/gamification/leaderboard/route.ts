@@ -29,7 +29,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ data: formattedLeaderboard });
 
   } catch (error) {
-    console.error('Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

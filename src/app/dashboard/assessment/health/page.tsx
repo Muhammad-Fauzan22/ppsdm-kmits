@@ -62,7 +62,6 @@ export default function HealthAssessmentPage() {
             router.push(`/assessment/health/results?id=${data.assessment_id}`);
 
         } catch (error) {
-            console.error(error);
             alert("Submission failed");
             setIsSubmitting(false);
         }

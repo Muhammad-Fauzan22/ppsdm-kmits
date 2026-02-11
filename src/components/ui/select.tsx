@@ -18,8 +18,7 @@ const SelectTrigger = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy } = props
   if (process.env.NODE_ENV === "development" && !ariaLabel && !ariaLabelledBy) {
-    console.warn("SelectTrigger missing aria-label or aria-labelledby.")
-  }
+    }
 
   return (
     <SelectPrimitive.Trigger

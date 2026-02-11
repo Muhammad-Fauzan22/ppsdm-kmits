@@ -44,8 +44,7 @@ export default function BookReaderPage() {
             if (error) throw error;
             setBook(data);
         } catch (error) {
-            console.error('Error fetching book:', error);
-        } finally {
+            } finally {
             setLoading(false);
         }
     }

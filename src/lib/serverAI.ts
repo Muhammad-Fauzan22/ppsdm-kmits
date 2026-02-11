@@ -14,7 +14,7 @@ interface SentimentResult {
  */
 export async function analyzeSentiment(text: string): Promise<SentimentResult> {
     // START: Mock Implementation
-    console.log('[ServerAI] Analyzing text:', text.substring(0, 50) + '...');
+    console.log('Analyzing sentiment for text:', text.substring(0, 50) + '...');
 
     // Simple keyword-based fallback (same logic as before, but on server)
     const positiveKeywords = ['good', 'great', 'excellent', 'amazing', 'love', 'happy', 'excited'];

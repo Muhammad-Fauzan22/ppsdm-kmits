@@ -82,8 +82,7 @@ export function useReportGenerator(): UseReportGeneratorReturn {
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate report');
-      console.error('Report generation error:', err);
-    } finally {
+      } finally {
       setIsLoading(false);
     }
   }, []);
@@ -126,7 +125,6 @@ export function useReportGenerator(): UseReportGeneratorReturn {
       return html;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate preview');
-      console.error('Preview generation error:', err);
       throw err;
     } finally {
       setIsLoading(false);

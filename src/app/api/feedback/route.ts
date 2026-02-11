@@ -59,8 +59,6 @@ export async function POST(request: NextRequest) {
             .single();
 
         if (error) {
-            console.error('[Feedback API] Error:', error);
-
             // If table doesn't exist, return mock success
             if (error.code === '42P01') {
                 return NextResponse.json({
@@ -83,7 +81,6 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('[Feedback API] Error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
@@ -119,8 +116,6 @@ export async function GET(request: NextRequest) {
         const { data, error } = await query;
 
         if (error) {
-            console.error('[Feedback API] Error:', error);
-
             // If table doesn't exist, return mock data
             if (error.code === '42P01') {
                 return NextResponse.json({
@@ -168,7 +163,6 @@ export async function GET(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('[Feedback API] Error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
@@ -205,7 +199,6 @@ export async function PATCH(request: NextRequest) {
             .single();
 
         if (error) {
-            console.error('[Feedback API] Error:', error);
             return NextResponse.json(
                 { error: 'Failed to update feedback' },
                 { status: 500 }
@@ -218,7 +211,6 @@ export async function PATCH(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('[Feedback API] Error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

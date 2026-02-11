@@ -16,7 +16,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import { GoogleSheetsService } from '@/lib/google-sheets/google-sheets.service';
+
 
 // Types for activity data
 interface Activity {
@@ -58,10 +58,9 @@ export function ActivityCalendar() {
 
   const loadActivities = async () => {
     try {
-      const sheetsService = GoogleSheetsService.getInstance();
-      const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || '';
-
-      const activitiesData = await sheetsService.getSheetData(spreadsheetId, 'Activities');
+      // Load activities via API instead of direct GoogleSheetsService
+      const response = await fetch('/api/member/activities').then(r => r.json());
+      const activitiesData = response.success ? response.data : [];
       setActivities(activitiesData.map((a: any) => ({
         id: a.id || '',
         name: a.name || '',
@@ -78,7 +77,6 @@ export function ActivityCalendar() {
         certificateGenerated: a.certificateGenerated === 'true',
       })));
     } catch (error) {
-      console.error('Error loading activities:', error);
       setMockActivities();
     } finally {
       setLoading(false);
@@ -177,8 +175,7 @@ export function ActivityCalendar() {
         setShowRegistrationModal(false);
       }
     } catch (error) {
-      console.error('Error registering for activity:', error);
-    }
+      }
   };
 
   const handleSubmitFeedback = async () => {
@@ -205,8 +202,7 @@ export function ActivityCalendar() {
         setFeedback({ rating: 5, comment: '' });
       }
     } catch (error) {
-      console.error('Error submitting feedback:', error);
-    }
+      }
   };
 
   const handleDownloadCertificate = (activity: Activity) => {

@@ -105,8 +105,7 @@ export class ABTestingManager {
         this.results = parsed.results || [];
       }
     } catch (error) {
-      console.error('[ABTesting] Failed to load from storage:', error);
-    }
+      }
   }
 
   /**
@@ -126,8 +125,7 @@ export class ABTestingManager {
       };
       localStorage.setItem(this.storageKey, JSON.stringify(data));
     } catch (error) {
-      console.error('[ABTesting] Failed to save to storage:', error);
-    }
+      }
   }
 
   /**
@@ -599,7 +597,6 @@ export class ABTestingManager {
       this.saveToStorage();
       return true;
     } catch (error) {
-      console.error('[ABTesting] Failed to import data:', error);
       return false;
     }
   }

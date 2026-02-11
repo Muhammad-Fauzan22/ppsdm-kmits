@@ -62,8 +62,7 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (profileError) {
-      console.error('Failed to fetch user profile:', profileError);
-    }
+      }
 
     // Get user's content interactions for collaborative filtering
     const { data: interactions, error: interactionsError } = await supabase
@@ -74,8 +73,7 @@ export async function GET(request: NextRequest) {
       .limit(50);
 
     if (interactionsError) {
-      console.error('Failed to fetch interactions:', interactionsError);
-    }
+      }
 
     // Build recommendations based on context
     let recommendations: any[] = [];
@@ -112,8 +110,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('API error:', error);
-    
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid query parameters', details: error.errors },

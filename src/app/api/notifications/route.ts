@@ -28,7 +28,6 @@ export async function GET() {
             unreadCount,
         });
     } catch (error) {
-        console.error("Error fetching notifications:", error);
         return NextResponse.json(
             { error: "Failed to fetch notifications" },
             { status: 500 }
@@ -69,7 +68,6 @@ export async function PATCH(request: Request) {
 
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error("Error updating notifications:", error);
         return NextResponse.json(
             { error: "Failed to update notifications" },
             { status: 500 }

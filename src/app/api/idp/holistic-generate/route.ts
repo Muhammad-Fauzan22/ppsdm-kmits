@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: true, data: idp });
 
     } catch (error: any) {
-        console.error('Holistic IDP API Error:', error);
         return NextResponse.json(
             { error: error.message || 'Internal Server Error' },
             { status: 500 }

@@ -58,8 +58,6 @@ export async function GET(request: NextRequest) {
 
         return response;
     } catch (error) {
-        console.error('CSRF token generation error:', error);
-
         return NextResponse.json(
             {
                 error: 'Internal Server Error',

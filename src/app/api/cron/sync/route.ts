@@ -23,8 +23,6 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        console.log("Cron: Starting Sync...");
-
         const supabase = await createClient();
 
         // 1. Trigger Scan locally
@@ -64,8 +62,6 @@ export async function GET(req: NextRequest) {
 
         const newFiles = driveFiles.filter(f => f.id && !existingIds.has(f.id));
 
-        console.log(`Cron: Found ${newFiles.length} new files.`);
-
         if (newFiles.length === 0) return NextResponse.json({ message: "No new files" });
 
         // B. INSERT & QUEUE
@@ -95,8 +91,7 @@ export async function GET(req: NextRequest) {
                 } else {
                     // Fallback: Trigger immediately (might timeout if many)
                     // Or just leave as "Pending" for UI manual trigger if no QStash
-                    console.warn("QStash not configured or APP_URL missing. Leaving as pending.");
-                }
+                    }
             }
         }
 
@@ -108,7 +103,6 @@ export async function GET(req: NextRequest) {
         });
 
     } catch (e: any) {
-        console.error("Cron Error:", e);
         return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }

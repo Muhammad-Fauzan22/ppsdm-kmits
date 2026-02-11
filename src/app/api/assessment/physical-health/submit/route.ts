@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
             .single();
 
         if (assessmentError) {
-            console.error('Assessment Insert Error:', assessmentError);
             return NextResponse.json({ error: 'Failed to save assessment' }, { status: 500 });
         }
 
@@ -60,7 +59,10 @@ export async function POST(req: NextRequest) {
             .from('physical_health_responses')
             .insert(responseInserts);
 
-        if (responsesError) console.error('Responses Insert Error:', responsesError);
+        if (responsesError) {
+            console.error('Error saving responses:', responsesError);
+            return NextResponse.json({ error: 'Failed to save responses' }, { status: 500 });
+        }
 
         // Insert Subdomains
         const subdomainInserts = Object.entries(result.subdomain_scores).map(([name, score]) => ({
@@ -73,7 +75,9 @@ export async function POST(req: NextRequest) {
             .from('physical_health_subdomains')
             .insert(subdomainInserts);
 
-        if (subdomainsError) console.error('Subdomains Insert Error:', subdomainsError);
+        if (subdomainsError) {
+            console.error('Error saving subdomains:', subdomainsError);
+        }
 
         // Insert Risk Flags
         if (result.risk_flags.length > 0) {
@@ -89,13 +93,14 @@ export async function POST(req: NextRequest) {
                 .from('health_risk_flags')
                 .insert(flagInserts);
 
-            if (flagsError) console.error('Flags Insert Error:', flagsError);
+            if (flagsError) {
+                console.error('Error saving risk flags:', flagsError);
+            }
         }
 
         return NextResponse.json({ success: true, assessmentId, result });
 
     } catch (error) {
-        console.error('Server Logic Error:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

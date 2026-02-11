@@ -59,7 +59,6 @@ export default function ClaimResultPage() {
                 router.push(`/assessment/self-management/results?id=${assessmentData.assessment_id}`);
 
             } catch (error) {
-                console.error("Claim error:", error);
                 setStatus("Failed to save results. Please try taking the assessment again.");
             }
         };

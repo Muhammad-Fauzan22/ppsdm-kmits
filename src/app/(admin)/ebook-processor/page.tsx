@@ -165,7 +165,6 @@ export default function EbookProcessorPage() {
       setCourses(coursesData || []);
 
     } catch (error) {
-      console.error('Error fetching data:', error);
       toast({
         title: 'Error',
         description: 'Failed to fetch data from database',
@@ -271,7 +270,6 @@ export default function EbookProcessorPage() {
       });
 
     } catch (error) {
-      console.error('Error starting batch processing:', error);
       toast({
         title: 'Error',
         description: 'Failed to start batch processing',

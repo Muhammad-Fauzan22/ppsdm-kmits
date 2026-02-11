@@ -117,7 +117,7 @@ function logError(error: Error, requestId?: string): void {
   };
 
   // Log ke console
-  console.error('[API Error]', JSON.stringify(logData, null, 2));
+  console.error('API Error:', logData);
 
   // Log ke error tracking service (jika tersedia)
   if (typeof window !== 'undefined' && (window as any).Sentry) {

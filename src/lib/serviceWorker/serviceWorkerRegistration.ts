@@ -34,14 +34,12 @@ export function registerServiceWorker(
   return new Promise((resolve, reject) => {
     // Check if service worker is supported
     if (!('serviceWorker' in navigator)) {
-      console.warn('[Service Worker] Service worker is not supported');
       resolve(null);
       return;
     }
 
     // Check if service worker is enabled
     if (!config.enabled) {
-      console.log('[Service Worker] Service worker is disabled');
       resolve(null);
       return;
     }
@@ -50,8 +48,6 @@ export function registerServiceWorker(
     navigator.serviceWorker
       .register(config.swPath, { scope: config.scope })
       .then((registration) => {
-        console.log('[Service Worker] Registered successfully:', registration);
-
         // Check for updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
@@ -59,7 +55,6 @@ export function registerServiceWorker(
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                 // New service worker is available
-                console.log('[Service Worker] New service worker available');
                 options?.onUpdate?.(registration);
               }
             });
@@ -71,7 +66,6 @@ export function registerServiceWorker(
         resolve(registration);
       })
       .catch((error) => {
-        console.error('[Service Worker] Registration failed:', error);
         options?.onError?.(error);
         reject(error);
       });
@@ -84,7 +78,6 @@ export function registerServiceWorker(
 export async function unregisterServiceWorker(): Promise<boolean> {
   try {
     if (!('serviceWorker' in navigator)) {
-      console.warn('[Service Worker] Service worker is not supported');
       return false;
     }
 
@@ -92,14 +85,11 @@ export async function unregisterServiceWorker(): Promise<boolean> {
     
     if (registration) {
       await registration.unregister();
-      console.log('[Service Worker] Unregistered successfully');
       return true;
     }
 
-    console.log('[Service Worker] No service worker to unregister');
     return false;
   } catch (error) {
-    console.error('[Service Worker] Unregistration failed:', error);
     return false;
   }
 }
@@ -116,7 +106,6 @@ export async function getServiceWorkerRegistration(): Promise<ServiceWorkerRegis
     const registration = await navigator.serviceWorker.getRegistration();
     return registration || null;
   } catch (error) {
-    console.error('[Service Worker] Failed to get registration:', error);
     return null;
   }
 }
@@ -129,15 +118,12 @@ export async function updateServiceWorker(): Promise<boolean> {
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker to update');
       return false;
     }
 
     await registration.update();
-    console.log('[Service Worker] Update requested');
     return true;
   } catch (error) {
-    console.error('[Service Worker] Update failed:', error);
     return false;
   }
 }
@@ -150,16 +136,13 @@ export async function skipWaiting(): Promise<boolean> {
     const registration = await getServiceWorkerRegistration();
     
     if (!registration || !registration.waiting) {
-      console.warn('[Service Worker] No waiting service worker');
       return false;
     }
 
     // Send message to skip waiting
     registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-    console.log('[Service Worker] Skip waiting requested');
     return true;
   } catch (error) {
-    console.error('[Service Worker] Skip waiting failed:', error);
     return false;
   }
 }
@@ -170,17 +153,14 @@ export async function skipWaiting(): Promise<boolean> {
 export async function clearAllCaches(): Promise<boolean> {
   try {
     if (!('caches' in window)) {
-      console.warn('[Service Worker] Cache API is not supported');
       return false;
     }
 
     const cacheNames = await caches.keys();
     await Promise.all(cacheNames.map((name) => caches.delete(name)));
     
-    console.log('[Service Worker] All caches cleared');
     return true;
   } catch (error) {
-    console.error('[Service Worker] Failed to clear caches:', error);
     return false;
   }
 }
@@ -191,24 +171,20 @@ export async function clearAllCaches(): Promise<boolean> {
 export async function cacheUrls(urls: string[]): Promise<boolean> {
   try {
     if (!('caches' in window)) {
-      console.warn('[Service Worker] Cache API is not supported');
       return false;
     }
 
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker registered');
       return false;
     }
 
     // Send message to service worker
     registration.active?.postMessage({ type: 'CACHE_URLS', urls });
     
-    console.log('[Service Worker] Cache URLs requested:', urls);
     return true;
   } catch (error) {
-    console.error('[Service Worker] Failed to cache URLs:', error);
     return false;
   }
 }
@@ -225,7 +201,6 @@ export async function isServiceWorkerReady(): Promise<boolean> {
     const registration = await getServiceWorkerRegistration();
     return registration !== null && registration.active !== undefined;
   } catch (error) {
-    console.error('[Service Worker] Failed to check readiness:', error);
     return false;
   }
 }
@@ -267,7 +242,6 @@ export async function getServiceWorkerStatus(): Promise<{
       isWaiting: registration.waiting !== undefined,
     };
   } catch (error) {
-    console.error('[Service Worker] Failed to get status:', error);
     return {
       isRegistered: false,
       isActivated: false,
@@ -328,7 +302,6 @@ export async function sendMessageToServiceWorker(
       activeWorker.postMessage(message, [messageChannel.port2]);
     });
   } catch (error) {
-    console.error('[Service Worker] Failed to send message:', error);
     throw error;
   }
 }
@@ -341,20 +314,16 @@ export async function requestBackgroundSync(tag: string): Promise<boolean> {
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker registered');
       return false;
     }
 
     if ('sync' in registration) {
       await (registration as any).sync.register(tag);
-      console.log('[Service Worker] Background sync requested:', tag);
       return true;
     }
 
-    console.warn('[Service Worker] Background sync is not supported');
     return false;
   } catch (error) {
-    console.error('[Service Worker] Failed to request background sync:', error);
     return false;
   }
 }
@@ -370,20 +339,16 @@ export async function requestPeriodicBackgroundSync(
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker registered');
       return false;
     }
 
     if ('periodicSync' in registration) {
       await (registration as any).periodicSync.register(tag, options);
-      console.log('[Service Worker] Periodic background sync requested:', tag);
       return true;
     }
 
-    console.warn('[Service Worker] Periodic background sync is not supported');
     return false;
   } catch (error) {
-    console.error('[Service Worker] Failed to request periodic background sync:', error);
     return false;
   }
 }
@@ -398,12 +363,10 @@ export async function subscribeToPushNotifications(
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker registered');
       return null;
     }
 
     if (!registration.pushManager) {
-      console.warn('[Service Worker] Push manager is not available');
       return null;
     }
 
@@ -412,10 +375,8 @@ export async function subscribeToPushNotifications(
       applicationServerKey: applicationServerKey,
     });
 
-    console.log('[Service Worker] Push subscription created:', subscription);
     return subscription;
   } catch (error) {
-    console.error('[Service Worker] Failed to subscribe to push:', error);
     return null;
   }
 }
@@ -428,7 +389,6 @@ export async function unsubscribeFromPushNotifications(): Promise<boolean> {
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker registered');
       return false;
     }
 
@@ -436,14 +396,11 @@ export async function unsubscribeFromPushNotifications(): Promise<boolean> {
     
     if (subscription) {
       await subscription.unsubscribe();
-      console.log('[Service Worker] Push subscription removed');
       return true;
     }
 
-    console.log('[Service Worker] No push subscription to remove');
     return false;
   } catch (error) {
-    console.error('[Service Worker] Failed to unsubscribe from push:', error);
     return false;
   }
 }
@@ -461,7 +418,6 @@ export async function getPushSubscription(): Promise<PushSubscription | null> {
 
     return await registration.pushManager.getSubscription();
   } catch (error) {
-    console.error('[Service Worker] Failed to get push subscription:', error);
     return null;
   }
 }
@@ -477,20 +433,16 @@ export async function showNotification(
     const registration = await getServiceWorkerRegistration();
     
     if (!registration) {
-      console.warn('[Service Worker] No service worker registered');
       return false;
     }
 
     if (!('showNotification' in registration)) {
-      console.warn('[Service Worker] Show notification is not supported');
       return false;
     }
 
     await registration.showNotification(title, options);
-    console.log('[Service Worker] Notification shown:', title);
     return true;
   } catch (error) {
-    console.error('[Service Worker] Failed to show notification:', error);
     return false;
   }
 }
@@ -511,12 +463,10 @@ export async function getNotificationPermission(): Promise<NotificationPermissio
  */
 export async function requestNotificationPermission(): Promise<NotificationPermission> {
   if (!('Notification' in window)) {
-    console.warn('[Service Worker] Notification API is not supported');
     return 'denied';
   }
 
   const permission = await Notification.requestPermission();
-  console.log('[Service Worker] Notification permission:', permission);
   return permission;
 }
 
@@ -570,7 +520,6 @@ export async function getServiceWorkerVersion(): Promise<string | null> {
     const response = await sendMessageToServiceWorker({ type: 'GET_VERSION' });
     return response?.version || null;
   } catch (error) {
-    console.error('[Service Worker] Failed to get version:', error);
     return null;
   }
 }
@@ -602,7 +551,6 @@ export async function getCacheSize(): Promise<number> {
 
     return totalSize;
   } catch (error) {
-    console.error('[Service Worker] Failed to get cache size:', error);
     return 0;
   }
 }
@@ -634,7 +582,6 @@ export async function getCacheNames(): Promise<string[]> {
 
     return await caches.keys();
   } catch (error) {
-    console.error('[Service Worker] Failed to get cache names:', error);
     return [];
   }
 }
@@ -665,7 +612,6 @@ export async function getCacheEntries(cacheName: string): Promise<Array<{ url: s
 
     return entries;
   } catch (error) {
-    console.error('[Service Worker] Failed to get cache entries:', error);
     return [];
   }
 }
@@ -680,10 +626,8 @@ export async function deleteCache(cacheName: string): Promise<boolean> {
     }
 
     await caches.delete(cacheName);
-    console.log('[Service Worker] Cache deleted:', cacheName);
     return true;
   } catch (error) {
-    console.error('[Service Worker] Failed to delete cache:', error);
     return false;
   }
 }
@@ -702,10 +646,8 @@ export async function deleteCacheEntry(
 
     const cache = await caches.open(cacheName);
     await cache.delete(url);
-    console.log('[Service Worker] Cache entry deleted:', url);
     return true;
   } catch (error) {
-    console.error('[Service Worker] Failed to delete cache entry:', error);
     return false;
   }
 }

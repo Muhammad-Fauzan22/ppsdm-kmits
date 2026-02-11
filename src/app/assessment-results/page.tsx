@@ -54,8 +54,7 @@ export default function AssessmentResultsPage() {
                     setResults(data.data);
                 }
             } catch (error) {
-                console.error("Failed to fetch results:", error);
-            } finally {
+                } finally {
                 setIsLoading(false);
             }
         }

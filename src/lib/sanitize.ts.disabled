@@ -1,0 +1,180 @@
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+
+// For server-side sanitization
+const window = new JSDOM('').window;
+const purify = DOMPurify(window);
+
+// Allowed HTML tags and attributes for basic content
+const ALLOWED_TAGS = [
+  'p', 'br', 'strong', 'b', 'em', 'i', 'u', 
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'ul', 'ol', 'li', 'a', 'img', 
+  'blockquote', 'code', 'pre', 'hr',
+  'div', 'span'
+];
+
+const ALLOWED_ATTR = [
+  'href', 'title', 'alt', 'src', 'class', 'id', 
+  'target', 'rel', 'width', 'height'
+];
+
+// Extended allowed tags for rich content
+const RICH_ALLOWED_TAGS = [
+  ...ALLOWED_TAGS,
+  'table', 'thead', 'tbody', 'tr', 'td', 'th',
+  'caption', 'colgroup', 'col'
+];
+
+const RICH_ALLOWED_ATTR = [
+  ...ALLOWED_ATTR,
+  'colspan', 'rowspan', 'scope', 'headers'
+];
+
+/**
+ * Sanitize HTML content for basic display
+ * Removes all scripts and potentially dangerous content
+ */
+export function sanitizeHtml(dirty: string): string {
+  if (!dirty) return '';
+  
+  return purify.sanitize(dirty, {
+    ALLOWED_TAGS,
+    ALLOWED_ATTR,
+    ALLOW_DATA_ATTR: false,
+    SANITIZE_DOM: true,
+    KEEP_CONTENT: true,
+  });
+}
+
+/**
+ * Sanitize HTML for rich text content
+ * Allows tables and other formatting
+ */
+export function sanitizeRichText(dirty: string): string {
+  if (!dirty) return '';
+  
+  return purify.sanitize(dirty, {
+    ALLOWED_TAGS: RICH_ALLOWED_TAGS,
+    ALLOWED_ATTR: RICH_ALLOWED_ATTR,
+    ALLOW_DATA_ATTR: false,
+    SANITIZE_DOM: true,
+    KEEP_CONTENT: true,
+  });
+}
+
+/**
+ * Strip all HTML tags (for plain text extraction)
+ */
+export function stripHtml(dirty: string): string {
+  if (!dirty) return '';
+  
+  return purify.sanitize(dirty, {
+    ALLOWED_TAGS: [],
+    ALLOWED_ATTR: [],
+    KEEP_CONTENT: true,
+  });
+}
+
+/**
+ * Sanitize URL to prevent javascript: protocol injection
+ */
+export function sanitizeUrl(url: string): string {
+  if (!url) return '';
+  
+  // Remove whitespace
+  const sanitized = url.trim();
+  
+  // Check for dangerous protocols
+  const dangerousProtocols = ['javascript:', 'data:', 'vbscript:', 'file:'];
+  const lowerUrl = sanitized.toLowerCase();
+  
+  for (const protocol of dangerousProtocols) {
+    if (lowerUrl.startsWith(protocol)) {
+      console.warn('[XSS] Blocked dangerous URL protocol:', protocol);
+      return '';
+    }
+  }
+  
+  return sanitized;
+}
+
+/**
+ * Sanitize input for use in SQL-like queries
+ * Note: This is a defense-in-depth measure. Always use parameterized queries.
+ */
+export function sanitizeSqlInput(input: string): string {
+  if (!input) return '';
+  
+  // Remove null bytes
+  let sanitized = input.replace(/\x00/g, '');
+  
+  // Remove common SQL injection patterns (basic)
+  // Note: This is NOT a substitute for parameterized queries
+  const sqlPatterns = [
+    /(\b(union|select|insert|update|delete|drop|create|alter|exec|execute|truncate)\b)/gi,
+    /(--|#|\/\*|\*\/)/g,
+    /(;)/g,
+  ];
+  
+  for (const pattern of sqlPatterns) {
+    sanitized = sanitized.replace(pattern, '');
+  }
+  
+  return sanitized.trim();
+}
+
+/**
+ * Validate and sanitize user input
+ * Returns sanitized string or null if invalid
+ */
+export function validateAndSanitizeInput(
+  input: string,
+  options: {
+    maxLength?: number;
+    allowHtml?: boolean;
+    required?: boolean;
+  } = {}
+): string | null {
+  const { maxLength = 1000, allowHtml = false, required = false } = options;
+  
+  if (!input) {
+    return required ? null : '';
+  }
+  
+  let sanitized = input.trim();
+  
+  // Check length
+  if (sanitized.length > maxLength) {
+    console.warn('[Validation] Input exceeds max length:', sanitized.length);
+    sanitized = sanitized.substring(0, maxLength);
+  }
+  
+  // Sanitize HTML if not allowed
+  if (!allowHtml) {
+    sanitized = stripHtml(sanitized);
+  } else {
+    sanitized = sanitizeHtml(sanitized);
+  }
+  
+  return sanitized;
+}
+
+/**
+ * Hook for sanitizing dangerouslySetInnerHTML content
+ * Use this whenever you need to render HTML from user input
+ */
+export function useSanitizedHtml(dirtyHtml: string) {
+  return {
+    __html: sanitizeHtml(dirtyHtml)
+  };
+}
+
+/**
+ * Hook for sanitizing rich text content
+ */
+export function useSanitizedRichText(dirtyHtml: string) {
+  return {
+    __html: sanitizeRichText(dirtyHtml)
+  };
+}

@@ -1,11 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withAdminAuth } from '@/lib/admin-auth';
 import { createClient } from '@/lib/supabase/server';
+import { z } from 'zod';
+
+// Validation schemas
+const querySchema = z.object({
+  bookId: z.string().uuid().optional()
+});
+
+const updateSchema = z.object({
+  bookId: z.string().uuid(),
+  driveFolderId: z.string().optional(),
+  driveFolderUrl: z.string().url().optional(),
+  status: z.enum(['pending', 'uploading', 'completed', 'failed']).optional(),
+  progress: z.number().min(0).max(100).optional()
+});
 
 /**
  * GET /api/admin/drive-status
- * Get Google Drive upload status for all ebooks or a specific book
+ * Get Google Drive upload status (Admin only)
  */
-export async function GET(req: NextRequest) {
+export const GET = withAdminAuth(async (req: NextRequest, admin) => {
   try {
     const { searchParams } = new URL(req.url);
     const bookId = searchParams.get('bookId');
@@ -13,6 +28,9 @@ export async function GET(req: NextRequest) {
     const supabase = await createClient();
 
     if (bookId) {
+      // Validate bookId
+      querySchema.parse({ bookId });
+
       // Get status for specific book
       const { data: book, error: bookError } = await supabase
         .from('ebooks')
@@ -35,8 +53,7 @@ export async function GET(req: NextRequest) {
         .order('created_at', { ascending: false });
 
       if (uploadsError) {
-        console.error('Error fetching upload tracking:', uploadsError);
-      }
+        }
 
       return NextResponse.json({
         book: {
@@ -50,7 +67,8 @@ export async function GET(req: NextRequest) {
           failed: uploads?.filter((u: any) => u.status === 'failed').length || 0,
           pending: uploads?.filter((u: any) => u.status === 'pending').length || 0,
           uploading: uploads?.filter((u: any) => u.status === 'uploading').length || 0
-        }
+        },
+        accessedBy: admin.email
       });
     } else {
       // Get status for all books with Drive folders
@@ -85,33 +103,35 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         books: books || [],
-        summary
+        summary,
+        accessedBy: admin.email
       });
     }
   } catch (error) {
-    console.error('Error in drive-status API:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid input', details: error.errors },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
-}
+});
 
 /**
  * POST /api/admin/drive-status
- * Update Drive upload status for a book
+ * Update Drive upload status (Admin only)
  */
-export async function POST(req: NextRequest) {
+export const POST = withAdminAuth(async (req: NextRequest, admin) => {
   try {
     const body = await req.json();
-    const { bookId, driveFolderId, driveFolderUrl, status, progress } = body;
-
-    if (!bookId) {
-      return NextResponse.json(
-        { error: 'Book ID is required' },
-        { status: 400 }
-      );
-    }
+    
+    // Validate input
+    const { bookId, driveFolderId, driveFolderUrl, status, progress } = updateSchema.parse(body);
 
     const supabase = await createClient();
 
@@ -141,13 +161,20 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      book: data
+      book: data,
+      updatedBy: admin.email
     });
   } catch (error) {
-    console.error('Error updating Drive status:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid input', details: error.errors },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
-}
+});

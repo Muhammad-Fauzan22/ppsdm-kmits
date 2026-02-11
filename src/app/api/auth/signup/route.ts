@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
             message: "Account created. Please check your email for verification.",
         });
     } catch (error) {
-        console.error("Signup error:", error);
         return NextResponse.json(
             { error: "Signup failed" },
             { status: 500 }

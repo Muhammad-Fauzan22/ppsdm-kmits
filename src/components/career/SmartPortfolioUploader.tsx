@@ -51,7 +51,6 @@ export const SmartPortfolioUploader = () => {
                 alert('Analysis failed: ' + data.error);
             }
         } catch (error) {
-            console.error('Upload Error:', error);
             alert('Failed to connect to AI service');
         } finally {
             setIsAnalyzing(false);

@@ -53,7 +53,6 @@ export default function PhysicalHealthAssessmentPage() {
             const data = await response.json();
             router.push(`/assessment/physical-health/results?id=${data.assessmentId}`);
         } catch (error) {
-            console.error(error);
             alert('Gagal mengirim jawaban. Silakan coba lagi.');
             setSubmitting(false);
         }

@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error fetching book cover:', error);
     return NextResponse.json(
       { error: 'Failed to fetch book cover' },
       { status: 500 }

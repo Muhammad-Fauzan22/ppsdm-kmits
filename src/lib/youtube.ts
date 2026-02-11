@@ -21,11 +21,8 @@ export interface YouTubeVideoResult {
  */
 export async function searchEducationalVideos(query: string, limit = 4): Promise<YouTubeVideoResult[]> {
     if (!process.env.GOOGLE_API_KEY) {
-        console.error("GOOGLE_API_KEY is missing");
         return [];
     }
-
-    console.log(`[YouTube Service] Searching for: ${query}`);
 
     try {
         const response = await youtube.search.list({
@@ -49,7 +46,6 @@ export async function searchEducationalVideos(query: string, limit = 4): Promise
         })).filter(video => video.youtube_id);
 
     } catch (error) {
-        console.error("[YouTube Service] Error fetching videos:", error);
         return [];
     }
 }

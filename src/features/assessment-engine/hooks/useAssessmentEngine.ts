@@ -195,7 +195,6 @@ export function useAssessmentEngine({
           throw new Error('Failed to save response');
         }
       } catch (err) {
-        console.error('Auto-save error:', err);
         // Don't block user, just log error
       }
     }
@@ -332,8 +331,7 @@ export function useAssessmentEngine({
         })
       });
     } catch (err) {
-      console.error('Save progress error:', err);
-    }
+      }
   }, [sessionId, state.currentQuestionIndex, responsesMap, sessionToken]);
 
   // Helpers

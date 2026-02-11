@@ -264,14 +264,12 @@ export default function MobileAssessmentPage() {
   const handleStartAssessment = (dimensionId: number) => {
     setActiveDimension(dimensionId);
     // Navigate to assessment page
-    console.log('Starting assessment for dimension:', dimensionId);
-  };
+    };
 
   const handleViewResults = (dimensionId: number) => {
     setActiveDimension(dimensionId);
     // Navigate to results page
-    console.log('Viewing results for dimension:', dimensionId);
-  };
+    };
 
   const handleDimensionClick = (dimension: AssessmentDimension) => {
     setSelectedDimension(dimension);
@@ -537,7 +535,7 @@ export default function MobileAssessmentPage() {
         <BottomNavigation
           items={NAVIGATION_ITEMS}
           activeItem="assessments"
-          onItemClick={(itemId) => console.log('Navigate to:', itemId)}
+          onItemClick={(itemId) => console.log(itemId)}
         />
 
         {/* Dimension Detail Modal */}

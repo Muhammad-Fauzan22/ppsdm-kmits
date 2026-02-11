@@ -1,28 +1,80 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-// import { generateJSON } from "@/lib/ai/groq"; // OLD SINGLE PROVIDER
-import { swarm } from "@/lib/ai/swarm"; // NEW SWARM ENGINE
+import { swarm } from "@/lib/ai/swarm";
+import crypto from "crypto";
+import { z } from "zod";
 
-// Bypass RLS dengan Service Role Key - Init inside handler for build safety
+// Environment variable for webhook secret
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+
+if (!WEBHOOK_SECRET) {
+  throw new Error('WEBHOOK_SECRET environment variable is required');
+}
+
+// Request validation schema
+const webhookSchema = z.object({
+  file: z.object({
+    name: z.string(),
+    download_url: z.string().url(),
+    preview_url: z.string().url().optional(),
+    extension: z.string(),
+    mime_type: z.string(),
+    id: z.string()
+  }),
+  metadata: z.object({
+    title: z.string(),
+    author: z.string(),
+    category: z.string(),
+    tags: z.array(z.string())
+  }),
+  job_id: z.string().uuid()
+});
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+/**
+ * POST /api/webhooks/process-book
+ * Webhook for processing book files
+ * SECURITY: Requires valid webhook secret
+ */
 export async function POST(req: NextRequest) {
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
+  
   try {
+    // 1. Validate authorization header
     const authHeader = req.headers.get("authorization");
-    if (authHeader !== "Bearer internal-system") {
-      return NextResponse.json({ error: "Unauthorized Access" }, { status: 401 });
+    const expectedAuth = `Bearer ${WEBHOOK_SECRET}`;
+    
+    // SECURITY: Use timing-safe comparison to prevent timing attacks
+    if (!authHeader || !crypto.timingSafeEqual(
+      Buffer.from(authHeader),
+      Buffer.from(expectedAuth)
+    )) {
+      console.warn('Unauthorized webhook access attempt:', {
+        userAgent: req.headers.get('user-agent'),
+        timestamp: new Date().toISOString()
+      });
+      
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
     }
 
+    // 2. Parse and validate request body
     const payload = await req.json();
-    const { file, metadata, job_id } = payload;
+    const validatedData = webhookSchema.parse(payload);
+    const { file, metadata, job_id } = validatedData;
 
-    console.log(`[Swarm Engine] Mobilizing Human Cloud for: ${metadata.title}`);
+    console.log('Processing book webhook:', {
+      jobId: job_id,
+      fileName: file.name,
+      timestamp: new Date().toISOString()
+    });
 
     // --- 7-LAYER BUKA BUKU PIPELINE PROMPT ---
     const triangulationPrompt = `
@@ -44,7 +96,7 @@ export async function POST(req: NextRequest) {
       OUTPUT JSON STRUCTURE:
       {
         "index_master": {
-            "evidence_level": "A", // A/B/C
+            "evidence_level": "A",
             "confidence_score": 9,
             "immersive_learning": {
                 "vr_suitability_score": 7,
@@ -80,7 +132,7 @@ export async function POST(req: NextRequest) {
         "audio_scripts": {
             "podcast_intro": "Script..."
         },
-        "report_markdown": "# Title\n\nContent...",
+        "report_markdown": "# Title\\n\\nContent...",
         "tabular_data": []
       }
     `;
@@ -127,7 +179,7 @@ export async function POST(req: NextRequest) {
             situation: content.learning_module.immersive_candidates.simulations[0]
           } : null,
           report_markdown: content.report_markdown,
-          processing_nodes: ["groq", "openrouter"] // Trace info
+          processing_nodes: ["groq", "openrouter"]
         },
 
         ai_persona_prompt: personaPrompt,
@@ -149,7 +201,16 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error("[Swarm Error]", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid request data', details: error.errors },
+        { status: 400 }
+      );
+    }
+    
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
   }
 }

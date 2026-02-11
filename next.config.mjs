@@ -1,228 +1,176 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable compression
-  compress: true,
-
-
-  // Security headers
-  async headers() {
-    return [
-      {
-        // Apply to all routes
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'geolocation=(), camera=(), microphone=()'
-          },
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self';"
-          }
-        ]
-      },
-      {
-        // Static assets - cache for 1 year
-        source: '/(.*).(jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff|woff2|ttf|eot)$',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
-        ]
-      },
-      {
-        // API routes - additional security
-        source: '/api/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate'
-          },
-          {
-            key: 'Pragma',
-            value: 'no-cache'
-          },
-          {
-            key: 'Expires',
-            value: '0'
-          }
-        ]
-      }
-    ];
-  },
-
-  async redirects() {
-    return [
-      {
-        source: '/assessment/:path*',
-        destination: '/dashboard/assessment/:path*',
-        permanent: true,
-      },
-      {
-        source: '/roadmap',
-        destination: '/dashboard/roadmap',
-        permanent: true,
-      },
-      {
-        source: '/pos',
-        destination: '/dashboard/pos',
-        permanent: true,
-      },
-      {
-        source: '/mentorship',
-        destination: '/dashboard/mentoring',
-        permanent: true,
-      },
-      {
-        source: '/profile/scholar',
-        destination: '/dashboard/profile',
-        permanent: true,
-      },
-      {
-        source: '/profile',
-        destination: '/dashboard/profile',
-        permanent: true,
-      },
-      {
-        source: '/portfolio/:path*',
-        destination: '/dashboard/portfolio/:path*',
-        permanent: true,
-      },
-      {
-        source: '/community',
-        destination: '/dashboard/community',
-        permanent: true,
-      },
-      {
-        source: '/settings',
-        destination: '/dashboard/settings',
-        permanent: true,
-      }
-    ];
-  },
-
-  // Image optimization
-  images: {
-    domains: ['lh3.googleusercontent.com', 'integrate.api.nvidia.com', 'ppsdm.its.ac.id', 'images.unsplash.com', 'drive.google.com'],
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 60,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  },
-
-
-  // Webpack configuration
-  webpack: (config, { dev, isServer }) => {
-    // Bundle analyzer - dynamically imported only when needed
-    if (process.env.ANALYZE === 'true' && !dev && !isServer) {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'static',
-          reportFilename: './analyze/client.html',
-          openAnalyzer: false,
-          generateStatsFile: true,
-          statsFilename: './analyze/stats.json',
-        })
-      );
+  // Webpack configuration to handle Node.js modules and optimize bundle
+  webpack: (config, { isServer, dev }) => {
+    // Exclude Node.js modules from client-side bundle
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
+        http: false,
+        https: false,
+        url: false,
+        zlib: false,
+        path: false,
+        os: false,
+        child_process: false,
+      };
     }
-
-    // Optimize chunk splitting
+    
+    // Externalize heavy modules to reduce bundle size
+    config.externals = config.externals || [];
+    config.externals.push({
+      'googleapis': 'commonjs googleapis',
+      'google-auth-library': 'commonjs google-auth-library',
+      'gaxios': 'commonjs gaxios',
+    });
+    
+    // Split chunks for better caching
     if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
-            common: {
-              minChunks: 2,
-              chunks: 'all',
-              enforce: true,
-            },
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          // Vendor chunk for node_modules
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          // Common chunk for shared code
+          common: {
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+            priority: 5,
+          },
+          // AI SDKs chunk (heavy)
+          ai: {
+            test: /[\\/]node_modules[\\/](@ai-sdk|ai|openai|groq-sdk)[\\/]/,
+            name: 'ai-vendors',
+            chunks: 'all',
+            priority: 15,
+          },
+          // PDF libraries chunk (heavy)
+          pdf: {
+            test: /[\\/]node_modules[\\/](jspdf|pdf-lib|@react-pdf)[\\/]/,
+            name: 'pdf-vendors',
+            chunks: 'all',
+            priority: 15,
+          },
+          // Charts chunk
+          charts: {
+            test: /[\\/]node_modules[\\/](recharts|chart\.js)[\\/]/,
+            name: 'chart-vendors',
+            chunks: 'all',
+            priority: 15,
           },
         },
       };
     }
-
+    
     return config;
   },
-
-
-  // Experimental features for performance
+  
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+    ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+  
+  // Compression
+  compress: true,
+  
+  // Production optimizations
+  productionBrowserSourceMaps: false,
+  
+  // Experimental features
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    // Enable code splitting and tree shaking for better performance
-    optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts', '@radix-ui/react-icons'],
-    webVitalsAttribution: ['CLS', 'INP', 'FCP', 'LCP', 'TTFB'],
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-icons',
+      'recharts',
+    ],
   },
-
-
-
-  // Build optimization
-  // swcMinify: true, // Deprecated in Next.js 15+ (default is true)
-
-  // Enable React strict mode
-  reactStrictMode: true,
-
-  // Fix workspace root inference
-  outputFileTracingRoot: process.cwd(),
-
-  // Output mode
-  output: 'standalone',
-
-  // TypeScript configuration
-  typescript: {
-    ignoreBuildErrors: false,
+  
+  // Performance budgets
+  performance: {
+    // Max bundle size warnings (in bytes)
+    maxEntrypointSize: 250000,
+    maxAssetSize: 250000,
   },
-
-  // ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: true,
+  
+  // Headers for static assets caching
+  async headers() {
+    return [
+      {
+        source: '/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+    ];
   },
-
-  // Static page generation timeout (for heavy pages)
-  staticPageGenerationTimeout: 300,
-
-  // Handle pages with dynamic content that can't be prerendered
-  onDemandEntries: {
-    // Period (in ms) where server will keep pages in the buffer
-    maxInactiveAge: 60 * 60 * 1000,
-    // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 5,
+  
+  // Redirects
+  async redirects() {
+    return [
+      {
+        source: '/old-dashboard',
+        destination: '/dashboard',
+        permanent: true,
+      },
+    ];
   },
+  
+  // Rewrites
+  async rewrites() {
+    return [
+      {
+        source: '/api/health',
+        destination: '/api/health-check',
+      },
+    ];
+  },
+  
+  // Trailing slash configuration
+  trailingSlash: false,
+  
+  // Powered by header
+  poweredByHeader: false,
 };
 
-
-// Export without PWA wrapper
 export default nextConfig;

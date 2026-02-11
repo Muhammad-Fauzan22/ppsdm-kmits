@@ -81,7 +81,6 @@ export default function ClaimFinancialResultPage() {
                 router.push(`/assessment/financial/results?id=${assessmentId}`);
 
             } catch (error) {
-                console.error("Claim error:", error);
                 setStatus("Failed to save results. Please try again.");
             }
         };

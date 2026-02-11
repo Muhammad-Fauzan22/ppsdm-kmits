@@ -84,7 +84,6 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('Cancel deletion error:', error);
         return NextResponse.json(
             { error: 'Failed to cancel deletion' },
             { status: 500 }

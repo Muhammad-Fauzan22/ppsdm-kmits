@@ -1,4 +1,6 @@
 import { ReportData, AssessmentScore } from '../types';
+import { createClient } from '@/lib/supabase/server';
+import { logger } from '@/lib/logger';
 
 /**
  * Holistic Assessment Data Aggregator
@@ -9,28 +11,48 @@ export class HolisticAggregator {
    * Aggregate holistic assessment data from database
    */
   static async aggregate(assessmentId: string, userId: string): Promise<ReportData> {
-    const assessmentData = await this.fetchAssessmentData(assessmentId, userId);
+    try {
+      const supabase = await createClient();
+      const assessmentData = await this.fetchAssessmentData(supabase, assessmentId, userId);
 
-    return {
-      reportType: 'holistic',
-      assessmentId,
-      reportId: `holistic-${assessmentId}`,
-      userId,
-      userName: assessmentData.user_name || 'Unknown User',
-      userEmail: assessmentData.user_email || 'unknown@example.com',
-      generatedAt: new Date(),
-      overallScore: assessmentData.overall_score || 0,
-      holisticHealth: assessmentData.holistic_health || 'Unknown',
-      scores: this.processScores(assessmentData),
-      strengths: assessmentData.strengths || [],
-      areasForImprovement: assessmentData.areas_for_improvement || [],
-      recommendations: assessmentData.recommendations || [],
-      metadata: {
+      // Fetch user profile for name/email
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('id', userId)
+        .single();
+
+      // Calculate holistic health status
+      const overallScore = assessmentData.overall_score || 0;
+      let holisticHealth = 'Perlu Perhatian';
+      if (overallScore >= 80) holisticHealth = 'Sangat Baik';
+      else if (overallScore >= 60) holisticHealth = 'Baik';
+      else if (overallScore >= 40) holisticHealth = 'Cukup';
+
+      return {
+        reportType: 'holistic',
         assessmentId,
-        assessmentDate: new Date(assessmentData.created_at),
-        dataPoints: this.countDataPoints(assessmentData),
-      },
-    };
+        reportId: `holistic-${assessmentId}`,
+        userId,
+        userName: profile?.full_name || 'Mahasiswa ITS',
+        userEmail: profile?.email || 'mahasiswa@its.ac.id',
+        generatedAt: new Date(),
+        overallScore,
+        holisticHealth,
+        scores: this.processScores(assessmentData),
+        strengths: assessmentData.strengths || this.generateStrengths(assessmentData),
+        areasForImprovement: assessmentData.areas_for_improvement || this.generateImprovements(assessmentData),
+        recommendations: assessmentData.recommendations || this.generateRecommendations(assessmentData),
+        metadata: {
+          assessmentId,
+          assessmentDate: new Date(assessmentData.created_at),
+          dataPoints: this.countDataPoints(assessmentData),
+        },
+      };
+    } catch (error) {
+      logger.error('Error aggregating holistic assessment', { error, assessmentId, userId });
+      throw error;
+    }
   }
 
   /**
@@ -120,55 +142,158 @@ export class HolisticAggregator {
   /**
    * Fetch assessment data from database
    */
-  private static async fetchAssessmentData(assessmentId: string, userId: string): Promise<any> {
-    // TODO: Implement actual Supabase query
-    // Example:
-    // const { data, error } = await supabase
-    //   .from('holistic_assessments')
-    //   .select('*')
-    //   .eq('id', assessmentId)
-    //   .eq('user_id', userId)
-    //   .single();
+  private static async fetchAssessmentData(supabase: any, assessmentId: string, userId: string): Promise<any> {
+    // Fetch assessment with results
+    const { data: assessment, error: assessmentError } = await supabase
+      .from('assessments')
+      .select(`
+        id,
+        created_at,
+        status,
+        assessment_results!inner(
+          dimension_id,
+          raw_score,
+          normalized_score,
+          percentile_rank,
+          dimensions!inner(
+            id,
+            name,
+            category
+          )
+        )
+      `)
+      .eq('id', assessmentId)
+      .eq('user_id', userId)
+      .eq('status', 'completed')
+      .single();
 
-    // Placeholder data
-    return {
-      user_name: 'Mahasiswa ITS',
-      user_email: 'mahasiswa@its.ac.id',
-      overall_score: 72,
-      holistic_health: 'Baik',
-      created_at: new Date().toISOString(),
-      strengths: [
-        'Keseimbangan yang baik antara dimensi pengembangan',
-        'Komitmen tinggi terhadap pengembangan diri',
-        'Kemampuan adaptasi yang kuat',
-      ],
-      areas_for_improvement: [
-        'Perlu meningkatkan kesehatan fisik',
-        'Perlu mengembangkan keterampilan sosial',
-        'Perlu meningkatkan kesejahteraan mental',
-      ],
-      recommendations: [
-        'Ikuti program kebugaran fisik',
-        'Bergabung dengan komunitas sosial',
-        'Praktikkan mindfulness dan meditasi',
-      ],
-      cognitive_score: 75,
-      cognitive_percentage: 75,
-      emotional_score: 68,
-      emotional_percentage: 68,
-      social_score: 70,
-      social_percentage: 70,
-      physical_score: 65,
-      physical_percentage: 65,
-      spiritual_score: 72,
-      spiritual_percentage: 72,
-      character_score: 78,
-      character_percentage: 78,
-      financial_score: 70,
-      financial_percentage: 70,
-      self_management_score: 74,
-      self_management_percentage: 74,
+    if (assessmentError) {
+      throw new Error(`Failed to fetch assessment: ${assessmentError.message}`);
+    }
+
+    if (!assessment) {
+      throw new Error('Assessment not found');
+    }
+
+    // Transform results into dimension scores
+    const result: any = {
+      created_at: assessment.created_at,
+      overall_score: 0,
+      strengths: [],
+      areas_for_improvement: [],
+      recommendations: [],
     };
+
+    let totalScore = 0;
+    let dimensionCount = 0;
+
+    assessment.assessment_results?.forEach((ar: any) => {
+      const dimensionName = ar.dimensions?.name?.toLowerCase().replace(/\s+/g, '_');
+      if (dimensionName) {
+        result[`${dimensionName}_score`] = ar.raw_score || 0;
+        result[`${dimensionName}_percentage`] = ar.normalized_score || 0;
+        totalScore += ar.normalized_score || 0;
+        dimensionCount++;
+      }
+    });
+
+    result.overall_score = dimensionCount > 0 ? Math.round(totalScore / dimensionCount) : 0;
+
+    return result;
+  }
+
+  /**
+   * Generate strengths based on high-scoring dimensions
+   */
+  private static generateStrengths(data: any): string[] {
+    const strengths: string[] = [];
+    const dimensions = [
+      { name: 'cognitive', label: 'Kognitif', threshold: 75 },
+      { name: 'emotional', label: 'Emosional', threshold: 75 },
+      { name: 'social', label: 'Sosial', threshold: 75 },
+      { name: 'physical', label: 'Fisik', threshold: 75 },
+      { name: 'spiritual', label: 'Spiritual', threshold: 75 },
+      { name: 'character', label: 'Karakter', threshold: 75 },
+      { name: 'financial', label: 'Finansial', threshold: 75 },
+      { name: 'self_management', label: 'Manajemen Diri', threshold: 75 },
+    ];
+
+    dimensions.forEach(dim => {
+      const score = data[`${dim.name}_percentage`];
+      if (score >= dim.threshold) {
+        strengths.push(`${dim.label} yang kuat (${score}%)`);
+      }
+    });
+
+    if (strengths.length === 0) {
+      strengths.push('Komitmen terhadap pengembangan diri');
+      strengths.push('Kesadaran akan pentingnya asesmen holistik');
+    }
+
+    return strengths;
+  }
+
+  /**
+   * Generate areas for improvement based on low-scoring dimensions
+   */
+  private static generateImprovements(data: any): string[] {
+    const improvements: string[] = [];
+    const dimensions = [
+      { name: 'cognitive', label: 'kognitif' },
+      { name: 'emotional', label: 'emosional' },
+      { name: 'social', label: 'sosial' },
+      { name: 'physical', label: 'fisik' },
+      { name: 'spiritual', label: 'spiritual' },
+      { name: 'character', label: 'karakter' },
+      { name: 'financial', label: 'finansial' },
+      { name: 'self_management', label: 'manajemen diri' },
+    ];
+
+    dimensions.forEach(dim => {
+      const score = data[`${dim.name}_percentage`];
+      if (score < 50) {
+        improvements.push(`Perlu peningkatan di dimensi ${dim.label} (${score}%)`);
+      }
+    });
+
+    if (improvements.length === 0) {
+      improvements.push('Pertahankan keseimbangan antar dimensi');
+      improvements.push('Terus kembangkan semua aspek holistik');
+    }
+
+    return improvements;
+  }
+
+  /**
+   * Generate personalized recommendations
+   */
+  private static generateRecommendations(data: any): string[] {
+    const recommendations: string[] = [];
+
+    // Add recommendations based on lowest scores
+    if (data.physical_percentage < 60) {
+      recommendations.push('Ikuti program kebugaran fisik regular (minimal 3x seminggu)');
+    }
+    if (data.emotional_percentage < 60) {
+      recommendations.push('Praktikkan mindfulness dan teknik manajemen stress');
+    }
+    if (data.social_percentage < 60) {
+      recommendations.push('Bergabung dengan komunitas atau organisasi kampus');
+    }
+    if (data.financial_percentage < 60) {
+      recommendations.push('Ikuti workshop literasi finansial dan buat anggaran bulanan');
+    }
+    if (data.cognitive_percentage < 60) {
+      recommendations.push('Gunakan teknik active recall dan spaced repetition saat belajar');
+    }
+
+    // Add general recommendations
+    if (recommendations.length < 3) {
+      recommendations.push('Buat rencana pengembangan diri (PDP) berdasarkan hasil asesmen');
+      recommendations.push('Lakukan evaluasi berkala setiap bulan');
+    }
+
+    return recommendations;
   }
 
   /**

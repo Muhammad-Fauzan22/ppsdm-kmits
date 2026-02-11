@@ -68,7 +68,6 @@ export default function ClaimPhysicalResultPage() {
                 router.push(`/assessment/physical/results?id=${data.assessment_id}`);
 
             } catch (error) {
-                console.error("Claim error:", error);
                 setStatus("Failed to save results.");
             }
         };

@@ -3,6 +3,8 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./accessibility.css";
 import { NudgeNotification } from "@/components/features/NudgeNotification";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // OPTIMIZED: Reduced from 8 fonts to 2 fonts for better performance
 // Primary font for body text
@@ -203,6 +205,8 @@ export default function RootLayout({
         </a>
         {children}
         <NudgeNotification />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

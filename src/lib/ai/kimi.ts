@@ -16,10 +16,6 @@ interface KimiMessage {
  * This wrapper is kept for backward compatibility only
  */
 export async function chatWithKimi(messages: KimiMessage[]) {
-  console.warn(
-    "[DEPRECATED] chatWithKimi is deprecated. Use queryAI from @/lib/ai-service instead."
-  );
-
   try {
     const result = await queryAI(
       messages as AIMessage[],
@@ -33,7 +29,6 @@ export async function chatWithKimi(messages: KimiMessage[]) {
 
     return result.content;
   } catch (error) {
-    console.error("Kimi AI Integration Error:", error);
     throw error;
   }
 }

@@ -30,8 +30,7 @@ export class FeedbackService {
 
         if (error) {
             // Fallback: Just log if table doesn't exist yet (simulating partial deploy)
-            console.warn('Feedback table missing, logging only:', { resourceId, rating });
-        }
+            }
 
         // 2. Autonomous Recalibration (Self-Improving Algorithms)
         await this.recalibrateQuality(resourceId, rating);

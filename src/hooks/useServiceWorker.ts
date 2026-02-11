@@ -148,7 +148,6 @@ export function useServiceWorker(options: UseServiceWorkerOptions = {}): Service
   // Register service worker
   const register = useCallback(async () => {
     if (!enabled) {
-      console.log('[useServiceWorker] Service worker is disabled');
       return null;
     }
 
@@ -286,8 +285,6 @@ export function useServiceWorker(options: UseServiceWorkerOptions = {}): Service
 
     // Listen for messages
     const cleanup = onServiceWorkerMessage((event) => {
-      console.log('[useServiceWorker] Message received:', event.data);
-      
       // Handle specific message types
       if (event.data.type === 'CACHE_UPDATED') {
         refreshCacheInfo();
@@ -309,12 +306,10 @@ export function useServiceWorker(options: UseServiceWorkerOptions = {}): Service
   // Listen for online/offline events
   useEffect(() => {
     const handleOnline = () => {
-      console.log('[useServiceWorker] Online');
       refreshStatus();
     };
 
     const handleOffline = () => {
-      console.log('[useServiceWorker] Offline');
       refreshStatus();
     };
 

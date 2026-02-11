@@ -34,8 +34,7 @@ class ErrorTracker {
 
         // Log to console in development
         if (process.env.NODE_ENV === 'development') {
-            console.error('[ErrorTracker]', errorLog);
-        }
+            }
 
         // In production, you could send to external service here
         // Example: this.sendToSentry(errorLog);

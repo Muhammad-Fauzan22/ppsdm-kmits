@@ -320,7 +320,6 @@ export async function trackedQuery<T>(
       timestamp: new Date(),
     };
     
-    console.error(`Query [${queryName}] failed:`, error);
     return { data: null, error };
   }
 }
