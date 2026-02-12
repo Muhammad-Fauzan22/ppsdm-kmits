@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement } from 'react';
@@ -281,18 +282,18 @@ export const apiTestUtils = {
       'content-type': 'application/json',
       'user-agent': 'test-agent',
     },
-    json: jest.fn().mockResolvedValue({}),
-    text: jest.fn().mockResolvedValue(''),
-    formData: jest.fn().mockResolvedValue(new FormData()),
+    json: vi.fn().mockResolvedValue({}),
+    text: vi.fn().mockResolvedValue(''),
+    formData: vi.fn().mockResolvedValue(new FormData()),
     ...overrides,
   }),
 
   // Mock Next.js response
   createMockResponse: () => ({
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn().mockReturnThis(),
-    send: jest.fn().mockReturnThis(),
-    end: jest.fn().mockReturnThis(),
+    status: vi.fn().mockReturnThis(),
+    json: vi.fn().mockReturnThis(),
+    send: vi.fn().mockReturnThis(),
+    end: vi.fn().mockReturnThis(),
   }),
 
   // Test API error handling

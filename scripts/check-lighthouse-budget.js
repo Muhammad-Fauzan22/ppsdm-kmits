@@ -5,9 +5,12 @@
  * Fails the build if performance scores are below threshold
  */
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const BUDGET = {
   performance: 0.8,
   accessibility: 0.9,
@@ -16,6 +19,7 @@ const BUDGET = {
   pwa: 0.7,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const METRICS_BUDGET = {
   'first-contentful-paint': 1800, // ms
   'largest-contentful-paint': 2500, // ms
@@ -26,7 +30,7 @@ const METRICS_BUDGET = {
 
 function loadLighthouseResults() {
   const lighthouseDir = path.join(process.cwd(), '.lighthouseci');
-  
+
   if (!fs.existsSync(lighthouseDir)) {
     console.error('❌ Lighthouse results directory not found');
     process.exit(1);
@@ -34,7 +38,7 @@ function loadLighthouseResults() {
 
   const files = fs.readdirSync(lighthouseDir);
   const jsonFiles = files.filter(f => f.endsWith('.json') && !f.includes('manifest'));
-  
+
   if (jsonFiles.length === 0) {
     console.error('❌ No Lighthouse result files found');
     process.exit(1);

@@ -14,6 +14,14 @@ export async function getFromRedis<T>(key: string): Promise<T | null> {
     }
 }
 
+export async function saveToRedis(key: string, value: any, ttlSeconds: number = 300): Promise<void> {
+    try {
+        await redis.set(key, value, { ex: ttlSeconds });
+    } catch (error) {
+        console.error('Redis save error:', error);
+    }
+}
+
 export async function deleteFromRedis(key: string): Promise<void> {
     try {
         await redis.del(key);

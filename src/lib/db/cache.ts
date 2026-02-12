@@ -126,19 +126,19 @@ export const getCachedUserAchievements = unstable_cache(
  * Invalidate all user-related caches
  */
 export function invalidateUserCaches(userId: string) {
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag('user-data');
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`dimension-scores-${userId}`);
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`user-profile-${userId}`);
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`dashboard-${userId}`);
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`activities-${userId}`);
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`goals-${userId}`);
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`achievements-${userId}`);
 }
 
@@ -146,9 +146,9 @@ export function invalidateUserCaches(userId: string) {
  * Invalidate dimension scores cache
  */
 export function invalidateDimensionScores(userId: string) {
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag('dimension-scores');
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`dimension-scores-${userId}`);
 }
 
@@ -156,9 +156,9 @@ export function invalidateDimensionScores(userId: string) {
  * Invalidate dashboard cache
  */
 export function invalidateDashboard(userId: string) {
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag('dashboard');
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`dashboard-stats-${userId}`);
 }
 
@@ -166,9 +166,9 @@ export function invalidateDashboard(userId: string) {
  * Invalidate activities cache
  */
 export function invalidateActivities(userId: string) {
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag('activities');
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`recent-activities-${userId}`);
 }
 
@@ -176,9 +176,9 @@ export function invalidateActivities(userId: string) {
  * Invalidate goals cache
  */
 export function invalidateGoals(userId: string) {
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag('goals');
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`active-goals-${userId}`);
 }
 
@@ -186,9 +186,9 @@ export function invalidateGoals(userId: string) {
  * Invalidate achievements cache
  */
 export function invalidateAchievements(userId: string) {
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag('achievements');
-  // @ts-ignore
+  // @ts-expect-error - revalidateTag expects string
   revalidateTag(`user-achievements-${userId}`);
 }
 

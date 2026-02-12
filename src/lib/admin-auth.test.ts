@@ -1,7 +1,5 @@
-```typescript
-// @ts-nocheck
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { withAdminAuth } from './admin-auth';
+import { withAdminAuth, requireAdmin, isAdmin } from './admin-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 // Mock the Supabase client

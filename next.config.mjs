@@ -5,9 +5,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   // Disable ESLint during build (we run it separately)
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   // Use standalone output for SSR support
   output: 'standalone',
   // Webpack configuration to handle Node.js modules and optimize bundle

@@ -1,4 +1,5 @@
 import type { sheets_v4 } from 'googleapis';
+import { getFromRedis, saveToRedis, deleteFromRedis } from '../redis';
 
 /**
  * Google Sheets Service
@@ -37,12 +38,12 @@ export class GoogleSheetsService {
     try {
       // Dynamic import to avoid webpack bundling issues
       const { google } = await import('googleapis');
-      
+
       const auth = new google.auth.GoogleAuth({
         keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS || 'credentials.json',
         scopes: ['https://www.googleapis.com/auth/spreadsheets']
       });
-      
+
       this.sheets = google.sheets({ version: 'v4', auth });
     } catch (error) {
       throw new Error(`Google Sheets service initialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -58,27 +59,35 @@ export class GoogleSheetsService {
     }
 
     try {
+      const cacheKey = `sheet:${spreadsheetId}:${range}`;
+      const cached = await getFromRedis<any[]>(cacheKey);
+
+      if (cached) {
+        return cached;
+      }
+
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId,
         range,
       });
-      
+
       const values = response.data.values || [];
-      
+
       if (values.length === 0) {
         return [];
       }
 
       // Convert to object format using header row
       const headers = values[0];
-      const data = values.slice(1).map(row => {
+      const data = values.slice(1).map((row: any[]) => {
         const item: any = {};
-        headers.forEach((header, index) => {
+        headers.forEach((header: string, index: number) => {
           item[header] = row[index];
         });
         return item;
       });
 
+      await saveToRedis(cacheKey, data, 300); // 5 mins TTL
       return data;
     } catch (error) {
       throw new Error(`Failed to fetch sheet data: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -102,6 +111,10 @@ export class GoogleSheetsService {
           values,
         },
       });
+
+      // Invalidate cache
+      const cacheKey = `sheet:${spreadsheetId}:${range}`;
+      await deleteFromRedis(cacheKey);
     } catch (error) {
       throw new Error(`Failed to update sheet data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -124,6 +137,10 @@ export class GoogleSheetsService {
           values,
         },
       });
+
+      // Invalidate cache
+      const cacheKey = `sheet:${spreadsheetId}:${range}`;
+      await deleteFromRedis(cacheKey);
     } catch (error) {
       throw new Error(`Failed to append sheet data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }

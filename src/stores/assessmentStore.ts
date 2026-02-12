@@ -28,24 +28,24 @@ export interface AssessmentState {
   sessionId: string | null;
   userId: string | null;
   startedAt: Date | null;
-  
+
   // Progress tracking for all 9 dimensions
   dimensionsProgress: Record<string, DimensionProgress>;
-  
+
   // Current active dimension
   currentDimensionId: string | null;
   currentQuestionIndex: number;
-  
+
   // UI state
   showCompletionReminder: boolean;
   lastReminderShownAt: Date | null;
-  
+
   // Computed values
   getCompletedDimensions: () => string[];
   getInProgressDimensions: () => string[];
   getCompletionRate: () => number;
   getAllDimensionsCompleted: () => boolean;
-  
+
   // Actions
   startSession: (userId: string) => void;
   startDimension: (dimensionId: string) => void;
@@ -79,7 +79,7 @@ export const useAssessmentStore = create<AssessmentState>()(
   persist(
     (set, get) => ({
       ...initialState,
-      
+
       // Computed values
       getCompletedDimensions: () => {
         const { dimensionsProgress } = get();
@@ -87,23 +87,23 @@ export const useAssessmentStore = create<AssessmentState>()(
           .filter(d => d.status === 'completed')
           .map(d => d.dimensionId);
       },
-      
+
       getInProgressDimensions: () => {
         const { dimensionsProgress } = get();
         return Object.values(dimensionsProgress)
           .filter(d => d.status === 'in_progress')
           .map(d => d.dimensionId);
       },
-      
+
       getCompletionRate: () => {
         const completed = get().getCompletedDimensions().length;
         return (completed / 9) * 100;
       },
-      
+
       getAllDimensionsCompleted: () => {
         return get().getCompletedDimensions().length === 9;
       },
-      
+
       // Actions
       startSession: (userId: string) => set({
         sessionId: generateSessionId(),
@@ -111,15 +111,15 @@ export const useAssessmentStore = create<AssessmentState>()(
         startedAt: new Date(),
         dimensionsProgress: {},
       }),
-      
-      startDimension: (dimensionId: string) => set((state) => {
+
+      startDimension: (dimensionId: string) => set((state: AssessmentState) => {
         const existing = state.dimensionsProgress[dimensionId];
-        
+
         // If already completed, don't reset
         if (existing?.status === 'completed') {
           return { currentDimensionId: dimensionId };
         }
-        
+
         return {
           currentDimensionId: dimensionId,
           currentQuestionIndex: existing?.answers?.length || 0,
@@ -134,12 +134,12 @@ export const useAssessmentStore = create<AssessmentState>()(
           }
         };
       }),
-      
-      saveAnswer: (dimensionId: string, questionIndex: number, answer: number) => set((state) => {
+
+      saveAnswer: (dimensionId: string, questionIndex: number, answer: number) => set((state: AssessmentState) => {
         const existing = state.dimensionsProgress[dimensionId];
         const newAnswers = [...(existing?.answers || [])];
         newAnswers[questionIndex] = answer;
-        
+
         return {
           dimensionsProgress: {
             ...state.dimensionsProgress,
@@ -152,10 +152,10 @@ export const useAssessmentStore = create<AssessmentState>()(
           }
         };
       }),
-      
-      completeDimension: (dimensionId: string, score: number) => set((state) => {
+
+      completeDimension: (dimensionId: string, score: number) => set((state: AssessmentState) => {
         const existing = state.dimensionsProgress[dimensionId];
-        
+
         return {
           dimensionsProgress: {
             ...state.dimensionsProgress,
@@ -171,43 +171,43 @@ export const useAssessmentStore = create<AssessmentState>()(
           currentQuestionIndex: 0,
         };
       }),
-      
+
       pauseAssessment: () => set({
         currentDimensionId: null,
       }),
-      
-      resumeAssessment: (dimensionId: string) => set((state) => {
+
+      resumeAssessment: (dimensionId: string) => set((state: AssessmentState) => {
         const progress = state.dimensionsProgress[dimensionId];
         return {
           currentDimensionId: dimensionId,
           currentQuestionIndex: progress?.answers?.length || 0,
         };
       }),
-      
-      resetDimension: (dimensionId: string) => set((state) => {
+
+      resetDimension: (dimensionId: string) => set((state: AssessmentState) => {
         const { [dimensionId]: _, ...rest } = state.dimensionsProgress;
         return {
           dimensionsProgress: rest,
           currentDimensionId: state.currentDimensionId === dimensionId ? null : state.currentDimensionId,
         };
       }),
-      
+
       showReminder: () => set({
         showCompletionReminder: true,
         lastReminderShownAt: new Date(),
       }),
-      
+
       dismissReminder: () => set({
         showCompletionReminder: false,
       }),
-      
+
       clearAllProgress: () => set(initialState),
     }),
     {
       name: 'ppsdm-assessment-storage',
       storage: createJSONStorage(() => localStorage),
       // Only persist specific fields
-      partialize: (state) => ({
+      partialize: (state: AssessmentState) => ({
         sessionId: state.sessionId,
         userId: state.userId,
         startedAt: state.startedAt,
@@ -220,19 +220,19 @@ export const useAssessmentStore = create<AssessmentState>()(
 
 // Selector hooks for better performance
 export const useDimensionProgress = (dimensionId: string) => {
-  return useAssessmentStore((state) => state.dimensionsProgress[dimensionId]);
+  return useAssessmentStore((state: AssessmentState) => state.dimensionsProgress[dimensionId]);
 };
 
 export const useCompletedDimensions = () => {
-  return useAssessmentStore((state) => state.getCompletedDimensions());
+  return useAssessmentStore((state: AssessmentState) => state.getCompletedDimensions());
 };
 
 export const useCompletionRate = () => {
-  return useAssessmentStore((state) => state.getCompletionRate());
+  return useAssessmentStore((state: AssessmentState) => state.getCompletionRate());
 };
 
 export const useAllDimensionsCompleted = () => {
-  return useAssessmentStore((state) => state.getAllDimensionsCompleted());
+  return useAssessmentStore((state: AssessmentState) => state.getAllDimensionsCompleted());
 };
 
 export default useAssessmentStore;

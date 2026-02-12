@@ -767,24 +767,101 @@ function calculateVariance(values: number[]): number {
   return squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length;
 }
 
-// Temporary placeholder functions to fix build errors
-export function calculateDimensionScore(responses: any[], questions: any[], dimension: string): any {
+// ============================================================================
+// MASTER SCORING FUNCTION
+// ============================================================================
+
+export function calculateDimensionScore(responses: any, questions: any[], dimension: string): any {
+  // Dispatch to specific scoring functions based on dimension
+  let result: ScoringResult;
+
+  switch (dimension) {
+    case 'cognitive':
+      result = calculateCognitiveScore(responses);
+      break;
+    case 'self_management':
+      result = calculateSelfManagementScore(responses);
+      break;
+    case 'financial':
+      result = calculateFinancialScore(responses);
+      break;
+    case 'physical':
+    case 'physical_health':
+      result = calculatePhysicalScore(responses);
+      break;
+    case 'emotional':
+    case 'emotional_intelligence':
+      result = calculateEmotionalScore(responses);
+      break;
+    case 'mental':
+    case 'mental_health':
+      result = calculateMentalScore(responses);
+      break;
+    case 'character':
+      result = calculateCharacterScore(responses);
+      break;
+    case 'spiritual':
+      result = calculateSpiritualScore(responses);
+      break;
+    case 'environmental':
+      result = calculateEnvironmentalScore(responses);
+      break;
+    default:
+      // Fallback for unknown dimensions
+      console.warn(`Unknown dimension: ${dimension}`);
+      return {
+        rawScore: 0,
+        normalizedScore: 0,
+        percentile: 0,
+        subDimensionScores: {}
+      };
+  }
+
+  // Map ScoringResult to the format expected by the API/Database
   return {
-    rawScore: 0,
-    normalizedScore: 0,
-    percentile: 0,
-    subDimensionScores: {}
+    rawScore: result.compositeScore, // Using composite as raw proxy
+    normalizedScore: result.compositeScore,
+    percentile: result.percentile,
+    subDimensionScores: result.subdimensionScores,
+    level: result.level,
+    reliabilityIndex: result.reliabilityIndex
   };
 }
 
+import { HolisticProfileProcessor } from './holisticScoring';
+
 export function calculateHolisticScore(results: any[]): any {
+  const processor = new HolisticProfileProcessor();
+
+  // Map results array to scores object expected by Processor
+  const scores: Record<string, number> = {};
+
+  results.forEach(r => {
+    // Map dimension names if necessary
+    let dimName = r.dimension;
+    if (dimName === 'physical_health') dimName = 'physical';
+    if (dimName === 'emotional_intelligence') dimName = 'emotional';
+    if (dimName === 'mental_health') dimName = 'mental_health'; // holisticScoring uses this
+    if (dimName === 'mental') dimName = 'mental_health';
+
+    scores[dimName] = r.normalized_score || 0;
+  });
+
+  // Mock context for now
+  const context: any = {
+    year: 'freshman',
+    faculty: 'engineering'
+  };
+
+  const profile = processor.process(scores as any, context);
+
   return {
-    overallScore: 0,
-    dimensionScores: {},
-    profileType: '',
-    strengths: [],
-    growthAreas: [],
-    recommendations: []
+    overallScore: Object.values(scores).reduce((a, b) => a + b, 0) / (Object.keys(scores).length || 1), // Simple average
+    dimensionScores: scores,
+    profileType: profile.archetype.primary,
+    strengths: profile.insights.strengths,
+    growthAreas: profile.insights.criticalGaps,
+    recommendations: profile.recommendations.map(r => r.action)
   };
 }
 

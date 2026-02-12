@@ -7,26 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  COGNITIVE_ITEMS,
-  SELF_MANAGEMENT_ITEMS
-} from '@/lib/assessment/engine';
-
-// Map dimension IDs to their items
-// Using 'any' for now since different dimensions have different item structures
-const dimensionItemsMap: Record<string, any[]> = {
-  'cognitive': COGNITIVE_ITEMS,
-  'self_management': SELF_MANAGEMENT_ITEMS,
-
-  // TODO: Add other dimensions as they are implemented
-  'financial': [],
-  'physical_health': [],
-  'emotional_intelligence': [],
-  'mental_health': [],
-  'character': [],
-  'spiritual': [],
-  'environmental': [],
-};
+import { getDimensionBySlug } from '@/data/dimensions/index';
 
 export async function GET(
   request: NextRequest,
@@ -35,37 +16,39 @@ export async function GET(
   try {
     const { id } = await params;
 
-    // Validate dimension ID
-    if (!id || !dimensionItemsMap[id]) {
+    // Validate dimension ID (which is actually a slug here)
+    const dimension = getDimensionBySlug(id);
+
+    if (!dimension) {
       return NextResponse.json(
         {
           success: false,
           error: 'Invalid dimension ID',
-          message: `Dimension "${id}" not found. Valid dimensions: ${Object.keys(dimensionItemsMap).join(', ')}`,
+          message: `Dimension "${id}" not found.`,
         },
         { status: 400 }
       );
     }
 
-    const items = dimensionItemsMap[id];
+    const items = dimension.items;
 
-    // Check if dimension has been implemented
-    if (items.length === 0) {
+    // Check if dimension has items
+    if (!items || items.length === 0) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Dimension not implemented',
-          message: `Dimension "${id}" is not yet implemented. Please check back later.`,
+          error: 'Dimension items not found',
+          message: `Dimension "${id}" has no questions defined.`,
         },
-        { status: 501 }
+        { status: 500 }
       );
     }
 
     // Transform items for API response (remove sensitive psychometric data)
-    const questions = items.map(item => ({
+    const questions = items.map((item: any) => ({
       id: item.id,
       text: item.text,
-      type: item.type,
+      type: item.type || 'likert', // Default to likert
       scale: {
         min: 1,
         max: 5,
@@ -77,8 +60,8 @@ export async function GET(
           5: 'Sangat Setuju',
         },
       },
-      reverseScored: item.reverseScored,
-      subDimension: item.subDimension,
+      reverseScored: item.reverseScored || false,
+      subDimension: item.subdimension,
     }));
 
     return NextResponse.json({

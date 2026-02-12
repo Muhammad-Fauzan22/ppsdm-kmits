@@ -40,10 +40,31 @@ export interface Activity {
     description?: string;
     dimension: DimensionType;
     points: number;
-    status: "upcoming" | "in-progress" | "completed";
+    budget_allocated?: number;
+    budget_used?: number;
+    location?: string;
+    organizer?: string;
+    participants?: string[]; // JSON array
+    status: "upcoming" | "in-progress" | "completed" | "cancelled";
     due_date?: string;
     completed_at?: string;
     created_at: string;
+}
+
+export type FinanceCategory = 'Income' | 'Operational' | 'Event' | 'Asset' | 'Other';
+export type PaymentMethod = 'Transfer' | 'Cash' | 'Credit Card' | 'Other';
+
+export interface FinanceTransaction {
+    id: string; // TRX-YYYY-XXX
+    user_id?: string; // Optional linker to user who inputted it
+    date: string;
+    description: string;
+    category: FinanceCategory;
+    amount: number;
+    payment_method: PaymentMethod;
+    verified: boolean;
+    created_at: string;
+    attachments?: string[]; // URLs to receipts
 }
 
 export interface Program {
