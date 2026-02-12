@@ -30,6 +30,15 @@ export interface CognitiveScoreResult {
         missing_responses: boolean;
     };
     recommendations?: Recommendation[];
+    // UI Adapter Properties
+    cognitive_index?: number;
+    details?: any;
+    development_level?: string;
+    development_color?: string;
+    development_description?: string;
+    overall_percentile?: number;
+    profilePattern?: string;
+    psychometricProperties?: any;
 }
 
 export interface Recommendation {

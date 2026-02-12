@@ -40,6 +40,13 @@ export type FinancialResult = {
     };
     interpretation: string;
     recommendations: Recommendation[];
+    // UI Adapter Properties
+    composite_score?: number;
+    composite_percentile?: number;
+    intelligence_level?: string;
+    details?: any;
+    properties?: any;
+    subdomain_scores?: any;
 };
 
 export type Recommendation = {

@@ -58,7 +58,7 @@ const SunburstComponent: React.FC<SunburstProps> = ({
     const partition = d3.partition<SunburstData>().size([2 * Math.PI, radius]);
 
     // Apply layout to data
-    partition(root);
+    partition(root as any);
 
     // Arc generator
     const arc = d3.arc<d3.HierarchyRectangularNode<SunburstData>>()

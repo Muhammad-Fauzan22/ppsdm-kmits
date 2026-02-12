@@ -40,6 +40,10 @@
     "node_modules",
     "**/*.test.ts",
     "**/*.test.tsx",
+    "**/*.spec.ts",
+    "e2e/**/*",
+    "scripts/**/*",
+    "sentry.*.config.ts",
     "vitest.config.ts"
   ]
 }
