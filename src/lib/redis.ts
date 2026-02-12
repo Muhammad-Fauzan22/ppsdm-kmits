@@ -1,1 +1,28 @@
-[{"host": "process.env.REDIS_HOST || 'localhost'", "port": "parseInt(process.env.REDIS_PORT || '6379')", "password": "process.env.REDIS_PASSWORD", "db": "parseInt(process.env.REDIS_DB || '0')", "maxRetriesPerRequest": 3, "retryStrategy": "times: number) => {\n        const delay = Math.min(times * 50", "enableReadyCheck": true, "enableOfflineQueue": true}, {"Error": ", err);\n    });\n\n    redisClient.on('close", "isRedisAvailable()": "Promise<boolean> {\n  try {\n    const client = getRedisClient();\n    await client.ping();\n    return true;"}, {"error": ", error);\n    return false;\n  }\n}\n\n/**\n * Close Redis connection\n */\nexport async function closeRedisConnection(): Promise<void> {\n  if (redisClient) {\n    await redisClient.quit();\n    redisClient = null;\n  }\n}\n\n/**\n * Get value from Redis\n */\nexport async function getFromRedis<T>(key: string): Promise<T | null> {\n  try {\n    const client = getRedisClient();\n    const value = await client.get(key);\n    return value ? JSON.parse(value) : null;\n  } catch (error) {\n    \n  }\n}\n\n/**\n * Delete key from Redis\n */\nexport async function deleteFromRedis(key: string): Promise<void> {\n  try {\n    const client = getRedisClient();\n    await client.del(key);\n  } catch (error) {\n    : Promise<void> {\n  try {\n    const client = getRedisClient();\n    const keys = await client.keys(prefix + '*');\n    if (keys.length > 0) {\n      await client.del(...keys);"}, {"Redis": ", error);\n  }\n}"}]
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL || '',
+    token: process.env.UPSTASH_REDIS_REST_TOKEN || '',
+});
+
+export async function getFromRedis<T>(key: string): Promise<T | null> {
+    try {
+        return await redis.get<T>(key);
+    } catch (error) {
+        console.error('Redis error:', error);
+        return null;
+    }
+}
+
+export async function deleteFromRedis(key: string): Promise<void> {
+    try {
+        await redis.del(key);
+    } catch (error) {
+        console.error('Redis delete error:', error);
+    }
+}
+
+export async function closeRedisConnection(): Promise<void> {
+    // Upstash HTTP client is stateless, no connection to close
+    return Promise.resolve();
+}

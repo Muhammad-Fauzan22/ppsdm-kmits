@@ -114,6 +114,7 @@ export function createCSRFErrorResponse(error: string) {
 }
 
 // Middleware wrapper for CSRF protection
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function withCSRFProtection(handler: Function) {
   return async (request: NextRequest, ...args: any[]) => {
     const csrfValidation = validateCSRF(request);
@@ -172,6 +173,7 @@ export const csrfUtils = {
 };
 
 // CSRF protection for Next.js API routes
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function createCSRFProtectedAPI(handler: Function) {
   return async (request: NextRequest, context: any) => {
     // Validate CSRF token
@@ -187,6 +189,7 @@ export function createCSRFProtectedAPI(handler: Function) {
 }
 
 // CSRF protection for server actions
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function withCSRFAction(action: Function) {
   return async (formData: FormData, ...args: any[]) => {
     // For server actions, CSRF validation is typically handled

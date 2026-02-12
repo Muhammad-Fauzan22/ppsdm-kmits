@@ -115,9 +115,9 @@ function measureBundleSize() {
   // Measure JavaScript bundle size
   const resources = performance.getEntriesByType('resource');
   const jsResources = resources.filter(r => r.name.endsWith('.js'));
-  
+
   const totalSize = jsResources.reduce((acc, r) => {
-    // @ts-ignore - transferSize may not be in all browsers
+    // transferSize may not be in all browsers
     return acc + (r.transferSize || 0);
   }, 0);
 
@@ -131,15 +131,15 @@ function measureBundleSize() {
 function measureAPIResponseTimes() {
   // Intercept fetch to measure API response times
   const originalFetch = window.fetch;
-  
+
   window.fetch = async (...args) => {
     const start = performance.now();
     const url = args[0] instanceof Request ? args[0].url : String(args[0]);
-    
+
     try {
       const response = await originalFetch(...args);
       const duration = performance.now() - start;
-      
+
       // Only track API calls
       if (url.includes('/api/')) {
         sendMetric('api-response', {
@@ -150,18 +150,18 @@ function measureAPIResponseTimes() {
           cached: response.headers.get('x-cache') === 'HIT',
         });
       }
-      
+
       return response;
     } catch (error) {
       const duration = performance.now() - start;
-      
+
       sendMetric('api-error', {
         url: url.split('?')[0],
         method: args[0] instanceof Request ? args[0].method : 'GET',
         duration: Math.round(duration),
         error: error instanceof Error ? error.message : 'Unknown error',
       });
-      
+
       throw error;
     }
   };
@@ -258,7 +258,7 @@ export function initErrorTracking() {
 export function trackError(error: Omit<ErrorMetric, 'userId' | 'sessionId'>) {
   const userId = getCurrentUserId();
   const sessionId = getSessionId();
-  
+
   sendMetric('error', {
     ...error,
     userId,
@@ -296,7 +296,7 @@ function sendMetric(type: string, data: Record<string, any>) {
 
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    }
+  }
 }
 
 // ==========================================
@@ -347,7 +347,7 @@ export async function getDashboardMetrics(): Promise<{
   if (!response.ok) {
     throw new Error('Failed to fetch dashboard metrics');
   }
-  
+
   return response.json();
 }
 
@@ -357,19 +357,19 @@ export async function getDashboardMetrics(): Promise<{
 
 export function checkPerformanceBudget(metrics: PerformanceMetrics): string[] {
   const alerts: string[] = [];
-  
+
   if (metrics.lcp > 2500) {
     alerts.push(`LCP exceeded budget: ${metrics.lcp}ms (budget: 2500ms)`);
   }
-  
+
   if (metrics.fid > 100) {
     alerts.push(`FID exceeded budget: ${metrics.fid}ms (budget: 100ms)`);
   }
-  
+
   if (metrics.cls > 0.1) {
     alerts.push(`CLS exceeded budget: ${metrics.cls} (budget: 0.1)`);
   }
-  
+
   return alerts;
 }
 

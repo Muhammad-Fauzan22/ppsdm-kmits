@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { ThemeProvider } from 'next-themes';

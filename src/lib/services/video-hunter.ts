@@ -94,7 +94,7 @@ export async function huntVideos(topic: string): Promise<VideoResult[]> {
                 maxResults: 4,
             });
             return (response.data.items || []).map(item => ({
-                youtube_video_id: item.id?.videoId!,
+                youtube_video_id: item.id?.videoId || "",
                 title: item.snippet?.title || "Untitled",
                 description: item.snippet?.description || "",
                 thumbnail_url: item.snippet?.thumbnails?.medium?.url || "",

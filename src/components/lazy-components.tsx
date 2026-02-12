@@ -76,9 +76,9 @@ export const LazyAssessmentEngine = dynamic(
 
 // Report components
 export const LazyReportGenerator = dynamic(
-  () => import('@/components/reports/ReportGenerator').then(mod => mod.ReportGeneratorComponent),
+  () => import('./reports/ReportGenerator').then((mod) => mod.ReportGenerator),
   {
-    loading: () => <Skeleton className="w-full h-[500px]" />,
+    loading: () => <Skeleton className="w-full h-[400px] rounded-xl" />,
     ssr: false,
   }
 );

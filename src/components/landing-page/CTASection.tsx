@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Users, Star, Zap, Trophy, TrendingUp } from "lucide-react";
 import { useState } from "react";
@@ -186,13 +188,13 @@ export function CTASection() {
             <p className="text-white/50 text-sm mb-4">
               Coba mini-assessment 5 menit untuk merasakan pengalaman assessment kami.
             </p>
-            <a
+            <Link
               href="/assessment/preview"
               className="text-violet-400 hover:text-violet-300 text-sm font-medium inline-flex items-center gap-1"
             >
               Coba Mini-Assessment
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
 
           {/* For Faculty/Staff */}
@@ -203,13 +205,13 @@ export function CTASection() {
             <p className="text-white/50 text-sm mb-4">
               Akses dashboard kelas untuk memantau perkembangan mahasiswa.
             </p>
-            <a
+            <Link
               href="/faculty/dashboard"
               className="text-violet-400 hover:text-violet-300 text-sm font-medium inline-flex items-center gap-1"
             >
               Akses Dashboard
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
 
           {/* For Researchers */}
@@ -220,13 +222,13 @@ export function CTASection() {
             <p className="text-white/50 text-sm mb-4">
               Akses data agregat untuk penelitian pengembangan pendidikan.
             </p>
-            <a
+            <Link
               href="/research/access"
               className="text-violet-400 hover:text-violet-300 text-sm font-medium inline-flex items-center gap-1"
             >
               Ajukan Akses
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

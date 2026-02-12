@@ -15,7 +15,8 @@
     "test:coverage": "vitest run --coverage",
     "e2e": "playwright test",
     "security-scan": "npm audit --audit-level=high",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "pre-flight": "npm run security-scan && npm run lint && npx tsc --noEmit && npm run test && npm run build"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.18",
@@ -69,8 +70,8 @@
     "isomorphic-dompurify": "^3.0.0-rc.2",
     "jsdom": "^28.0.0",
     "lucide-react": "^0.563.0",
-    "mermaid": "^11.12.2",
-    "next": "^14.2.35",
+    "mermaid": "^10.9.5",
+    "next": "^16.1.6",
     "next-pwa": "^5.6.0",
     "next-themes": "^0.4.6",
     "openai": "^6.21.0",
@@ -129,9 +130,9 @@
     "happy-dom": "^20.6.1",
     "supabase": "^2.74.5",
     "typescript": "^5.0.0",
-    "vercel": "^32.0.0",
-    "vite": "^5.4.8",
-    "vitest": "^1.6.0",
+    "vercel": "^50.15.1",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18",
     "webpack-bundle-analyzer": "^4.10.0"
   },
   "overrides": {

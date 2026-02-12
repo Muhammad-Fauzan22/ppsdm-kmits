@@ -121,6 +121,7 @@ async function compressData(data: string | Buffer, algorithm: string): Promise<B
 
 // Compression middleware for API routes
 export async function withCompression(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   handler: Function,
   request: NextRequest
 ) {
@@ -245,6 +246,7 @@ export const nextCompressionConfig = {
   webpack: (config: any, { dev }: any) => {
     if (!dev) {
       // Add compression plugins for static assets
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const CompressionPlugin = require('compression-webpack-plugin');
 
       config.plugins.push(
@@ -258,6 +260,7 @@ export const nextCompressionConfig = {
 
       // Add Brotli compression if available
       try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const BrotliPlugin = require('brotli-webpack-plugin');
         config.plugins.push(
           new BrotliPlugin({
@@ -296,7 +299,9 @@ export function clientSupportsCompression(request: NextRequest): boolean {
 
 // Pre-compress static assets (for build time)
 export async function precompressAssets(assetPaths: string[]): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const fs = require('fs').promises;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const path = require('path');
 
   for (const assetPath of assetPaths) {

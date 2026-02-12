@@ -35,7 +35,7 @@ export function DownloadTranscriptButton({ student, activities }: { student: any
             document={<TranscriptDocument student={student} activities={activities} />}
             fileName={`Transkrip_PPSDM_${student.nrp}.pdf`}
         >
-            {/* @ts-ignore: React-PDF typing issue */}
+
             {({ blob, url, loading, error }) => (
                 <Button
                     disabled={loading}

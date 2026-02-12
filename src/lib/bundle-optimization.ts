@@ -1,4 +1,4 @@
-import { NextConfig } from 'next';
+import type { NextConfig } from 'next';
 import React from 'react';
 
 // Bundle optimization configuration
@@ -17,6 +17,7 @@ export const bundleOptimizationConfig: Partial<NextConfig> = {
     webpack: (config: any, { buildId, dev, isServer, defaultLoaders, webpack }: any) => {
       // Add bundle analyzer
       if (!dev && !isServer) {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
         config.plugins.push(
           new BundleAnalyzerPlugin({

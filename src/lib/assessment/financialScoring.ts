@@ -83,8 +83,7 @@ export function calculateFinancialScores(responses: FinancialResponse): Financia
     const bItems = ['FB1', 'FB2', 'FB3', 'FB4', 'FB5'];
     let bCount = 0;
     bItems.forEach(id => {
-        // @ts-ignore
-        const val = responses[id] || 3;
+        const val = Number(responses[id as keyof FinancialResponse] || 3);
         bScore += (val - 1) * 25;
         bCount++;
     });
@@ -95,8 +94,7 @@ export function calculateFinancialScores(responses: FinancialResponse): Financia
     const aItems = ['FA1', 'FA2', 'FA3'];
     let aCount = 0;
     aItems.forEach(id => {
-        // @ts-ignore
-        const val = responses[id] || 3;
+        const val = Number(responses[id as keyof FinancialResponse] || 3);
         aScore += (val - 1) * 25;
         aCount++;
     });

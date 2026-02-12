@@ -122,10 +122,10 @@ export function calculateCharacterScore(responses: Record<string, number>) {
 }
 
 function normalCDF(x: number, mean: number, std: number) {
-    var x = (x - mean) / std;
-    const t = 1 / (1 + .2316419 * Math.abs(x));
-    const d = .3989423 * Math.exp(-x * x / 2);
+    const z = (x - mean) / std;
+    const t = 1 / (1 + .2316419 * Math.abs(z));
+    const d = .3989423 * Math.exp(-z * z / 2);
     let prob = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
-    if (x > 0) prob = 1 - prob;
+    if (z > 0) prob = 1 - prob;
     return prob;
 }

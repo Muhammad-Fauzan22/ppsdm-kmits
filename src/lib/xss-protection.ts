@@ -8,6 +8,7 @@ const getDOMPurifyServer = () => {
     // Dynamically require jsdom to avoid top-level execution
     // handling unlikely event of missing dependency gracefully
     try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { JSDOM } = require('jsdom');
       const window = new JSDOM('').window;
       DOMPurifyServer = DOMPurify(window as any);

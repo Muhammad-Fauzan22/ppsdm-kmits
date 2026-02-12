@@ -17,7 +17,7 @@ interface ReportGeneratorProps {
   userName?: string;
 }
 
-export function ReportGeneratorComponent({
+export function ReportGenerator({
   reportType,
   assessmentId,
   userId,

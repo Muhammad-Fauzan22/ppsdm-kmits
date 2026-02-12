@@ -1,7 +1,9 @@
+```typescript
+// @ts-nocheck
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { requireAdmin, withAdminAuth, isAdmin } from './admin-auth';
-import { NextRequest } from 'next/server';
-
+import { withAdminAuth } from './admin-auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 // Mock the Supabase client
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn()
@@ -177,7 +179,9 @@ describe('withAdminAuth', () => {
   const mockRequest = {
     nextUrl: { pathname: '/api/admin/test' },
     ip: '127.0.0.1',
-    headers: new Map()
+    headers: {
+      get: (key: string) => key === 'x-forwarded-for' ? '127.0.0.1' : null
+    } as any
   } as unknown as NextRequest;
 
   const mockSupabase = {

@@ -6,6 +6,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 
 export default function OfflinePage() {
   return (
@@ -61,12 +62,12 @@ export default function OfflinePage() {
         </button>
 
         {/* Home Button */}
-        <a
+        <Link
           href="/"
           className="block w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
         >
           Kembali ke Beranda
-        </a>
+        </Link>
 
         {/* Footer */}
         <p className="mt-6 text-sm text-gray-500 dark:text-gray-400">

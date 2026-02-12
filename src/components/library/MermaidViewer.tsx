@@ -19,7 +19,7 @@ export function MermaidViewer({ chart }: MermaidViewerProps) {
         const renderChart = async () => {
             try {
                 // Dynamic import from CDN to avoid huge bundle size and install issues
-                // @ts-ignore
+                // @ts-expect-error Dynamic import type mismatch
                 const mermaid = (await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs')).default;
 
                 mermaid.initialize({

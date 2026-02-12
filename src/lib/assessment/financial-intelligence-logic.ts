@@ -426,7 +426,8 @@ export function calculateFinancialScores(responses: Record<string, any>): Financ
         // Standard Approximation
         if (z < -6.5) return 0.0;
         if (z > 6.5) return 1.0;
-        let factK = 1, sum = 0, term = 1, k = 0, loopStop = Math.exp(-23);
+        let factK = 1, sum = 0, term = 1, k = 0;
+        const loopStop = Math.exp(-23);
         while (Math.abs(term) > loopStop) {
             term = .3989422804 * Math.pow(-1, k) * Math.pow(z, 2 * k + 1) / (2 * k + 1) / Math.pow(2, k) / factK;
             sum += term;

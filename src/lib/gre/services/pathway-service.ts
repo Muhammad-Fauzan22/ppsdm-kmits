@@ -111,9 +111,4 @@ export class PathwayComposer {
     }
 }
 
-// Extend PathStep interface locally if needed or update types.ts
-declare module '../types' {
-    interface GreResource {
-        // ensure format_tags is available
-    }
-}
+
