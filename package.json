@@ -117,6 +117,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.4.0",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.19",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@types/bcryptjs": "^2.4.6",
