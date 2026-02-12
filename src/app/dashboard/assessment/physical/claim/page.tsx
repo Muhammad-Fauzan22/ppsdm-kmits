@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { calculatePhysicalScores } from "@/lib/assessment/physical-logic";
+import { calculatePhysicalScore } from "@/lib/assessment/physical-logic";
 
 export default function ClaimPhysicalResultPage() {
     const router = useRouter();
@@ -29,7 +29,7 @@ export default function ClaimPhysicalResultPage() {
 
             try {
                 const responses = JSON.parse(storedResponses);
-                const results = calculatePhysicalScores(responses);
+                const results = calculatePhysicalScore(responses) as any;
 
                 // 3. Save to DB
                 const { data, error } = await supabase

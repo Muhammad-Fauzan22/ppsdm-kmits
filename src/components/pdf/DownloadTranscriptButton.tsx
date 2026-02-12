@@ -36,7 +36,7 @@ export function DownloadTranscriptButton({ student, activities }: { student: any
             fileName={`Transkrip_PPSDM_${student.nrp}.pdf`}
         >
 
-            {({ blob, url, loading, error }) => (
+            {({ blob, url, loading, error }: { blob: any; url: any; loading: any; error: any }) => (
                 <Button
                     disabled={loading}
                     className="gap-2 bg-its text-white hover:bg-its-light shadow-soft transition-all"

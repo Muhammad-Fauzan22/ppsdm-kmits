@@ -57,7 +57,7 @@ export function PageTransition({
                 initial={variants[variant].initial}
                 animate={variants[variant].animate}
                 exit={variants[variant].exit}
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] as any }}
                 className={className}
             >
                 {children}
@@ -118,7 +118,7 @@ export function StaggerItem({ children, className }: StaggerItemProps) {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 },
             }}
-            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] as any }}
         >
             {children}
         </motion.div>
@@ -188,7 +188,7 @@ export function FadeIn({
             className={className}
             initial={{ opacity: 0, ...directionOffset[direction] }}
             animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration, delay, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration, delay, ease: [0.4, 0, 0.2, 1] as any }}
         >
             {children}
         </motion.div>
@@ -269,7 +269,7 @@ export function PresenceAnimation({
                     initial={animationVariants[variant].initial}
                     animate={animationVariants[variant].animate}
                     exit={animationVariants[variant].exit}
-                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] as any }}
                 >
                     {children}
                 </motion.div>

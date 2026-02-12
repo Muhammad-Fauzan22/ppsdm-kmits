@@ -26,7 +26,7 @@ export default function ClaimFinancialResultPage() {
 
             try {
                 const responses = JSON.parse(storedResponses);
-                const results = calculateFinancialScores(responses);
+                const results = calculateFinancialScores(responses) as any;
 
                 // Save Assessment
                 const { data: assessment, error } = await supabase
@@ -54,23 +54,23 @@ export default function ClaimFinancialResultPage() {
                 const assessmentId = assessment.assessment_id;
 
                 // Save Detailed Responses
-                const knowledgeItems = FINANCIAL_ITEMS.filter(i => i.type === 'knowledge');
-                const knowledgeRows = knowledgeItems.map(item => ({
+                const knowledgeItems = FINANCIAL_ITEMS.filter((i: any) => i.type === 'knowledge');
+                const knowledgeRows = knowledgeItems.map((item: any) => ({
                     assessment_id: assessmentId,
                     question_id: item.id,
                     response_value: responses[item.id],
-                    is_correct: item.options?.find(o => o.correct)?.id === responses[item.id]
+                    is_correct: item.options?.find((o: any) => o.correct)?.id === responses[item.id]
                 }));
                 await supabase.from('financial_knowledge_responses').insert(knowledgeRows);
 
-                const behaviorRows = FINANCIAL_ITEMS.filter(i => i.type === 'behavior').map(item => ({
+                const behaviorRows = FINANCIAL_ITEMS.filter((i: any) => i.type === 'behavior').map((item: any) => ({
                     assessment_id: assessmentId,
                     question_id: item.id,
                     response_value: Number(responses[item.id])
                 }));
                 await supabase.from('financial_behavior_responses').insert(behaviorRows);
 
-                const attitudeRows = FINANCIAL_ITEMS.filter(i => i.type === 'attitude').map(item => ({
+                const attitudeRows = FINANCIAL_ITEMS.filter((i: any) => i.type === 'attitude').map((item: any) => ({
                     assessment_id: assessmentId,
                     question_id: item.id,
                     response_value: Number(responses[item.id])

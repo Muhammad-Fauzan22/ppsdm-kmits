@@ -51,8 +51,8 @@ const SunburstComponent: React.FC<SunburstProps> = ({
 
     // Prepare data hierarchy
     const root = d3.hierarchy(data)
-      .sum(d => d.value || 0)
-      .sort((a, b) => (b.value || 0) - (a.value || 0));
+      .sum((d: any) => d.value || 0)
+      .sort((a: any, b: any) => (b.value || 0) - (a.value || 0));
 
     // Create partition layout
     const partition = d3.partition<SunburstData>().size([2 * Math.PI, radius]);
@@ -62,12 +62,12 @@ const SunburstComponent: React.FC<SunburstProps> = ({
 
     // Arc generator
     const arc = d3.arc<d3.HierarchyRectangularNode<SunburstData>>()
-      .startAngle(d => d.x0)
-      .endAngle(d => d.x1)
-      .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
+      .startAngle((d: any) => d.x0)
+      .endAngle((d: any) => d.x1)
+      .padAngle((d: any) => Math.min((d.x1 - d.x0) / 2, 0.005))
       .padRadius(radius / 2)
-      .innerRadius(d => d.y0)
-      .outerRadius(d => d.y1 - 1);
+      .innerRadius((d: any) => d.y0)
+      .outerRadius((d: any) => d.y1 - 1);
 
     // Default color scale if not provided
     const defaultColor = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children?.length || 1 + 1));
@@ -77,7 +77,7 @@ const SunburstComponent: React.FC<SunburstProps> = ({
       .selectAll('path')
       .data(root.descendants().slice(1)) // Skip root
       .join('path')
-      .attr('fill', d => {
+      .attr('fill', (d: any) => {
         if (colorScale) {
           // Use custom color scale logic based on value and depth
           // Assuming leaf nodes carry the actual score value we want to color by
@@ -96,19 +96,19 @@ const SunburstComponent: React.FC<SunburstProps> = ({
       .attr('d', (d: any) => arc(d.current));
 
     // Add interactivity
-    path.filter(d => !!d.children)
+    path.filter((d: any) => !!d.children)
       .style('cursor', 'pointer')
       .on('click', clicked);
 
-    path.filter(d => !d.children)
+    path.filter((d: any) => !d.children)
       .style('cursor', 'pointer')
-      .on('click', (event, d) => {
+      .on('click', (event: any, d: any) => {
         if (onNodeClick) onNodeClick(d.data.name);
       });
 
     // Add titles
     path.append('title')
-      .text(d => `${d.ancestors().map(d => d.data.name).reverse().join('/')}\nScore: ${d.value}`);
+      .text((d: any) => `${d.ancestors().map((d: any) => d.data.name).reverse().join('/')}\nScore: ${d.value}`);
 
     // Add labels
     const label = g.append('g')
@@ -121,7 +121,7 @@ const SunburstComponent: React.FC<SunburstProps> = ({
       .attr('dy', '0.35em')
       .attr('fill-opacity', (d: any) => +labelVisible(d.current))
       .attr('transform', (d: any) => labelTransform(d.current))
-      .text(d => d.data.name)
+      .text((d: any) => d.data.name)
       .style('fill', 'white')
       .style('font-size', '10px');
 
@@ -152,16 +152,16 @@ const SunburstComponent: React.FC<SunburstProps> = ({
       path.transition(t as any)
         .tween('data', (d: any) => {
           const i = d3.interpolate(d.current, d.target);
-          return t => d.current = i(t);
+          return (t: any) => d.current = i(t);
         })
-        .filter(function (d: any) {
+        .filter(function (this: any, d: any) {
           return !!(+(this as any).getAttribute('fill-opacity') || arcVisible(d.target));
         })
         .attr('fill-opacity', (d: any) => arcVisible(d.target) ? (d.children ? 0.8 : 0.6) : 0)
         .attr('pointer-events', (d: any) => arcVisible(d.target) ? 'auto' : 'none')
         .attrTween('d', (d: any) => () => arc(d.current) || '');
 
-      label.filter(function (d: any) {
+      label.filter(function (this: any, d: any) {
         return !!(+(this as any).getAttribute('fill-opacity') || labelVisible(d.target));
       }).transition(t as any)
         .attr('fill-opacity', (d: any) => +labelVisible(d.target))

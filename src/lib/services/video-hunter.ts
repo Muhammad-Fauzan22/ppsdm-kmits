@@ -67,7 +67,7 @@ export async function huntVideos(topic: string): Promise<VideoResult[]> {
         // STEP 3: Deduplication & Formatting
         const uniqueVideos = new Map<string, VideoResult>();
 
-        allItems.forEach((item) => {
+        allItems.forEach((item: any) => {
             if (item.id?.videoId && item.snippet) {
                 // Create a key to avoid duplicates
                 uniqueVideos.set(item.id.videoId, {
@@ -93,13 +93,13 @@ export async function huntVideos(topic: string): Promise<VideoResult[]> {
                 videoEmbeddable: "true",
                 maxResults: 4,
             });
-            return (response.data.items || []).map(item => ({
+            return (response.data.items || []).map((item: any) => ({
                 youtube_video_id: item.id?.videoId || "",
                 title: item.snippet?.title || "Untitled",
                 description: item.snippet?.description || "",
                 thumbnail_url: item.snippet?.thumbnails?.medium?.url || "",
                 channel_title: item.snippet?.channelTitle || "",
-            })).filter(v => v.youtube_video_id);
+            })).filter((v: any) => v.youtube_video_id);
         } catch (fallbackError) {
             return [];
         }

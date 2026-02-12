@@ -2,6 +2,7 @@ import { calculatePhysicalScore, PhysicalResponse } from './physicalScoring';
 import { physicalDimension } from '@/data/dimensions/physical';
 
 export { calculatePhysicalScore };
+export const calculatePhysicalHealthScore = calculatePhysicalScore;
 export type { PhysicalResponse };
 
 export const PHYSICAL_ITEMS = physicalDimension.items;

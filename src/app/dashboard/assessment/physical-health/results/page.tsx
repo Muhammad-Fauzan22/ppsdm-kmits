@@ -9,7 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, Activity, Moon, Utensils, Zap, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { HealthResult, RiskFlag } from '@/lib/assessment/physical-health-logic';
+// import { HealthResult, RiskFlag } from '@/lib/assessment/physical-health-logic';
 
 // Helper to reconstruct Result type from DB structure if needed, 
 // but here we might just fetch the raw data and display.

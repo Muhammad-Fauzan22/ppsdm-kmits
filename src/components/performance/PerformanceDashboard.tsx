@@ -4,16 +4,16 @@ import React, { useEffect, useState, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Activity, 
-  Zap, 
-  Clock, 
-  Move, 
+import {
+  Activity,
+  Zap,
+  Clock,
+  Move,
   MousePointerClick,
   TrendingUp,
   AlertCircle
 } from 'lucide-react';
-import { onLCP, onFID, onCLS, onFCP, onTTFB } from 'web-vitals';
+import { onLCP, onCLS, onFCP, onTTFB } from 'web-vitals';
 
 interface WebVitalsMetrics {
   lcp: number | null;
@@ -41,7 +41,6 @@ function useWebVitals() {
 
     try {
       onLCP((metric) => setMetrics((m) => ({ ...m, lcp: metric.value })));
-      onFID((metric) => setMetrics((m) => ({ ...m, fid: metric.value })));
       onCLS((metric) => setMetrics((m) => ({ ...m, cls: metric.value })));
       onFCP((metric) => setMetrics((m) => ({ ...m, fcp: metric.value })));
       onTTFB((metric) => setMetrics((m) => ({ ...m, ttfb: metric.value })));

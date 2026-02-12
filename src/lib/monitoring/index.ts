@@ -8,7 +8,7 @@
  * - User behavior analytics
  */
 
-import { onCLS, onFID, onFCP, onLCP, onTTFB, onINP } from 'web-vitals';
+import { onCLS, onFCP, onLCP, onTTFB, onINP, Metric } from 'web-vitals';
 
 // ==========================================
 // Types
@@ -46,63 +46,80 @@ export interface ErrorMetric {
 // Performance Monitoring
 // ==========================================
 
+// Placeholder for a global enable/disable flag
+const ENABLED = true;
+
+function logMetric(data: Record<string, any>) {
+  sendMetric('web-vital', data);
+}
+
+export function trackLCP(metric: Metric) {
+  if (!ENABLED) return;
+  logMetric({
+    name: 'LCP',
+    value: metric.value,
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType
+  });
+}
+
+
+
+export function trackCLS(metric: Metric) {
+  if (!ENABLED) return;
+  logMetric({
+    name: 'CLS',
+    value: metric.value,
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType
+  });
+}
+
+export function trackTTFB(metric: Metric) {
+  if (!ENABLED) return;
+  logMetric({
+    name: 'TTFB',
+    value: metric.value,
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType
+  });
+}
+
+export function trackFCP(metric: Metric) {
+  if (!ENABLED) return;
+  logMetric({
+    name: 'FCP',
+    value: metric.value,
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType
+  });
+}
+
+export function trackINP(metric: Metric) {
+  if (!ENABLED) return;
+  logMetric({
+    name: 'INP',
+    value: metric.value,
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType
+  });
+}
+
 export function initPerformanceMonitoring() {
   if (typeof window === 'undefined') return;
 
   // Core Web Vitals
-  onLCP((metric) => {
-    sendMetric('web-vital', {
-      name: 'LCP',
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-    });
-  });
+  onLCP(trackLCP);
 
-  onFID((metric) => {
-    sendMetric('web-vital', {
-      name: 'FID',
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-    });
-  });
-
-  onCLS((metric) => {
-    sendMetric('web-vital', {
-      name: 'CLS',
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-    });
-  });
-
-  onFCP((metric) => {
-    sendMetric('web-vital', {
-      name: 'FCP',
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-    });
-  });
-
-  onTTFB((metric) => {
-    sendMetric('web-vital', {
-      name: 'TTFB',
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-    });
-  });
-
-  onINP((metric) => {
-    sendMetric('web-vital', {
-      name: 'INP',
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-    });
-  });
+  onCLS(trackCLS);
+  onFCP(trackFCP);
+  onTTFB(trackTTFB);
+  onINP(trackINP);
 
   // Custom performance marks
   measureBundleSize();
@@ -113,7 +130,7 @@ function measureBundleSize() {
   if (typeof performance === 'undefined') return;
 
   // Measure JavaScript bundle size
-  const resources = performance.getEntriesByType('resource');
+  const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
   const jsResources = resources.filter(r => r.name.endsWith('.js'));
 
   const totalSize = jsResources.reduce((acc, r) => {

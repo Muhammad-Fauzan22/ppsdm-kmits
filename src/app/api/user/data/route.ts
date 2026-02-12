@@ -15,9 +15,9 @@ export async function GET(request: NextRequest) {
             {
                 cookies: {
                     getAll() { return cookieStore.getAll(); },
-                    setAll(cookiesToSet) {
+                    setAll(cookiesToSet: any) {
                         try {
-                            cookiesToSet.forEach(({ name, value, options }) =>
+                            cookiesToSet.forEach(({ name, value, options }: any) =>
                                 cookieStore.set(name, value, options)
                             );
                         } catch { /* Ignore in server component */ }
@@ -126,9 +126,9 @@ export async function DELETE(request: NextRequest) {
             {
                 cookies: {
                     getAll() { return cookieStore.getAll(); },
-                    setAll(cookiesToSet) {
+                    setAll(cookiesToSet: any) {
                         try {
-                            cookiesToSet.forEach(({ name, value, options }) =>
+                            cookiesToSet.forEach(({ name, value, options }: any) =>
                                 cookieStore.set(name, value, options)
                             );
                         } catch { /* Ignore in server component */ }

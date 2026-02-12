@@ -23,7 +23,7 @@ import {
     BarChart3, Sparkles, Shield, FileText
 } from "lucide-react";
 
-const DIMENSION_ICONS: Record<CognitiveDimension, any> = {
+const DIMENSION_ICONS: Record<string, any> = {
     critical_thinking: Target,
     growth_mindset: TrendingUp,
     creative_efficacy: Lightbulb,
@@ -35,7 +35,7 @@ function CognitiveResultsContent() {
     const router = useRouter();
     const supabase = createClient();
 
-    const [result, setResult] = useState<CognitiveResult | null>(null);
+    const [result, setResult] = useState<any | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState<{ name: string; nrp: string } | null>(null);
 
@@ -56,7 +56,7 @@ function CognitiveResultsContent() {
 
                     if (assessmentData) {
                         // Reconstruct result from database
-                        const dbResult: CognitiveResult = {
+                        const dbResult = {
                             cognitive_index: assessmentData.cognitive_index,
                             overall_percentile: assessmentData.overall_percentile,
                             development_level: assessmentData.development_level,
@@ -92,7 +92,7 @@ function CognitiveResultsContent() {
                     setResult(calculatedResult);
                 }
             } catch (error) {
-                } finally {
+            } finally {
                 setIsLoading(false);
             }
         }
@@ -307,7 +307,7 @@ function CognitiveResultsContent() {
                             Rekomendasi Pengembangan
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {result.recommendations.map((rec, idx) => (
+                            {result.recommendations.map((rec: any, idx: number) => (
                                 <Card key={idx}>
                                     <CardHeader className="pb-2">
                                         <CardTitle className="text-lg flex items-center gap-2">
@@ -320,7 +320,7 @@ function CognitiveResultsContent() {
                                             {rec.description}
                                         </p>
                                         <div className="flex flex-wrap gap-2">
-                                            {rec.resources.map((resource, i) => (
+                                            {rec.resources.map((resource: any, i: number) => (
                                                 <Badge key={i} variant="secondary" className="text-xs">
                                                     {resource}
                                                 </Badge>

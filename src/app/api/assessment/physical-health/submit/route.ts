@@ -26,15 +26,14 @@ export async function POST(req: NextRequest) {
         // 2. Start Transaction (Supabase does not support explicit multi-table transactions in client easily without RPC, 
         // using sequential inserts with rollback check or trusting client flow. For simplicity here: sequential).
         // Ideally, use an RPC for atomicity.
-
         // Insert Assessment Header
         const { data: assessment, error: assessmentError } = await supabase
             .from('physical_health_assessments')
             .insert({
                 user_id: user.id,
-                total_score: result.total_score,
+                total_score: result.totalScore,
                 percentile: result.percentile,
-                health_category: result.health_category.category,
+                health_category: result.category,
                 validity_index: 100.00, // Placeholder
                 response_time_seconds: startTime ? Math.floor((Date.now() - startTime) / 1000) : null
             })
@@ -65,7 +64,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Insert Subdomains
-        const subdomainInserts = Object.entries(result.subdomain_scores).map(([name, score]) => ({
+        const subdomainInserts = Object.entries(result.subdomainScores).map(([name, score]) => ({
             assessment_id: assessmentId,
             subdomain_name: name,
             subdomain_score: score
@@ -80,8 +79,8 @@ export async function POST(req: NextRequest) {
         }
 
         // Insert Risk Flags
-        if (result.risk_flags.length > 0) {
-            const flagInserts = result.risk_flags.map(flag => ({
+        if (result.riskFlags.length > 0) {
+            const flagInserts = result.riskFlags.map(flag => ({
                 assessment_id: assessmentId,
                 risk_code: flag.code,
                 severity: flag.severity,

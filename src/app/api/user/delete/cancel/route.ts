@@ -20,9 +20,9 @@ export async function POST(request: NextRequest) {
           getAll() {
             return cookieStore.getAll();
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any) {
             try {
-              cookiesToSet.forEach(({ name, value, options }) =>
+              cookiesToSet.forEach(({ name, value, options }: any) =>
                 cookieStore.set(name, value, options)
               );
             } catch {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     // Verify user authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized - Authentication required' },
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     if (fetchError || !deletionRequest) {
       return NextResponse.json(
-        { 
+        {
           error: 'No pending deletion request found',
           message: 'There is no active deletion request to cancel'
         },

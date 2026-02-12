@@ -299,7 +299,7 @@ export function ProgressionIndicator({
                         className={cn('h-full rounded-full bg-gradient-to-r', gradients[variant])}
                         initial={{ width: 0 }}
                         animate={{ width: `${percentage}%` }}
-                        transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
+                        transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] as any }}
                     />
                 </div>
             </div>

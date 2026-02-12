@@ -63,7 +63,7 @@ export function XPLevelRing({
                         strokeDasharray={circumference}
                         initial={{ strokeDashoffset: circumference }}
                         animate={{ strokeDashoffset: animated ? strokeDashoffset : strokeDashoffset }}
-                        transition={{ duration: 1.5, ease: [0.34, 1.56, 0.64, 1] }}
+                        transition={{ duration: 1.5, ease: [0.34, 1.56, 0.64, 1] as any }}
                     />
                     <defs>
                         <linearGradient id="xpGradient" x1="0%" y1="0%" x2="100%" y2="100%">

@@ -164,7 +164,7 @@ export default function HealthAssessmentPage() {
                         <CardTitle>{title}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-8">
-                        {sectionItems.map(item => (
+                        {sectionItems.map((item: any) => (
                             <div key={item.id} className="space-y-3">
                                 <label className="font-medium text-lg">{item.text}</label>
 

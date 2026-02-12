@@ -76,7 +76,7 @@ export function FusionCard({
     const hoverVariants = {
         lift: {
             rest: { y: 0, scale: 1 },
-            hover: { y: -4, scale: 1.02, transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] } },
+            hover: { y: -4, scale: 1.02, transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] as any } },
         },
         glow: {
             rest: { boxShadow: '0 0 0 rgba(0, 188, 212, 0)' },
@@ -84,7 +84,7 @@ export function FusionCard({
         },
         scale: {
             rest: { scale: 1 },
-            hover: { scale: 1.05, transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] } },
+            hover: { scale: 1.05, transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] as any } },
         },
         reveal: {
             rest: { opacity: 1 },
@@ -343,7 +343,7 @@ export function FusionCardProgress({
                     className={cn('h-full rounded-full bg-gradient-to-r', gradients[variant])}
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
-                    transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+                    transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as any }}
                 />
             </div>
         </div>

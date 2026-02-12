@@ -29,7 +29,7 @@ export default function ClaimResultPage() {
 
             try {
                 const responses = JSON.parse(storedResponses);
-                const results = calculateSelfManagementScores(responses);
+                const results = calculateSelfManagementScores(responses) as any;
 
                 // 3. Save to DB with new 4-factor structure
                 const { data: assessmentData, error } = await supabase

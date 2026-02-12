@@ -22,7 +22,7 @@ export function MindMapViewer({ chartCode }: { chartCode: string }) {
                 // Render diagram
                 // We use a unique ID to prevent collision if multiple charts are on page (though tabs help)
                 const id = `mermaid-svg-${Math.random().toString(36).substr(2, 9)}`;
-                mermaid.render(id, chartCode).then((result) => {
+                mermaid.render(id, chartCode).then((result: any) => {
                     if (ref.current) ref.current.innerHTML = result.svg;
                 });
             } catch (e) {

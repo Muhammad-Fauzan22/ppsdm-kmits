@@ -59,29 +59,29 @@ export function VideoOverlay({
   // Animation variants
   const titleVariants = {
     hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       filter: "blur(0px)",
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.6, ease: "easeOut" as any }
     },
-    exit: { 
-      opacity: 0, 
-      y: -30, 
+    exit: {
+      opacity: 0,
+      y: -30,
       filter: "blur(10px)",
-      transition: { duration: 0.4, ease: "easeIn" }
+      transition: { duration: 0.4, ease: "easeIn" as any }
     },
   };
 
   const subtitleVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5, delay: 0.2 }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       y: -20,
       transition: { duration: 0.3, delay: 0.1 }
     },
@@ -89,13 +89,13 @@ export function VideoOverlay({
 
   const highlightVariants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.5, delay: 0.4 }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       scale: 0.8,
       transition: { duration: 0.3 }
     },
@@ -103,13 +103,13 @@ export function VideoOverlay({
 
   const ctaVariants = {
     hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.4, delay: 0.6 }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       y: 10,
       transition: { duration: 0.2 }
     },
@@ -117,9 +117,9 @@ export function VideoOverlay({
 
   const progressBarVariants = {
     initial: { width: 0 },
-    animate: { 
+    animate: {
       width: `${phaseProgress * 100}%`,
-      transition: { duration: 0.3, ease: "easeOut" }
+      transition: { duration: 0.3, ease: "easeOut" as any }
     },
   };
 
@@ -134,9 +134,8 @@ export function VideoOverlay({
           return (
             <motion.div
               key={phase.id}
-              className={`w-2 h-2 rounded-full ${
-                isActive ? "scale-125" : ""
-              }`}
+              className={`w-2 h-2 rounded-full ${isActive ? "scale-125" : ""
+                }`}
               style={{
                 backgroundColor: isActive ? phase.color : isPast ? "#4b5563" : "#1f2937",
                 boxShadow: isActive ? `0 0 10px ${phase.color}` : "none",
@@ -192,7 +191,7 @@ export function VideoOverlay({
                   backgroundColor: NARRATIVE_PHASES.find(p => p.id === currentPhase)?.color,
                 }}
               />
-              <span 
+              <span
                 className="text-xs font-semibold uppercase tracking-wider"
                 style={{
                   color: NARRATIVE_PHASES.find(p => p.id === currentPhase)?.color,

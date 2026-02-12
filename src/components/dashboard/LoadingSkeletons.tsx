@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 // Animation variants for skeletons
 const skeletonVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
     transition: { duration: 0.3 }
   },
@@ -23,7 +23,7 @@ const pulseAnimation = {
     transition: {
       duration: 1.5,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: "easeInOut" as const
     }
   }
 };
@@ -41,18 +41,18 @@ export function StatCardSkeleton() {
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-3 w-20 bg-slate-700 rounded mb-2" 
+            className="h-3 w-20 bg-slate-700 rounded mb-2"
           />
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-8 w-16 bg-slate-600 rounded" 
+            className="h-8 w-16 bg-slate-600 rounded"
           />
         </div>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="w-10 h-10 rounded-lg bg-slate-700" 
+          className="w-10 h-10 rounded-lg bg-slate-700"
         />
       </div>
     </motion.div>
@@ -85,26 +85,26 @@ export function WelcomeSectionSkeleton() {
     >
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex-1">
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-8 w-64 bg-slate-600 rounded mb-2" 
+            className="h-8 w-64 bg-slate-600 rounded mb-2"
           />
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-4 w-48 bg-slate-700 rounded" 
+            className="h-4 w-48 bg-slate-700 rounded"
           />
         </div>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-16 w-32 bg-slate-700 rounded-lg" 
+          className="h-16 w-32 bg-slate-700 rounded-lg"
         />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-white/[0.08]">
         {Array.from({ length: 4 }).map((_, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             {...pulseAnimation}
-            className="h-12 bg-slate-700/50 rounded" 
+            className="h-12 bg-slate-700/50 rounded"
           />
         ))}
       </div>
@@ -123,23 +123,23 @@ export function ActivityItemSkeleton() {
       animate="visible"
       className="bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-xl p-4 flex items-center gap-4"
     >
-      <motion.div 
+      <motion.div
         {...pulseAnimation}
-        className="w-10 h-10 rounded-full bg-slate-700 shrink-0" 
+        className="w-10 h-10 rounded-full bg-slate-700 shrink-0"
       />
       <div className="flex-1 min-w-0">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-4 w-32 bg-slate-600 rounded mb-1" 
+          className="h-4 w-32 bg-slate-600 rounded mb-1"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-3 w-48 bg-slate-700 rounded" 
+          className="h-3 w-48 bg-slate-700 rounded"
         />
       </div>
-      <motion.div 
+      <motion.div
         {...pulseAnimation}
-        className="h-6 w-16 bg-slate-700 rounded-full" 
+        className="h-6 w-16 bg-slate-700 rounded-full"
       />
     </motion.div>
   );
@@ -172,31 +172,31 @@ export function GoalCardSkeleton() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-5 w-32 bg-slate-600 rounded" 
+              className="h-5 w-32 bg-slate-600 rounded"
             />
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-5 w-16 bg-slate-700 rounded-full" 
+              className="h-5 w-16 bg-slate-700 rounded-full"
             />
           </div>
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-3 w-full max-w-xs bg-slate-700 rounded mb-4" 
+            className="h-3 w-full max-w-xs bg-slate-700 rounded mb-4"
           />
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-2 bg-slate-700 rounded-full w-full mb-2" 
+            className="h-2 bg-slate-700 rounded-full w-full mb-2"
           />
           <div className="flex items-center gap-4">
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-3 w-20 bg-slate-700 rounded" 
+              className="h-3 w-20 bg-slate-700 rounded"
             />
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-3 w-24 bg-slate-700 rounded" 
+              className="h-3 w-24 bg-slate-700 rounded"
             />
           </div>
         </div>
@@ -230,28 +230,28 @@ export function DimensionCardSkeleton() {
       className="bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-xl p-5"
     >
       <div className="flex items-center gap-3 mb-3">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="w-12 h-12 rounded-xl bg-slate-700" 
+          className="w-12 h-12 rounded-xl bg-slate-700"
         />
         <div className="flex-1">
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-5 w-24 bg-slate-600 rounded mb-1" 
+            className="h-5 w-24 bg-slate-600 rounded mb-1"
           />
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-3 w-16 bg-slate-700 rounded" 
+            className="h-3 w-16 bg-slate-700 rounded"
           />
         </div>
       </div>
-      <motion.div 
+      <motion.div
         {...pulseAnimation}
-        className="h-8 w-16 bg-slate-600 rounded mb-2" 
+        className="h-8 w-16 bg-slate-600 rounded mb-2"
       />
-      <motion.div 
+      <motion.div
         {...pulseAnimation}
-        className="h-2 bg-slate-700 rounded-full w-full" 
+        className="h-2 bg-slate-700 rounded-full w-full"
       />
     </motion.div>
   );
@@ -282,18 +282,18 @@ export function ChartSkeleton() {
       className="bg-[#1e293b]/40 backdrop-blur-sm border border-white/[0.08] rounded-xl p-6"
     >
       <div className="flex items-center justify-between mb-6">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-6 w-32 bg-slate-600 rounded" 
+          className="h-6 w-32 bg-slate-600 rounded"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-8 w-32 bg-slate-700 rounded" 
+          className="h-8 w-32 bg-slate-700 rounded"
         />
       </div>
-      <motion.div 
+      <motion.div
         {...pulseAnimation}
-        className="h-64 bg-slate-700/30 rounded-lg" 
+        className="h-64 bg-slate-700/30 rounded-lg"
       />
     </motion.div>
   );
@@ -310,18 +310,18 @@ export function QuickActionSkeleton() {
       animate="visible"
       className="flex items-center gap-4 p-4 rounded-xl bg-[#1e293b]/40 border border-white/[0.08]"
     >
-      <motion.div 
+      <motion.div
         {...pulseAnimation}
-        className="w-10 h-10 rounded-lg bg-slate-700" 
+        className="w-10 h-10 rounded-lg bg-slate-700"
       />
       <div className="flex-1">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-4 w-24 bg-slate-600 rounded mb-1" 
+          className="h-4 w-24 bg-slate-600 rounded mb-1"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-3 w-32 bg-slate-700 rounded" 
+          className="h-3 w-32 bg-slate-700 rounded"
         />
       </div>
     </motion.div>
@@ -348,32 +348,32 @@ export function DashboardPageSkeleton() {
   return (
     <div className="space-y-8">
       <WelcomeSectionSkeleton />
-      
+
       <section>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-6 w-32 bg-slate-600 rounded mb-4" 
+          className="h-6 w-32 bg-slate-600 rounded mb-4"
         />
         <StatCardsSkeleton count={4} />
       </section>
-      
+
       <section>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-6 w-32 bg-slate-600 rounded mb-4" 
+          className="h-6 w-32 bg-slate-600 rounded mb-4"
         />
         <QuickActionsSkeleton count={3} />
       </section>
-      
+
       <section>
         <div className="flex items-center justify-between mb-4">
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-6 w-40 bg-slate-600 rounded" 
+            className="h-6 w-40 bg-slate-600 rounded"
           />
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-4 w-16 bg-slate-700 rounded" 
+            className="h-4 w-16 bg-slate-700 rounded"
           />
         </div>
         <ActivityListSkeleton count={5} />
@@ -390,29 +390,29 @@ export function DimensionsPageSkeleton() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-8 w-48 bg-slate-600 rounded" 
+          className="h-8 w-48 bg-slate-600 rounded"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-10 w-32 bg-slate-700 rounded" 
+          className="h-10 w-32 bg-slate-700 rounded"
         />
       </div>
 
       {/* Radar Chart */}
       <div className="flex justify-center">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="w-80 h-80 rounded-full bg-slate-700/30" 
+          className="w-80 h-80 rounded-full bg-slate-700/30"
         />
       </div>
 
       {/* Dimension Grid */}
       <section>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-6 w-48 bg-slate-600 rounded mb-4" 
+          className="h-6 w-48 bg-slate-600 rounded mb-4"
         />
         <DimensionGridSkeleton count={9} />
       </section>
@@ -428,23 +428,23 @@ export function GoalsPageSkeleton() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-8 w-32 bg-slate-600 rounded" 
+          className="h-8 w-32 bg-slate-600 rounded"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-10 w-32 bg-slate-700 rounded" 
+          className="h-10 w-32 bg-slate-700 rounded"
         />
       </div>
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-4">
         {Array.from({ length: 3 }).map((_, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             {...pulseAnimation}
-            className="h-24 bg-slate-700/50 rounded-xl" 
+            className="h-24 bg-slate-700/50 rounded-xl"
           />
         ))}
       </div>
@@ -452,10 +452,10 @@ export function GoalsPageSkeleton() {
       {/* Filters */}
       <div className="flex gap-2">
         {Array.from({ length: 4 }).map((_, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             {...pulseAnimation}
-            className="h-8 w-20 bg-slate-700 rounded-full" 
+            className="h-8 w-20 bg-slate-700 rounded-full"
           />
         ))}
       </div>
@@ -474,13 +474,13 @@ export function ProgressPageSkeleton() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-8 w-40 bg-slate-600 rounded" 
+          className="h-8 w-40 bg-slate-600 rounded"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-10 w-40 bg-slate-700 rounded" 
+          className="h-10 w-40 bg-slate-700 rounded"
         />
       </div>
 
@@ -492,9 +492,9 @@ export function ProgressPageSkeleton() {
 
       {/* Milestones */}
       <section>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-6 w-40 bg-slate-600 rounded mb-4" 
+          className="h-6 w-40 bg-slate-600 rounded mb-4"
         />
         <ActivityListSkeleton count={4} />
       </section>
@@ -516,42 +516,42 @@ export function StudyGroupCardSkeleton() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-5 w-32 bg-slate-600 rounded" 
+              className="h-5 w-32 bg-slate-600 rounded"
             />
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-5 w-16 bg-slate-700 rounded-full" 
+              className="h-5 w-16 bg-slate-700 rounded-full"
             />
           </div>
-          <motion.div 
+          <motion.div
             {...pulseAnimation}
-            className="h-3 w-full max-w-xs bg-slate-700 rounded mb-4" 
+            className="h-3 w-full max-w-xs bg-slate-700 rounded mb-4"
           />
           <div className="flex items-center gap-2 mb-3">
             {Array.from({ length: 3 }).map((_, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 {...pulseAnimation}
-                className="h-5 w-16 bg-slate-700/50 rounded-full" 
+                className="h-5 w-16 bg-slate-700/50 rounded-full"
               />
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-3 w-20 bg-slate-700 rounded" 
+              className="h-3 w-20 bg-slate-700 rounded"
             />
-            <motion.div 
+            <motion.div
               {...pulseAnimation}
-              className="h-3 w-24 bg-slate-700 rounded" 
+              className="h-3 w-24 bg-slate-700 rounded"
             />
           </div>
         </div>
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-8 w-20 bg-slate-700 rounded-lg" 
+          className="h-8 w-20 bg-slate-700 rounded-lg"
         />
       </div>
     </motion.div>
@@ -579,36 +579,36 @@ export function StudyGroupsPageSkeleton() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-8 w-48 bg-slate-600 rounded" 
+          className="h-8 w-48 bg-slate-600 rounded"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-10 w-32 bg-slate-700 rounded" 
+          className="h-10 w-32 bg-slate-700 rounded"
         />
       </div>
 
       {/* Tabs */}
       <div className="flex gap-2 border-b border-white/[0.08] pb-4">
         {Array.from({ length: 3 }).map((_, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             {...pulseAnimation}
-            className="h-10 w-24 bg-slate-700/50 rounded-lg" 
+            className="h-10 w-24 bg-slate-700/50 rounded-lg"
           />
         ))}
       </div>
 
       {/* Search and Filter */}
       <div className="flex gap-4">
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-10 flex-1 bg-slate-700/50 rounded-lg" 
+          className="h-10 flex-1 bg-slate-700/50 rounded-lg"
         />
-        <motion.div 
+        <motion.div
           {...pulseAnimation}
-          className="h-10 w-32 bg-slate-700 rounded-lg" 
+          className="h-10 w-32 bg-slate-700 rounded-lg"
         />
       </div>
 

@@ -4,7 +4,9 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["sin1"],
+  "regions": [
+    "sin1"
+  ],
   "env": {
     "NEXT_PUBLIC_APP_URL": "https://ppsdm-kmits.vercel.app",
     "NEXT_PUBLIC_AI_PROVIDER": "openai",
@@ -115,7 +117,7 @@
   "crons": [
     {
       "path": "/api/cron/sync-google-sheets",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 5 * * *"
     },
     {
       "path": "/api/cron/generate-insights",

@@ -22,9 +22,9 @@ export async function POST(request: NextRequest) {
           getAll() {
             return cookieStore.getAll();
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any) {
             try {
-              cookiesToSet.forEach(({ name, value, options }) =>
+              cookiesToSet.forEach(({ name, value, options }: any) =>
                 cookieStore.set(name, value, options)
               );
             } catch {
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Verify user authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized - Authentication required' },
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     if (!confirm) {
       return NextResponse.json(
-        { 
+        {
           error: 'Confirmation required',
           message: 'Please set confirm: true to proceed with account deletion',
           warning: 'This action will schedule your account for deletion with a 14-day grace period'
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     if (existingDeletion) {
       const scheduledDate = new Date(existingDeletion.scheduled_deletion_at);
       const daysRemaining = Math.ceil((scheduledDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-      
+
       return NextResponse.json(
         {
           message: 'Account already scheduled for deletion',
@@ -173,9 +173,9 @@ export async function GET(request: NextRequest) {
           getAll() {
             return cookieStore.getAll();
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any) {
             try {
-              cookiesToSet.forEach(({ name, value, options }) =>
+              cookiesToSet.forEach(({ name, value, options }: any) =>
                 cookieStore.set(name, value, options)
               );
             } catch {
@@ -187,7 +187,7 @@ export async function GET(request: NextRequest) {
     );
 
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
