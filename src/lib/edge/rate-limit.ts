@@ -4,7 +4,7 @@
  * Free tier: 10,000 requests/day
  */
 
-import { Redis } from '@upstash/redis';
+import { Redis } from '@upstash/redis/cloudflare';
 import { Ratelimit } from '@upstash/ratelimit';
 
 // Initialize Redis client (uses UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN env vars)
@@ -34,9 +34,9 @@ export async function rateLimit(request: Request): Promise<{
   limit: number;
 }> {
   // Get client IP from headers
-  const ip = request.headers.get('x-forwarded-for') || 
-             request.headers.get('x-real-ip') || 
-             'unknown';
+  const ip = request.headers.get('x-forwarded-for') ||
+    request.headers.get('x-real-ip') ||
+    'unknown';
 
   // Apply rate limit
   const { success, limit, reset, remaining } = await ratelimit.limit(ip);
