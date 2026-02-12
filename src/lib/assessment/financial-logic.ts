@@ -136,7 +136,7 @@ export const FINANCIAL_ITEMS: FinancialItem[] = [
 export function calculateFinancialScore(responses: Record<string, string | number>) {
     // 1. SCORING KNOWLEDGE (0-100)
     let knowledgePoints = 0;
-    let knowledgeMax = 8;
+    const knowledgeMax = 8;
 
     FINANCIAL_ITEMS.filter(i => i.section === 'knowledge').forEach(item => {
         const correctOpt = item.options?.find(o => o.correct)?.id;
@@ -150,7 +150,7 @@ export function calculateFinancialScore(responses: Record<string, string | numbe
     // 2. SCORING BEHAVIOR (0-100)
     let bTotal = 0;
     FINANCIAL_ITEMS.filter(i => i.section === 'behavior').forEach(item => {
-        let val = Number(responses[item.id]) || 3;
+        const val = Number(responses[item.id]) || 3;
         bTotal += val;
     });
     // Formula: ((Avg - 1) / 4) * 100
@@ -159,7 +159,7 @@ export function calculateFinancialScore(responses: Record<string, string | numbe
     // 3. SCORING ATTITUDE (0-100)
     let aTotal = 0;
     FINANCIAL_ITEMS.filter(i => i.section === 'attitude').forEach(item => {
-        let val = Number(responses[item.id]) || 3;
+        const val = Number(responses[item.id]) || 3;
         aTotal += val;
     });
     const attitudeScore = (((aTotal / 8) - 1) / 4) * 100;

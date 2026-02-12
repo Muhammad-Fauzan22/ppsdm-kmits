@@ -67,7 +67,7 @@ describe('Integration Tests', () => {
       ];
 
       mockGoogleSheetsService.getSheetData.mockResolvedValue(
-        rawActivities.map(row => ({
+        rawActivities.slice(1).map(row => ({
           Activity_ID: row[0],
           Activity_Name: row[1],
           Date_Time: row[2],
@@ -224,7 +224,7 @@ describe('Integration Tests', () => {
       ];
 
       mockGoogleSheetsService.getSheetData.mockResolvedValue(
-        rawMembers.map(row => ({
+        rawMembers.slice(1).map(row => ({
           NIM: row[0],
           Full_Name: row[1],
           Email: row[2],

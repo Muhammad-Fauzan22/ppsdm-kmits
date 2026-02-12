@@ -46,10 +46,10 @@ interface LiveRegionProps {
   id?: string;
 }
 
-export function LiveRegion({ 
-  children, 
+export function LiveRegion({
+  children,
   politeness = 'polite',
-  id 
+  id
 }: LiveRegionProps) {
   return (
     <div
@@ -89,7 +89,7 @@ export function FocusTrap({ children, isActive, onEscape }: FocusTrapProps) {
     const focusableElements = container.querySelectorAll<HTMLElement>(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -160,29 +160,29 @@ export function AccessibleFormField({
 
   return (
     <div className="space-y-2">
-      <label 
+      <label
         htmlFor={id}
         className="block text-sm font-medium text-slate-700"
       >
         {label}
         {required && <span className="text-red-500 ml-1" aria-label="wajib diisi">*</span>}
       </label>
-      
+
       {helperText && (
         <p id={helperId} className="text-sm text-slate-500">
           {helperText}
         </p>
       )}
-      
-      {React.cloneElement(children as React.ReactElement, {
+
+      {React.cloneElement(children as React.ReactElement<any>, {
         id,
         'aria-describedby': error ? errorId : helperText ? helperId : undefined,
         'aria-invalid': error ? 'true' : undefined,
         'aria-required': required ? 'true' : undefined,
       })}
-      
+
       {error && (
-        <p 
+        <p
           id={errorId}
           className="text-sm text-red-600 flex items-center gap-1"
           role="alert"
@@ -216,7 +216,7 @@ export function AccessibleProgress({
   showPercentage = true
 }: AccessibleProgressProps) {
   const percentage = Math.round((value / max) * 100);
-  
+
   const sizeStyles = {
     sm: 'h-2',
     md: 'h-3',
@@ -233,8 +233,8 @@ export function AccessibleProgress({
           </span>
         )}
       </div>
-      
-      <div 
+
+      <div
         className={`w-full bg-slate-200 rounded-full ${sizeStyles[size]}`}
         role="progressbar"
         aria-valuenow={value}
@@ -247,7 +247,7 @@ export function AccessibleProgress({
           style={{ width: `${percentage}%`, height: '100%' }}
         />
       </div>
-      
+
       <VisuallyHidden>
         {label}: {percentage} persen selesai
       </VisuallyHidden>

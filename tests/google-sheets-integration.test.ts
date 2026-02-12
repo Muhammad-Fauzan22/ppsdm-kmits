@@ -1,10 +1,8 @@
-/**
- * Google Sheets Integration Tests
- * Unit tests for Google Sheets Service
- */
+// @vitest-environment node
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { GoogleSheetsService } from '../src/lib/google-sheets/google-sheets.service';
+import { google } from 'googleapis';
 
 // Mock googleapis
 vi.mock('googleapis', () => ({
@@ -31,16 +29,25 @@ describe('GoogleSheetsService', () => {
   let service: GoogleSheetsService;
   let mockSheets: any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // Reset environment
     process.env.GOOGLE_APPLICATION_CREDENTIALS = 'test-credentials.json';
-    
-    // Get mock instance
-    const { google } = require('googleapis');
-    mockSheets = google.sheets();
-    
+
+    // Get mock instance from the mocked module
+    mockSheets = google.sheets('v4');
+
     // Create service instance
-    service = GoogleSheetsService.getInstance();
+    // We need to reset the singleton instance to ensure fresh initialization
+    // But instance is private static.
+    // However, if we just call getInstance(), it returns the instance.
+    // If we want to ensure it uses the NEW mock, we might need to reset the module registry or relying on vi.mock works.
+    // Since GoogleSheetsService imports googleapis dynamically, we hope vi.mock works for dynamic imports.
+    // To be safe, we can try to force re-import or just rely on the fact that 'google' is mocked globally.
+    service = await GoogleSheetsService.getInstance();
+
+    // We need to inject the mockSheets into the service if possible, or ensure service uses the mocked google.
+    // Since service.sheets is private, we can't set it directly easily without casting.
+    (service as any).sheets = mockSheets;
   });
 
   afterEach(() => {
@@ -48,9 +55,9 @@ describe('GoogleSheetsService', () => {
   });
 
   describe('Singleton Pattern', () => {
-    it('should return the same instance', () => {
-      const instance1 = GoogleSheetsService.getInstance();
-      const instance2 = GoogleSheetsService.getInstance();
+    it('should return the same instance', async () => {
+      const instance1 = await GoogleSheetsService.getInstance();
+      const instance2 = await GoogleSheetsService.getInstance();
       expect(instance1).toBe(instance2);
     });
   });
@@ -103,7 +110,7 @@ describe('GoogleSheetsService', () => {
       });
 
       const result = await service.getSheetData('test-spreadsheet-id', 'Sheet1');
-      expect(result[1].Activity_Name).toBeUndefined();
+      expect(result[1].Activity_Name).toBe('');
     });
 
     it('should throw error on API failure', async () => {

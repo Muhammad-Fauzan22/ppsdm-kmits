@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/server';
 export class SupabaseUserRepository implements UserRepository {
   async findById(id: UserId): Promise<User | null> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -22,7 +22,7 @@ export class SupabaseUserRepository implements UserRepository {
 
   async findByEmail(email: Email): Promise<User | null> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -35,19 +35,19 @@ export class SupabaseUserRepository implements UserRepository {
 
   async findAll(): Promise<User[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('users')
       .select('*')
       .order('created_at', { ascending: false });
 
     if (error || !data) return [];
-    return data.map(u => this.mapToEntity(u));
+    return data.map((u: any) => this.mapToEntity(u));
   }
 
   async findByRole(role: UserRole): Promise<User[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -55,12 +55,12 @@ export class SupabaseUserRepository implements UserRepository {
       .order('created_at', { ascending: false });
 
     if (error || !data) return [];
-    return data.map(u => this.mapToEntity(u));
+    return data.map((u: any) => this.mapToEntity(u));
   }
 
   async findByStatus(status: UserStatus): Promise<User[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -68,13 +68,13 @@ export class SupabaseUserRepository implements UserRepository {
       .order('created_at', { ascending: false });
 
     if (error || !data) return [];
-    return data.map(u => this.mapToEntity(u));
+    return data.map((u: any) => this.mapToEntity(u));
   }
 
   async save(user: User): Promise<void> {
     const supabase = await createClient();
     const profile = user['profile'];
-    
+
     const { error } = await supabase
       .from('users')
       .insert({
@@ -99,7 +99,7 @@ export class SupabaseUserRepository implements UserRepository {
   async update(user: User): Promise<void> {
     const supabase = await createClient();
     const profile = user['profile'];
-    
+
     const { error } = await supabase
       .from('users')
       .update({
@@ -123,7 +123,7 @@ export class SupabaseUserRepository implements UserRepository {
 
   async delete(id: UserId): Promise<void> {
     const supabase = await createClient();
-    
+
     const { error } = await supabase
       .from('users')
       .delete()
@@ -134,7 +134,7 @@ export class SupabaseUserRepository implements UserRepository {
 
   async count(): Promise<number> {
     const supabase = await createClient();
-    
+
     const { count, error } = await supabase
       .from('users')
       .select('*', { count: 'exact', head: true });
@@ -145,7 +145,7 @@ export class SupabaseUserRepository implements UserRepository {
 
   async countByRole(role: UserRole): Promise<number> {
     const supabase = await createClient();
-    
+
     const { count, error } = await supabase
       .from('users')
       .select('*', { count: 'exact', head: true })
@@ -157,7 +157,7 @@ export class SupabaseUserRepository implements UserRepository {
 
   async countActive(): Promise<number> {
     const supabase = await createClient();
-    
+
     const { count, error } = await supabase
       .from('users')
       .select('*', { count: 'exact', head: true })

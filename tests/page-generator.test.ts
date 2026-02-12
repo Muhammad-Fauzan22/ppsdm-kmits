@@ -198,10 +198,12 @@ describe('Dynamic Page Generator', () => {
       const expectedPage = {
         title: 'Transaction TRX-2024-002 - PPSDM KMITS',
         description: 'Finance transaction details',
-        content: expect.objectContaining({
-          formattedAmount: 'Rp 2.500.000'
-        }),
-        metadata: expect.any(Object)
+        content: {
+          formattedAmount: 'Rp 2.500.000',
+          Transaction_ID: 'TRX-2024-002',
+          Amount: 2500000
+        },
+        metadata: { generatedAt: expect.any(String) }
       };
 
       mockPageGenerator.generateFinancePage.mockResolvedValue(expectedPage);
@@ -226,8 +228,8 @@ describe('Dynamic Page Generator', () => {
       const expectedPage = {
         title: 'Cognitive Development Assessment - PPSDM KMITS',
         description: 'Assessment dimension details',
-        content: expect.any(Object),
-        metadata: expect.any(Object)
+        content: { ...assessmentData },
+        metadata: { generatedAt: expect.any(String) }
       };
 
       mockPageGenerator.generateAssessmentPage.mockResolvedValue(expectedPage);
@@ -253,10 +255,11 @@ describe('Dynamic Page Generator', () => {
         const expectedPage = {
           title: 'Test Dimension Assessment - PPSDM KMITS',
           description: 'Assessment dimension details',
-          content: expect.objectContaining({
-            questionType: type
-          }),
-          metadata: expect.any(Object)
+          content: {
+            questionType: type, // Ensure this property exists in mock return
+            ...assessmentData
+          },
+          metadata: { generatedAt: expect.any(String) }
         };
 
         mockPageGenerator.generateAssessmentPage.mockResolvedValue(expectedPage);
@@ -284,8 +287,8 @@ describe('Dynamic Page Generator', () => {
       const expectedPage = {
         title: 'Introduction to React - PPSDM KMITS',
         description: 'Knowledge resource details',
-        content: expect.any(Object),
-        metadata: expect.any(Object)
+        content: { ...knowledgeData },
+        metadata: { generatedAt: expect.any(String) }
       };
 
       mockPageGenerator.generateKnowledgePage.mockResolvedValue(expectedPage);
@@ -311,10 +314,11 @@ describe('Dynamic Page Generator', () => {
         const expectedPage = {
           title: 'Test Resource - PPSDM KMITS',
           description: 'Knowledge resource details',
-          content: expect.objectContaining({
-            resourceType: type
-          }),
-          metadata: expect.any(Object)
+          content: {
+            resourceType: type,
+            ...knowledgeData
+          },
+          metadata: { generatedAt: expect.any(String) }
         };
 
         mockPageGenerator.generateKnowledgePage.mockResolvedValue(expectedPage);
@@ -340,8 +344,8 @@ describe('Dynamic Page Generator', () => {
       const expectedPage = {
         title: 'Dashboard - PPSDM KMITS',
         description: 'Organization dashboard overview',
-        content: expect.any(Object),
-        metadata: expect.any(Object)
+        content: { ...dashboardData },
+        metadata: { generatedAt: expect.any(String) }
       };
 
       mockPageGenerator.generateDashboardPage.mockResolvedValue(expectedPage);
@@ -364,10 +368,11 @@ describe('Dynamic Page Generator', () => {
       const expectedPage = {
         title: 'Dashboard - PPSDM KMITS',
         description: 'Organization dashboard overview',
-        content: expect.objectContaining({
-          budgetUtilization: 56.67
-        }),
-        metadata: expect.any(Object)
+        content: {
+          budgetUtilization: 56.67,
+          ...dashboardData
+        },
+        metadata: { generatedAt: expect.any(String) }
       };
 
       mockPageGenerator.generateDashboardPage.mockResolvedValue(expectedPage);

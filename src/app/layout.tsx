@@ -5,6 +5,7 @@ import "./accessibility.css";
 import { NudgeNotification } from "@/components/features/NudgeNotification";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // OPTIMIZED: Reduced from 8 fonts to 2 fonts for better performance
 // Primary font for body text
@@ -126,23 +127,24 @@ export default function RootLayout({
         {/* Preconnect to Google Fonts for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Preload critical fonts */}
-        <link 
-          rel="preload" 
-          href="/fonts/inter-var.woff2" 
-          as="font" 
-          type="font/woff2" 
+        <link
+          rel="preload"
+          href="/fonts/inter-var.woff2"
+          as="font"
+          type="font/woff2"
           crossOrigin="anonymous"
         />
-        
+
         {/* Material Symbols Outlined - Load asynchronously */}
-        <link 
-          rel="stylesheet" 
+        <link
+          rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
-        
-        <style dangerouslySetInnerHTML={{ __html: `
+
+        <style dangerouslySetInnerHTML={{
+          __html: `
           /* Fallback for Material Symbols while loading */
           @font-face {
             font-family: 'Material Symbols Outlined';
@@ -203,8 +205,10 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        {children}
-        <NudgeNotification />
+        <ThemeProvider>
+          {children}
+          <NudgeNotification />
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

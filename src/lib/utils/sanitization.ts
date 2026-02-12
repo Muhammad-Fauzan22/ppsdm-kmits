@@ -13,7 +13,7 @@ export function sanitizeHtml(html: string): string {
   if (!html) return '';
   
   // Remove potentially dangerous tags and attributes
-  let sanitized = html
+  const sanitized = html
     // Remove script tags
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     // Remove on* event handlers
@@ -122,7 +122,7 @@ export function sanitizeSqlParam(param: string): string {
   if (!param) return '';
   
   // Remove SQL injection patterns
-  let sanitized = param
+  const sanitized = param
     // Remove comments
     .replace(/--/g, '')
     .replace(/\/\*/g, '')
@@ -144,7 +144,7 @@ export function sanitizeFileName(filename: string): string {
   if (!filename) return '';
   
   // Remove path traversal attempts
-  let sanitized = filename
+  const sanitized = filename
     .replace(/\.\./g, '')
     .replace(/\.\.+/g, '')
     .replace(/[\/\\]/g, '')
@@ -181,7 +181,7 @@ export function sanitizeSearchQuery(query: string): string {
   if (!query) return '';
   
   // Remove special characters but keep spaces and common punctuation
-  let sanitized = query
+  const sanitized = query
     .replace(/[<>]/g, '')
     .replace(/javascript:/gi, '')
     .replace(/on\w+\s*=/gi, '');
@@ -379,7 +379,7 @@ export function sanitizeAndTruncate(
 ): string {
   if (!text) return '';
   
-  let sanitized = sanitizeInput(text);
+  const sanitized = sanitizeInput(text);
   
   if (sanitized.length <= maxLength) {
     return sanitized;

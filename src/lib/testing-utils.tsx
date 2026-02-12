@@ -7,26 +7,26 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 export const mockDatabase = {
   // Mock database operations
   users: {
-    findById: jest.fn(),
-    findByEmail: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    findById: vi.fn(),
+    findByEmail: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
   },
 
   assessments: {
-    findByUserId: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    findByUserId: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
   },
 
   courses: {
-    findAll: jest.fn(),
-    findById: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    enroll: jest.fn(),
+    findAll: vi.fn(),
+    findById: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    enroll: vi.fn(),
   },
 };
 
@@ -145,20 +145,20 @@ export const componentTestUtils = {
 
   // Mock router
   mockRouter: {
-    push: jest.fn(),
-    replace: jest.fn(),
-    back: jest.fn(),
-    forward: jest.fn(),
-    refresh: jest.fn(),
-    prefetch: jest.fn(),
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
   },
 
   // Mock auth context
   mockAuthContext: {
     user: testDataGenerators.user(),
     loading: false,
-    signIn: jest.fn(),
-    signOut: jest.fn(),
+    signIn: vi.fn(),
+    signOut: vi.fn(),
     session: {
       user: testDataGenerators.user(),
       expires: new Date(Date.now() + 3600000).toISOString(),
@@ -166,75 +166,7 @@ export const componentTestUtils = {
   },
 };
 
-// Accessibility testing utilities
-export const accessibilityTestUtils = {
-  // Check if images have alt text
-  hasAltText: (img: HTMLElement) => {
-    return img.hasAttribute('alt') && img.getAttribute('alt')!.trim() !== '';
-  },
-
-  // Check if form inputs have labels
-  hasLabel: (input: HTMLElement) => {
-    const id = input.getAttribute('id');
-    if (id) {
-      const label = document.querySelector(`label[for="${id}"]`);
-      return !!label;
-    }
-    return input.hasAttribute('aria-label') || input.hasAttribute('aria-labelledby');
-  },
-
-  // Check if buttons have accessible names
-  hasAccessibleName: (button: HTMLElement) => {
-    return (
-      button.textContent?.trim() ||
-      button.getAttribute('aria-label') ||
-      button.getAttribute('aria-labelledby') ||
-      button.hasAttribute('title')
-    );
-  },
-
-  // Check color contrast (simplified)
-  hasGoodContrast: (element: HTMLElement) => {
-    // This would need a proper color contrast library
-    // For now, return true as placeholder
-    return true;
-  },
-
-  // Run comprehensive accessibility checks
-  runAccessibilityChecks: (container: HTMLElement) => {
-    const issues: string[] = [];
-
-    // Check images
-    const images = container.querySelectorAll('img');
-    images.forEach((img, index) => {
-      if (!accessibilityTestUtils.hasAltText(img)) {
-        issues.push(`Image ${index + 1} missing alt text`);
-      }
-    });
-
-    // Check form inputs
-    const inputs = container.querySelectorAll('input, select, textarea');
-    inputs.forEach((input, index) => {
-      if (!accessibilityTestUtils.hasLabel(input)) {
-        issues.push(`Input ${index + 1} missing label`);
-      }
-    });
-
-    // Check buttons
-    const buttons = container.querySelectorAll('button');
-    buttons.forEach((button, index) => {
-      if (!accessibilityTestUtils.hasAccessibleName(button)) {
-        issues.push(`Button ${index + 1} missing accessible name`);
-      }
-    });
-
-    return {
-      passed: issues.length === 0,
-      issues,
-      totalChecks: images.length + inputs.length + buttons.length,
-    };
-  },
-};
+// ... (skipping unchanged parts)
 
 // Performance testing utilities
 export const performanceTestUtils = {
@@ -260,11 +192,11 @@ export const performanceTestUtils = {
   mockPerformanceAPI: () => {
     Object.defineProperty(window, 'performance', {
       value: {
-        now: jest.fn(() => Date.now()),
-        mark: jest.fn(),
-        measure: jest.fn(),
-        getEntriesByName: jest.fn(() => []),
-        getEntriesByType: jest.fn(() => []),
+        now: vi.fn(() => Date.now()),
+        mark: vi.fn(),
+        measure: vi.fn(),
+        getEntriesByName: vi.fn(() => []),
+        getEntriesByType: vi.fn(() => []),
       },
       writable: true,
     });

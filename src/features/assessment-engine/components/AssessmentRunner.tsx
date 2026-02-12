@@ -8,15 +8,15 @@
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  DimensionConfig, 
-  AssessmentSession, 
+import {
+  DimensionConfig,
+  AssessmentSession,
   AssessmentResponse,
   QuestionConfig,
   ResponseScale,
   ScoreInterpretation
 } from '../core/types';
-import { getResponseScale } from '../config/dimensions';
+// import { getResponseScale } from '../config/dimensions'; // Removed invalid import
 import { ProgressTracker, QuestionRenderer, Navigation, Timer } from './index';
 import { useAssessmentEngine, useValidation } from '../hooks';
 
@@ -83,16 +83,16 @@ export function AssessmentRunner({
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [direction, setDirection] = useState(0); // -1 for back, 1 for next
-  
+
   // Refs
   const startTimeRef = useRef(Date.now());
   const itemStartTimeRef = useRef(Date.now());
   const autoSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Custom hooks
-  const { 
-    submitResponse, 
-    completeAssessment, 
+  const {
+    submitResponse,
+    completeAssessment,
     saveProgress,
     state: engineState
   } = useAssessmentEngine({
@@ -101,7 +101,7 @@ export function AssessmentRunner({
     userId,
     sessionToken
   });
-  
+
   const { validateResponse, errors: validationErrors, clearErrors } = useValidation();
 
 
@@ -109,7 +109,7 @@ export function AssessmentRunner({
   // Generate questions from instruments
   const questions = React.useMemo(() => {
     const allQuestions: QuestionConfig[] = [];
-    dimensionConfig.instruments.forEach(instrument => {
+    (dimensionConfig.instruments || []).forEach(instrument => {
       for (let i = 0; i < instrument.items; i++) {
         allQuestions.push({
           id: `${instrument.id}_q${i + 1}`,
@@ -144,7 +144,7 @@ export function AssessmentRunner({
         });
       }, 30000); // Auto-save every 30 seconds
     }
-    
+
     return () => {
       if (autoSaveIntervalRef.current) {
         clearInterval(autoSaveIntervalRef.current);
@@ -160,7 +160,7 @@ export function AssessmentRunner({
   // Handle response submission
   const handleResponse = useCallback(async (value: number | string | boolean) => {
     const timeSpentMs = Date.now() - itemStartTimeRef.current;
-    
+
     const response: AssessmentResponse = {
       questionId: currentQuestion.id,
       instrumentId: currentQuestion.instrumentId,
@@ -210,7 +210,7 @@ export function AssessmentRunner({
       setError('Silakan jawab pertanyaan ini terlebih dahulu');
       return;
     }
-    
+
     if (isLastQuestion) {
       handleComplete();
     } else {
@@ -228,19 +228,19 @@ export function AssessmentRunner({
 
   const handleComplete = useCallback(async () => {
     if (isSubmitting) return;
-    
+
     setIsSubmitting(true);
     setError(null);
 
     try {
       const totalTimeSpent = Date.now() - startTimeRef.current;
-      
+
       // Calculate scores
       const scores = calculateScores(responses, questions, dimensionConfig);
-      
+
       // Get interpretation
       const interpretation = getScoreInterpretation(scores.normalized, dimensionConfig);
-      
+
       // Complete assessment on server
       const result = await completeAssessment();
 
@@ -257,7 +257,7 @@ export function AssessmentRunner({
       onComplete(assessmentResult);
     } catch (err) {
       setError('Gagal menyelesaikan assessment. Silakan coba lagi.');
-      } finally {
+    } finally {
       setIsSubmitting(false);
     }
   }, [isSubmitting, responses, questions, dimensionConfig, sessionId, completeAssessment, onComplete]);
@@ -297,7 +297,7 @@ export function AssessmentRunner({
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div 
+              <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
                 style={{ backgroundColor: dimensionConfig.color }}
               >
@@ -312,10 +312,10 @@ export function AssessmentRunner({
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
-            {showTimer && (
-                <Timer 
+              {showTimer && (
+                <Timer
                   startTime={new Date(startTimeRef.current)}
                   className={themeStyles.subtext}
                 />
@@ -332,9 +332,9 @@ export function AssessmentRunner({
               </button>
             </div>
           </div>
-          
+
           {/* Progress Bar */}
-          <ProgressTracker 
+          <ProgressTracker
             current={currentItemIndex}
             total={totalQuestions}
             percentage={progressPercentage}
@@ -393,7 +393,7 @@ export function AssessmentRunner({
               Simpan Progress?
             </h3>
             <p className={`${themeStyles.subtext} mb-6`}>
-              Anda telah menjawab {Object.keys(responses).length} dari {totalQuestions} pertanyaan. 
+              Anda telah menjawab {Object.keys(responses).length} dari {totalQuestions} pertanyaan.
               Progress akan disimpan dan bisa dilanjutkan nanti.
             </p>
             <div className="flex gap-3">
@@ -445,7 +445,7 @@ function getQuestionText(instrumentId: string, index: number): string {
     ]
     // Add more templates for other instruments...
   };
-  
+
   const instrumentTemplates = templates[instrumentId] || ['Pertanyaan ' + (index + 1)];
   return instrumentTemplates[index % instrumentTemplates.length] || `Pertanyaan ${index + 1} untuk ${instrumentId}`;
 }
@@ -461,7 +461,7 @@ function calculateScores(
   const byInstrument: Record<string, { sum: number; count: number; max: number }> = {};
 
   // Initialize instrument trackers
-  config.instruments.forEach(inst => {
+  (config.instruments || []).forEach(inst => {
     byInstrument[inst.id] = { sum: 0, count: 0, max: inst.items * 5 }; // Assuming max 5 per item
   });
 
@@ -470,7 +470,7 @@ function calculateScores(
     if (!response) return;
 
     let value = typeof response.value === 'number' ? response.value : 0;
-    
+
     // Handle reverse scoring
     if (question.reverseScored) {
       value = 6 - value; // Reverse for 1-5 scale
@@ -523,27 +523,38 @@ function calculateScores(
 }
 
 function getScoreInterpretation(score: number, config: DimensionConfig): ScoreInterpretation {
-  const { thresholds } = config;
-  
+  const thresholds = config.thresholds || config.scoring?.thresholds;
+
+  if (!thresholds) {
+    return {
+      level: 'low',
+      label: 'Unknown',
+      description: 'Score could not be interpreted due to missing configuration.',
+      color: '#9CA3AF'
+    };
+  }
+
+  const recommendations = config.recommendations || { low: [], medium: [], high: [] };
+
   if (score <= thresholds.low.max) {
     return {
       level: 'low',
       label: thresholds.low.label,
-      description: `Skor Anda (${score}) menunjukkan area yang perlu pengembangan. ${config.recommendations.low[0]}`,
+      description: `Skor Anda (${score}) menunjukkan area yang perlu pengembangan. ${recommendations.low?.[0] || ''}`,
       color: thresholds.low.color || '#EF4444'
     };
   } else if (score <= thresholds.medium.max) {
     return {
       level: 'medium',
       label: thresholds.medium.label,
-      description: `Skor Anda (${score}) menunjukkan level yang cukup baik. ${config.recommendations.medium[0]}`,
+      description: `Skor Anda (${score}) menunjukkan level yang cukup baik. ${recommendations.medium?.[0] || ''}`,
       color: thresholds.medium.color || '#F59E0B'
     };
   } else {
     return {
       level: 'high',
       label: thresholds.high.label,
-      description: `Skor Anda (${score}) menunjukkan level yang sangat baik! ${config.recommendations.high[0]}`,
+      description: `Skor Anda (${score}) menunjukkan level yang sangat baik! ${recommendations.high?.[0] || ''}`,
       color: thresholds.high.color || '#10B981'
     };
   }
@@ -576,6 +587,54 @@ function getThemeStyles(theme: string, accentColor: string) {
       border: 'border-slate-700'
     }
   };
-  
+
   return themes[theme as keyof typeof themes] || themes.default;
+}
+
+function getResponseScale(type: string): ResponseScale | undefined {
+  const scales: Record<string, ResponseScale> = {
+    likert5: {
+      type: 'likert5',
+      min: 1,
+      max: 5,
+      labels: {
+        1: 'Sangat Tidak Setuju',
+        2: 'Tidak Setuju',
+        3: 'Netral',
+        4: 'Setuju',
+        5: 'Sangat Setuju'
+      }
+    },
+    likert7: {
+      type: 'likert7',
+      min: 1,
+      max: 7,
+      labels: {
+        1: 'Sangat Tidak Setuju',
+        7: 'Sangat Setuju'
+      }
+    },
+    yesno: {
+      type: 'yesno',
+      min: 0,
+      max: 1,
+      labels: {
+        0: 'Tidak',
+        1: 'Ya'
+      }
+    },
+    frequency: {
+      type: 'frequency',
+      min: 1,
+      max: 5,
+      labels: {
+        1: 'Tidak Pernah',
+        2: 'Jarang',
+        3: 'Kadang-kadang',
+        4: 'Sering',
+        5: 'Selalu'
+      }
+    }
+  };
+  return scales[type];
 }

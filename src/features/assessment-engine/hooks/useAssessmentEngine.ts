@@ -6,10 +6,10 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { 
-  DimensionConfig, 
-  InstrumentConfig, 
-  QuestionConfig, 
+import {
+  DimensionConfig,
+  InstrumentConfig,
+  QuestionConfig,
   AssessmentResponse,
   AssessmentState,
   AssessmentProgress,
@@ -50,7 +50,7 @@ export function useAssessmentEngine({
     const questions: QuestionConfig[] = [];
     const instruments: InstrumentConfig[] = [];
 
-    dimension.instruments.forEach((instrument) => {
+    (dimension.instruments || []).forEach((instrument) => {
       instruments.push(instrument);
       // Generate questions from instrument items
       for (let i = 0; i < instrument.items; i++) {
@@ -90,12 +90,12 @@ export function useAssessmentEngine({
 
   // Derived state
   const currentQuestion = allQuestions.current[state.currentQuestionIndex] || null;
-  
+
   const progress: AssessmentProgress = {
     currentItem: state.currentQuestionIndex,
     totalItems: allQuestions.current.length,
     answeredItems: responsesMap.size,
-    percentComplete: allQuestions.current.length > 0 
+    percentComplete: allQuestions.current.length > 0
       ? Math.round((responsesMap.size / allQuestions.current.length) * 100)
       : 0,
     estimatedTimeRemainingMinutes: Math.ceil((allQuestions.current.length - responsesMap.size) * 0.5)
@@ -203,7 +203,7 @@ export function useAssessmentEngine({
   // Navigation
   const goToNext = useCallback(() => {
     if (state.currentQuestionIndex >= allQuestions.current.length - 1) return;
-    
+
     setState(prev => ({
       ...prev,
       currentQuestionIndex: Math.min(prev.currentQuestionIndex + 1, allQuestions.current.length - 1),
@@ -214,7 +214,7 @@ export function useAssessmentEngine({
 
   const goToPrevious = useCallback(() => {
     if (state.currentQuestionIndex <= 0) return;
-    
+
     setState(prev => ({
       ...prev,
       currentQuestionIndex: Math.max(prev.currentQuestionIndex - 1, 0),
@@ -225,7 +225,7 @@ export function useAssessmentEngine({
 
   const goToQuestion = useCallback((index: number) => {
     if (index < 0 || index >= allQuestions.current.length) return;
-    
+
     setState(prev => ({
       ...prev,
       currentQuestionIndex: index,
@@ -331,7 +331,7 @@ export function useAssessmentEngine({
         })
       });
     } catch (err) {
-      }
+    }
   }, [sessionId, state.currentQuestionIndex, responsesMap, sessionToken]);
 
   // Helpers
@@ -347,12 +347,12 @@ export function useAssessmentEngine({
     if (!currentQuestion) {
       return { valid: false, errors: [{ field: 'none', message: 'No current question', code: 'NO_QUESTION' }], warnings: [] };
     }
-    
+
     const response = responsesMap.get(currentQuestion.id);
     if (!response) {
       return { valid: false, errors: [{ field: currentQuestion.id, message: 'No response provided', code: 'REQUIRED' }], warnings: [] };
     }
-    
+
     return { valid: true, errors: [], warnings: [] };
   }, [currentQuestion, responsesMap]);
 

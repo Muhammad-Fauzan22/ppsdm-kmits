@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Verify session exists and belongs to user (if authenticated)
-        let query = supabase
+        const query = supabase
             .from("comprehensive_sessions")
             .select("*")
             .eq("id", session_id)

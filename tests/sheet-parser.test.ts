@@ -17,15 +17,15 @@ describe('SheetParserEngine', () => {
   beforeEach(() => {
     // Reset mocks
     vi.clearAllMocks();
-    
+
     // Create mock service
     mockSheetsService = {
       getSheetData: vi.fn()
     };
-    
+
     // Mock getInstance to return our mock
     vi.mocked(GoogleSheetsService.getInstance).mockReturnValue(mockSheetsService);
-    
+
     // Create parser instance
     parser = new SheetParserEngine();
   });
@@ -211,7 +211,7 @@ describe('SheetParserEngine', () => {
       const result = await parser.parseSheetData('test-id', 'members');
 
       expect(result[0]._isValid).toBe(false);
-      expect(result[0]._validationErrors).toContain('Field Email does not match required format');
+      expect(result[0]._validationErrors).toContain('Field Email must belong to domain @student.its.ac.id');
     });
 
     it('should validate year range', async () => {
@@ -412,30 +412,34 @@ describe('SheetParserEngine', () => {
 
   describe('generateId', () => {
     it('should generate new ID with sequential number', () => {
-      const existingIds = ['ACT-2024-001', 'ACT-2024-002', 'ACT-2024-005'];
+      const year = new Date().getFullYear();
+      const existingIds = [`ACT-${year}-001`, `ACT-${year}-002`, `ACT-${year}-005`];
       const newId = parser.generateId('ACT', existingIds);
 
-      expect(newId).toBe('ACT-2024-006');
+      expect(newId).toBe(`ACT-${year}-006`);
     });
 
     it('should generate first ID when no existing IDs', () => {
+      const year = new Date().getFullYear();
       const newId = parser.generateId('ACT', []);
 
-      expect(newId).toBe('ACT-2024-001');
+      expect(newId).toBe(`ACT-${year}-001`);
     });
 
     it('should handle different prefixes', () => {
-      const existingIds = ['TRX-2024-001', 'TRX-2024-002'];
+      const year = new Date().getFullYear();
+      const existingIds = [`TRX-${year}-001`, `TRX-${year}-002`];
       const newId = parser.generateId('TRX', existingIds);
 
-      expect(newId).toBe('TRX-2024-003');
+      expect(newId).toBe(`TRX-${year}-003`);
     });
 
     it('should pad numbers with zeros', () => {
-      const existingIds = ['RES-099'];
+      const year = new Date().getFullYear();
+      const existingIds = [`RES-${year}-099`];
       const newId = parser.generateId('RES', existingIds);
 
-      expect(newId).toBe('RES-2024-100');
+      expect(newId).toBe(`RES-${year}-100`);
     });
   });
 

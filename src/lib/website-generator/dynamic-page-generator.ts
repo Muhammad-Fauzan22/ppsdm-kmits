@@ -12,7 +12,7 @@ export class DynamicPageGenerator {
 
   constructor() {
     this.parserEngine = new SheetParserEngine();
-    
+
     // Define page generation rules
     this.pageRules = {
       '/assessment': {
@@ -62,12 +62,12 @@ export class DynamicPageGenerator {
    */
   async generateAllPages(): Promise<void> {
     await this.initialize();
-    
+
     for (const [route, rule] of Object.entries(this.pageRules)) {
       try {
         await this.generatePage(route, rule);
-        } catch (error) {
-        }
+      } catch (error) {
+      }
     }
   }
 
@@ -77,10 +77,10 @@ export class DynamicPageGenerator {
   async generatePage(route: string, rule: any): Promise<void> {
     // Fetch and process data
     const data = await this.fetchAndProcessData(rule.dataSource);
-    
+
     // Apply template
     const html = await this.applyTemplate(rule.template, data);
-    
+
     // Update website page
     await this.updateWebsitePage(route, html);
   }
@@ -90,7 +90,7 @@ export class DynamicPageGenerator {
    */
   private async fetchAndProcessData(dataSource: string | string[]): Promise<any> {
     const sources = Array.isArray(dataSource) ? dataSource : [dataSource];
-    const results: Record<string, any[]> = {};
+    const results: Record<string, any> = {};
 
     for (const source of sources) {
       // Fetch and parse data from Google Sheets
@@ -101,10 +101,10 @@ export class DynamicPageGenerator {
 
       // Validate and transform data
       const validatedData = this.parserEngine.transformDataForWebsite(rawData, source);
-      
+
       // Generate statistics and insights
       const analytics = this.generateAnalytics(validatedData, source);
-      
+
       results[source] = {
         data: validatedData,
         analytics,
@@ -145,10 +145,10 @@ export class DynamicPageGenerator {
     const completedActivities = data.filter(item => item.Status === 'Completed').length;
     const activeActivities = data.filter(item => item.Status === 'Active').length;
     const planningActivities = data.filter(item => item.Status === 'Planning').length;
-    
+
     const totalBudget = data.reduce((sum, item) => sum + (item.Budget_Allocated || 0), 0);
     const totalSpent = data.reduce((sum, item) => sum + (item.Budget_Used || 0), 0);
-    
+
     const averageParticipants = data.reduce((sum, item) => {
       const participants = item.Participants_List || [];
       return sum + participants.length;
@@ -173,7 +173,7 @@ export class DynamicPageGenerator {
     const totalMembers = data.length;
     const activeMembers = data.filter(item => item.Status === 'Active').length;
     const alumni = data.filter(item => item.Status === 'Alumni').length;
-    
+
     const yearDistribution: Record<number, number> = {};
     data.forEach(item => {
       const year = item.Year;
@@ -207,13 +207,13 @@ export class DynamicPageGenerator {
     const totalIncome = data
       .filter(item => item.Category === 'Income')
       .reduce((sum, item) => sum + (item.Amount || 0), 0);
-    
+
     const totalExpense = data
       .filter(item => item.Category !== 'Income')
       .reduce((sum, item) => sum + (item.Amount || 0), 0);
-    
+
     const balance = totalIncome - totalExpense;
-    
+
     const categoryBreakdown: Record<string, number> = {};
     data.forEach(item => {
       const category = item.Category;
@@ -234,7 +234,7 @@ export class DynamicPageGenerator {
   private generateAssessmentAnalytics(data: any[]): any {
     const totalQuestions = data.length;
     const activeQuestions = data.filter(item => item.Status === 'Active').length;
-    
+
     const questionTypeDistribution: Record<string, number> = {};
     data.forEach(item => {
       const type = item.Question_Type;
@@ -260,7 +260,7 @@ export class DynamicPageGenerator {
    */
   private generateKnowledgeAnalytics(data: any[]): any {
     const totalResources = data.length;
-    
+
     const typeDistribution: Record<string, number> = {};
     data.forEach(item => {
       const type = item.Type;
@@ -291,9 +291,9 @@ export class DynamicPageGenerator {
     const totalProjects = data.length;
     const completedProjects = data.filter(item => item.Status === 'Completed').length;
     const activeProjects = data.filter(item => item.Status === 'Active').length;
-    
+
     const totalBudget = data.reduce((sum, item) => sum + (item.Budget || 0), 0);
-    
+
     return {
       totalProjects,
       completedProjects,
@@ -391,10 +391,10 @@ export class DynamicPageGenerator {
    */
   private renderStats(data: any): string {
     let statsHtml = '';
-    
-    Object.entries(data).forEach(([source, content]) => {
+
+    Object.entries(data).forEach(([source, content]: [string, any]) => {
       const analytics = content.analytics;
-      
+
       Object.entries(analytics).forEach(([key, value]) => {
         if (typeof value === 'number') {
           const label = key.split(/(?=[A-Z])/).join(' ');
@@ -416,8 +416,8 @@ export class DynamicPageGenerator {
    */
   private renderDataCards(data: any): string {
     let cardsHtml = '';
-    
-    Object.entries(data).forEach(([source, content]) => {
+
+    Object.entries(data).forEach(([source, content]: [string, any]) => {
       content.data.slice(0, 5).forEach((item: any) => {
         cardsHtml += `
           <div class="data-card">
@@ -436,7 +436,7 @@ export class DynamicPageGenerator {
    */
   private renderItemDetails(item: any): string {
     let detailsHtml = '';
-    
+
     Object.entries(item).forEach(([key, value]) => {
       if (typeof value !== 'object' && key !== 'name' && key !== 'title' && key !== 'Activity_Name' && key !== 'Full_Name') {
         const label = key.split(/(?=[A-Z])/).join(' ');

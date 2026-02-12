@@ -70,7 +70,7 @@ const EF1_SCORING: Record<string, number> = {
 export function calculateFinancialScores(responses: FinancialResponse): FinancialResult {
     // 1. Calculate Knowledge (0-100)
     let kScore = 0;
-    let kItems = 0;
+    const kItems = 0;
     // We'll simulate 5 questions, assuming the UI passes correct IDs
     // For the demo we might only have 2 in the old file, but we'll expand logic for 5
     if (responses.FK1 === KNOWLEDGE_KEY.FK1) kScore += 20;

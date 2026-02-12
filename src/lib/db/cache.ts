@@ -186,7 +186,7 @@ export function createMemoizedSelector<T>(
   key: string,
   selector: (data: any) => T
 ) {
-  let cache: Map<string, { data: any; result: T }> = new Map();
+  const cache: Map<string, { data: any; result: T }> = new Map();
   
   return (input: any): T => {
     const keyString = typeof input === 'object' 

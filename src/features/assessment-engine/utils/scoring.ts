@@ -2,9 +2,9 @@
  * Scoring Utilities for Assessment Engine
  */
 
-import { 
-  DimensionConfig, 
-  AssessmentResponse, 
+import {
+  DimensionConfig,
+  AssessmentResponse,
   ScoringConfig,
   ScoringAlgorithmType,
   DimensionScores,
@@ -30,7 +30,7 @@ export function calculateScore(
   responses: AssessmentResponse[]
 ): ScoringResult {
   const { scoringAlgorithm } = dimension;
-  const scoringConfig = dimension.instruments[0]?.scoring || { algorithm: 'simpleSum' };
+  const scoringConfig = dimension.scoring || dimension.instruments?.[0]?.scoring || { algorithm: 'simpleSum' };
 
   let scores: DimensionScores;
 
@@ -57,7 +57,12 @@ export function calculateScore(
   }
 
   // Calculate interpretation
-  const interpretation = interpretScore(scores.normalized, dimension.thresholds);
+  // Calculate interpretation
+  const thresholds = dimension.thresholds || dimension.scoring?.thresholds;
+  if (!thresholds) {
+    throw new Error(`Thresholds not defined for dimension ${dimension.id}`);
+  }
+  const interpretation = interpretScore(scores.normalized, thresholds);
 
   return {
     scores,
@@ -80,7 +85,7 @@ function calculateSimpleSum(
 
   responses.forEach((response, index) => {
     let value = Number(response.value) || 0;
-    
+
     // Handle reverse scoring
     if (config.reverseScored?.[index]) {
       value = reverseScore(value, config);
@@ -173,8 +178,8 @@ function reverseScore(value: number, config: ScoringConfig): number {
  */
 export function normalizeScore(
 
-  rawScore: number, 
-  itemCount: number, 
+  rawScore: number,
+  itemCount: number,
   config: ScoringConfig
 ): number {
   if (itemCount === 0) return 0;
@@ -193,7 +198,7 @@ export function normalizeScore(
  * Interpret score based on thresholds
  */
 function interpretScore(
-  normalizedScore: number, 
+  normalizedScore: number,
   thresholds: ScoreThresholds
 ): ScoreInterpretation {
   if (normalizedScore >= thresholds.high.min) {
@@ -228,17 +233,17 @@ export function calculateWeightedScore(
   weights: number[]
 ): number {
   if (responses.length === 0 || weights.length === 0) return 0;
-  
+
   let weightedSum = 0;
   let totalWeight = 0;
-  
+
   responses.forEach((response, index) => {
     const value = Number(response.value) || 0;
     const weight = weights[index] || 1;
     weightedSum += value * weight;
     totalWeight += weight;
   });
-  
+
   return totalWeight > 0 ? weightedSum / totalWeight : 0;
 }
 
@@ -253,10 +258,10 @@ export function applyReverseScoring(
 ): AssessmentResponse[] {
   return responses.map((response, index) => {
     if (!reverseIndices[index]) return response;
-    
+
     const value = Number(response.value) || 0;
     const reversedValue = scaleMax - (value - scaleMin);
-    
+
     return {
       ...response,
       value: reversedValue
@@ -271,7 +276,7 @@ export function getRecommendations(
   level: 'low' | 'medium' | 'high',
   dimension: DimensionConfig
 ): string[] {
-  return dimension.recommendations[level] || [];
+  return dimension.recommendations?.[level] || [];
 }
 
 

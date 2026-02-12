@@ -343,7 +343,7 @@ export function calculateEmotionalScores(responses: Record<string, any>): Emotio
     const irtImpliedScore = (theta * 12.4) + 68.3;
 
     // Average validity check: 70% CTT, 30% IRT (Robustness)
-    let finalScore = (rawPercentage * 0.7) + (Math.max(0, Math.min(100, irtImpliedScore)) * 0.3);
+    const finalScore = (rawPercentage * 0.7) + (Math.max(0, Math.min(100, irtImpliedScore)) * 0.3);
 
     // 4. Percentile
     const zScore = (finalScore - NORMS.mean) / NORMS.sd;

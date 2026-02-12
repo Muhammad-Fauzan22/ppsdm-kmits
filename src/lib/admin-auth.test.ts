@@ -52,7 +52,7 @@ describe('requireAdmin', () => {
     });
 
     const result = await requireAdmin();
-    
+
     expect(result).toEqual({
       id: 'admin-123',
       email: 'admin@ppsdm-kmits.com',
@@ -167,7 +167,7 @@ describe('requireAdmin', () => {
     });
 
     const result = await requireAdmin();
-    
+
     expect(result.email).toBe('admin@ppsdm-kmits.com');
   });
 });
@@ -291,8 +291,8 @@ describe('withAdminAuth', () => {
   });
 
   it('should log admin actions', async () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => { });
+
     const mockSession = {
       user: {
         id: 'admin-123',
@@ -326,20 +326,22 @@ describe('withAdminAuth', () => {
     const wrappedHandler = withAdminAuth(mockHandler);
     await wrappedHandler(mockRequest);
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining('[ADMIN AUDIT]'),
-      expect.objectContaining({
-        adminId: 'admin-123',
-        adminEmail: 'admin@ppsdm-kmits.com'
-      })
-    );
+    expect(consoleSpy).toHaveBeenCalled();
+    const lastCall = consoleSpy.mock.calls[0][0];
+    const logObj = JSON.parse(lastCall);
+
+    expect(logObj.message).toContain('[AUDIT] Admin action');
+    expect(logObj.context).toMatchObject({
+      adminId: 'admin-123',
+      email: 'admin@ppsdm-kmits.com'
+    });
 
     consoleSpy.mockRestore();
   });
 
   it('should log failed authentication attempts', async () => {
-    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+
     mockSupabase.auth.getSession.mockResolvedValue({
       data: { session: null },
       error: null
@@ -348,13 +350,14 @@ describe('withAdminAuth', () => {
     const wrappedHandler = withAdminAuth(mockHandler);
     await wrappedHandler(mockRequest);
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining('[ADMIN AUTH FAILED]'),
-      expect.objectContaining({
-        error: expect.stringContaining('Unauthorized'),
-        timestamp: expect.any(String)
-      })
-    );
+    expect(consoleSpy).toHaveBeenCalled();
+    const lastCall = consoleSpy.mock.calls[0][0];
+    const logObj = JSON.parse(lastCall);
+
+    expect(logObj.message).toContain('[SECURITY] Failed admin access attempt');
+    expect(logObj.context).toMatchObject({
+      ip: '127.0.0.1'
+    });
 
     consoleSpy.mockRestore();
   });

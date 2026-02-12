@@ -137,7 +137,7 @@ function generateHTMLReport(template: any, data: any[], columns: string[]): stri
   const title = template.name;
   const date = new Date().toLocaleDateString();
   
-  let html = `
+  const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>

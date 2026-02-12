@@ -81,7 +81,7 @@ const SunburstComponent: React.FC<SunburstProps> = ({
         if (colorScale) {
           // Use custom color scale logic based on value and depth
           // Assuming leaf nodes carry the actual score value we want to color by
-          let val = d.data.value || 0;
+          const val = d.data.value || 0;
           // If node has children, maybe average them? For now use its own value if exists
           // In our CognitiveSunburst, internal nodes also have values.
           return colorScale(val, d.depth);

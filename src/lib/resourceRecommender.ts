@@ -38,7 +38,7 @@ export function recommendResources(
 
     // 2. Fetch and filter resources for each priority dimension
     for (const dim of priorityDims) {
-        let content = getContentByDimension(dim);
+        const content = getContentByDimension(dim);
 
         // Language Filtering Logic
         if (locale === 'id') {

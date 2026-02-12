@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Download, Eye, Loader2, FileText, FileSpreadsheet, FileCode, Globe } from 'lucide-react';
-import DOMPurify from 'dompurify';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface ReportGeneratorProps {
   reportType: string;
@@ -185,7 +185,7 @@ export function ReportGeneratorComponent({
               </div>
               <div className="flex-1 overflow-auto p-4">
                 <div
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(previewHtml) }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(previewHtml) }}
                   className="prose max-w-none"
                 />
               </div>

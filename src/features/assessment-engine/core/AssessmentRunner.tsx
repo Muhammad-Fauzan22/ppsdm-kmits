@@ -10,7 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { ShieldCheck, ArrowRight, Brain, LucideIcon } from "lucide-react";
 import * as Icons from "lucide-react";
-import DOMPurify from 'dompurify';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface AssessmentRunnerProps {
     config: DimensionConfig;
@@ -72,7 +72,7 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
                                         <CardTitle>{card.title}</CardTitle>
                                     </CardHeader>
                                     <CardContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(card.content) }} />
+                                        <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(card.content) }} />
                                     </CardContent>
                                 </Card>
                             );
@@ -184,9 +184,9 @@ export function AssessmentRunner({ config }: AssessmentRunnerProps) {
             <Card className="w-full max-w-3xl shadow-2xl border-none">
                 <div className={`h-2 w-full ${config.color || 'bg-blue-600'}`}></div>
                 <CardHeader>
-                <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">
-                    Item {currentQuestionIndex + 1} / {items.length}
-                </div>
+                    <div className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">
+                        Item {currentQuestionIndex + 1} / {items.length}
+                    </div>
 
                     <CardTitle className="text-2xl leading-tight">{currentQuestion?.text}</CardTitle>
                 </CardHeader>

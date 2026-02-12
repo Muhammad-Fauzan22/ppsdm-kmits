@@ -155,6 +155,11 @@ class Logger {
 // Export singleton instance
 export const logger = Logger.getInstance();
 
+// Performance logging helper
+export function logPerformance(operation: string, durationMs: number, context?: LogContext): void {
+  logger.performance(operation, durationMs, context);
+}
+
 // Helper functions for common logging patterns
 export function logAPIRequest(
   method: string,

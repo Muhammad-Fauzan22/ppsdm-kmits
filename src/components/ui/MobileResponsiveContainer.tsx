@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 interface MobileResponsiveContainerProps {
   children: React.ReactNode;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
 }
 
 /**
@@ -18,8 +18,8 @@ interface MobileResponsiveContainerProps {
  * - Readable font sizes on mobile
  * - Proper viewport handling
  */
-export function MobileResponsiveContainer({ 
-  children, 
+export function MobileResponsiveContainer({
+  children,
   className,
   as: Component = 'div'
 }: MobileResponsiveContainerProps) {
@@ -62,14 +62,14 @@ export function TouchFriendlyButton({
   ...props
 }: TouchFriendlyButtonProps) {
   const baseStyles = "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
-  
+
   // Minimum 44px touch target (WCAG 2.1 AA)
   const sizeStyles = {
     sm: "min-h-[44px] min-w-[44px] px-3 py-2 text-sm rounded-lg",
     md: "min-h-[48px] min-w-[48px] px-4 py-2.5 text-base rounded-xl",
     lg: "min-h-[56px] min-w-[56px] px-6 py-3 text-lg rounded-xl"
   };
-  
+
   const variantStyles = {
     primary: "bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500",
     secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-500",
@@ -115,7 +115,7 @@ export function AccessibleCard({
   href
 }: AccessibleCardProps) {
   const isClickable = !!onClick || !!href;
-  
+
   const content = (
     <div
       className={cn(

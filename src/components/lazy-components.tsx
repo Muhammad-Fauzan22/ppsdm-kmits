@@ -43,7 +43,7 @@ export const LazyHolisticRadarChart = dynamic(
 
 // PDF components
 export const LazyPDFViewer = dynamic(
-  () => import('@/components/pdf/TranscriptDocument'),
+  () => import('@/components/pdf/TranscriptDocument').then(mod => mod.TranscriptDocument),
   {
     loading: () => <Skeleton className="w-full h-[600px]" />,
     ssr: false,
@@ -76,7 +76,7 @@ export const LazyAssessmentEngine = dynamic(
 
 // Report components
 export const LazyReportGenerator = dynamic(
-  () => import('@/components/reports/ReportGenerator'),
+  () => import('@/components/reports/ReportGenerator').then(mod => mod.ReportGeneratorComponent),
   {
     loading: () => <Skeleton className="w-full h-[500px]" />,
     ssr: false,

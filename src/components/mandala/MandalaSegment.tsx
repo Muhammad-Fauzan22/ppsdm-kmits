@@ -17,7 +17,7 @@ interface MandalaSegmentProps {
 }
 
 function polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number) {
-    var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
     return {
         x: centerX + (radius * Math.cos(angleInRadians)),
         y: centerY + (radius * Math.sin(angleInRadians))
@@ -25,14 +25,14 @@ function polarToCartesian(centerX: number, centerY: number, radius: number, angl
 }
 
 function describeArc(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
-    var start = polarToCartesian(x, y, outerRadius, endAngle);
-    var end = polarToCartesian(x, y, outerRadius, startAngle);
-    var start2 = polarToCartesian(x, y, innerRadius, endAngle);
-    var end2 = polarToCartesian(x, y, innerRadius, startAngle);
+    const start = polarToCartesian(x, y, outerRadius, endAngle);
+    const end = polarToCartesian(x, y, outerRadius, startAngle);
+    const start2 = polarToCartesian(x, y, innerRadius, endAngle);
+    const end2 = polarToCartesian(x, y, innerRadius, startAngle);
 
-    var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
 
-    var d = [
+    const d = [
         "M", start.x, start.y,
         "A", outerRadius, outerRadius, 0, largeArcFlag, 0, end.x, end.y,
         "L", end2.x, end2.y,

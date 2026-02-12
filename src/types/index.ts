@@ -453,19 +453,5 @@ export interface FormFieldProps<T = string> {
   placeholder?: string;
 }
 
-// Export all types
-export default {
-  User,
-  Profile,
-  Assessment,
-  AssessmentResult,
-  Dimension,
-  Activity,
-  Goal,
-  Achievement,
-  Badge,
-  Course,
-  Module,
-  UserProgress,
-  AdminAuditLog,
-};
+// Note: Types are already exported above with 'export' keyword
+// Do not use export default with types

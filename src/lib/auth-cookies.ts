@@ -31,7 +31,7 @@ export async function createToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): Pro
     .setIssuedAt()
     .setExpirationTime('1h')
     .sign(JWT_SECRET);
-  
+
   return token;
 }
 
@@ -44,7 +44,7 @@ export async function createRefreshToken(userId: string): Promise<string> {
     .setIssuedAt()
     .setExpirationTime('7d')
     .sign(JWT_SECRET);
-  
+
   return token;
 }
 
@@ -54,7 +54,7 @@ export async function createRefreshToken(userId: string): Promise<string> {
 export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload as JWTPayload;
+    return payload as unknown as JWTPayload;
   } catch (error) {
     return null;
   }
@@ -65,7 +65,7 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
  */
 export async function setAuthCookies(token: string, refreshToken: string): Promise<void> {
   const cookieStore = await cookies();
-  
+
   // Set main session cookie (httpOnly, secure)
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
@@ -74,7 +74,7 @@ export async function setAuthCookies(token: string, refreshToken: string): Promi
     maxAge: 60 * 60, // 1 hour
     path: '/',
   });
-  
+
   // Set refresh token cookie (httpOnly, secure)
   cookieStore.set(REFRESH_COOKIE_NAME, refreshToken, {
     httpOnly: true,
@@ -91,11 +91,11 @@ export async function setAuthCookies(token: string, refreshToken: string): Promi
 export async function getSession(): Promise<JWTPayload | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
-  
+
   if (!token) {
     return null;
   }
-  
+
   return verifyToken(token);
 }
 
@@ -112,7 +112,7 @@ export async function getRefreshToken(): Promise<string | null> {
  */
 export async function clearAuthCookies(): Promise<void> {
   const cookieStore = await cookies();
-  
+
   cookieStore.delete(COOKIE_NAME);
   cookieStore.delete(REFRESH_COOKIE_NAME);
 }
@@ -122,25 +122,25 @@ export async function clearAuthCookies(): Promise<void> {
  */
 export async function refreshAccessToken(): Promise<string | null> {
   const refreshToken = await getRefreshToken();
-  
+
   if (!refreshToken) {
     return null;
   }
-  
+
   const payload = await verifyToken(refreshToken);
-  
+
   if (!payload) {
     await clearAuthCookies();
     return null;
   }
-  
+
   // Create new access token
   const newToken = await createToken({
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
   });
-  
+
   // Update cookie
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, newToken, {
@@ -150,7 +150,7 @@ export async function refreshAccessToken(): Promise<string | null> {
     maxAge: 60 * 60,
     path: '/',
   });
-  
+
   return newToken;
 }
 
@@ -167,11 +167,11 @@ export async function isAuthenticated(): Promise<boolean> {
  */
 export async function requireAuth(): Promise<JWTPayload> {
   const session = await getSession();
-  
+
   if (!session) {
     throw new Error('Authentication required');
   }
-  
+
   return session;
 }
 

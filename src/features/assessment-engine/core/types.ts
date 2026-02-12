@@ -7,15 +7,15 @@
 // Dimension Types
 // ============================================================================
 
-export type DimensionId = 
-  | 'cognitive' 
-  | 'self-management' 
-  | 'emotional-social' 
-  | 'spiritual' 
-  | 'physical' 
-  | 'mental-health' 
-  | 'character' 
-  | 'financial' 
+export type DimensionId =
+  | 'cognitive'
+  | 'self-management'
+  | 'emotional-social'
+  | 'spiritual'
+  | 'physical'
+  | 'mental-health'
+  | 'character'
+  | 'financial'
   | 'environmental';
 
 export interface DimensionConfig {
@@ -25,7 +25,9 @@ export interface DimensionConfig {
   description: string;
   icon: string;
   color: string;
-  instruments: InstrumentConfig[];
+  version?: string;
+  engine?: string;
+  instruments?: InstrumentConfig[]; // Make optional
   items?: Array<{
     id: string;
     text: string;
@@ -40,16 +42,25 @@ export interface DimensionConfig {
     cards: Array<{
       title: string;
       content: string;
-      icon?: React.ComponentType;
+      icon?: React.ComponentType | string;
       color?: string;
     }>;
   }; // Legacy support for AssessmentRunner
-  scoringAlgorithm: ScoringAlgorithmType;
-  thresholds: ScoreThresholds;
-  recommendations: RecommendationMap;
-  estimatedDurationMinutes: number;
-  order: number;
-  
+  scoring?: {
+    algorithm: ScoringAlgorithmType;
+    min_score: number;
+    max_score: number;
+    thresholds: ScoreThresholds;
+    normalizeTo100?: boolean;
+    weights?: number[];
+    reverseScored?: boolean[];
+  };
+  scoringAlgorithm?: ScoringAlgorithmType;
+  thresholds?: ScoreThresholds;
+  recommendations?: RecommendationMap; // Make optional
+  estimatedDurationMinutes?: number; // Make optional
+  order?: number; // Make optional
+
   // Legacy support for useAssessment hook
   calculateScore?: (responses: Record<string, number>) => Record<string, any>;
   transformToPayload?: (results: Record<string, any>, userId: string) => Record<string, any>;
@@ -111,7 +122,7 @@ export interface ResponseScale {
 // Scoring Types
 // ============================================================================
 
-export type ScoringAlgorithmType = 'simpleSum' | 'weightedSum' | 'average' | 'irt' | 'custom';
+export type ScoringAlgorithmType = 'simpleSum' | 'weightedSum' | 'weighted_sum' | 'average' | 'irt' | 'custom';
 
 export interface ScoringConfig {
   algorithm: ScoringAlgorithmType;
@@ -352,7 +363,7 @@ export interface AssessmentState {
   progress: number;
   timeRemaining?: number;
   validation: ValidationResult;
-  
+
   // Legacy support for AssessmentRunner
   step?: 'guide' | 'consent' | 'assessment' | 'results';
   agreement?: {
@@ -405,7 +416,7 @@ export interface UseAssessmentEngineReturn {
   // State
   state: AssessmentState;
   progress: AssessmentProgress;
-  
+
   // Actions
   startAssessment: (dimensionId: DimensionId, metadata?: SessionMetadata) => Promise<void>;
   submitResponse: (questionId: string, value: number | string | boolean, timeSpentMs?: number) => Promise<void>;
@@ -416,7 +427,7 @@ export interface UseAssessmentEngineReturn {
   resumeAssessment: () => void;
   completeAssessment: () => Promise<AssessmentResult>;
   abandonAssessment: () => void;
-  
+
   // Helpers
   getCurrentQuestion: () => QuestionConfig | null;
   getQuestionStatus: (questionId: string) => 'unanswered' | 'answered' | 'current' | 'review';

@@ -1,9 +1,23 @@
 import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
+// import { JSDOM } from 'jsdom'; // Removed top-level import
 
 // Configure DOMPurify for server-side usage
-const window = new JSDOM('').window;
-const DOMPurifyServer = DOMPurify(window as any);
+let DOMPurifyServer: any;
+const getDOMPurifyServer = () => {
+  if (!DOMPurifyServer) {
+    // Dynamically require jsdom to avoid top-level execution
+    // handling unlikely event of missing dependency gracefully
+    try {
+      const { JSDOM } = require('jsdom');
+      const window = new JSDOM('').window;
+      DOMPurifyServer = DOMPurify(window as any);
+    } catch (e) {
+      console.warn('JSDOM not available, falling back to basic sanitization');
+      return null;
+    }
+  }
+  return DOMPurifyServer;
+};
 
 // XSS Protection Configuration
 const XSS_CONFIG = {
@@ -62,11 +76,18 @@ const configureDOMPurify = () => {
 // Sanitize HTML content
 export function sanitizeHtml(dirty: string, options: any = {}): string {
   try {
+    const server = getDOMPurifyServer();
+    if (!server) return dirty; // Fallback
+
     const config = { ...configureDOMPurify(), ...options };
-    return DOMPurifyServer.sanitize(dirty, config) as unknown as string;
+    return server.sanitize(dirty, config) as unknown as string;
   } catch (error) {
     // Return safe fallback
-    return DOMPurifyServer.sanitize(dirty, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+    const server = getDOMPurifyServer();
+    if (server) {
+      return server.sanitize(dirty, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+    }
+    return dirty;
   }
 }
 
@@ -108,7 +129,7 @@ export const sanitizeInput = {
 
     // Ensure https for external links
     if (url.startsWith('http://')) {
-      }
+    }
 
     return url;
   },

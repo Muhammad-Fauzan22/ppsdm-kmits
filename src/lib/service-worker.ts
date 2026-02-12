@@ -56,7 +56,7 @@ export function unregisterServiceWorker() {
   }
 }
 
-function showUpdateNotification(worker) {
+function showUpdateNotification(worker?: ServiceWorker) {
   // Show update notification to user
   if (confirm('A new version of PPSDM is available. Update now?')) {
     if (worker) {
@@ -76,7 +76,7 @@ export function initOfflineDetection() {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then((registration) => {
         if ('sync' in registration) {
-          registration.sync.register('sync-assessments');
+          (registration as any).sync.register('sync-assessments');
         }
       });
     }
@@ -103,7 +103,7 @@ export async function subscribeToPush() {
   if (!('serviceWorker' in navigator)) return null;
 
   const registration = await navigator.serviceWorker.ready;
-  
+
   try {
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
@@ -127,16 +127,16 @@ export async function subscribeToPush() {
 }
 
 // Utility: Convert VAPID key
-function urlBase64ToUint8Array(base64String) {
+function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
-  
+
   for (let i = 0; i < rawData.length; ++i) {
     outputArray[i] = rawData.charCodeAt(i);
   }
-  
+
   return outputArray;
 }
 

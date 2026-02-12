@@ -136,7 +136,7 @@ export const INITIAL_RESOURCES: LearningResource[] = [
 
 // Helper to simulate fetching 500+ resources by multiplying the sample
 export const getAllResources = (): LearningResource[] => {
-    let allResources = [...INITIAL_RESOURCES];
+    const allResources = [...INITIAL_RESOURCES];
     // Simple expansion for demo purposes to simulate "database" feel
     // In a real app, this would be a large JSON or DB fetch
     return allResources;

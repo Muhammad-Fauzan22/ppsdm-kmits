@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * UU PDP Compliance - Data Export Endpoint
  * Generates JSON report of all user data for data portability rights
@@ -35,7 +37,7 @@ export async function GET(request: NextRequest) {
 
     // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -57,7 +59,7 @@ export async function GET(request: NextRequest) {
         .select('*')
         .eq('id', userId)
         .single(),
-      
+
       supabase
         .from('assessments')
         .select(`
@@ -65,12 +67,12 @@ export async function GET(request: NextRequest) {
           assessment_results(*)
         `)
         .eq('user_id', userId),
-      
+
       supabase
         .from('activities')
         .select('*')
         .eq('user_id', userId),
-      
+
       supabase
         .from('user_achievements')
         .select('*')

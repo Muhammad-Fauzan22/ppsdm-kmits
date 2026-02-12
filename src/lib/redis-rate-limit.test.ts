@@ -2,11 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { checkRateLimit, rateLimits, RateLimitType } from './redis-rate-limit';
 
 describe('checkRateLimit', () => {
-  const testIdentifier = 'test-ip-123';
+  let testIdentifier: string;
 
   beforeEach(() => {
     // Clear any existing rate limit data
     vi.clearAllMocks();
+    // Use unique identifier for each test to avoid state pollution in in-memory store
+    testIdentifier = `test-ip-${Math.random().toString(36).substring(7)}`;
   });
 
   describe('strict rate limit', () => {
@@ -20,7 +22,7 @@ describe('checkRateLimit', () => {
     it('should track remaining requests', async () => {
       const result1 = await checkRateLimit(testIdentifier, 'strict');
       expect(result1.remaining).toBe(4);
-      
+
       const result2 = await checkRateLimit(testIdentifier, 'strict');
       expect(result2.remaining).toBe(3);
     });
@@ -42,7 +44,7 @@ describe('checkRateLimit', () => {
     it('should decrement remaining correctly', async () => {
       const result1 = await checkRateLimit(testIdentifier, 'standard');
       const initialRemaining = result1.remaining;
-      
+
       const result2 = await checkRateLimit(testIdentifier, 'standard');
       expect(result2.remaining).toBe(initialRemaining - 1);
     });
@@ -75,12 +77,12 @@ describe('checkRateLimit', () => {
   describe('rate limit exhaustion', () => {
     it('should block requests after limit is reached', async () => {
       const identifier = 'strict-test-exhaust';
-      
+
       // Exhaust the rate limit (5 requests for strict)
       for (let i = 0; i < 5; i++) {
         await checkRateLimit(identifier, 'strict');
       }
-      
+
       // Next request should be blocked
       const result = await checkRateLimit(identifier, 'strict');
       expect(result.success).toBe(false);
@@ -89,12 +91,12 @@ describe('checkRateLimit', () => {
 
     it('should track reset time correctly when blocked', async () => {
       const identifier = 'strict-test-reset';
-      
+
       // Exhaust the rate limit
       for (let i = 0; i < 5; i++) {
         await checkRateLimit(identifier, 'strict');
       }
-      
+
       const blockedResult = await checkRateLimit(identifier, 'strict');
       expect(blockedResult.success).toBe(false);
       expect(blockedResult.reset).toBeGreaterThan(Date.now());
@@ -103,24 +105,24 @@ describe('checkRateLimit', () => {
 
   describe('different identifiers', () => {
     it('should track different identifiers separately', async () => {
-      const id1 = 'user-1';
-      const id2 = 'user-2';
-      
+      const id1 = `user-1-${Math.random().toString(36).substring(7)}`;
+      const id2 = `user-2-${Math.random().toString(36).substring(7)}`;
+
       // Use up some of user 1's limit
       await checkRateLimit(id1, 'strict');
       await checkRateLimit(id1, 'strict');
-      
+
       const result1 = await checkRateLimit(id1, 'strict');
       const result2 = await checkRateLimit(id2, 'strict');
-      
-      expect(result1.remaining).toBe(3); // 5 - 2 = 3
+
+      expect(result1.remaining).toBe(2); // 5 - 3 = 2
       expect(result2.remaining).toBe(4); // Fresh start = 4 (after first request)
     });
   });
 
   describe('rate limit types', () => {
     const types: RateLimitType[] = ['strict', 'standard', 'generous', 'admin'];
-    
+
     types.forEach((type) => {
       it(`should have rateLimits.${type} defined`, () => {
         expect(rateLimits[type]).toBeDefined();

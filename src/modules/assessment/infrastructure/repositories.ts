@@ -3,7 +3,7 @@
  * Repository implementations using Supabase
  */
 
-import { Assessment, AssessmentId, Dimension } from '../domain/entities';
+import { Assessment, AssessmentId, Dimension, Score } from '../domain/entities';
 import { AssessmentRepository, DimensionRepository } from '../domain/repository';
 import { createClient } from '@/lib/supabase/server';
 
@@ -11,7 +11,7 @@ import { createClient } from '@/lib/supabase/server';
 export class SupabaseAssessmentRepository implements AssessmentRepository {
   async findById(id: AssessmentId): Promise<Assessment | null> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('assessments')
       .select(`
@@ -28,7 +28,7 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
   async findByUserId(userId: string): Promise<Assessment[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('assessments')
       .select(`
@@ -40,12 +40,12 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
     if (error || !data) return [];
 
-    return data.map(a => this.mapToEntity(a));
+    return data.map((a: any) => this.mapToEntity(a));
   }
 
   async findCompletedByUserId(userId: string): Promise<Assessment[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('assessments')
       .select(`
@@ -58,12 +58,12 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
     if (error || !data) return [];
 
-    return data.map(a => this.mapToEntity(a));
+    return data.map((a: any) => this.mapToEntity(a));
   }
 
   async findByDimension(dimensionId: number): Promise<Assessment[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('assessments')
       .select(`
@@ -74,12 +74,12 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
     if (error || !data) return [];
 
-    return data.map(a => this.mapToEntity(a));
+    return data.map((a: any) => this.mapToEntity(a));
   }
 
   async save(assessment: Assessment): Promise<void> {
     const supabase = await createClient();
-    
+
     const { error } = await supabase
       .from('assessments')
       .insert({
@@ -95,9 +95,9 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
   async update(assessment: Assessment): Promise<void> {
     const supabase = await createClient();
-    
+
     const score = assessment.getScore();
-    
+
     const { error } = await supabase
       .from('assessments')
       .update({
@@ -112,7 +112,7 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
   async delete(id: AssessmentId): Promise<void> {
     const supabase = await createClient();
-    
+
     const { error } = await supabase
       .from('assessments')
       .delete()
@@ -123,7 +123,7 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
   async getAverageScoreByDimension(dimensionId: number): Promise<number | null> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('assessments')
       .select('score')
@@ -132,13 +132,13 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 
     if (error || !data || data.length === 0) return null;
 
-    const total = data.reduce((sum, a) => sum + (a.score || 0), 0);
+    const total = data.reduce((sum: number, a: any) => sum + (a.score || 0), 0);
     return total / data.length;
   }
 
   async getCompletionRate(): Promise<number> {
     const supabase = await createClient();
-    
+
     const { count: total, error: totalError } = await supabase
       .from('assessments')
       .select('*', { count: 'exact', head: true });
@@ -178,7 +178,7 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
 export class SupabaseDimensionRepository implements DimensionRepository {
   async findById(id: number): Promise<Dimension | null> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('dimensions')
       .select('*')
@@ -192,7 +192,7 @@ export class SupabaseDimensionRepository implements DimensionRepository {
 
   async findAll(): Promise<Dimension[]> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
       .from('dimensions')
       .select('*')
@@ -200,12 +200,12 @@ export class SupabaseDimensionRepository implements DimensionRepository {
 
     if (error || !data) return [];
 
-    return data.map(d => this.mapToEntity(d));
+    return data.map((d: any) => this.mapToEntity(d));
   }
 
   async save(dimension: Dimension): Promise<void> {
     const supabase = await createClient();
-    
+
     const { error } = await supabase
       .from('dimensions')
       .upsert({
