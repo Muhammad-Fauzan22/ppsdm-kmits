@@ -95,7 +95,7 @@ export function ExitIntentPopup({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-modal-backdrop"
                         onClick={handleClose}
                     />
 
@@ -105,7 +105,7 @@ export function ExitIntentPopup({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                        className="fixed inset-0 z-[101] flex items-center justify-center p-4"
+                        className="fixed inset-0 z-modal flex items-center justify-center p-4"
                     >
                         <div className="relative w-full max-w-lg bg-gradient-to-br from-[#1A1F2E] to-[#0D1220] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
                             {/* Gradient border effect */}

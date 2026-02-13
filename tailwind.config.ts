@@ -133,6 +133,17 @@ const config: Config = {
 					'0%': { width: '0%' },
 					'100%': { width: 'var(--xp-width, 100%)' },
 				},
+			},
+			zIndex: {
+				'dropdown': '10',
+				'sticky': '20',
+				'fixed': '30',
+				'modal-backdrop': '40',
+				'modal': '50',
+				'popover': '60',
+				'tooltip': '70',
+				'toast': '80',
+				'max': '9999',
 			}
 		},
 	},

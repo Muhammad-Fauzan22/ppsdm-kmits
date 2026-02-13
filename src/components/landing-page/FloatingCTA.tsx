@@ -28,7 +28,7 @@ export default function FloatingCTA() {
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 100 }}
-                    className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2"
+                    className="fixed bottom-6 right-6 z-fixed flex flex-col items-end gap-2"
                 >
                     {/* Tooltip bubble */}
                     <div className="bg-white text-slate-900 px-3 py-1.5 rounded-lg shadow-lg text-xs font-bold mb-1 relative animate-bounce">
@@ -36,12 +36,13 @@ export default function FloatingCTA() {
                         <div className="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-white" />
                     </div>
 
-                    <Link href="/try-assessment">
-                        <button className="group flex items-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-3 rounded-full font-bold shadow-[0_4px_20px_rgba(245,158,11,0.4)] transition-all hover:scale-105 active:scale-95">
-                            <Sparkles className="w-5 h-5 fill-white" />
-                            <span>Mulai Asesmen</span>
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
+                    <Link
+                        href="/try-assessment"
+                        className="group flex items-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-3 rounded-full font-bold shadow-[0_4px_20px_rgba(245,158,11,0.4)] transition-all hover:scale-105 active:scale-95"
+                    >
+                        <Sparkles className="w-5 h-5 fill-white" />
+                        <span>Mulai Asesmen</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </motion.div>
             )}

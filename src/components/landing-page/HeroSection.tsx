@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { TrustBadges, InlineTrustIndicators } from './TrustBadges';
 import { UrgencyCountdown } from './UrgencyCountdown';
 
@@ -115,7 +116,7 @@ export default function HeroSection() {
                             transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
                         />
                         <span className="relative">Dapatkan Analisis Gratis Sekarang</span>
-                        <span className="relative material-symbols-outlined transition-transform group-hover:translate-x-1 text-lg">arrow_forward</span>
+                        <ArrowRight className="relative w-5 h-5 transition-transform group-hover:translate-x-1" />
                     </Link>
 
                     {/* Micro-copy below CTA - Risk Reversal */}

@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart2, Menu, X, Search, Bell, User, ChevronDown, Sparkles } from 'lucide-react';
+import { BarChart2, Menu, X, Search, Bell, User, ChevronDown, Sparkles, FlaskConical, Grid, School, Rocket, HelpCircle } from 'lucide-react';
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function Navbar() {
     }, [isSearchOpen]);
 
     return (
-        <header className="fixed top-0 z-[100] w-full border-b border-white/5 bg-its-dark/80 backdrop-blur-lg">
+        <header className="fixed top-0 z-fixed w-full border-b border-white/5 bg-its-dark/80 backdrop-blur-lg">
             <div className="flex h-20 items-center justify-between px-6 lg:px-12 max-w-7xl mx-auto">
                 {/* Logo */}
                 <div className="flex items-center gap-3">
@@ -91,24 +91,24 @@ export default function Navbar() {
                     </button>
 
                     {/* CTA Button with Sparkle Effect */}
-                    <Link href="/try-assessment">
-                        <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-brand-blue to-ml-cyan text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-blue/30 group"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Link
+                            href="/try-assessment"
+                            className="relative overflow-hidden bg-gradient-to-r from-brand-blue to-ml-cyan text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-blue/30 group inline-flex items-center gap-2"
                         >
-                            <span className="relative z-10 flex items-center gap-2">
-                                <Sparkles className="w-4 h-4" />
-                                Mulai Sekarang
-                            </span>
+                            <Sparkles className="w-4 h-4" />
+                            Mulai Sekarang
                             {/* Shimmer effect */}
                             <motion.div
                                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full"
                                 animate={{ translateX: ['−100%', '200%'] }}
                                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                             />
-                        </motion.button>
-                    </Link>
+                        </Link>
+                    </motion.div>
                 </div>
 
                 {/* Mobile Toggle */}
@@ -144,23 +144,23 @@ export default function Navbar() {
 
                         <nav className="flex flex-col p-6 gap-4">
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="#how-it-works">
-                                <span className="material-symbols-outlined text-brand-accent">science</span>
+                                <FlaskConical className="w-6 h-6 text-brand-accent" />
                                 Metodologi
                             </Link>
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="#dimensions">
-                                <span className="material-symbols-outlined text-brand-accent">grid_view</span>
+                                <Grid className="w-6 h-6 text-brand-accent" />
                                 9 Dimensi
                             </Link>
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="/campus">
-                                <span className="material-symbols-outlined text-brand-accent">school</span>
+                                <School className="w-6 h-6 text-brand-accent" />
                                 Campus Hub
                             </Link>
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="#demo">
-                                <span className="material-symbols-outlined text-brand-accent">rocket_launch</span>
+                                <Rocket className="w-6 h-6 text-brand-accent" />
                                 Mission Control
                             </Link>
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="#faq">
-                                <span className="material-symbols-outlined text-brand-accent">help</span>
+                                <HelpCircle className="w-6 h-6 text-brand-accent" />
                                 FAQ
                             </Link>
 
@@ -168,11 +168,13 @@ export default function Navbar() {
                             <div className="h-px bg-white/10 my-2" />
 
                             {/* Mobile CTA */}
-                            <Link href="/try-assessment" onClick={() => setIsMobileMenuOpen(false)}>
-                                <button className="w-full bg-gradient-to-r from-brand-blue to-ml-cyan text-white px-6 py-4 rounded-xl font-bold text-base transition-all shadow-lg shadow-brand-blue/30 active:scale-95 flex items-center justify-center gap-2">
-                                    <Sparkles className="w-5 h-5" />
-                                    Mulai Sekarang
-                                </button>
+                            <Link
+                                href="/try-assessment"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full bg-gradient-to-r from-brand-blue to-ml-cyan text-white px-6 py-4 rounded-xl font-bold text-base transition-all shadow-lg shadow-brand-blue/30 active:scale-95 flex items-center justify-center gap-2"
+                            >
+                                <Sparkles className="w-5 h-5" />
+                                Mulai Sekarang
                             </Link>
                         </nav>
                     </motion.div>

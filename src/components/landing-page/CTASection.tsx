@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Users, Star, Zap, Trophy, TrendingUp } from "lucide-react";
@@ -13,6 +14,7 @@ import confetti from 'canvas-confetti';
  */
 
 export function CTASection() {
+  const router = useRouter();
   const [isClicked, setIsClicked] = useState(false);
 
   const stats = [
@@ -35,7 +37,7 @@ export function CTASection() {
 
     // Navigate after animation
     setTimeout(() => {
-      window.location.href = '/assessment/start';
+      router.push('/assessment/start');
     }, 500);
   };
 

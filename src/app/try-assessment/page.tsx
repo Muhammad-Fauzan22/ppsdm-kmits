@@ -239,10 +239,11 @@ export default function TryAssessmentPage() {
                                 <p className="text-slate-300">
                                     Untuk melihat grafik analisis 9 dimensi lengkap dan rekomendasi karir:
                                 </p>
-                                <Link href="/auth/register?ref=assessment_result" className="block w-full">
-                                    <button className="w-full py-4 bg-gradient-to-r from-[#FF6B00] to-[#FF4081] text-white rounded-xl font-bold text-lg hover:shadow-[0_0_30px_rgba(255,107,0,0.4)] transition-shadow">
-                                        Buka Hasil Lengkap (Gratis)
-                                    </button>
+                                <Link 
+                                    href="/auth/register?ref=assessment_result" 
+                                    className="block w-full py-4 bg-gradient-to-r from-[#FF6B00] to-[#FF4081] text-white rounded-xl font-bold text-lg hover:shadow-[0_0_30px_rgba(255,107,0,0.4)] transition-shadow text-center"
+                                >
+                                    Buka Hasil Lengkap (Gratis)
                                 </Link>
                                 <Link href="/auth/login" className="block text-sm text-slate-500 hover:text-white transition-colors">
                                     Sudah punya akun? Masuk
