@@ -39,10 +39,30 @@ export class GoogleSheetsService {
       // Dynamic import to avoid webpack bundling issues
       const { google } = await import('googleapis');
 
-      const auth = new google.auth.GoogleAuth({
-        keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS || 'credentials.json',
-        scopes: ['https://www.googleapis.com/auth/spreadsheets']
-      });
+      let auth;
+
+      // Option 1: Base64-encoded JSON credentials (preferred for cloud deployments)
+      const credentialsJson = process.env.GOOGLE_SHEETS_CREDENTIALS_JSON;
+      if (credentialsJson) {
+        try {
+          const decoded = Buffer.from(credentialsJson, 'base64').toString('utf-8');
+          const credentials = JSON.parse(decoded);
+          auth = new google.auth.GoogleAuth({
+            credentials,
+            scopes: ['https://www.googleapis.com/auth/spreadsheets']
+          });
+        } catch (parseError) {
+          console.error('Failed to parse GOOGLE_SHEETS_CREDENTIALS_JSON, falling back to keyFile');
+        }
+      }
+
+      // Option 2: Key file path (local development)
+      if (!auth) {
+        auth = new google.auth.GoogleAuth({
+          keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS || 'credentials.json',
+          scopes: ['https://www.googleapis.com/auth/spreadsheets']
+        });
+      }
 
       this.sheets = google.sheets({ version: 'v4', auth });
     } catch (error) {

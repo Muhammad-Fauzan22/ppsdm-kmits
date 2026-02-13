@@ -2,9 +2,15 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { GoogleSheetsService } from '../src/lib/google-sheets/google-sheets.service';
-import { google } from 'googleapis';
 
-// Mock googleapis
+// Mock Redis functions used by the service
+vi.mock('../src/lib/redis', () => ({
+  getFromRedis: vi.fn().mockResolvedValue(null),
+  saveToRedis: vi.fn().mockResolvedValue(undefined),
+  deleteFromRedis: vi.fn().mockResolvedValue(undefined),
+}));
+
+// Mock googleapis with proper dynamic import support
 vi.mock('googleapis', () => ({
   google: {
     auth: {
@@ -30,23 +36,20 @@ describe('GoogleSheetsService', () => {
   let mockSheets: any;
 
   beforeEach(async () => {
+    // Reset the singleton between tests
+    (GoogleSheetsService as any).instance = null;
+
     // Reset environment
     process.env.GOOGLE_APPLICATION_CREDENTIALS = 'test-credentials.json';
 
-    // Get mock instance from the mocked module
+    // Import the mocked google to get the mock sheets instance
+    const { google } = await import('googleapis');
     mockSheets = google.sheets('v4');
 
-    // Create service instance
-    // We need to reset the singleton instance to ensure fresh initialization
-    // But instance is private static.
-    // However, if we just call getInstance(), it returns the instance.
-    // If we want to ensure it uses the NEW mock, we might need to reset the module registry or relying on vi.mock works.
-    // Since GoogleSheetsService imports googleapis dynamically, we hope vi.mock works for dynamic imports.
-    // To be safe, we can try to force re-import or just rely on the fact that 'google' is mocked globally.
+    // Create service instance - getInstance() will use the mocked google
     service = await GoogleSheetsService.getInstance();
 
-    // We need to inject the mockSheets into the service if possible, or ensure service uses the mocked google.
-    // Since service.sheets is private, we can't set it directly easily without casting.
+    // Inject mock sheets directly (since initialize() may set its own)
     (service as any).sheets = mockSheets;
   });
 

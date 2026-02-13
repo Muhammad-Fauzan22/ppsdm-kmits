@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Download, Printer, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface PreviewModalProps {
     isOpen: boolean;
@@ -76,7 +77,7 @@ export function PreviewModal({
                             transform: `scale(${zoom / 100})`,
                             padding: '20mm'
                         }}
-                        dangerouslySetInnerHTML={{ __html: htmlContent }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(htmlContent) }}
                     />
                 </div>
             </DialogContent>

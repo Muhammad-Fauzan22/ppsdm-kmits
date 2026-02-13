@@ -11,7 +11,7 @@ const nextConfig = {
 
   // Use standalone output for SSR support
   output: 'standalone',
-  
+
   // Disable font optimization to prevent manifest issues
   optimizeFonts: false,
   // Webpack configuration to handle Node.js modules and optimize bundle
@@ -132,9 +132,32 @@ const nextConfig = {
 
 
 
-  // Headers for static assets caching
+  // Headers for static assets caching and security
   async headers() {
     return [
+      // Security headers for all routes
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+        ],
+      },
+      // Immutable static assets
       {
         source: '/static/:path*',
         headers: [
@@ -144,12 +167,33 @@ const nextConfig = {
           },
         ],
       },
+      // Images with stale-while-revalidate
       {
         source: '/images/:path*',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+      // Next.js static chunks (immutable — hash in filename)
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // API responses — short cache with revalidation
+      {
+        source: '/api/sheets/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=600',
           },
         ],
       },

@@ -1,57 +1,152 @@
-# PPSDM KMITS: HOLISTIC STUDENT DEVELOPMENT ECOSYSTEM
-**Sistem Pengembangan Mahasiswa Holistik Berbasis Platform Terintegrasi**
+# PPSDM KMITS
+
+**Platform Pengembangan Sumber Daya Mahasiswa — Keluarga Mahasiswa ITS**
+
+A holistic 9-dimension student development platform for Teknik Mesin ITS, built with Next.js 14, TypeScript, Tailwind CSS, and Supabase.
 
 ---
 
-## 🏛️ FONDASI FILOSOFIS DAN VISI SISTEM
-**Paradigma Baru:** Dari "Kampus" Menjadi "Ekosistem Pengembangan".
-Platform ini mengubah paradigma pendidikan tinggi dari *knowledge transmission* menjadi *holistic development ecosystem* yang mengintegrasikan 9 dimensi perkembangan manusia dengan pendekatan berbasis data dan personalisasi.
+## Quick Start
 
-### Teori Integratif yang Mendasari:
-1.  **Whole Person Development Theory** (Chickering & Reisser)
-2.  **Positive Psychology PERMA Model** (Seligman)
-3.  **Integral Theory** (Ken Wilber) - 4 Kuadran perkembangan
-4.  **Self-Determination Theory** (Deci & Ryan) - *Autonomy, Competence, Relatedness*
-5.  **Ecosystem Theory** (Bronfenbrenner) - *Micro to Macro systems*
+```bash
+# Install dependencies
+npm install
 
----
+# Copy environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
 
-## 🧬 ARSITEKTUR SISTEM KOMPREHENSIF
+# Run development server
+npm run dev
 
-### CORE ARCHITECTURE: 9-DIMENSI DEVELOPMENT ENGINE
+# Run tests
+npm test
 
-#### LAYER 1: DATA FOUNDATION LAYER
-*   **Unified Student Profile (USP) Database**: Integrasi rekam akademik (SIAKAD) dan metrik pengembangan diri.
-*   **Knowledge Graph Engine**: 10,000+ competency nodes dan pemetaan relasi skill.
-*   **Privacy-Enabled Data Vault**: Keamanan dan privasi pemrosesan data (Pseudonymization).
-
-#### LAYER 2: DEVELOPMENT MODULES LAYER (9 Integrated Modules)
-1.  **Self-Management & Productivity** (Manajemen Diri)
-2.  **Intellectual & Skill Intelligence** (Kognitif & Teknik)
-3.  **Financial Intelligence** (Literasi Finansial)
-4.  **Physical Health & Vitality** (Kesehatan Fisik)
-5.  **Emotional & Social Intelligence** (Kecerdasan Emosional & Sosial)
-6.  **Mental Health & Psychology** (Kesehatan Mental)
-7.  **Character & Ethics** (Karakter & Integritas)
-8.  **Spiritual Development** (Spiritualitas & Makna Hidup)
-9.  **Environmental & Lifestyle Management** (Kesadaran Lingkungan)
-
-#### LAYER 3: PERSONALIZATION ENGINE
-*   **AI-Powered Recommender**: Sistem rekomendasi adaptif Vygotsky ZPD.
-*   **Adaptive Learning Pathways**: Perbaikan materi remedian otomatis (`ResultFeedbackCard`).
-*   **Predictive Growth Analytics**: Analisis dampak jangka panjang.
-
-#### LAYER 4: ECOSYSTEM INTEGRATION LAYER
-*   Integrasi Institusional (BEM, Himpunan, UKM).
-*   Jembatan Alumni Network & Mitra Industri.
+# Build for production
+npm run build
+```
 
 ---
 
-## 🚀 STATUS IMPLEMENTASI (PRODUCTION READY)
+## Project Structure
 
-Platform ini telah divalidasi secara ilmiah dan teknis:
-*   **Evidence-Based**: Menggunakan *Situational Judgment Test (SJT)* standar industri.
-*   **High Performance**: Dibangun dengan Next.js 16, Supabase, dan Optimized SQL Queries.
-*   **Secure**: Menerapkan RLS (Row Level Security) dan Sanitasi Data ketat.
+```
+ppsdm-kmits/
+├── src/
+│   ├── app/                    # Next.js App Router pages & API routes
+│   │   ├── (admin)/            # Admin dashboard pages
+│   │   ├── (auth)/             # Auth pages (login, register)
+│   │   ├── (public)/           # Public-facing pages
+│   │   ├── api/                # API routes
+│   │   │   ├── sheets/         # Google Sheets CRUD + webhook
+│   │   │   ├── auth/           # Authentication endpoints
+│   │   │   ├── admin/          # Admin-only endpoints
+│   │   │   └── webhooks/       # External webhooks
+│   │   └── dashboard/          # Student dashboard
+│   ├── components/             # Reusable React components
+│   │   ├── ui/                 # shadcn/ui base components
+│   │   ├── reports/            # Report generation & preview
+│   │   ├── visualizations/     # Charts, sunbursts, radar
+│   │   ├── lazy-components.tsx # Dynamic imports for code splitting
+│   │   └── ErrorBoundary.tsx   # Error boundary wrapper
+│   ├── lib/                    # Core libraries & utilities
+│   │   ├── google-sheets/      # Sheets service, types, API
+│   │   ├── sanitize.ts         # DOMPurify-based XSS prevention
+│   │   ├── admin-auth.ts       # Admin authentication utilities
+│   │   ├── redis-rate-limit.ts # Rate limiting with Redis fallback
+│   │   └── validators.ts       # Zod validation schemas
+│   ├── modules/                # Domain-driven modules
+│   │   └── assessment/         # Assessment bounded context
+│   │       └── domain/         # Entities, value objects, events
+│   ├── middleware.ts           # Edge middleware (rate limit, CSP)
+│   └── tests/                  # Test utilities & setup
+├── docs/                       # Documentation & templates
+├── public/                     # Static assets
+├── spreadsheet-template.gs     # Google Apps Script for Sheets
+├── next.config.mjs             # Next.js configuration
+├── vitest.config.ts            # Test configuration
+└── tailwind.config.ts          # Tailwind CSS configuration
+```
 
-*Antigravity Research Division - 2026*
+---
+
+## Key Technologies
+
+| Category | Technology |
+|----------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript 5 |
+| Styling | Tailwind CSS 3 |
+| UI Components | shadcn/ui + Radix UI |
+| Database | Supabase (PostgreSQL) |
+| Auth | Supabase Auth |
+| Data Source | Google Sheets API |
+| Testing | Vitest |
+| Error Tracking | Sentry |
+| Deployment | Vercel / Netlify |
+
+---
+
+## Environment Variables
+
+See `.env.example` for the full list. Key variables:
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role (server only) |
+| `GOOGLE_SHEET_ID` | Google Spreadsheet ID |
+| `GOOGLE_SHEETS_CREDENTIALS_JSON` | Base64-encoded service account JSON |
+| `WEBHOOK_SECRET` | HMAC secret for webhook authentication |
+| `CSRF_SECRET` | CSRF protection secret |
+| `JWT_SECRET` | JWT signing secret |
+
+---
+
+## Google Sheets Integration
+
+This platform uses Google Sheets as the single source of truth for dynamic data:
+
+1. **Setup**: Deploy `spreadsheet-template.gs` as an Apps Script
+2. **Auto-sync**: Data changes trigger webhooks → cache invalidation
+3. **Manual sync**: Use the custom menu in Google Sheets
+4. **API**: `/api/sheets/*` endpoints serve typed, cached data
+
+See [USER_GUIDE.md](USER_GUIDE.md) for non-technical instructions.
+
+---
+
+## Testing
+
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:coverage # Coverage report
+```
+
+Test files: `src/**/*.test.{ts,tsx}`
+
+---
+
+## Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for full instructions.
+
+---
+
+## Security
+
+- **Rate Limiting**: Redis-based with in-memory fallback
+- **XSS Prevention**: DOMPurify sanitization on all innerHTML
+- **CSP Headers**: Content Security Policy via middleware
+- **HMAC Webhooks**: SHA-256 signature verification with replay protection
+- **Admin Auth**: Role-based access control via Supabase
+
+See [SECURITY.md](SECURITY.md) for the security policy.
+
+---
+
+## License
+
+Private — Keluarga Mahasiswa ITS, Departemen Teknik Mesin.
