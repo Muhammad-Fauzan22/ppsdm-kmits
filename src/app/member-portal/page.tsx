@@ -3,18 +3,18 @@
 import React, { useState } from 'react';
 import { PersonalDashboard } from '@/components/member/PersonalDashboard';
 import { ActivityCalendar } from '@/components/member/ActivityCalendar';
-// import { TransparencyPortal } from '@/components/member/TransparencyPortal';
-// import { KnowledgeHub } from '@/components/member/KnowledgeHub';
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  FileText, 
+import { TransparencyPortal } from '@/components/member/TransparencyPortal';
+import { KnowledgeHub } from '@/components/member/KnowledgeHub';
+import {
+  LayoutDashboard,
+  Calendar,
+  FileText,
   BookOpen,
   User,
   LogOut
 } from 'lucide-react';
 
-type TabType = 'dashboard' | 'activities'; // | 'transparency' | 'knowledge';
+type TabType = 'dashboard' | 'activities' | 'transparency' | 'knowledge';
 
 export default function MemberPortalPage() {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -22,8 +22,8 @@ export default function MemberPortalPage() {
   const tabs = [
     { id: 'dashboard' as TabType, label: 'Dashboard', icon: LayoutDashboard },
     { id: 'activities' as TabType, label: 'Activities', icon: Calendar },
-    // { id: 'transparency' as TabType, label: 'Transparency', icon: FileText },
-    // { id: 'knowledge' as TabType, label: 'Knowledge Hub', icon: BookOpen },
+    { id: 'transparency' as TabType, label: 'Transparency', icon: FileText },
+    { id: 'knowledge' as TabType, label: 'Knowledge Hub', icon: BookOpen },
   ];
 
   return (
@@ -66,11 +66,10 @@ export default function MemberPortalPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
+                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
                       ? 'border-blue-600 text-blue-600 bg-blue-50/50'
                       : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   {tab.label}
@@ -85,8 +84,8 @@ export default function MemberPortalPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'dashboard' && <PersonalDashboard />}
         {activeTab === 'activities' && <ActivityCalendar />}
-        {/* {activeTab === 'transparency' && <TransparencyPortal />} */}
-        {/* {activeTab === 'knowledge' && <KnowledgeHub />} */}
+        {activeTab === 'transparency' && <TransparencyPortal />}
+        {activeTab === 'knowledge' && <KnowledgeHub />}
       </main>
     </div>
   );
