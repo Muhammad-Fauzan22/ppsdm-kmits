@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSocialStore } from '@/lib/stores/useSocialStore';
 import { Mic, Video, StopCircle, Play, MessageSquare, Award } from 'lucide-react';
-import { motion } from 'framer-motion';
+
 
 export default function CommunicationLab() {
     const { speakingLogs, logCommunicationSession } = useSocialStore();
@@ -53,7 +53,7 @@ export default function CommunicationLab() {
                 type: 'speech',
                 duration: timer,
                 score,
-                feedback: 'Good eye contact. Try to reduce filler words like &quot;um&quot;.',
+                feedback: 'Good eye contact. Try to reduce filler words like "um".',
                 date: new Date().toISOString()
             });
         }
@@ -114,7 +114,7 @@ export default function CommunicationLab() {
                         {speakingLogs.length > 0 ? (
                             <div className="space-y-3">
                                 <div className="text-3xl font-bold text-purple-700">{speakingLogs[0].score}/100</div>
-                                <p className="text-sm text-gray-600 italic">&quot;{speakingLogs[0].feedback}&quot;</p>
+                                <p className="text-sm text-gray-600 italic">"{speakingLogs[0].feedback}"</p>
                                 <div className="text-xs text-gray-400 mt-2">
                                     Duration: {formatTime(speakingLogs[0].duration)} • {new Date(speakingLogs[0].date).toLocaleDateString()}
                                 </div>

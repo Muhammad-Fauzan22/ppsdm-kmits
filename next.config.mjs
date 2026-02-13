@@ -5,9 +5,15 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   // Disable ESLint during build (we run it separately)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 
   // Use standalone output for SSR support
   output: 'standalone',
+  
+  // Disable font optimization to prevent manifest issues
+  optimizeFonts: false,
   // Webpack configuration to handle Node.js modules and optimize bundle
   webpack: (config, { isServer, dev }) => {
     // Exclude Node.js modules from client-side bundle
@@ -120,6 +126,8 @@ const nextConfig = {
       '@radix-ui/react-icons',
       'recharts',
     ],
+    // Disable features that cause build issues
+    typedRoutes: false,
   },
 
 

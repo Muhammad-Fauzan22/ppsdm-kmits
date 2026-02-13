@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSpiritualStore } from '@/lib/stores/useSpiritualStore';
-import { BookOpen, Clock, Play, Square, Loader } from 'lucide-react';
+import { BookOpen, Play, Square, Loader } from 'lucide-react';
+
 import { motion } from 'framer-motion';
 
 const REFLECTION_PROMPTS = [
@@ -72,7 +73,7 @@ export default function SpiritualPractice() {
                 <div className="flex-1 flex flex-col gap-4">
                     <div className="bg-violet-50 p-4 rounded-xl border border-violet-100">
                         <div className="text-xs font-bold text-violet-400 uppercase mb-2">Daily Prompt</div>
-                        <h3 className="text-lg font-serif text-violet-900 italic">&quot;{prompt}&quot;</h3>
+                        <h3 className="text-lg font-serif text-violet-900 italic">"{prompt}"</h3>
                         <button
                             onClick={() => setPrompt(REFLECTION_PROMPTS[Math.floor(Math.random() * REFLECTION_PROMPTS.length)])}
                             className="text-xs text-violet-500 underline mt-2"
@@ -141,7 +142,7 @@ export default function SpiritualPractice() {
                                 <Square className="w-4 h-4" /> Stop
                             </button>
                         )}
-                        <p className="mt-8 text-sm text-gray-400 italic">&quot;Silence is a source of great strength.&quot; - Lao Tzu</p>
+                        <p className="mt-8 text-sm text-gray-400 italic">"Silence is a source of great strength." - Lao Tzu</p>
                     </div>
                 </div>
             )}
