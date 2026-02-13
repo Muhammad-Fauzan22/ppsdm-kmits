@@ -130,6 +130,14 @@
     {
       "path": "/api/cron/cleanup-cache",
       "schedule": "0 3 * * 0"
+    },
+    {
+      "path": "/api/cron/sync-campus",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/scrape-knowledge",
+      "schedule": "0 */6 * * *"
     }
   ],
   "functions": {

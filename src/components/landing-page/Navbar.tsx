@@ -37,6 +37,7 @@ export default function Navbar() {
                 <nav className="hidden lg:flex items-center gap-8">
                     <Link className="text-sm font-medium hover:text-brand-accent transition-colors" href="#how-it-works">Metodologi</Link>
                     <Link className="text-sm font-medium hover:text-brand-accent transition-colors" href="#dimensions">9 Dimensi</Link>
+                    <Link className="text-sm font-medium hover:text-brand-accent transition-colors" href="/campus">Campus Hub</Link>
                     <Link className="text-sm font-medium hover:text-brand-accent transition-colors" href="#demo">Mission Control</Link>
                     <Link className="text-sm font-medium hover:text-brand-accent transition-colors" href="#faq">FAQ</Link>
                 </nav>
@@ -149,6 +150,10 @@ export default function Navbar() {
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="#dimensions">
                                 <span className="material-symbols-outlined text-brand-accent">grid_view</span>
                                 9 Dimensi
+                            </Link>
+                            <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="/campus">
+                                <span className="material-symbols-outlined text-brand-accent">school</span>
+                                Campus Hub
                             </Link>
                             <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-lg font-medium text-white hover:text-brand-accent transition-colors py-2" href="#demo">
                                 <span className="material-symbols-outlined text-brand-accent">rocket_launch</span>
