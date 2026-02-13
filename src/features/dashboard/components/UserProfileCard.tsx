@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Edit2, Sparkles, Trophy, Star } from "lucide-react";
+import { Edit2, Sparkles, Trophy } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

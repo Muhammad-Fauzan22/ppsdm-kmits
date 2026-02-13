@@ -1,25 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
+
 import {
-    BarChart3,
-    PieChart,
-    LineChart,
-    TrendingUp,
     Users,
     Download,
     Calendar,
     ArrowUpRight,
     Search,
-    Bell,
-    Settings,
-    HelpCircle,
     ChevronDown,
-    Filter
+    Filter,
+    Award,
+    CheckCircle,
+    Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ASSETS } from "@/config/assets";
+
 
 // --- MOCK DATA ---
 const TOP_COURSES = [
@@ -233,9 +231,17 @@ export default function AnalyticsPage() {
 
 // --- SUB COMPONENTS ---
 
-import { Award, CheckCircle, Clock } from "lucide-react";
+interface AnalyticsCardProps {
+    title: string;
+    value: string;
+    change: string;
+    trend: 'up' | 'down';
+    icon: React.ComponentType<{ className?: string }>;
+    chartColor: string;
+}
 
-function AnalyticsCard({ title, value, change, trend, icon: Icon, chartColor }: any) {
+function AnalyticsCard({ title, value, change, trend, icon: Icon, chartColor }: AnalyticsCardProps) {
+
     return (
         <div className="bg-white dark:bg-[#1c1f27] border border-gray-200 dark:border-[#282e39] rounded-xl p-5 shadow-sm hover:border-primary/50 transition-all cursor-default">
             <div className="flex justify-between items-start mb-4">
@@ -260,7 +266,14 @@ function AnalyticsCard({ title, value, change, trend, icon: Icon, chartColor }: 
     )
 }
 
-function LegendItem({ color, label, value }: any) {
+interface LegendItemProps {
+    color: string;
+    label: string;
+    value: string;
+}
+
+function LegendItem({ color, label, value }: LegendItemProps) {
+
     return (
         <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
