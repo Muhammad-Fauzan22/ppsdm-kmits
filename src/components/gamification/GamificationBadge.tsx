@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+
 import { cn } from '@/lib/utils';
+import { Lock, CheckCircle, Trophy } from 'lucide-react';
 
 /**
  * GamificationBadge - Mobile Legends inspired achievement badge
@@ -183,7 +185,7 @@ export function GamificationBadge({
                 {/* Lock Icon (for locked badges) */}
                 {!unlocked && (
                     <div className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-xs text-slate-400">lock</span>
+                        <Lock className="w-3 h-3 text-slate-400" />
                     </div>
                 )}
             </motion.div>
@@ -369,7 +371,7 @@ export function QuestCard({
                             {title}
                         </h4>
                         {completed && (
-                            <span className="material-symbols-outlined text-[#4CAF50] text-lg">check_circle</span>
+                            <CheckCircle className="w-5 h-5 text-[#4CAF50]" />
                         )}
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{description}</p>
@@ -393,7 +395,7 @@ export function QuestCard({
                     {/* Completed Reward */}
                     {completed && (
                         <div className="mt-2 flex items-center gap-1 text-xs text-[#FFD700]">
-                            <span className="material-symbols-outlined text-sm">emoji_events</span>
+                            <Trophy className="w-4 h-4" />
                             <span>{reward} Claimed!</span>
                         </div>
                     )}

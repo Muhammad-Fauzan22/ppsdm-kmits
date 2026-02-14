@@ -2,27 +2,28 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Compass, BrainCircuit, Frown, ShieldCheck } from 'lucide-react';
 
 const painPoints = [
   {
     title: "Disorientasi Akademik",
     description: "Hanya 18% mahasiswa merasa jurusan mereka sesuai dengan passion. Kebanyakan 'hanyut' tanpa arah jelas.",
     stat: "82% Mahasiswa Bingung",
-    icon: "explore_off",
+    Icon: Compass,
     color: "from-red-500 to-rose-600"
   },
   {
     title: "Kesenjangan Soft Skill",
     description: "IPK 4.0 tidak menjamin karir. Industri butuh Leadership & Emotional Intelligence yang jarang diajarkan di kelas.",
     stat: "Gap Kompetensi",
-    icon: "psychology_alt",
+    Icon: BrainCircuit,
     color: "from-amber-500 to-orange-600"
   },
   {
     title: "Burnout & Stress",
     description: "Tekanan akademik tinggi tanpa manajemen mental yang baik. Kesehatan mental menjadi isu utama mahasiswa teknik.",
     stat: "High Stress Level",
-    icon: "sentiment_stressed",
+    Icon: Frown,
     color: "from-purple-500 to-fuchsia-600"
   }
 ];
@@ -79,7 +80,7 @@ export default function ProblemSolution() {
 
               <div className="relative z-10">
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${point.color} flex items-center justify-center mb-4`}>
-                  <span className="material-symbols-outlined text-white text-2xl">{point.icon}</span>
+                  <point.Icon className="text-white w-6 h-6" />
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-3">{point.title}</h3>
@@ -101,7 +102,7 @@ export default function ProblemSolution() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/20 mb-6"
           >
-            <span className="material-symbols-outlined text-blue-400">verified</span>
+            <ShieldCheck className="text-blue-400 w-5 h-5" />
             <span className="text-blue-400 font-semibold">PPSDM KM ITS Hadir Sebagai Solusi</span>
           </motion.div>
           <motion.p

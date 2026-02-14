@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Check } from 'lucide-react';
 
 export default function GrowthSection() {
     return (
@@ -21,7 +22,7 @@ export default function GrowthSection() {
                         <div className="flex flex-col gap-4">
                             <div className="flex items-start gap-4">
                                 <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
-                                    <span className="material-symbols-outlined text-sm font-bold">check</span>
+                                    <Check className="w-4 h-4 font-bold" />
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-900 dark:text-white font-display">Real-time Analytics</h4>
@@ -30,7 +31,7 @@ export default function GrowthSection() {
                             </div>
                             <div className="flex items-start gap-4">
                                 <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
-                                    <span className="material-symbols-outlined text-sm font-bold">check</span>
+                                    <Check className="w-4 h-4 font-bold" />
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-slate-900 dark:text-white font-display">Personalized Recommendations</h4>

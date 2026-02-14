@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Rocket } from 'lucide-react';
+import { Rocket, FileQuestion } from 'lucide-react';
 
 export default function MissionControlDemo() {
     return (
@@ -24,7 +24,7 @@ export default function MissionControlDemo() {
                         <div className="space-y-6">
                             <div className="glass-card p-6 rounded-2xl border-brand-blue/20">
                                 <p className="text-brand-accent text-xs font-bold mb-4 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-sm">quiz</span>
+                                    <FileQuestion className="w-4 h-4" />
                                     MINI ASSESSMENT PREVIEW
                                 </p>
                                 <div className="space-y-4">

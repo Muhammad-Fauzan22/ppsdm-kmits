@@ -138,65 +138,9 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Material Symbols Outlined - Load asynchronously */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-        />
 
-        <style dangerouslySetInnerHTML={{
-          __html: `
-          /* Fallback for Material Symbols while loading */
-          @font-face {
-            font-family: 'Material Symbols Outlined';
-            font-style: normal;
-            font-weight: 100 700;
-            font-display: swap;
-            src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v192/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA.woff2) format('woff2');
-          }
-          
-          .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined', 'Material Icons', sans-serif;
-            font-weight: normal;
-            font-style: normal;
-            font-size: 24px;
-            line-height: 1;
-            letter-spacing: normal;
-            text-transform: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            word-wrap: normal;
-            direction: ltr;
-            -webkit-font-feature-settings: 'liga';
-            -webkit-font-smoothing: antialiased;
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            width: 24px;
-            height: 24px;
-            overflow: hidden;
-          }
-          
-          /* Loading state - show skeleton */
-          .material-symbols-outlined:empty,
-          .material-symbols-outlined[data-loading="true"] {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading-shimmer 1.5s infinite;
-            border-radius: 4px;
-          }
-          
-          @keyframes loading-shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-          }
-          
-          /* Ensure icons are visible once loaded */
-          .material-symbols-loaded .material-symbols-outlined {
-            background: none;
-            animation: none;
-          }
-        `}} />
+
+
       </head>
       <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">
         {/* Skip to main content link for accessibility */}

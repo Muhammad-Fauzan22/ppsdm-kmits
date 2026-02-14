@@ -2,13 +2,23 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import {
+    ScanText,
+    Network,
+    Headphones,
+    Gamepad2,
+    FileBox,
+    CloudUpload,
+    BarChart3,
+    Bot
+} from 'lucide-react';
 
 const layers = [
     {
         id: 1,
         title: "Core Extraction & Validation",
         subtitle: "OCR Extract → Validate Confidence (≥5/10)",
-        icon: "document_scanner",
+        Icon: ScanText,
         color: "text-blue-400",
         border: "border-blue-500/30",
         bg: "bg-blue-500/10",
@@ -18,7 +28,7 @@ const layers = [
         id: 2,
         title: "Parallel Analysis (3 AI)",
         subtitle: "Immersive Detection + Web Intelligence + Synthesis",
-        icon: "hub",
+        Icon: Network,
         color: "text-cyan-400",
         border: "border-cyan-500/30",
         bg: "bg-cyan-500/10",
@@ -28,7 +38,7 @@ const layers = [
         id: 3,
         title: "Audio Learning",
         subtitle: "Podcast Scripts + Microlearning + Flashcards",
-        icon: "headphones",
+        Icon: Headphones,
         color: "text-teal-400",
         border: "border-teal-500/30",
         bg: "bg-teal-500/10",
@@ -38,7 +48,7 @@ const layers = [
         id: 4,
         title: "Gamification Engine",
         subtitle: "Badges + Quests + Points System",
-        icon: "sports_esports",
+        Icon: Gamepad2,
         color: "text-purple-400",
         border: "border-purple-500/30",
         bg: "bg-purple-500/10",
@@ -48,7 +58,7 @@ const layers = [
         id: 5,
         title: "Output Generation",
         subtitle: "7 Standardized Output Files",
-        icon: "output",
+        Icon: FileBox,
         color: "text-orange-400",
         border: "border-orange-500/30",
         bg: "bg-orange-500/10",
@@ -58,7 +68,7 @@ const layers = [
         id: 6,
         title: "Storage & Distribution",
         subtitle: "Supabase + Google Drive Integration",
-        icon: "cloud_upload",
+        Icon: CloudUpload,
         color: "text-indigo-400",
         border: "border-indigo-500/30",
         bg: "bg-indigo-500/10",
@@ -68,7 +78,7 @@ const layers = [
         id: 7,
         title: "Notifications & Analytics",
         subtitle: "Dashboard Update + Real-time Logs",
-        icon: "analytics",
+        Icon: BarChart3,
         color: "text-green-400",
         border: "border-green-500/30",
         bg: "bg-green-500/10",
@@ -91,7 +101,7 @@ export default function PipelineShowcase() {
                         transition={{ duration: 0.5 }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary mb-4"
                     >
-                        <span className="material-symbols-outlined text-sm">settings_suggest</span>
+                        <Bot className="w-4 h-4" />
                         <span className="text-sm font-semibold tracking-wide uppercase">AI-Powered Transformation</span>
                     </motion.div>
 
@@ -133,7 +143,7 @@ export default function PipelineShowcase() {
                                     <div className={`glass-card p-6 md:p-8 rounded-2xl border ${layer.border} hover:bg-white/5 transition-all duration-300 group`}>
                                         <div className="flex items-start justify-between mb-4">
                                             <div className={`p-3 rounded-xl ${layer.bg} ${layer.color}`}>
-                                                <span className="material-symbols-outlined text-2xl">{layer.icon}</span>
+                                                <layer.Icon className="w-6 h-6" />
                                             </div>
                                             <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2 py-1 rounded">
                                                 LAYER {layer.id}

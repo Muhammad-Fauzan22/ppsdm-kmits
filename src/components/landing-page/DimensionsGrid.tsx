@@ -13,7 +13,9 @@ import {
     Sparkles,
     Shield,
     Flower2,
-    Leaf
+    Leaf,
+    ArrowRight,
+    ShieldCheck
 } from 'lucide-react';
 
 /**
@@ -238,7 +240,7 @@ function DimensionCard({ dim, index }: { dim: Dimension; index: number }) {
 
                         {/* Validation Badge */}
                         <div className="flex items-center gap-2 text-xs text-green-400 mb-3">
-                            <span className="material-symbols-outlined text-sm">verified_user</span>
+                            <ShieldCheck className="w-4 h-4" />
                             <span>{dim.validation}</span>
                         </div>
 
@@ -273,7 +275,7 @@ function DimensionCard({ dim, index }: { dim: Dimension; index: number }) {
                         {/* CTA */}
                         <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-slate-400 group-hover:text-blue-400 transition-colors">
                             <span>Pelajari Detil</span>
-                            <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
                 </motion.div>

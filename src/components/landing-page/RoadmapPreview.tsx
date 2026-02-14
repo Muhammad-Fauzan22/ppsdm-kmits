@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { CheckCircle, Lock } from 'lucide-react';
 
 const roadmapItems = [
     { semester: "Semester 1", focus: "Adaptasi & Self-Discovery", status: "completed" as const },
@@ -103,10 +104,10 @@ export default function RoadmapPreview() {
                                         viewport={{ once: true }}
                                         transition={{ delay: index * 0.1 }}
                                         className={`p-4 rounded-xl border transition-all cursor-pointer ${item.status === 'completed'
-                                                ? 'bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/15'
-                                                : item.status === 'current'
-                                                    ? 'bg-white/5 border-white/20 hover:bg-white/10'
-                                                    : 'opacity-50 border-slate-800 grayscale'
+                                            ? 'bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/15'
+                                            : item.status === 'current'
+                                                ? 'bg-white/5 border-white/20 hover:bg-white/10'
+                                                : 'opacity-50 border-slate-800 grayscale'
                                             }`}
                                     >
                                         <div className="flex justify-between items-center mb-1">
@@ -115,10 +116,10 @@ export default function RoadmapPreview() {
                                                 {item.semester}
                                             </span>
                                             {item.status === 'completed' && (
-                                                <span className="material-symbols-outlined text-blue-400 text-base">check_circle</span>
+                                                <CheckCircle className="text-blue-400 w-4 h-4" />
                                             )}
                                             {item.status === 'locked' && (
-                                                <span className="material-symbols-outlined text-slate-600 text-base">lock</span>
+                                                <Lock className="text-slate-600 w-4 h-4" />
                                             )}
                                         </div>
                                         <h4 className="text-white font-semibold">{item.focus}</h4>

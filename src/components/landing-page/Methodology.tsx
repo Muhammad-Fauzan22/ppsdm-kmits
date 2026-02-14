@@ -2,26 +2,27 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Brain, Map, Users, BadgeCheck } from 'lucide-react';
 
 export default function Methodology() {
     const steps = [
         {
-            icon: "psychology",
+            Icon: Brain,
             title: "1. Assessment",
             desc: "Uji 9 dimensi kompetensi dasar Anda dengan AI-driven testing."
         },
         {
-            icon: "map",
+            Icon: Map,
             title: "2. Roadmap",
             desc: "Dapatkan rencana belajar personal sesuai minat dan gap kompetensi."
         },
         {
-            icon: "groups_3",
+            Icon: Users,
             title: "3. Mentorship",
             desc: "Bimbingan langsung dari alumni dan profesional industri."
         },
         {
-            icon: "verified",
+            Icon: BadgeCheck,
             title: "4. Portfolio",
             desc: "Klaim sertifikat dan hasilkan portofolio yang divalidasi ITS."
         }
@@ -54,7 +55,7 @@ export default function Methodology() {
                             transition={{ duration: 0.5, delay: index * 0.2 }}
                         >
                             <div className="w-24 h-24 rounded-3xl glass-card flex items-center justify-center mb-6 group-hover:bg-brand-blue/20 transition-all duration-500 border-brand-blue/30 group-hover:scale-110 shadow-lg group-hover:shadow-brand-blue/20">
-                                <span className="material-symbols-outlined text-4xl text-brand-accent">{step.icon}</span>
+                                <step.Icon className="text-4xl text-brand-accent w-10 h-10" />
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
                             <p className="text-sm text-slate-500 max-w-[200px]">{step.desc}</p>
