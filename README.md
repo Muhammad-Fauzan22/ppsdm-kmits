@@ -173,4 +173,7 @@ See [SECURITY.md](SECURITY.md) for the security policy.
 
 ## License
 
-Private — Keluarga Mahasiswa ITS, Departemen Teknik Mesin.
+
+---
+
+**Last Updated:** 2026-02-14
