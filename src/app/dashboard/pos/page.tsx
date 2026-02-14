@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Icon } from "@/components/ui/Icon";
 
 export default function PersonalOSPage() {
     return (
@@ -43,7 +44,7 @@ export default function PersonalOSPage() {
                             <div className="flex justify-between items-start mb-6 z-10">
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className="material-symbols-outlined text-blue-500 text-xl">radar</span>
+                                        <Icon name="Target" className="text-blue-500 text-xl" />
                                         <h3 className="text-white text-lg font-bold font-grotesk">Holistic Development Radar</h3>
                                     </div>
                                     <p className="text-slate-400 text-sm">9-Axis Assessment: Current vs Target Goal</p>
@@ -103,7 +104,7 @@ export default function PersonalOSPage() {
                                     <div className="mt-4 pt-4 border-t border-slate-800">
                                         <p className="text-xs text-slate-400 mb-2">Focus Area:</p>
                                         <div className="flex items-center gap-2 text-white">
-                                            <span className="material-symbols-outlined text-yellow-500 text-sm">trending_up</span>
+                                            <Icon name="TrendingUp" className="text-yellow-500 text-sm" />
                                             <span className="font-bold">Tech Competency</span>
                                         </div>
                                         <div className="h-1.5 w-full bg-slate-800 rounded-full mt-2 overflow-hidden">
@@ -124,12 +125,12 @@ export default function PersonalOSPage() {
                             <div className="flex justify-between items-center mb-6">
                                 <div className="flex items-center gap-2">
                                     <div className="size-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-600/20">
-                                        <span className="material-symbols-outlined text-white text-sm">smart_toy</span>
+                                        <Icon name="Bot" className="text-white text-sm" />
                                     </div>
                                     <h3 className="text-white text-lg font-bold font-grotesk">Next Action AI</h3>
                                 </div>
                                 <button className="text-slate-400 hover:text-white transition-colors">
-                                    <span className="material-symbols-outlined">more_horiz</span>
+                                    <Icon name="MoreHorizontal" />
                                 </button>
                             </div>
                             <div className="flex-1 flex flex-col gap-3 overflow-y-auto pr-1">
@@ -209,7 +210,7 @@ export default function PersonalOSPage() {
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-slate-400">timer</span>
+                                    <Icon name="Timer" className="text-slate-400" />
                                     <h3 className="text-white text-lg font-bold font-grotesk">Productivity Hub</h3>
                                 </div>
                                 <div className="flex gap-4 text-sm text-slate-400">
@@ -265,10 +266,10 @@ export default function PersonalOSPage() {
                                     </div>
                                     <div className="flex gap-2 w-full">
                                         <button className="flex-1 bg-blue-600 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1 transition-colors">
-                                            <span className="material-symbols-outlined text-sm">play_arrow</span> Start
+                                            <Icon name="Play" size="sm" /> Start
                                         </button>
                                         <button className="size-9 border border-white/10 hover:bg-white/5 text-slate-400 rounded-lg flex items-center justify-center transition-colors">
-                                            <span className="material-symbols-outlined text-sm">settings</span>
+                                            <Icon name="Settings" size="sm" />
                                         </button>
                                     </div>
                                 </div>
@@ -288,7 +289,7 @@ export default function PersonalOSPage() {
                                     className="bg-white/5 hover:bg-blue-600/20 hover:border-blue-600/50 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="View Transcripts"
                                 >
-                                    <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-blue-600 transition-colors">article</span>
+                                    <Icon name="FileText" className="text-3xl text-slate-400 group-hover:text-blue-600 transition-colors" />
                                     <span className="text-sm font-medium text-white">Transcripts</span>
                                 </Link>
                                 <Link
@@ -296,7 +297,7 @@ export default function PersonalOSPage() {
                                     className="bg-white/5 hover:bg-blue-600/20 hover:border-blue-600/50 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="View Schedule"
                                 >
-                                    <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-yellow-500 transition-colors">calendar_month</span>
+                                    <Icon name="Calendar" className="text-3xl text-slate-400 group-hover:text-yellow-500 transition-colors" />
                                     <span className="text-sm font-medium text-white">Schedule</span>
                                 </Link>
                                 <Link
@@ -304,7 +305,7 @@ export default function PersonalOSPage() {
                                     className="bg-white/5 hover:bg-blue-600/20 hover:border-blue-600/50 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="Open Library"
                                 >
-                                    <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-blue-400 transition-colors">local_library</span>
+                                    <Icon name="Library" className="text-3xl text-slate-400 group-hover:text-blue-400 transition-colors" />
                                     <span className="text-sm font-medium text-white">Library</span>
                                 </Link>
                                 <button
@@ -312,7 +313,7 @@ export default function PersonalOSPage() {
                                     className="bg-white/5 hover:bg-blue-600/20 hover:border-blue-600/50 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="View Tuition"
                                 >
-                                    <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-green-400 transition-colors">attach_money</span>
+                                    <Icon name="DollarSign" className="text-3xl text-slate-400 group-hover:text-green-400 transition-colors" />
                                     <span className="text-sm font-medium text-white">Tuition</span>
                                 </button>
                                 <Link
@@ -320,7 +321,7 @@ export default function PersonalOSPage() {
                                     className="bg-white/5 hover:bg-blue-600/20 hover:border-blue-600/50 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all min-h-[100px]"
                                     aria-label="Go to Forum"
                                 >
-                                    <span className="material-symbols-outlined text-3xl text-slate-400 group-hover:text-purple-400 transition-colors">forum</span>
+                                    <Icon name="MessageSquare" className="text-3xl text-slate-400 group-hover:text-purple-400 transition-colors" />
                                     <span className="text-sm font-medium text-white">Forum</span>
                                 </Link>
                                 <button
@@ -328,7 +329,7 @@ export default function PersonalOSPage() {
                                     className="bg-transparent border-2 border-dashed border-slate-800 hover:border-slate-400 rounded-xl p-4 flex flex-col items-center justify-center gap-2 group transition-all text-slate-400 hover:text-white min-h-[100px]"
                                     aria-label="Add New Widget"
                                 >
-                                    <span className="material-symbols-outlined text-3xl">add</span>
+                                    <Icon name="Plus" className="text-3xl" />
                                     <span className="text-sm font-medium">Add Widget</span>
                                 </button>
                             </div>

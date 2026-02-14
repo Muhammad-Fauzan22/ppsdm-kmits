@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip, Cell } from "recharts";
+import { Icon } from "@/components/ui/Icon";
 
 export default function CohortAnalytics() {
 
@@ -48,10 +49,10 @@ export default function CohortAnalytics() {
                 </div>
                 <div className="flex gap-4">
                     <button className="bg-[#1C2028] text-gray-300 border border-[#2D303E] px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-[#252A36]">
-                        <span className="material-symbols-outlined text-sm">calendar_month</span> Sep 2023 - Dec 2023
+                        <Icon name="Calendar" size="sm" /> Sep 2023 - Dec 2023
                     </button>
                     <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors">
-                        <span className="material-symbols-outlined text-sm">print</span> Print Report
+                        <Icon name="Printer" size="sm" /> Print Report
                     </button>
                 </div>
             </div>

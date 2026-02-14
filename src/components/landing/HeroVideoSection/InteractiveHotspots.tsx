@@ -5,6 +5,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Plus, X, Brain } from "lucide-react";
 
 // 9 Dimensions data with positions for each narrative phase
 export interface Dimension {
@@ -265,7 +266,7 @@ const HotspotModal: React.FC<HotspotModalProps> = ({
             onClick={onClose}
             className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
           />
-          
+
           {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -280,22 +281,20 @@ const HotspotModal: React.FC<HotspotModalProps> = ({
               overflowY: "auto",
             }}
           >
-            <div 
+            <div
               className="rounded-2xl shadow-2xl overflow-hidden"
               style={{ background: "linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%)" }}
             >
               {/* Header */}
-              <div 
+              <div
                 className="px-5 py-4 flex items-center gap-3"
                 style={{ borderBottom: `2px solid ${dimension.color}40` }}
               >
-                <div 
+                <div
                   className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: `${dimension.color}30` }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: dimension.color }}>
-                    psychology
-                  </span>
+                  <Brain style={{ color: dimension.color }} className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white">{dimension.name}</h3>
@@ -305,7 +304,7 @@ const HotspotModal: React.FC<HotspotModalProps> = ({
                   onClick={onClose}
                   className="ml-auto text-slate-400 hover:text-white transition-colors"
                 >
-                  <span className="material-symbols-outlined">close</span>
+                  <X className="w-6 h-6" />
                 </button>
               </div>
 
@@ -313,7 +312,7 @@ const HotspotModal: React.FC<HotspotModalProps> = ({
               <div className="px-5 py-4 bg-white/5">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-400">Key Metric</span>
-                  <span 
+                  <span
                     className="text-2xl font-bold"
                     style={{ color: dimension.color }}
                   >
@@ -397,7 +396,7 @@ export function InteractiveHotspots({
   );
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="absolute inset-0 z-20 pointer-events-none"
     >
@@ -419,7 +418,7 @@ export function InteractiveHotspots({
               transform: "translate(-50%, -50%)",
             }}
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ 
+            animate={{
               scale: isHovered || isSelected ? 1.3 : 1,
               opacity: 1,
             }}
@@ -439,7 +438,7 @@ export function InteractiveHotspots({
             {/* Hotspot core */}
             <motion.button
               className="relative w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center shadow-lg"
-              style={{ 
+              style={{
                 backgroundColor: dimension.color,
                 boxShadow: `0 0 20px ${dimension.color}60`,
               }}
@@ -449,9 +448,7 @@ export function InteractiveHotspots({
               onMouseLeave={() => handleHotspotHover(null)}
               onClick={(e) => handleHotspotClick(dimension, e)}
             >
-              <span className="material-symbols-outlined text-white text-xs md:text-sm">
-                add
-              </span>
+              <Plus className="text-white w-3 h-3 md:w-3.5 md:h-3.5" />
 
               {/* Tooltip on hover */}
               <AnimatePresence>
@@ -462,16 +459,16 @@ export function InteractiveHotspots({
                     exit={{ opacity: 0, y: 10, scale: 0.9 }}
                     className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap"
                   >
-                    <div 
+                    <div
                       className="px-3 py-2 rounded-xl shadow-xl"
-                      style={{ 
+                      style={{
                         background: "rgba(15, 20, 25, 0.95)",
                         backdropFilter: "blur(10px)",
                         border: `1px solid ${dimension.color}40`,
                       }}
                     >
                       <p className="text-xs font-semibold text-white">{dimension.name}</p>
-                      <p 
+                      <p
                         className="text-xs mt-0.5"
                         style={{ color: dimension.color }}
                       >
@@ -479,7 +476,7 @@ export function InteractiveHotspots({
                       </p>
                     </div>
                     {/* Arrow */}
-                    <div 
+                    <div
                       className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent"
                       style={{ borderTopColor: "rgba(15, 20, 25, 0.95)" }}
                     />

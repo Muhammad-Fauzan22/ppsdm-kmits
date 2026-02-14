@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Icon } from "@/components/ui/Icon";
 
 export default function OrchestratorPage() {
     return (
@@ -10,7 +11,7 @@ export default function OrchestratorPage() {
                 <div className="flex items-center gap-8">
                     <div className="flex items-center gap-3 text-white">
                         <div className="size-8 flex items-center justify-center bg-[#135bec] rounded-lg text-white">
-                            <span className="material-symbols-outlined text-[20px]">hub</span>
+                            <Icon name="Waypoints" className="text-[20px]" />
                         </div>
                         <div>
                             <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM Orchestrator</h2>
@@ -20,7 +21,7 @@ export default function OrchestratorPage() {
                     <label className="flex flex-col min-w-40 !h-10 w-96 hidden md:flex">
                         <div className="flex w-full flex-1 items-stretch rounded-lg h-full border border-[#282e39] bg-[#1c1f27] overflow-hidden group focus-within:border-[#135bec]/50 transition-colors">
                             <div className="text-[#9da6b9] flex items-center justify-center pl-3">
-                                <span className="material-symbols-outlined text-[20px]">search</span>
+                                <Icon name="Search" className="text-[20px]" />
                             </div>
                             <input className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-transparent focus:border-none h-full placeholder:text-[#9da6b9] px-3 text-sm font-normal leading-normal" placeholder="Search pipelines, models, or logs..." defaultValue="" />
                             <div className="flex items-center pr-2">
@@ -38,7 +39,7 @@ export default function OrchestratorPage() {
                     <div className="h-6 w-px bg-[#282e39] mx-2 hidden lg:block"></div>
                     <div className="flex items-center gap-3">
                         <button className="relative p-2 text-[#9da6b9] hover:text-white transition-colors">
-                            <span className="material-symbols-outlined">notifications</span>
+                            <Icon name="Bell" />
                             <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-[#111318]"></span>
                         </button>
                         <div className="bg-center bg-no-repeat bg-cover rounded-full size-9 ring-2 ring-[#282e39]" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCwbSresrPhRksuL7dTtVRS-wuA8bvzOMexhWAq0yQQqSrVQ-NlzoTNdpeNZzrrdnPI-B9nq_v8nHDPWf9m9EC2D7HwosHD1Wtc2tib7kq4RPPSVQT-FiDfD-6uO8p4trECaYTnXqL7VgEUJODKGXW5lmIAVgTbEuzLT_k-qeEyHUX2AFiQRhjiY9JNJa2FyQieGm3uT8ue81M5mGPLiPA8e6eUHRSEnlU7srmRIIwLX1N5FhBnFQgRqqjlmTx6mr9cyXd43t_tGBc")' }}></div>
@@ -56,7 +57,7 @@ export default function OrchestratorPage() {
                             {/* Active Model Card */}
                             <div className="group p-3 rounded-lg bg-[#1c1f27] border border-[#282e39] hover:border-[#135bec]/50 transition-all cursor-pointer">
                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="material-symbols-outlined text-[#135bec]">psychology</span>
+                                    <Icon name="Brain" className="text-[#135bec]" />
                                     <span className="flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
                                 </div>
                                 <h4 className="text-sm font-semibold text-white">PPSDM-NLP-v2</h4>
@@ -65,7 +66,7 @@ export default function OrchestratorPage() {
                             {/* Idle Model Card */}
                             <div className="group p-3 rounded-lg bg-[#111318] border border-[#282e39] hover:border-[#9da6b9] transition-all cursor-pointer opacity-70 hover:opacity-100">
                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="material-symbols-outlined text-[#9da6b9] group-hover:text-white">smart_toy</span>
+                                    <Icon name="Bot" className="text-[#9da6b9] group-hover:text-white" />
                                     <span className="flex h-2 w-2 rounded-full bg-yellow-500"></span>
                                 </div>
                                 <h4 className="text-sm font-medium text-white">Llama-2-70b-Chat</h4>
@@ -75,7 +76,7 @@ export default function OrchestratorPage() {
                             <div className="group p-3 rounded-lg bg-[#111318] border border-[#282e39] hover:border-[#9da6b9] transition-all cursor-pointer relative overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#135bec]/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="material-symbols-outlined text-blue-400">model_training</span>
+                                    <Icon name="BrainCircuit" className="text-blue-400" />
                                     <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
                                 </div>
                                 <h4 className="text-sm font-medium text-white">Custom-BERT-L</h4>
@@ -111,7 +112,7 @@ export default function OrchestratorPage() {
                     </div>
                     <div className="p-4 border-t border-[#282e39]">
                         <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#1c1f27] border border-[#282e39] p-2 text-sm font-medium text-white hover:bg-[#282e39] transition-colors">
-                            <span className="material-symbols-outlined text-[18px]">tune</span>
+                            <Icon name="SlidersHorizontal" className="text-[18px]" />
                             Advanced Tuning
                         </button>
                     </div>
@@ -124,7 +125,7 @@ export default function OrchestratorPage() {
                         <div>
                             <div className="flex items-center gap-2 text-[#9da6b9] text-xs mb-1">
                                 <span>Workflows</span>
-                                <span className="material-symbols-outlined text-[10px]">chevron_right</span>
+                                <Icon name="ChevronRight" className="text-[10px]" />
                                 <span>Daily Operations</span>
                             </div>
                             <h1 className="text-xl font-bold text-white flex items-center gap-2">
@@ -134,11 +135,11 @@ export default function OrchestratorPage() {
                         </div>
                         <div className="flex gap-2">
                             <button className="flex items-center gap-2 rounded-lg bg-[#1c1f27] border border-[#282e39] px-3 py-2 text-sm font-medium text-white hover:bg-[#282e39] transition-colors">
-                                <span className="material-symbols-outlined text-[18px]">play_arrow</span>
+                                <Icon name="Play" className="text-[18px]" />
                                 Test Run
                             </button>
                             <button className="flex items-center gap-2 rounded-lg bg-[#135bec] px-4 py-2 text-sm font-medium text-white shadow-[0_0_15px_rgba(19,91,236,0.4)] hover:bg-[#135bec]/90 transition-colors">
-                                <span className="material-symbols-outlined text-[18px]">rocket_launch</span>
+                                <Icon name="Rocket" className="text-[18px]" />
                                 Deploy Changes
                             </button>
                         </div>
@@ -163,7 +164,7 @@ export default function OrchestratorPage() {
                         {/* Node: Trigger */}
                         <div className="absolute top-[140px] left-[60px] w-[220px] bg-[#1c1f27] border border-[#135bec] rounded-xl shadow-[0_0_20px_rgba(19,91,236,0.1)] z-10 flex flex-col group">
                             <div className="h-10 bg-[#135bec]/20 border-b border-[#135bec]/20 rounded-t-xl flex items-center px-3 gap-2">
-                                <span className="material-symbols-outlined text-[#135bec] text-sm">bolt</span>
+                                <Icon name="Zap" className="text-[#135bec] text-sm" />
                                 <span className="text-xs font-bold text-white uppercase tracking-wider">Trigger</span>
                             </div>
                             <div className="p-4">
@@ -180,7 +181,7 @@ export default function OrchestratorPage() {
                         {/* Node: Action 1 (Vectorize) */}
                         <div className="absolute top-[140px] left-[420px] w-[220px] bg-[#1c1f27] border border-[#282e39] rounded-xl shadow-lg z-10 flex flex-col group hover:border-[#9da6b9] cursor-move">
                             <div className="h-10 bg-[#282e39] border-b border-[#282e39] rounded-t-xl flex items-center px-3 gap-2">
-                                <span className="material-symbols-outlined text-purple-400 text-sm">function</span>
+                                <Icon name="Sigma" className="text-purple-400 text-sm" />
                                 <span className="text-xs font-bold text-white uppercase tracking-wider">Action</span>
                             </div>
                             <div className="p-4">
@@ -195,7 +196,7 @@ export default function OrchestratorPage() {
                         {/* Node: Action 2 (Store) */}
                         <div className="absolute top-[140px] left-[760px] w-[220px] bg-[#1c1f27] border border-[#282e39] rounded-xl shadow-lg z-10 flex flex-col group hover:border-[#9da6b9] cursor-move">
                             <div className="h-10 bg-[#282e39] border-b border-[#282e39] rounded-t-xl flex items-center px-3 gap-2">
-                                <span className="material-symbols-outlined text-orange-400 text-sm">database</span>
+                                <Icon name="Database" className="text-orange-400 text-sm" />
                                 <span className="text-xs font-bold text-white uppercase tracking-wider">Storage</span>
                             </div>
                             <div className="p-4">
@@ -208,7 +209,7 @@ export default function OrchestratorPage() {
                         {/* Node: Notification (Branch) */}
                         <div className="absolute top-[380px] left-[420px] w-[220px] bg-[#1c1f27] border border-[#282e39] rounded-xl shadow-lg z-10 flex flex-col group hover:border-[#9da6b9] cursor-move">
                             <div className="h-10 bg-[#282e39] border-b border-[#282e39] rounded-t-xl flex items-center px-3 gap-2">
-                                <span className="material-symbols-outlined text-blue-400 text-sm">notifications</span>
+                                <Icon name="Bell" className="text-blue-400 text-sm" />
                                 <span className="text-xs font-bold text-white uppercase tracking-wider">Notify</span>
                             </div>
                             <div className="p-4">
@@ -221,13 +222,13 @@ export default function OrchestratorPage() {
                         {/* Mini Map / Canvas Controls */}
                         <div className="absolute bottom-6 left-6 flex gap-2">
                             <button className="size-8 bg-[#1c1f27] border border-[#282e39] rounded flex items-center justify-center text-[#9da6b9] hover:text-white hover:border-white transition-all">
-                                <span className="material-symbols-outlined text-lg">add</span>
+                                <Icon name="Plus" className="text-lg" />
                             </button>
                             <button className="size-8 bg-[#1c1f27] border border-[#282e39] rounded flex items-center justify-center text-[#9da6b9] hover:text-white hover:border-white transition-all">
-                                <span className="material-symbols-outlined text-lg">remove</span>
+                                <Icon name="Minus" className="text-lg" />
                             </button>
                             <button className="size-8 bg-[#1c1f27] border border-[#282e39] rounded flex items-center justify-center text-[#9da6b9] hover:text-white hover:border-white transition-all">
-                                <span className="material-symbols-outlined text-lg">center_focus_strong</span>
+                                <Icon name="Focus" className="text-lg" />
                             </button>
                         </div>
                     </div>
@@ -239,27 +240,27 @@ export default function OrchestratorPage() {
                         <h3 className="text-xs font-bold text-[#9da6b9] uppercase tracking-wider mb-4">Logic Toolbar</h3>
                         <div className="grid grid-cols-2 gap-3 mb-6">
                             <div className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-[#282e39] bg-[#1c1f27] hover:border-[#135bec]/50 hover:bg-[#135bec]/5 cursor-grab active:cursor-grabbing transition-all">
-                                <span className="material-symbols-outlined text-[#135bec]">bolt</span>
+                                <Icon name="Zap" className="text-[#135bec]" />
                                 <span className="text-xs font-medium">Trigger</span>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-[#282e39] bg-[#1c1f27] hover:border-purple-500/50 hover:bg-purple-500/5 cursor-grab active:cursor-grabbing transition-all">
-                                <span className="material-symbols-outlined text-purple-400">function</span>
+                                <Icon name="Sigma" className="text-purple-400" />
                                 <span className="text-xs font-medium">Action</span>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-[#282e39] bg-[#1c1f27] hover:border-yellow-500/50 hover:bg-yellow-500/5 cursor-grab active:cursor-grabbing transition-all">
-                                <span className="material-symbols-outlined text-yellow-400">call_split</span>
+                                <Icon name="GitFork" className="text-yellow-400" />
                                 <span className="text-xs font-medium">Condition</span>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-[#282e39] bg-[#1c1f27] hover:border-orange-500/50 hover:bg-orange-500/5 cursor-grab active:cursor-grabbing transition-all">
-                                <span className="material-symbols-outlined text-orange-400">database</span>
+                                <Icon name="Database" className="text-orange-400" />
                                 <span className="text-xs font-medium">Store</span>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-[#282e39] bg-[#1c1f27] hover:border-pink-500/50 hover:bg-pink-500/5 cursor-grab active:cursor-grabbing transition-all">
-                                <span className="material-symbols-outlined text-pink-400">schedule</span>
+                                <Icon name="Clock" className="text-pink-400" />
                                 <span className="text-xs font-medium">Delay</span>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-[#282e39] bg-[#1c1f27] hover:border-blue-500/50 hover:bg-blue-500/5 cursor-grab active:cursor-grabbing transition-all">
-                                <span className="material-symbols-outlined text-blue-400">webhook</span>
+                                <Icon name="Webhook" className="text-blue-400" />
                                 <span className="text-xs font-medium">Webhook</span>
                             </div>
                         </div>
@@ -382,9 +383,7 @@ export default function OrchestratorPage() {
                 background-image: radial-gradient(#282e39 1px, transparent 1px);
                 background-size: 20px 20px;
             }
-            .material-symbols-outlined {
-                font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            }
+
         `}</style>
             </div>
         </div>

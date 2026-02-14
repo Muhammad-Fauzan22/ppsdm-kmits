@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { DimensionData } from "@/data/dimensions";
+import { Icon } from "@/components/ui/Icon";
+import { Zap, GraduationCap } from "lucide-react";
 
 interface DimensionHeaderProps {
   dimension: DimensionData;
@@ -17,7 +19,7 @@ export function DimensionHeader({ dimension }: DimensionHeaderProps) {
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: "0.5s" }} />
       </div>
-      
+
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <motion.div
@@ -27,26 +29,24 @@ export function DimensionHeader({ dimension }: DimensionHeaderProps) {
         >
           {/* Icon */}
           <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-2xl shadow-cyan-500/30" role="img" aria-label={`Icon untuk ${dimension.title}`}>
-            <span className="material-symbols-outlined text-white text-5xl">
-              {dimension.icon}
-            </span>
+            <Icon name={dimension.icon} className="text-white w-12 h-12" />
           </div>
-          
+
           {/* Title */}
           <h1 id="dimension-title" className="text-5xl md:text-6xl font-bold text-white mb-4">
             {dimension.title}
           </h1>
-          
+
           {/* Tagline */}
           <p className="text-xl text-cyan-400 font-semibold mb-6">
             {dimension.tagline}
           </p>
-          
+
           {/* Description */}
           <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
             {dimension.longDescription}
           </p>
-          
+
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4" role="group" aria-label="Tombol Aksi">
             <Link
@@ -55,7 +55,7 @@ export function DimensionHeader({ dimension }: DimensionHeaderProps) {
               aria-label={`Mulai Assessment untuk ${dimension.title}`}
             >
               <span>Mulai Assessment</span>
-              <span className="material-symbols-outlined">bolt</span>
+              <Zap className="w-5 h-5" />
             </Link>
             <Link
               href="#modules"
@@ -63,7 +63,7 @@ export function DimensionHeader({ dimension }: DimensionHeaderProps) {
               aria-label={`Lihat Modul Pembelajaran untuk ${dimension.title}`}
             >
               <span>Lihat Modul Pembelajaran</span>
-              <span className="material-symbols-outlined">school</span>
+              <GraduationCap className="w-5 h-5" />
             </Link>
           </div>
         </motion.div>

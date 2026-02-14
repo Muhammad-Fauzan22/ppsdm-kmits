@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 export default function StudentMobileDashboard() {
     return (
@@ -11,9 +12,9 @@ export default function StudentMobileDashboard() {
                 <div className="h-6 w-full bg-[#0f1923] flex justify-between items-center px-6 pt-2 z-50">
                     <span className="text-[10px] font-bold text-white">9:41</span>
                     <div className="flex gap-1.5 text-white">
-                        <span className="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
-                        <span className="material-symbols-outlined text-[14px]">wifi</span>
-                        <span className="material-symbols-outlined text-[14px]">battery_full</span>
+                        <Icon name="Signal" className="text-[14px]" />
+                        <Icon name="Wifi" className="text-[14px]" />
+                        <Icon name="BatteryFull" className="text-[14px]" />
                     </div>
                 </div>
                 {/* Scrollable Content */}
@@ -22,13 +23,13 @@ export default function StudentMobileDashboard() {
                     <header className="flex items-center justify-between px-6 py-5 sticky top-0 bg-[#0f1923]/95 backdrop-blur-sm z-40 border-b border-[#27303a]">
                         <div className="flex items-center gap-3">
                             <div className="size-8 rounded-full bg-[#003366] flex items-center justify-center text-white">
-                                <span className="material-symbols-outlined text-[18px]">school</span>
+                                <Icon name="GraduationCap" className="text-[18px]" />
                             </div>
                             <h2 className="text-white text-lg font-bold leading-tight tracking-tight">PPSDM Student</h2>
                         </div>
                         <div className="flex items-center gap-4">
                             <button className="text-gray-400 hover:text-white transition-colors">
-                                <span className="material-symbols-outlined">notifications</span>
+                                <Icon name="Bell" />
                             </button>
                             <div className="size-9 rounded-full bg-cover bg-center border border-[#394756]" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAffZ14WO-W7P5rFXqyMXJojAmzynEQ88voWYE5zdVYOJJ4Yc7k9tqK2Sf9tFZ5tfM_Dl2xCHxWLjsB8A_wa-16dka7j56qEYW0x-h6F19dPm9bcuMGlGGnxBi8IuWr4wu2VFJ2XdNkV2tf_dydCYuT6l7EmdH5PVScpndIuQOZ96xDBT1DjsZlrMa-8GU9a9wzItyxkfnmESe1z7M_WO1RwuJYjQt_o7sYx1XZsOxvez4KG-gZmqc9-fwbpq0e8o-SjdgKX_fKcDc')" }}>
                             </div>
@@ -44,14 +45,14 @@ export default function StudentMobileDashboard() {
                         <div className="flex gap-4 overflow-x-auto pb-2 -mx-6 px-6 no-scrollbar">
                             <div className="flex min-w-[140px] flex-col gap-2 rounded-xl p-4 bg-[#1b2128] border border-[#394756]">
                                 <div className="flex items-center gap-2 text-[#4DA3FF]">
-                                    <span className="material-symbols-outlined text-[20px]">grade</span>
+                                    <Icon name="Star" className="text-[20px]" />
                                     <p className="text-sm font-medium">GPA</p>
                                 </div>
                                 <p className="text-white text-2xl font-bold">3.8</p>
                             </div>
                             <div className="flex min-w-[140px] flex-col gap-2 rounded-xl p-4 bg-[#1b2128] border border-[#394756]">
                                 <div className="flex items-center gap-2 text-emerald-400">
-                                    <span className="material-symbols-outlined text-[20px]">credit_score</span>
+                                    <Icon name="CreditCard" className="text-[20px]" />
                                     <p className="text-sm font-medium">Credits</p>
                                 </div>
                                 <p className="text-white text-2xl font-bold">85</p>
@@ -107,35 +108,35 @@ export default function StudentMobileDashboard() {
                             <div className="flex flex-col items-center gap-1 w-full relative">
                                 {/* Top Indicator Line */}
                                 <div className="absolute -top-[9px] w-8 h-[3px] bg-[#003366] rounded-b-full shadow-[0_0_8px_rgba(0,51,102,0.8)]"></div>
-                                <span className="material-symbols-outlined text-[24px] text-[#4DA3FF] transition-colors duration-200">dashboard</span>
+                                <Icon name="LayoutDashboard" className="text-[24px] text-[#4DA3FF] transition-colors duration-200" />
                                 <span className="text-[10px] font-medium text-[#4DA3FF] tracking-wide">Dashboard</span>
                             </div>
                         </li>
                         {/* 2. Assessment */}
                         <li className="flex-1 flex justify-center group cursor-pointer">
                             <div className="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
-                                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 0" }}>shield</span>
+                                <Icon name="Shield" className="text-[24px]" />
                                 <span className="text-[10px] font-medium tracking-wide">Assessment</span>
                             </div>
                         </li>
                         {/* 3. Library */}
                         <li className="flex-1 flex justify-center group cursor-pointer">
                             <div className="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
-                                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 0" }}>menu_book</span>
+                                <Icon name="BookOpen" className="text-[24px]" />
                                 <span className="text-[10px] font-medium tracking-wide">Library</span>
                             </div>
                         </li>
                         {/* 4. RPI */}
                         <li className="flex-1 flex justify-center group cursor-pointer">
                             <div className="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
-                                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 0" }}>timeline</span>
+                                <Icon name="Activity" className="text-[24px]" />
                                 <span className="text-[10px] font-medium tracking-wide">RPI</span>
                             </div>
                         </li>
                         {/* 5. Portfolio */}
                         <li className="flex-1 flex justify-center group cursor-pointer">
                             <div className="flex flex-col items-center gap-1 w-full text-[#8b9bb4] hover:text-[#c4d0e0] transition-colors duration-200">
-                                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 0" }}>emoji_events</span>
+                                <Icon name="Trophy" className="text-[24px]" />
                                 <span className="text-[10px] font-medium tracking-wide">Portfolio</span>
                             </div>
                         </li>

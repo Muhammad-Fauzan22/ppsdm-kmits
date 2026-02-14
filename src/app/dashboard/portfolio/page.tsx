@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { BadgeCheck, ArrowRight, FileText, Award } from 'lucide-react';
 
 export default function PortfolioPage() {
     return (
@@ -47,7 +48,7 @@ export default function PortfolioPage() {
                         <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
                             <div className="flex justify-between items-start">
                                 <div className="bg-[#0A2718] border border-green-900/50 text-emerald-400 p-3 rounded-xl">
-                                    <span className="material-symbols-outlined text-2xl">verified</span>
+                                    <BadgeCheck className="w-8 h-8" />
                                 </div>
                                 <div className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20 animate-pulse">
                                     Blockchain Active
@@ -61,7 +62,7 @@ export default function PortfolioPage() {
                                 </p>
                                 <div className="flex items-center gap-2 text-xs font-mono text-emerald-500">
                                     <span>Access Tool</span>
-                                    <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                                 </div>
                             </div>
                         </div>
@@ -86,7 +87,7 @@ export default function PortfolioPage() {
 
                     <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
                         <div className="bg-purple-900/20 border border-purple-900/50 text-purple-400 p-3 rounded-xl w-fit">
-                            <span className="material-symbols-outlined text-2xl">description</span>
+                            <FileText className="w-8 h-8" />
                         </div>
                         <div>
                             <h3 className="text-2xl font-bold font-grotesk mb-1 text-slate-300">Live CV</h3>
@@ -111,7 +112,7 @@ export default function PortfolioPage() {
 
                     <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
                         <div className="bg-amber-900/20 border border-amber-900/50 text-amber-400 p-3 rounded-xl w-fit">
-                            <span className="material-symbols-outlined text-2xl">workspace_premium</span>
+                            <Award className="w-8 h-8" />
                         </div>
                         <div>
                             <h3 className="text-2xl font-bold font-grotesk mb-1 text-slate-300">Certifications</h3>

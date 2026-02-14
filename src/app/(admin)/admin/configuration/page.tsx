@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { ShieldCheck, Home, ChevronRight, History, CreditCard, Key, Lock, EyeOff, CloudUpload, CheckCircle, Zap, Timer, AlertTriangle, Info, Save } from 'lucide-react';
 
 export default function ConfigurationPage() {
     const [activeTab, setActiveTab] = useState('integrations');
@@ -21,7 +22,7 @@ export default function ConfigurationPage() {
                 <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282e39] bg-[#111318] px-10 py-3">
                     <div className="flex items-center gap-4 text-white">
                         <div className="size-8 flex items-center justify-center rounded-lg bg-primary/20 text-primary">
-                            <span className="material-symbols-outlined text-2xl">admin_panel_settings</span>
+                            <ShieldCheck className="text-2xl" />
                         </div>
                         <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM Admin</h2>
                     </div>
@@ -45,18 +46,18 @@ export default function ConfigurationPage() {
                             <div className="flex flex-wrap gap-2 px-4 py-2">
                                 <Link legacyBehavior href="/admin">
                                     <a className="text-[#9da6b9] hover:text-white text-sm font-medium leading-normal flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[18px]">home</span>
+                                        <Home className="w-[18px] h-[18px]" />
                                         Admin
                                     </a>
                                 </Link>
                                 <span className="text-[#9da6b9] text-sm font-medium leading-normal flex items-center">
-                                    <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+                                    <ChevronRight className="w-[16px] h-[16px]" />
                                 </span>
                                 <Link legacyBehavior href="/admin/configuration">
                                     <a className="text-[#9da6b9] hover:text-white text-sm font-medium leading-normal">Configuration</a>
                                 </Link>
                                 <span className="text-[#9da6b9] text-sm font-medium leading-normal flex items-center">
-                                    <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+                                    <ChevronRight className="w-[16px] h-[16px]" />
                                 </span>
                                 <span className="text-white text-sm font-medium leading-normal">Global Settings</span>
                             </div>
@@ -100,7 +101,7 @@ export default function ConfigurationPage() {
                                     <div className="flex items-center justify-between border-b border-[#282e39] pb-2">
                                         <h3 className="text-white text-xl font-bold leading-tight">API & Integrations</h3>
                                         <button className="text-primary text-sm font-medium hover:text-blue-400 flex items-center gap-1">
-                                            <span className="material-symbols-outlined text-base">history</span>
+                                            <History className="text-base w-4 h-4" />
                                             View Audit Logs
                                         </button>
                                     </div>
@@ -109,7 +110,7 @@ export default function ConfigurationPage() {
                                         <div className="bg-[#1a202c] rounded-xl p-6 border border-[#282e39] flex flex-col gap-5">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="size-10 rounded-lg bg-white/5 flex items-center justify-center">
-                                                    <span className="material-symbols-outlined text-white">payments</span>
+                                                    <CreditCard className="text-white w-6 h-6" />
                                                 </div>
                                                 <div>
                                                     <h4 className="text-white font-bold">Payment Gateway</h4>
@@ -127,7 +128,7 @@ export default function ConfigurationPage() {
                                                     <label className="block mb-2 text-sm font-medium text-[#9da6b9]">Publishable Key</label>
                                                     <div className="relative">
                                                         <span className="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
-                                                            <span className="material-symbols-outlined text-lg">key</span>
+                                                            <Key className="text-lg w-5 h-5" />
                                                         </span>
                                                         <input type="text" className="bg-[#111318] border border-[#3b4354] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block w-full ps-10 p-2.5 placeholder-gray-500" placeholder="pk_live_..." defaultValue="pk_live_51M..." />
                                                     </div>
@@ -136,11 +137,11 @@ export default function ConfigurationPage() {
                                                     <label className="block mb-2 text-sm font-medium text-[#9da6b9]">Secret Key</label>
                                                     <div className="relative">
                                                         <span className="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
-                                                            <span className="material-symbols-outlined text-lg">lock</span>
+                                                            <Lock className="text-lg w-5 h-5" />
                                                         </span>
                                                         <input type="password" className="bg-[#111318] border border-[#3b4354] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block w-full ps-10 p-2.5 pr-10" placeholder="sk_live_..." defaultValue="sk_live_very_secret_key_hidden" />
                                                         <button type="button" className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-400 hover:text-white transition-colors">
-                                                            <span className="material-symbols-outlined text-lg">visibility_off</span>
+                                                            <EyeOff className="text-lg w-5 h-5" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -153,7 +154,7 @@ export default function ConfigurationPage() {
                                         <div className="bg-[#1a202c] rounded-xl p-6 border border-[#282e39] flex flex-col gap-5">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="size-10 rounded-lg bg-white/5 flex items-center justify-center">
-                                                    <span className="material-symbols-outlined text-white">cloud_upload</span>
+                                                    <CloudUpload className="text-white w-6 h-6" />
                                                 </div>
                                                 <div>
                                                     <h4 className="text-white font-bold">Cloud Storage</h4>
@@ -182,7 +183,7 @@ export default function ConfigurationPage() {
                                             </div>
                                             <div className="pt-2 border-t border-[#282e39] mt-2 flex justify-end">
                                                 <button className="text-sm text-green-500 font-medium flex items-center gap-1">
-                                                    <span className="material-symbols-outlined text-sm">check_circle</span>
+                                                    <CheckCircle className="text-sm w-4 h-4" />
                                                     Connected
                                                 </button>
                                             </div>
@@ -199,7 +200,7 @@ export default function ConfigurationPage() {
                                             <div className="flex flex-col gap-4">
                                                 <div className="flex justify-between items-center">
                                                     <label htmlFor="xp-multiplier" className="text-sm font-bold text-white flex items-center gap-2">
-                                                        <span className="material-symbols-outlined text-yellow-500">bolt</span>
+                                                        <Zap className="text-yellow-500 w-5 h-5" />
                                                         Global XP Multiplier
                                                     </label>
                                                     <span className="bg-primary/20 text-primary text-xs font-bold px-2 py-1 rounded">2.5x</span>
@@ -218,7 +219,7 @@ export default function ConfigurationPage() {
                                             {/* Daily Cap Input */}
                                             <div className="flex flex-col gap-4">
                                                 <label className="text-sm font-bold text-white flex items-center gap-2">
-                                                    <span className="material-symbols-outlined text-blue-400">lock_clock</span>
+                                                    <Timer className="text-blue-400 w-5 h-5" />
                                                     Daily XP Cap
                                                 </label>
                                                 <div className="flex gap-4">
@@ -243,7 +244,7 @@ export default function ConfigurationPage() {
                                         <div className="p-6 flex items-center justify-between border-b border-[#282e39] bg-red-500/5">
                                             <div className="flex gap-4">
                                                 <div className="size-12 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
-                                                    <span className="material-symbols-outlined text-red-500 text-2xl">warning</span>
+                                                    <AlertTriangle className="text-red-500 text-2xl w-6 h-6" />
                                                 </div>
                                                 <div>
                                                     <h4 className="text-white font-bold text-lg">Maintenance Mode</h4>
@@ -274,13 +275,13 @@ export default function ConfigurationPage() {
                         <div className="layout-content-container max-w-[960px] mx-auto relative px-4 md:px-10 lg:px-40">
                             <div className="pointer-events-auto bg-[#1a202c] border border-[#282e39] shadow-2xl rounded-t-xl p-4 flex justify-between items-center mb-0 md:mb-6">
                                 <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-yellow-500 text-sm">info</span>
+                                    <Info className="text-yellow-500 text-sm w-4 h-4" />
                                     <span className="text-[#9da6b9] text-sm">You have unsaved changes.</span>
                                 </div>
                                 <div className="flex gap-3">
                                     <button className="px-5 py-2.5 text-sm font-medium text-gray-300 bg-transparent border border-gray-600 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-700 transition-colors">Discard</button>
                                     <button className="px-5 py-2.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-900 shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-sm">save</span>
+                                        <Save className="text-sm w-4 h-4" />
                                         Save Changes
                                     </button>
                                 </div>

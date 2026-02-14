@@ -1,218 +1,209 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from "recharts";
+import { motion } from 'framer-motion';
+import { Icon } from '@/components/ui/Icon';
+import Image from 'next/image';
 
-export default function TransformationGallery() {
+const features = [
+    {
+        icon: 'School',
+        title: 'Digital Learning',
+        description: 'Access comprehensive learning materials regarding PPSDM development'
+    },
+    {
+        icon: 'Search',
+        title: 'Smart Search',
+        description: 'Find relevant stories and case studies instantly'
+    },
+    {
+        icon: 'TrendingUp',
+        title: 'Progress Tracking',
+        description: 'Monitor your learning journey and improved metrics'
+    },
+    {
+        icon: 'BarChart',
+        title: 'Impact Analysis',
+        description: 'Visualizing the real-world impact of implemented solutions'
+    }
+];
 
-    // Components
-    const RadarThumbnail = ({ color }: { color: string }) => {
-        const data = [
-            { s: 'A', v: Math.random() * 100 },
-            { s: 'B', v: Math.random() * 100 },
-            { s: 'C', v: Math.random() * 100 },
-            { s: 'D', v: Math.random() * 100 },
-            { s: 'E', v: Math.random() * 100 },
-        ];
-        return (
-            <div className="w-full relative opacity-80" style={{ height: '96px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
-                        <PolarGrid stroke="#E5E7EB" />
-                        <Radar dataKey="v" stroke={color} strokeWidth={2} fill={color} fillOpacity={0.1} />
-                    </RadarChart>
-                </ResponsiveContainer>
-            </div>
-        );
-    };
+const stories = [
+    {
+        id: 1,
+        title: "Transformation at KPP Pratama",
+        category: "Case Study",
+        readTime: "5 min read",
+        image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=1600",
+        author: {
+            name: "Sarah Chen",
+            role: "Change Manager",
+            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
+        }
+    },
+    {
+        id: 2,
+        title: "Digital Leadership Journey",
+        category: "Success Story",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1600",
+        author: {
+            name: "Michael Park",
+            role: "Director",
+            avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150"
+        }
+    },
+    {
+        id: 3,
+        title: "Innovation in Public Sector",
+        category: "Thought Leadership",
+        readTime: "6 min read",
+        image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1600",
+        author: {
+            name: "Emma Wilson",
+            role: "Innovation Lead",
+            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
+        }
+    }
+];
 
+export default function StoriesPage() {
     return (
-        <div className="min-h-screen bg-[#F8F9FA] text-[#111827] font-sans">
+        <div className="min-h-screen bg-slate-50 pt-24 pb-12">
+            <div className="container mx-auto px-4 max-w-7xl">
+                {/* Header */}
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
+                    >
+                        <Icon name="BookOpen" className="w-5 h-5" />
+                        <span className="font-semibold text-sm uppercase tracking-wider">Success Stories</span>
+                    </motion.div>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-5xl font-bold text-slate-900 mb-6"
+                    >
+                        Impact Stories & <span className="text-blue-600">Case Studies</span>
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-xl text-slate-600"
+                    >
+                        Explore how organizations are transforming their capabilities and driving real impact through PPSDM initiatives.
+                    </motion.p>
+                </div>
 
-            {/* Navbar (Light) */}
-            <nav className="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center sticky top-0 z-50">
-                <div className="flex items-center gap-3">
-                    <div className="size-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white text-lg">school</span>
-                    </div>
-                    <span className="font-bold tracking-tight text-xl">PPSDM KMM</span>
+                {/* Featured Features Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+                    {features.map((feature, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 + index * 0.1 }}
+                            className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
+                        >
+                            <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 text-blue-600">
+                                <Icon name={feature.icon as any} className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
+                            <p className="text-slate-600 text-sm">{feature.description}</p>
+                        </motion.div>
+                    ))}
                 </div>
-                <div className="flex gap-8 text-sm font-bold text-gray-500">
-                    <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-                    <Link href="#" className="text-blue-600">Community</Link>
-                    <Link href="#" className="hover:text-blue-600 transition-colors">Impact</Link>
-                    <Link href="#" className="hover:text-blue-600 transition-colors">Apply</Link>
+
+                {/* Latest Stories */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {stories.map((story, index) => (
+                        <motion.article
+                            key={story.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 + index * 0.1 }}
+                            className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow group"
+                        >
+                            <div className="relative h-48 overflow-hidden">
+                                <Image
+                                    src={story.image}
+                                    alt={story.title}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute top-4 left-4">
+                                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-blue-700">
+                                        {story.category}
+                                    </span>
+                                </div>
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                                <button className="absolute bottom-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-600 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+                                    <Icon name="PlayCircle" className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <div className="p-6">
+                                <div className="flex items-center gap-4 mb-4 text-xs text-slate-500 font-medium">
+                                    <div className="flex items-center gap-1">
+                                        <Icon name="Clock" className="w-4 h-4" />
+                                        {story.readTime}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <Icon name="Calendar" className="w-4 h-4" />
+                                        Feb 12, 2024
+                                    </div>
+                                </div>
+
+                                <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                                    {story.title}
+                                </h2>
+
+                                <p className="text-slate-600 text-sm mb-6 line-clamp-2">
+                                    Discover how modern methodologies are reshaping public sector performance and delivery...
+                                </p>
+
+                                <div className="flex items-center justify-between pt-6 border-t border-slate-100">
+                                    <div className="flex items-center gap-3">
+                                        <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                                            <Image
+                                                src={story.author.avatar}
+                                                alt={story.author.name}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-semibold text-slate-900">{story.author.name}</div>
+                                            <div className="text-xs text-slate-500">{story.author.role}</div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+                                            <Icon name="Bookmark" className="w-5 h-5" />
+                                        </button>
+                                        <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+                                            <Icon name="Share2" className="w-5 h-5" />
+                                        </button>
+                                        <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+                                            <Icon name="MoreVertical" className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.article>
+                    ))}
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="relative">
-                        <span className="material-symbols-outlined text-gray-400 absolute left-3 top-2.5">search</span>
-                        <input type="text" placeholder="Search profiles" className="bg-gray-100 rounded-full pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100 w-64" />
-                    </div>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                        Login
+
+                <div className="mt-16 text-center">
+                    <button className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
+                        <span>Load More Stories</span>
+                        <Icon name="ArrowRight" className="w-5 h-5" />
                     </button>
                 </div>
-            </nav>
-
-            <main className="max-w-7xl mx-auto p-8 py-16">
-
-                <div className="mb-16">
-                    <div className="flex items-center gap-2 text-sm text-gray-500 font-medium mb-4">
-                        <Link href="/" className="hover:underline">Home</Link> /
-                        <Link href="#" className="hover:underline">Community</Link> /
-                        <span className="text-gray-900">Stories</span>
-                    </div>
-                    <h1 className="text-5xl font-black tracking-tight mb-4 text-[#111827]">
-                        Student Transformation &<br />Success Gallery
-                    </h1>
-                    <p className="text-xl text-gray-500 max-w-2xl leading-relaxed">
-                        Measuring Real-World Impact: From Baseline to Excellence across 9 Dimensions. Explore the journeys of our diverse community.
-                    </p>
-                </div>
-
-                {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-blue-50 p-2 rounded text-blue-600">
-                                <span className="material-symbols-outlined">school</span>
-                            </div>
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Career Readiness</span>
-                        </div>
-                        <p className="text-5xl font-bold text-gray-900 mb-2">92%</p>
-                        <p className="text-sm font-bold text-green-600 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-base">trending_up</span> +5% vs Last Year
-                        </p>
-                    </div>
-
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-blue-50 p-2 rounded text-blue-600">
-                                <span className="material-symbols-outlined">analytics</span>
-                            </div>
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Avg. Dimensional Growth</span>
-                        </div>
-                        <p className="text-5xl font-bold text-gray-900 mb-2">40%</p>
-                        <p className="text-sm font-medium text-gray-500">Across all 9 metrics</p>
-                    </div>
-
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-blue-50 p-2 rounded text-blue-600">
-                                <span className="material-symbols-outlined">menu_book</span>
-                            </div>
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Alumni Stories</span>
-                        </div>
-                        <p className="text-5xl font-bold text-gray-900 mb-2">450+</p>
-                        <p className="text-sm font-medium text-gray-500">Documented transformations</p>
-                    </div>
-                </div>
-
-                {/* Transformation Map */}
-                <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 mb-16">
-                    <h2 className="text-2xl font-bold mb-12">The Transformation Map</h2>
-                    <div className="grid grid-cols-4 gap-4 relative">
-                        {/* Connecting Line */}
-                        <div className="absolute top-8 left-[10%] right-[10%] h-1 bg-gray-100 -z-0"></div>
-
-                        {[
-                            { title: 'Baseline Assessment', sub: 'Entry Level', icon: 'pause', color: 'bg-gray-400' },
-                            { title: 'Dimensional Growth', sub: 'Skill Acquisition', icon: 'hourglass_top', color: 'bg-gray-400' },
-                            { title: 'Practical Application', sub: 'Real-world Projects', icon: 'rocket_launch', color: 'bg-blue-600' },
-                            { title: 'Excellence Achieved', sub: 'Alumni Status', icon: 'star', color: 'bg-gray-400' },
-                        ].map((step, i) => (
-                            <div key={i} className="flex flex-col items-center text-center relative z-10">
-                                <div className={`size-16 rounded-full border-4 border-white ${step.title.includes('Application') ? 'bg-blue-50 shadow-lg shadow-blue-100 text-blue-600' : 'bg-gray-50 text-gray-400'} flex items-center justify-center mb-4`}>
-                                    <span className={`material-symbols-outlined text-2xl ${i === 2 && 'text-blue-600'}`}>{step.icon}</span>
-                                </div>
-                                <h3 className="font-bold text-gray-900 text-sm mb-1">{step.title}</h3>
-                                <p className="text-xs text-gray-500">{step.sub}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Filter Tabs */}
-                <div className="flex justify-center gap-3 mb-12">
-                    <button className="bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg shadow-blue-200">All Stories</button>
-                    {['Entrepreneur', 'Researcher', 'Corporate Leader', 'Social Impact'].map(filter => (
-                        <button key={filter} className="bg-white hover:bg-gray-50 text-gray-600 font-bold py-2 px-6 rounded-full border border-gray-200 transition-colors">
-                            {filter}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Stories Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                    {[
-                        { name: 'Sarah Chen', role: 'AI Ethics Researcher', class: '2023', quote: "This program shifted my perspective from purely technical...", color: '#4F46E5', tags: ['Leadership', 'Tech'] },
-                        { name: 'Marcus Johnson', role: 'FinTech Founder', class: '2022', quote: "The mentorship network was invaluable. I found my co-founder...", color: '#2563EB', tags: ['Innovation', 'Strategy'] },
-                        { name: 'Elena Rodriguez', role: 'Head of Sustainability', class: '2021', quote: "I learned to balance profit with purpose, a skill crucial for my role...", color: '#7C3AED', tags: ['Resilience', 'Ethics'] },
-                    ].map((story, i) => (
-                        <div key={i} className="bg-white rounded-3xl p-8 border border-gray-100 hover:shadow-xl transition-shadow group cursor-pointer">
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className="size-16 rounded-full bg-gray-200 overflow-hidden">
-                                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${story.name}`} alt={`Avatar of ${story.name}`} className="w-full h-full" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-lg text-gray-900">{story.name}</h3>
-                                    <p className="text-xs font-bold text-blue-600 mb-0.5">{story.role}</p>
-                                    <p className="text-[10px] text-gray-400 uppercase tracking-widest">Class of {story.class}</p>
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-50 rounded-2xl p-6 mb-8 text-center">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Growth Profile</p>
-                                <RadarThumbnail color={story.color} />
-                                <div className="flex justify-center gap-4 mt-2">
-                                    {story.tags.map(tag => (
-                                        <div key={tag} className="flex items-center gap-1">
-                                            <div className="size-2 rounded-full" style={{ backgroundColor: story.color }}></div>
-                                            <span className="text-[10px] text-gray-500 font-medium">{tag}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <p className="text-sm text-gray-600 italic mb-8 mt-auto line-clamp-3">"{story.quote}"</p>
-
-                            <button className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-900 font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                                <span className="material-symbols-outlined text-lg">play_circle</span> Watch Story
-                            </button>
-                        </div>
-                    ))}
-                </div>
-
-                {/* CTA */}
-                <div className="bg-blue-700 rounded-3xl p-16 text-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-800"></div>
-                    <div className="absolute -left-20 -bottom-20 size-80 bg-white/10 rounded-full blur-3xl"></div>
-                    <div className="absolute -right-20 -top-20 size-80 bg-white/10 rounded-full blur-3xl"></div>
-
-                    <div className="relative z-10">
-                        <h2 className="text-4xl font-black text-white mb-4">Start Your Own Transformation</h2>
-                        <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-10">
-                            Join a community of changemakers. Apply for the upcoming cohort or nominate an outstanding peer.
-                        </p>
-                        <div className="flex justify-center gap-4">
-                            <button className="bg-white text-blue-700 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-50 transition-colors">Apply Now</button>
-                            <button className="bg-blue-800/50 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-800/70 border border-blue-400/30 transition-colors">Submit a Story</button>
-                        </div>
-                    </div>
-                </div>
-
-            </main>
-
-            {/* Footer Micro */}
-            <footer className="max-w-7xl mx-auto px-8 py-8 border-t border-gray-200 mt-20 flex justify-between items-center text-xs text-gray-500">
-                <p>© 2024 PPSDM KMM. All rights reserved.</p>
-                <div className="flex gap-6">
-                    <Link href="#" className="hover:text-gray-900">Privacy Policy</Link>
-                    <Link href="#" className="hover:text-gray-900">Terms of Service</Link>
-                    <Link href="#" className="hover:text-gray-900">Contact Support</Link>
-                </div>
-            </footer>
+            </div>
         </div>
     );
 }

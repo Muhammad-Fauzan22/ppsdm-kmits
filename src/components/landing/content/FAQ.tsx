@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 const faqs = [
     {
@@ -41,9 +42,7 @@ export function FAQ() {
                                 className="w-full text-left p-6 flex justify-between items-center focus:outline-none"
                             >
                                 <span className="font-bold text-slate-900">{item.q}</span>
-                                <span className={`material-symbols-outlined transition-transform duration-300 text-slate-400 ${openIndex === idx ? 'rotate-180' : ''}`}>
-                                    keyboard_arrow_down
-                                </span>
+                                <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`} />
                             </button>
                             <AnimatePresence>
                                 {openIndex === idx && (

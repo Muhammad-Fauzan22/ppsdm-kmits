@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Icon } from "@/components/ui/Icon";
 
 interface ModalProps {
     isOpen: boolean;
@@ -82,7 +83,7 @@ export function Modal({
                                         onClick={onClose}
                                         className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                     >
-                                        <span className="material-symbols-outlined text-gray-500">close</span>
+                                        <Icon name="X" className="text-gray-500" />
                                     </button>
                                 )}
                             </div>
@@ -120,17 +121,17 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
     const variants = {
         danger: {
-            icon: "warning",
+            icon: "AlertTriangle",
             iconColor: "text-red-500 bg-red-100 dark:bg-red-900/30",
             buttonColor: "bg-red-500 hover:bg-red-600",
         },
         warning: {
-            icon: "error",
+            icon: "AlertCircle",
             iconColor: "text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30",
             buttonColor: "bg-yellow-500 hover:bg-yellow-600",
         },
         info: {
-            icon: "help",
+            icon: "HelpCircle",
             iconColor: "text-blue-500 bg-blue-100 dark:bg-blue-900/30",
             buttonColor: "bg-primary hover:bg-primary-light",
         },
@@ -142,7 +143,7 @@ export function ConfirmDialog({
         <Modal isOpen={isOpen} onClose={onClose} size="sm" showCloseButton={false}>
             <div className="text-center">
                 <div className={`size-16 mx-auto rounded-full flex items-center justify-center ${style.iconColor} mb-4`}>
-                    <span className="material-symbols-outlined text-3xl">{style.icon}</span>
+                    <Icon name={style.icon} size="3xl" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">{message}</p>
@@ -271,7 +272,7 @@ export function Dropdown({ trigger, items, align = "right" }: DropdownProps) {
                                     }`}
                             >
                                 {item.icon && (
-                                    <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+                                    <Icon name={item.icon || ''} size="md" className="text-[20px]" />
                                 )}
                                 <span className="font-medium">{item.label}</span>
                             </button>

@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Swords, ArrowRight, BookOpenText, MessageSquare } from 'lucide-react';
 
 export default function CommunityPage() {
     return (
@@ -48,7 +49,7 @@ export default function CommunityPage() {
                         <div className="absolute bottom-0 left-0 p-6 w-full">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="bg-blue-600 size-10 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-600/30">
-                                    <span className="material-symbols-outlined">swords</span>
+                                    <Swords className="w-6 h-6" />
                                 </div>
                                 <h3 className="text-2xl font-bold font-grotesk">War Room</h3>
                             </div>
@@ -56,7 +57,7 @@ export default function CommunityPage() {
                                 Department vs Department. Compete on Growth, XP, and Impact.
                             </p>
                             <div className="flex items-center text-blue-500 text-xs font-bold uppercase tracking-wider gap-1">
-                                Enter Battlefield <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                Enter Battlefield <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
                     </motion.div>
@@ -78,7 +79,7 @@ export default function CommunityPage() {
                     <div className="absolute bottom-0 left-0 p-6 w-full">
                         <div className="flex items-center gap-3 mb-2">
                             <div className="bg-purple-500/20 size-10 rounded-lg flex items-center justify-center text-purple-400">
-                                <span className="material-symbols-outlined">auto_stories</span>
+                                <BookOpenText className="w-6 h-6" />
                             </div>
                             <h3 className="text-2xl font-bold font-grotesk text-slate-300">Stories</h3>
                         </div>
@@ -104,7 +105,7 @@ export default function CommunityPage() {
                     <div className="absolute bottom-0 left-0 p-6 w-full">
                         <div className="flex items-center gap-3 mb-2">
                             <div className="bg-emerald-500/20 size-10 rounded-lg flex items-center justify-center text-emerald-400">
-                                <span className="material-symbols-outlined">forum</span>
+                                <MessageSquare className="w-6 h-6" />
                             </div>
                             <h3 className="text-2xl font-bold font-grotesk text-slate-300">Forum</h3>
                         </div>

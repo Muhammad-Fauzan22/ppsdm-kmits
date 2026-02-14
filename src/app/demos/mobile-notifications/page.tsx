@@ -1,5 +1,7 @@
 "use client";
 
+import { Icon } from "@/components/ui/Icon";
+
 export default function MobileNotificationDrawerDemo() {
     return (
         <div className="font-[family-name:var(--font-inter)] bg-[#f6f6f8] dark:bg-[#101622] overflow-hidden h-screen w-screen relative">
@@ -32,7 +34,7 @@ export default function MobileNotificationDrawerDemo() {
                     <header className="flex-none flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318]">
                         <div className="flex items-center gap-3">
                             <button className="sm:hidden p-1 -ml-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400">
-                                <span className="material-symbols-outlined">close</span>
+                                <Icon name="X" />
                             </button>
                             <h2 className="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Notifikasi</h2>
                             <span className="flex items-center justify-center bg-red-500 text-white text-[10px] font-bold px-1.5 h-5 rounded-full min-w-[20px]">3</span>
@@ -52,7 +54,7 @@ export default function MobileNotificationDrawerDemo() {
                             <div className="group relative flex gap-4 px-6 py-4 hover:bg-slate-100 dark:hover:bg-[#1a1d26] transition-colors cursor-pointer border-l-4 border-[#135bec] bg-[#135bec]/5 dark:bg-transparent">
                                 <div className="flex-shrink-0">
                                     <div className="flex items-center justify-center rounded-xl bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-500 size-12 shadow-sm">
-                                        <span className="material-symbols-outlined" style={{ fontSize: "24px" }}>warning</span>
+                                        <Icon name="AlertTriangle" size="lg" />
                                     </div>
                                 </div>
                                 <div className="flex flex-1 flex-col gap-1">
@@ -71,7 +73,7 @@ export default function MobileNotificationDrawerDemo() {
                             <div className="group relative flex gap-4 px-6 py-4 hover:bg-slate-100 dark:hover:bg-[#1a1d26] transition-colors cursor-pointer border-l-4 border-[#135bec] bg-[#135bec]/5 dark:bg-transparent">
                                 <div className="flex-shrink-0">
                                     <div className="flex items-center justify-center rounded-xl bg-yellow-100 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 size-12 shadow-sm">
-                                        <span className="material-symbols-outlined" style={{ fontSize: "24px" }}>emoji_events</span>
+                                        <Icon name="Trophy" size="lg" />
                                     </div>
                                 </div>
                                 <div className="flex flex-1 flex-col gap-1">
@@ -94,7 +96,7 @@ export default function MobileNotificationDrawerDemo() {
                             <div className="group relative flex gap-4 px-6 py-4 hover:bg-slate-100 dark:hover:bg-[#1a1d26] transition-colors cursor-pointer border-l-4 border-transparent">
                                 <div className="flex-shrink-0">
                                     <div className="flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-500/10 text-[#135bec] size-12 shadow-sm">
-                                        <span className="material-symbols-outlined" style={{ fontSize: "24px" }}>assignment_ind</span>
+                                        <Icon name="UserCheck" size="lg" />
                                     </div>
                                 </div>
                                 <div className="flex flex-1 flex-col gap-1">
@@ -110,7 +112,7 @@ export default function MobileNotificationDrawerDemo() {
                             <div className="group relative flex gap-4 px-6 py-4 hover:bg-slate-100 dark:hover:bg-[#1a1d26] transition-colors cursor-pointer border-l-4 border-transparent">
                                 <div className="flex-shrink-0">
                                     <div className="flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 size-12 shadow-sm">
-                                        <span className="material-symbols-outlined" style={{ fontSize: "24px" }}>history_edu</span>
+                                        <Icon name="History" size="lg" />
                                     </div>
                                 </div>
                                 <div className="flex flex-1 flex-col gap-1">
@@ -126,7 +128,7 @@ export default function MobileNotificationDrawerDemo() {
                             <div className="group relative flex gap-4 px-6 py-4 hover:bg-slate-100 dark:hover:bg-[#1a1d26] transition-colors cursor-pointer border-l-4 border-transparent">
                                 <div className="flex-shrink-0">
                                     <div className="flex items-center justify-center rounded-xl bg-yellow-100 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 size-12 shadow-sm">
-                                        <span className="material-symbols-outlined" style={{ fontSize: "24px" }}>star</span>
+                                        <Icon name="Star" size="lg" />
                                     </div>
                                 </div>
                                 <div className="flex flex-1 flex-col gap-1">
@@ -141,7 +143,7 @@ export default function MobileNotificationDrawerDemo() {
                     {/* Drawer Footer (Optional: Quick Actions) */}
                     <div className="p-4 border-t border-slate-200 dark:border-[#282e39] bg-[#f6f6f8] dark:bg-[#111318]">
                         <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-200 dark:bg-[#1e232e] hover:bg-slate-300 dark:hover:bg-[#2a303e] text-slate-700 dark:text-white h-10 px-4 text-sm font-bold transition-colors">
-                            <span className="material-symbols-outlined text-[18px]">settings</span>
+                            <Icon name="Settings" className="text-[18px]" />
                             Pengaturan Notifikasi
                         </button>
                     </div>

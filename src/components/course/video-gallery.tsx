@@ -19,7 +19,7 @@ export default function CourseVideoGallery({ videos }: { videos: any[] }) {
     return (
         <div className="w-full">
             <h3 className="text-xl font-bold text-[#111318] dark:text-white mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-red-500">play_circle</span>
+                <PlayCircle className="text-red-500 w-6 h-6" />
                 Video Pembelajaran
             </h3>
 

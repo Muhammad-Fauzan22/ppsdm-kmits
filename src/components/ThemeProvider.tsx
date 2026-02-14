@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 type Theme = "light" | "dark" | "system";
 
@@ -74,9 +75,9 @@ export function ThemeToggle() {
     const { theme, setTheme } = useTheme();
 
     const themes: { value: Theme; icon: string; label: string }[] = [
-        { value: "light", icon: "light_mode", label: "Light" },
-        { value: "dark", icon: "dark_mode", label: "Dark" },
-        { value: "system", icon: "desktop_windows", label: "System" },
+        { value: "light", icon: "Sun", label: "Light" },
+        { value: "dark", icon: "Moon", label: "Dark" },
+        { value: "system", icon: "Monitor", label: "System" },
     ];
 
     return (
@@ -86,11 +87,11 @@ export function ThemeToggle() {
                     key={t.value}
                     onClick={() => setTheme(t.value)}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${theme === t.value
-                            ? "bg-white dark:bg-gray-700 text-primary shadow-sm"
-                            : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                        ? "bg-white dark:bg-gray-700 text-primary shadow-sm"
+                        : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                         }`}
                 >
-                    <span className="material-symbols-outlined text-[18px]">{t.icon}</span>
+                    <Icon name={t.icon} size="sm" className="text-[18px]" />
                     <span className="hidden sm:inline">{t.label}</span>
                 </button>
             ))}
@@ -112,9 +113,10 @@ export function SimpleThemeToggle() {
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             aria-label="Toggle theme"
         >
-            <span className="material-symbols-outlined text-gray-600 dark:text-gray-400">
-                {resolvedTheme === "dark" ? "light_mode" : "dark_mode"}
-            </span>
+            <Icon
+                name={resolvedTheme === "dark" ? "Sun" : "Moon"}
+                className="text-gray-600 dark:text-gray-400"
+            />
         </button>
     );
 }

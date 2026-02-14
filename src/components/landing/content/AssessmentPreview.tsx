@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Brain } from "lucide-react";
 import { useState } from "react";
 
 export function AssessmentPreview() {
@@ -47,7 +48,7 @@ export function AssessmentPreview() {
                             className="mt-8 p-6 bg-brand-blue/20 border border-brand-blue/50 rounded-xl shadow-lg shadow-brand-blue/10"
                         >
                             <div className="flex items-start gap-3">
-                                <span className="material-symbols-outlined text-green-400">psychology</span>
+                                <Brain className="text-green-400 w-6 h-6" />
                                 <div>
                                     <h5 className="text-green-400 font-bold text-sm uppercase tracking-wide mb-1">Instant Analysis</h5>
                                     <p className="text-white text-sm leading-relaxed">

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 export default function DeveloperPortalPage() {
     const [expandedEndpoint, setExpandedEndpoint] = useState<string | null>("auth-login");
@@ -63,7 +64,7 @@ export default function DeveloperPortalPage() {
                     <nav className="space-y-1 mb-6">
                         {['Auth & Identity', 'Assessment', 'Learning', 'Portfolio'].map((item, i) => (
                             <button key={item} className={`w-full flex items-center gap-3 px-4 py-2 text-xs font-medium border-l-2 hover:bg-[#1C2128] transition-colors ${i === 0 ? 'border-blue-500 text-white bg-[#1C2128]' : 'border-transparent text-gray-400'}`}>
-                                <span className="material-symbols-outlined text-[16px]">{i === 0 ? 'lock' : i === 1 ? 'check_circle' : i === 2 ? 'school' : 'folder'}</span>
+                                <Icon name={i === 0 ? 'Lock' : i === 1 ? 'CheckCircle' : i === 2 ? 'School' : 'Folder'} size="sm" />
                                 {item}
                             </button>
                         ))}
@@ -73,7 +74,7 @@ export default function DeveloperPortalPage() {
                     <nav className="space-y-1">
                         {['AI/ML Engine', 'Blockchain Ledger'].map((item, i) => (
                             <button key={item} className={`w-full flex items-center gap-3 px-4 py-2 text-xs font-medium border-l-2 border-transparent text-gray-400 hover:text-white hover:bg-[#1C2128] transition-colors`}>
-                                <span className="material-symbols-outlined text-[16px]">{i === 0 ? 'smart_toy' : 'link'}</span>
+                                <Icon name={i === 0 ? 'Bot' : 'Link'} size="sm" />
                                 {item}
                             </button>
                         ))}
@@ -94,7 +95,7 @@ export default function DeveloperPortalPage() {
                 {/* Header */}
                 <header className="h-16 bg-[#0E1218] border-b border-[#30363D] px-8 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <span className="material-symbols-outlined text-blue-500">home</span>
+                        <Icon name="Home" className="text-blue-500" />
                         <span className="text-white font-bold text-sm font-sans">PPSDM Developer Portal</span>
                     </div>
                     <div className="flex items-center gap-4">
@@ -108,8 +109,8 @@ export default function DeveloperPortalPage() {
                             <span className="text-white font-bold text-xs">99.99%</span>
                         </div>
                         <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-xs font-bold font-sans transition-colors">Generate Key</button>
-                        <span className="material-symbols-outlined text-gray-500">settings</span>
-                        <span className="material-symbols-outlined text-gray-500">help</span>
+                        <Icon name="Settings" className="text-gray-500" />
+                        <Icon name="HelpCircle" className="text-gray-500" />
                     </div>
                 </header>
 
@@ -123,7 +124,7 @@ export default function DeveloperPortalPage() {
                         </div>
                     </div>
                     <div className="mt-6 relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 material-symbols-outlined text-[18px]">search</span>
+                        <Icon name="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size="sm" />
                         <input
                             type="text"
                             className="w-full bg-[#0D1117] border border-[#30363D] rounded-lg pl-12 pr-4 py-3 text-sm text-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-gray-600"
@@ -146,16 +147,16 @@ export default function DeveloperPortalPage() {
                             >
                                 <div className="flex items-center gap-4">
                                     <span className={`px-2 py-1 rounded text-[10px] font-bold w-12 text-center uppercase ${ep.method === 'POST' ? 'bg-green-900/30 text-green-400 border border-green-900/50' :
-                                            ep.method === 'GET' ? 'bg-blue-900/30 text-blue-400 border border-blue-900/50' :
-                                                ep.method === 'PUT' ? 'bg-orange-900/30 text-orange-400 border border-orange-900/50' :
-                                                    'bg-red-900/30 text-red-400 border border-red-900/50'
+                                        ep.method === 'GET' ? 'bg-blue-900/30 text-blue-400 border border-blue-900/50' :
+                                            ep.method === 'PUT' ? 'bg-orange-900/30 text-orange-400 border border-orange-900/50' :
+                                                'bg-red-900/30 text-red-400 border border-red-900/50'
                                         }`}>
                                         {ep.method}
                                     </span>
                                     <span className="text-white font-bold text-sm tracking-wide">{ep.path}</span>
                                     <span className="text-gray-500 text-xs">- {ep.desc}</span>
                                 </div>
-                                <span className={`material-symbols-outlined text-gray-500 text-[18px] transition-transform ${expandedEndpoint === ep.id ? 'rotate-180' : ''}`}>expand_more</span>
+                                <Icon name="ChevronDown" className={`text-gray-500 transition-transform ${expandedEndpoint === ep.id ? 'rotate-180' : ''}`} size="sm" />
                             </div>
 
                             {/* Expanded Details */}
@@ -201,7 +202,7 @@ export default function DeveloperPortalPage() {
 
                                     <div className="flex justify-end mt-6">
                                         <button className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded text-xs font-bold font-sans flex items-center gap-2 transition-colors">
-                                            <span className="material-symbols-outlined text-[16px]">play_arrow</span> Try It Out
+                                            <Icon name="Play" size="sm" /> Try It Out
                                         </button>
                                     </div>
                                 </div>

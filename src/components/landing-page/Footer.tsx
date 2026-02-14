@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { MapPin, Mail, Phone, X } from 'lucide-react';
 
 const footerLinks = {
     product: [
@@ -56,7 +57,7 @@ function WaterReminder() {
                         onClick={() => setIsDismissed(true)}
                         className="absolute top-2 right-2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
                     >
-                        <span className="material-symbols-outlined text-sm">close</span>
+                        <X className="w-4 h-4" />
                     </button>
                     <div className="flex items-start gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center flex-shrink-0">
@@ -143,15 +144,15 @@ export default function Footer() {
                             <h4 className="font-bold text-white mb-4 text-sm">Contact</h4>
                             <ul className="space-y-2 text-slate-500 text-sm">
                                 <li className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-base">location_on</span>
+                                    <MapPin className="w-4 h-4" />
                                     {footerLinks.contact.address}
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-base">mail</span>
+                                    <Mail className="w-4 h-4" />
                                     {footerLinks.contact.email}
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-base">phone</span>
+                                    <Phone className="w-4 h-4" />
                                     {footerLinks.contact.phone}
                                 </li>
                             </ul>

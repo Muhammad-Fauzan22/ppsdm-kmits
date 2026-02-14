@@ -4,6 +4,7 @@ import { useState, useCallback, memo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { Menu, Search, Bell, ArrowRight, User, Settings, LogOut } from 'lucide-react';
 
 interface HeaderProps {
   user?: {
@@ -15,10 +16,10 @@ interface HeaderProps {
   onMenuClick?: () => void;
 }
 
-export default memo(function DashboardHeader({ 
-  user = { name: 'Andi Pratama', level: 4 }, 
+export default memo(function DashboardHeader({
+  user = { name: 'Andi Pratama', level: 4 },
   notificationCount = 3,
-  onMenuClick 
+  onMenuClick
 }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
@@ -42,12 +43,12 @@ export default memo(function DashboardHeader({
     <header className="h-16 flex items-center justify-between border-b border-white/[0.08] bg-[#101418] px-4 sm:px-6 z-20 shrink-0">
       {/* Left side - Logo and menu */}
       <div className="flex items-center gap-4">
-        <button 
+        <button
           onClick={onMenuClick}
           className="lg:hidden text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
           aria-label="Toggle menu"
         >
-          <span className="material-symbols-outlined">menu</span>
+          <Menu className="w-6 h-6" />
         </button>
         <Link href="/dashboard" className="flex items-center gap-3 text-white">
           <div className="w-8 h-8 bg-[#003366] rounded flex items-center justify-center text-white font-bold text-lg">
@@ -60,7 +61,9 @@ export default memo(function DashboardHeader({
       {/* Center - Search bar */}
       <div className="flex flex-1 justify-center max-w-xl px-4 sm:px-8">
         <label className="relative flex w-full items-center">
-          <span className="absolute left-3 text-slate-300 material-symbols-outlined">search</span>
+          <span className="absolute left-3 text-slate-300 flex items-center justify-center">
+            <Search className="w-5 h-5" />
+          </span>
           <input
             type="text"
             value={searchQuery}
@@ -85,7 +88,7 @@ export default memo(function DashboardHeader({
             className="relative p-2 text-slate-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
             aria-label="Notifications"
           >
-            <span className="material-symbols-outlined">notifications</span>
+            <Bell className="w-6 h-6" />
             {notificationCount > 0 && (
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-[#101418]"></span>
             )}
@@ -111,9 +114,8 @@ export default memo(function DashboardHeader({
                   {notifications.map((notif) => (
                     <div
                       key={notif.id}
-                      className={`px-4 py-3 border-b border-white/[0.04] hover:bg-white/5 transition-colors cursor-pointer ${
-                        notif.unread ? 'bg-[#003366]/10' : ''
-                      }`}
+                      className={`px-4 py-3 border-b border-white/[0.04] hover:bg-white/5 transition-colors cursor-pointer ${notif.unread ? 'bg-[#003366]/10' : ''
+                        }`}
                     >
                       <div className="flex items-start gap-3">
                         <div className={`w-2 h-2 rounded-full mt-2 ${notif.unread ? 'bg-[#FFD700]' : 'bg-slate-500'}`} />
@@ -127,13 +129,13 @@ export default memo(function DashboardHeader({
                   ))}
                 </div>
                 <div className="px-4 py-2 border-t border-white/[0.08]">
-                  <Link 
+                  <Link
                     href="/dashboard/notifications"
                     className="text-xs text-[#FFD700] hover:text-white transition-colors flex items-center justify-center gap-1"
                     onClick={() => setShowNotifications(false)}
                   >
                     View all notifications
-                    <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </motion.div>
@@ -146,10 +148,10 @@ export default memo(function DashboardHeader({
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
             className="w-9 h-9 rounded-full bg-cover bg-center border border-white/[0.08] cursor-pointer hover:border-[#FFD700]/50 transition-colors overflow-hidden"
-            style={{ 
-              backgroundImage: user.avatar 
-                ? `url(${user.avatar})` 
-                : 'linear-gradient(135deg, #003366 0%, #1A4D80 100%)' 
+            style={{
+              backgroundImage: user.avatar
+                ? `url(${user.avatar})`
+                : 'linear-gradient(135deg, #003366 0%, #1A4D80 100%)'
             }}
             aria-label="User menu"
           >
@@ -180,7 +182,7 @@ export default memo(function DashboardHeader({
                     className="flex items-center gap-3 px-4 py-2 text-slate-300 hover:text-white hover:bg-white/5 transition-colors text-sm"
                     onClick={() => setShowUserMenu(false)}
                   >
-                    <span className="material-symbols-outlined text-sm">person</span>
+                    <User className="w-5 h-5" />
                     Profile
                   </Link>
                   <Link
@@ -188,7 +190,7 @@ export default memo(function DashboardHeader({
                     className="flex items-center gap-3 px-4 py-2 text-slate-300 hover:text-white hover:bg-white/5 transition-colors text-sm"
                     onClick={() => setShowUserMenu(false)}
                   >
-                    <span className="material-symbols-outlined text-sm">settings</span>
+                    <Settings className="w-5 h-5" />
                     Settings
                   </Link>
                 </div>
@@ -198,7 +200,7 @@ export default memo(function DashboardHeader({
                     className="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-sm"
                     onClick={() => setShowUserMenu(false)}
                   >
-                    <span className="material-symbols-outlined text-sm">logout</span>
+                    <LogOut className="w-5 h-5" />
                     Log Out
                   </Link>
                 </div>
@@ -210,8 +212,8 @@ export default memo(function DashboardHeader({
 
       {/* Click outside to close dropdowns */}
       {(showNotifications || showUserMenu) && (
-        <div 
-          className="fixed inset-0 z-40" 
+        <div
+          className="fixed inset-0 z-40"
           onClick={() => {
             setShowNotifications(false);
             setShowUserMenu(false);

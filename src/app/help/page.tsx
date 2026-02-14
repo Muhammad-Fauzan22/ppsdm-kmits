@@ -2,6 +2,25 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import {
+    School,
+    Menu,
+    Search,
+    LayoutGrid,
+    BookOpen,
+    FileText,
+    Wrench,
+    User,
+    Shield,
+    HelpCircle,
+    ChevronDown,
+    Headphones,
+    MessageCircle,
+    Ticket,
+    X,
+    Upload,
+    Send
+} from "lucide-react";
 
 export default function HelpCenterPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +34,7 @@ export default function HelpCenterPage() {
                         {/* Logo Area */}
                         <div className="flex items-center gap-3">
                             <div className="flex items-center justify-center size-8 bg-[#135bec]/10 rounded text-[#135bec]">
-                                <span className="material-symbols-outlined">school</span>
+                                <School className="w-5 h-5" />
                             </div>
                             <h2 className="text-lg font-bold tracking-tight text-[#111318]">PPSDM KMM</h2>
                         </div>
@@ -33,7 +52,7 @@ export default function HelpCenterPage() {
                         </div>
                         {/* Mobile Menu Button */}
                         <button className="md:hidden p-2 text-gray-600">
-                            <span className="material-symbols-outlined">menu</span>
+                            <Menu className="w-6 h-6" />
                         </button>
                     </div>
                 </div>
@@ -53,7 +72,7 @@ export default function HelpCenterPage() {
                     {/* Search Bar */}
                     <div className="max-w-[600px] mx-auto bg-white p-2 rounded-xl shadow-lg flex items-center gap-2">
                         <div className="pl-3 text-gray-400 flex items-center">
-                            <span className="material-symbols-outlined">search</span>
+                            <Search className="w-5 h-5" />
                         </div>
                         <input className="flex-1 border-none focus:ring-0 text-[#111318] placeholder:text-gray-400 text-base py-3 outline-none" placeholder="Cari solusi atau pertanyaan..." type="text" />
                         <button className="bg-[#135bec] hover:bg-[#1e3a8a] text-white font-bold h-10 px-6 rounded-lg transition-colors">
@@ -70,14 +89,14 @@ export default function HelpCenterPage() {
                         {/* Categories Grid */}
                         <section>
                             <h2 className="text-[#111318] text-xl font-bold mb-6 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[#135bec]">grid_view</span>
+                                <LayoutGrid className="text-[#135bec] w-6 h-6" />
                                 Topik Bantuan
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {/* Card 1 */}
                                 <div className="group flex flex-col gap-3 p-5 rounded-xl bg-white border border-[#dbdfe6] shadow-sm hover:shadow-md hover:border-[#135bec]/50 transition-all cursor-pointer">
                                     <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#135bec] flex items-center justify-center group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[28px]">school</span>
+                                        <School className="w-7 h-7" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#111318]">Assessment</h3>
@@ -87,7 +106,7 @@ export default function HelpCenterPage() {
                                 {/* Card 2 */}
                                 <div className="group flex flex-col gap-3 p-5 rounded-xl bg-white border border-[#dbdfe6] shadow-sm hover:shadow-md hover:border-[#135bec]/50 transition-all cursor-pointer">
                                     <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#135bec] flex items-center justify-center group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[28px]">menu_book</span>
+                                        <BookOpen className="w-7 h-7" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#111318]">Library</h3>
@@ -97,7 +116,7 @@ export default function HelpCenterPage() {
                                 {/* Card 3 */}
                                 <div className="group flex flex-col gap-3 p-5 rounded-xl bg-white border border-[#dbdfe6] shadow-sm hover:shadow-md hover:border-[#135bec]/50 transition-all cursor-pointer">
                                     <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#135bec] flex items-center justify-center group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[28px]">description</span>
+                                        <FileText className="w-7 h-7" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#111318]">RPI</h3>
@@ -107,7 +126,7 @@ export default function HelpCenterPage() {
                                 {/* Card 4 */}
                                 <div className="group flex flex-col gap-3 p-5 rounded-xl bg-white border border-[#dbdfe6] shadow-sm hover:shadow-md hover:border-[#135bec]/50 transition-all cursor-pointer">
                                     <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#135bec] flex items-center justify-center group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[28px]">build</span>
+                                        <Wrench className="w-7 h-7" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#111318]">Technical Issues</h3>
@@ -117,7 +136,7 @@ export default function HelpCenterPage() {
                                 {/* Card 5 */}
                                 <div className="group flex flex-col gap-3 p-5 rounded-xl bg-white border border-[#dbdfe6] shadow-sm hover:shadow-md hover:border-[#135bec]/50 transition-all cursor-pointer">
                                     <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#135bec] flex items-center justify-center group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[28px]">person</span>
+                                        <User className="w-7 h-7" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#111318]">Account</h3>
@@ -127,7 +146,7 @@ export default function HelpCenterPage() {
                                 {/* Card 6 */}
                                 <div className="group flex flex-col gap-3 p-5 rounded-xl bg-white border border-[#dbdfe6] shadow-sm hover:shadow-md hover:border-[#135bec]/50 transition-all cursor-pointer">
                                     <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#135bec] flex items-center justify-center group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[28px]">shield</span>
+                                        <Shield className="w-7 h-7" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-[#111318]">Policies</h3>
@@ -140,7 +159,7 @@ export default function HelpCenterPage() {
                         <section>
                             <div className="flex items-center justify-between mb-6">
                                 <h2 className="text-[#111318] text-xl font-bold flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[#135bec]">quiz</span>
+                                    <HelpCircle className="text-[#135bec] w-6 h-6" />
                                     FAQ Populer
                                 </h2>
                                 <Link className="text-sm text-[#135bec] font-medium hover:underline" href="#">Lihat semua</Link>
@@ -150,7 +169,7 @@ export default function HelpCenterPage() {
                                 <details className="group bg-white rounded-lg border border-[#dbdfe6] overflow-hidden open:shadow-sm transition-all duration-300">
                                     <summary className="flex cursor-pointer items-center justify-between gap-4 p-5 hover:bg-gray-50 transition-colors list-none">
                                         <span className="text-[#111318] font-medium leading-normal">Bagaimana cara reset password?</span>
-                                        <span className="material-symbols-outlined text-gray-400 group-open:text-[#135bec] group-open:rotate-180 transition-transform">expand_more</span>
+                                        <ChevronDown className="text-gray-400 group-open:text-[#135bec] group-open:rotate-180 transition-transform w-6 h-6" />
                                     </summary>
                                     <div className="px-5 pb-5 pt-0 text-gray-600 text-sm leading-relaxed border-t border-transparent group-open:border-[#f0f2f4] group-open:pt-4">
                                         Untuk mereset kata sandi Anda, silakan kunjungi halaman login dan klik "Lupa Password". Masukkan email institusi Anda, dan kami akan mengirimkan tautan untuk membuat kata sandi baru. Pastikan untuk memeriksa folder spam jika email tidak muncul.
@@ -160,7 +179,7 @@ export default function HelpCenterPage() {
                                 <details className="group bg-white rounded-lg border border-[#dbdfe6] overflow-hidden open:shadow-sm transition-all duration-300">
                                     <summary className="flex cursor-pointer items-center justify-between gap-4 p-5 hover:bg-gray-50 transition-colors list-none">
                                         <span className="text-[#111318] font-medium leading-normal">Batas waktu pengumpulan RPI?</span>
-                                        <span className="material-symbols-outlined text-gray-400 group-open:text-[#135bec] group-open:rotate-180 transition-transform">expand_more</span>
+                                        <ChevronDown className="text-gray-400 group-open:text-[#135bec] group-open:rotate-180 transition-transform w-6 h-6" />
                                     </summary>
                                     <div className="px-5 pb-5 pt-0 text-gray-600 text-sm leading-relaxed border-t border-transparent group-open:border-[#f0f2f4] group-open:pt-4">
                                         Batas waktu pengumpulan RPI (Rencana Pembelajaran Individu) biasanya ditetapkan pada akhir minggu kedua setiap semester. Mohon cek kalender akademik terbaru di menu "Program" untuk tanggal pastinya. Keterlambatan dapat mempengaruhi proses validasi akademik.
@@ -170,7 +189,7 @@ export default function HelpCenterPage() {
                                 <details className="group bg-white rounded-lg border border-[#dbdfe6] overflow-hidden open:shadow-sm transition-all duration-300">
                                     <summary className="flex cursor-pointer items-center justify-between gap-4 p-5 hover:bg-gray-50 transition-colors list-none">
                                         <span className="text-[#111318] font-medium leading-normal">Cara akses jurnal internasional?</span>
-                                        <span className="material-symbols-outlined text-gray-400 group-open:text-[#135bec] group-open:rotate-180 transition-transform">expand_more</span>
+                                        <ChevronDown className="text-gray-400 group-open:text-[#135bec] group-open:rotate-180 transition-transform w-6 h-6" />
                                     </summary>
                                     <div className="px-5 pb-5 pt-0 text-gray-600 text-sm leading-relaxed border-t border-transparent group-open:border-[#f0f2f4] group-open:pt-4">
                                         Mahasiswa aktif dapat mengakses jurnal internasional melalui portal perpustakaan digital (e-Library). Login menggunakan akun mahasiswa Anda, lalu pilih menu "E-Resources". Kami berlangganan Scopus, IEEE, dan ScienceDirect.
@@ -185,21 +204,20 @@ export default function HelpCenterPage() {
                         <div className="bg-white rounded-xl border border-[#dbdfe6] p-6 shadow-sm sticky top-24">
                             <div className="mb-4">
                                 <div className="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-3">
-                                    <span className="material-symbols-outlined">support_agent</span>
+                                    <Headphones className="w-6 h-6" />
                                 </div>
                                 <h3 className="text-lg font-bold text-[#111318]">Butuh Bantuan Lebih?</h3>
                                 <p className="text-sm text-gray-500 mt-2">Tim support kami siap membantu Anda Senin - Jumat, 08.00 - 16.00 WIB.</p>
                             </div>
                             <div className="space-y-3">
                                 <button className="w-full flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-[#dbdfe6] bg-white text-[#111318] text-sm font-bold hover:bg-gray-50 transition-colors">
-                                    <span className="material-symbols-outlined text-green-600 text-[20px]">chat</span>
+                                    <MessageCircle className="text-green-600 w-5 h-5" />
                                     Hubungi via WhatsApp
                                 </button>
                                 <button
-                                    onClick={() => setIsModalOpen(true)}
                                     className="w-full flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-[#135bec] text-white text-sm font-bold hover:bg-[#1e3a8a] transition-colors shadow-sm"
                                 >
-                                    <span className="material-symbols-outlined text-[20px]">confirmation_number</span>
+                                    <Ticket className="w-5 h-5" />
                                     Kirim Tiket Support
                                 </button>
                             </div>
@@ -231,14 +249,14 @@ export default function HelpCenterPage() {
                     <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
                         <div className="px-6 py-4 border-b border-[#f0f2f4] flex items-center justify-between bg-white shrink-0">
                             <h3 className="text-lg font-bold text-[#111318] flex items-center gap-2" id="modal-title">
-                                <span className="material-symbols-outlined text-[#135bec]">confirmation_number</span>
+                                <Ticket className="text-[#135bec] w-6 h-6" />
                                 Kirim Tiket Support
                             </h3>
                             <button
                                 onClick={() => setIsModalOpen(false)}
                                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
                             >
-                                <span className="material-symbols-outlined text-[24px]">close</span>
+                                <X className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="p-6 overflow-y-auto">
@@ -261,7 +279,7 @@ export default function HelpCenterPage() {
                                             <option value="policies">Policies (Kebijakan kampus)</option>
                                         </select>
                                         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 flex items-center">
-                                            <span className="material-symbols-outlined text-[20px]">expand_more</span>
+                                            <ChevronDown className="w-5 h-5" />
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +291,7 @@ export default function HelpCenterPage() {
                                     <label className="block text-sm font-bold text-[#111318]">Lampiran File</label>
                                     <div className="border-2 border-dashed border-[#dbdfe6] rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-[#135bec] hover:bg-blue-50/50 transition-all cursor-pointer group bg-gray-50/30">
                                         <div className="w-10 h-10 rounded-full bg-white border border-[#dbdfe6] text-gray-500 group-hover:text-[#135bec] group-hover:border-[#135bec] flex items-center justify-center mb-3 transition-colors shadow-sm">
-                                            <span className="material-symbols-outlined text-[20px]">cloud_upload</span>
+                                            <Upload className="w-5 h-5" />
                                         </div>
                                         <p className="text-sm font-bold text-[#111318] group-hover:text-[#135bec] transition-colors">Klik untuk upload</p>
                                         <p className="text-xs text-gray-500 mt-1">atau drag & drop file di sini</p>
@@ -291,7 +309,7 @@ export default function HelpCenterPage() {
                             </button>
                             <button className="px-5 h-10 rounded-lg bg-[#135bec] hover:bg-[#1e3a8a] text-white font-bold text-sm shadow-sm transition-all hover:shadow flex items-center gap-2 focus:ring-4 focus:ring-[#135bec]/20">
                                 <span>Kirim Tiket</span>
-                                <span className="material-symbols-outlined text-[18px]">send</span>
+                                <Send className="w-4 h-4" />
                             </button>
                         </div>
                     </div>

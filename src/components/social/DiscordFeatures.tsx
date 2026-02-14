@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { Plus, Users, Sparkles, LayoutGrid, Layout, LayoutList, SmilePlus, Check } from 'lucide-react';
 
 /**
  * QuickAccessChannel - Discord-style channel shortcuts
@@ -10,7 +11,7 @@ import { cn } from '@/lib/utils';
 export interface Channel {
     id: string;
     name: string;
-    icon: string;
+    icon: React.ReactNode;
     href: string;
     unread?: number;
     active?: boolean;
@@ -38,7 +39,7 @@ export function QuickAccessChannels({
                     {title}
                 </span>
                 <button className="p-1 rounded hover:bg-white/5 transition-colors">
-                    <span className="material-symbols-outlined text-slate-500 text-sm">add</span>
+                    <Plus className="text-slate-500 w-4 h-4" />
                 </button>
             </div>
 
@@ -58,7 +59,7 @@ export function QuickAccessChannels({
                     >
                         {/* Channel Icon */}
                         <span className={cn(
-                            'material-symbols-outlined text-lg',
+                            'text-lg flex items-center justify-center',
                             channel.active ? 'text-brand-accent' : 'text-slate-500'
                         )}>
                             {channel.icon}
@@ -164,7 +165,7 @@ export function GuildCard({
                         <span>{onlineCount?.toLocaleString() || 0} online</span>
                     </div>
                     <div className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-xs">group</span>
+                        <Users className="w-3 h-3" />
                         <span>{memberCount.toLocaleString()} anggota</span>
                     </div>
                 </div>
@@ -200,7 +201,7 @@ export interface Recommendation {
     description: string;
     type: 'assessment' | 'course' | 'article' | 'quest';
     matchScore: number;
-    icon: string;
+    icon: React.ReactNode;
     href: string;
 }
 
@@ -227,7 +228,7 @@ export function SmartRecommendations({
     return (
         <div className={cn('space-y-3', className)}>
             <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                <span className="material-symbols-outlined text-ml-gold">auto_awesome</span>
+                <Sparkles className="text-ml-gold w-4 h-4" />
                 {title}
             </h3>
 
@@ -246,7 +247,7 @@ export function SmartRecommendations({
                             'flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br',
                             typeColors[rec.type]
                         )}>
-                            <span className="material-symbols-outlined text-white">{rec.icon}</span>
+                            {rec.icon}
                         </div>
 
                         {/* Content */}
@@ -291,9 +292,9 @@ export interface DensityControlProps {
 
 export function DensityControl({ currentDensity, onChange, className }: DensityControlProps) {
     const densities = [
-        { value: 'compact' as const, icon: 'density_small', label: 'Compact' },
-        { value: 'normal' as const, icon: 'density_medium', label: 'Normal' },
-        { value: 'relaxed' as const, icon: 'density_large', label: 'Relaxed' },
+        { value: 'compact' as const, icon: <LayoutGrid className="w-4 h-4" />, label: 'Compact' },
+        { value: 'normal' as const, icon: <Layout className="w-4 h-4" />, label: 'Normal' },
+        { value: 'relaxed' as const, icon: <LayoutList className="w-4 h-4" />, label: 'Relaxed' },
     ];
 
     return (
@@ -310,7 +311,7 @@ export function DensityControl({ currentDensity, onChange, className }: DensityC
                     )}
                     title={d.label}
                 >
-                    <span className="material-symbols-outlined text-base">{d.icon}</span>
+                    {d.icon}
                     <span className="hidden sm:inline">{d.label}</span>
                 </button>
             ))}

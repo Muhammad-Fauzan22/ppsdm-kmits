@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { GraduationCap, ArrowRight } from "lucide-react";
 
 interface LearningModulesProps {
   modules: string[];
@@ -26,7 +27,7 @@ export function LearningModules({ modules, dimensionSlug }: LearningModulesProps
             khusus untuk pengembangan dimensi ini.
           </p>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {modules.map((module, index) => (
             <motion.div
@@ -39,9 +40,7 @@ export function LearningModules({ modules, dimensionSlug }: LearningModulesProps
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-cyan-400 text-2xl">
-                    school
-                  </span>
+                  <GraduationCap className="w-8 h-8 text-cyan-400" />
                 </div>
                 <h3 className="text-lg font-bold text-white">
                   {module}
@@ -55,7 +54,7 @@ export function LearningModules({ modules, dimensionSlug }: LearningModulesProps
                 className="text-cyan-400 font-semibold text-sm flex items-center gap-2 hover:text-cyan-300 transition-colors"
               >
                 <span>Mulai Belajar</span>
-                <span className="material-symbols-outlined text-lg">arrow_forward</span>
+                <ArrowRight className="w-5 h-5" />
               </Link>
             </motion.div>
           ))}

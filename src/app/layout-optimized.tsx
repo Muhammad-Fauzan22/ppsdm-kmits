@@ -91,57 +91,16 @@ export default function RootLayout({
         {/* Preconnect to Google Fonts for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* Material Symbols - load with display: swap */}
-        <link 
-          rel="stylesheet" 
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-        />
-        
+
         {/* Critical CSS inline for faster first paint */}
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           /* Critical font loading styles */
           .font-sans { font-family: var(--font-inter), system-ui, -apple-system, sans-serif; }
           .font-heading { font-family: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif; }
           
           /* Prevent FOIT (Flash of Invisible Text) */
           html { font-family: var(--font-inter), system-ui, sans-serif; }
-          
-          /* Material Symbols styles */
-          .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined', sans-serif;
-            font-weight: normal;
-            font-style: normal;
-            font-size: 24px;
-            line-height: 1;
-            letter-spacing: normal;
-            text-transform: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            word-wrap: normal;
-            direction: ltr;
-            -webkit-font-feature-settings: 'liga';
-            -webkit-font-smoothing: antialiased;
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            width: 24px;
-            height: 24px;
-            overflow: hidden;
-          }
-          
-          /* Loading state */
-          .material-symbols-outlined:empty {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading-shimmer 1.5s infinite;
-            border-radius: 4px;
-          }
-          
-          @keyframes loading-shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-          }
         `}} />
       </head>
       <body className="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col overflow-x-hidden">

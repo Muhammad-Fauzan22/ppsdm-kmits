@@ -2,6 +2,7 @@
 
 import React, { lazy, Suspense, ComponentType } from 'react';
 import { Skeleton, SkeletonCard, SkeletonList } from './SkeletonLoaders';
+import { ImageOff } from 'lucide-react';
 
 /**
  * LazyLoader - Higher-order component for lazy loading with skeleton fallback
@@ -54,7 +55,7 @@ export function LazyImage({
             {/* Error state */}
             {hasError && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/5">
-                    <span className="material-symbols-outlined text-slate-500">broken_image</span>
+                    <ImageOff className="text-slate-500 w-8 h-8" />
                 </div>
             )}
 

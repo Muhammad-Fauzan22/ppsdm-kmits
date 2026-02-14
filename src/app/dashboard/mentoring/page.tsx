@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { History, Plus, Search, X, SlidersHorizontal, Star, TrendingUp, GraduationCap } from 'lucide-react';
 
 export default function MentorshipPage() {
     return (
@@ -20,11 +21,11 @@ export default function MentorshipPage() {
 
                 <div className="flex items-center gap-3">
                     <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-sm font-medium transition-colors">
-                        <span className="material-symbols-outlined text-lg">history</span>
+                        <History className="w-5 h-5" />
                         History
                     </button>
                     <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-600 rounded-full text-white text-sm font-bold shadow-lg shadow-blue-600/20 transition-all">
-                        <span className="material-symbols-outlined text-lg">add</span>
+                        <Plus className="w-5 h-5" />
                         Become a Mentor
                     </button>
                 </div>
@@ -61,7 +62,7 @@ export default function MentorshipPage() {
                             {/* Search Bar */}
                             <div className="w-full max-w-lg flex items-center p-1 bg-black/40 border border-white/20 rounded-xl backdrop-blur shadow-2xl focus-within:border-blue-600/50 transition-colors">
                                 <div className="px-3 text-slate-400">
-                                    <span className="material-symbols-outlined">search</span>
+                                    <Search className="w-5 h-5" />
                                 </div>
                                 <input className="flex-1 bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 text-sm h-12 outline-none" placeholder="Search by skill (e.g., Python, Design)..." type="text" />
                                 <button className="bg-blue-600 hover:bg-blue-600 text-white font-bold h-10 px-6 rounded-lg transition-colors shadow-lg shadow-blue-600/20">
@@ -82,11 +83,11 @@ export default function MentorshipPage() {
                         {['Python', 'UI Design', 'Public Speaking', 'Level 5+ Only'].map((tag, i) => (
                             <button key={i} className={`flex h-9 items-center gap-2 rounded-full border px-4 transition-colors ${i === 2 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/5 border-white/10 hover:border-blue-600/50 hover:text-white text-slate-400'}`}>
                                 <span className="text-sm font-medium">{tag}</span>
-                                {i === 2 && <span className="material-symbols-outlined text-[16px]">close</span>}
+                                {i === 2 && <X className="w-4 h-4" />}
                             </button>
                         ))}
                         <button className="flex h-9 items-center gap-2 text-slate-400 hover:text-white ml-auto">
-                            <span className="material-symbols-outlined">tune</span>
+                            <SlidersHorizontal className="w-5 h-5" />
                             <span className="text-sm font-medium">All Filters</span>
                         </button>
                     </motion.div>
@@ -127,7 +128,7 @@ export default function MentorshipPage() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-1 text-amber-400 bg-amber-400/10 px-2 py-1 rounded-lg">
-                                        <span className="material-symbols-outlined text-[16px] fill-[1]">star</span>
+                                        <Star className="w-4 h-4 fill-amber-400" />
                                         <span className="text-sm font-bold">{mentor.rating}</span>
                                     </div>
                                 </div>
@@ -167,7 +168,7 @@ export default function MentorshipPage() {
                         <div className="flex justify-between items-center">
                             <h3 className="text-white font-bold text-lg">Peer Coaching XP</h3>
                             <div className="bg-blue-600/20 text-blue-600 p-1 rounded-md">
-                                <span className="material-symbols-outlined">trending_up</span>
+                                <TrendingUp className="w-6 h-6" />
                             </div>
                         </div>
                         <div className="flex flex-col items-center py-2">
@@ -210,7 +211,7 @@ export default function MentorshipPage() {
                                         <span className="text-xs text-slate-500">{leader.sessions} Sessions</span>
                                     </div>
                                     <div className="text-amber-400 flex items-center gap-0.5 text-xs font-bold">
-                                        <span className="material-symbols-outlined text-[14px] fill-[1]">star</span> {leader.rating}
+                                        <Star className="w-3.5 h-3.5 fill-amber-400" /> {leader.rating}
                                     </div>
                                 </div>
                             ))}
@@ -219,7 +220,7 @@ export default function MentorshipPage() {
 
                     {/* CTA Card */}
                     <div className="rounded-2xl p-6 bg-gradient-to-br from-blue-600 to-blue-900 text-white flex flex-col gap-3 relative overflow-hidden shadow-lg shadow-blue-600/20">
-                        <span className="material-symbols-outlined absolute -bottom-4 -right-4 text-white/10 text-[100px]">school</span>
+                        <GraduationCap className="absolute -bottom-4 -right-4 text-white/10 w-[100px] h-[100px]" />
                         <h3 className="font-bold text-lg z-10 font-grotesk">Become a Mentor</h3>
                         <p className="text-sm text-blue-100 z-10">Share your knowledge, earn XP, and get badges!</p>
                         <button className="mt-2 bg-white text-blue-600 text-sm font-bold py-2 px-4 rounded-lg z-10 w-fit hover:bg-gray-100 transition-colors">Apply Now</button>

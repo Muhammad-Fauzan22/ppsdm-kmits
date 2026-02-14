@@ -1,5 +1,7 @@
 "use client";
 
+import { Icon } from "@/components/ui/Icon";
+
 export default function MobileHeaderDemo() {
     return (
         <div className="bg-gray-100 dark:bg-gray-900 font-[family-name:var(--font-inter)] flex items-center justify-center min-h-screen p-4 sm:p-8">
@@ -35,7 +37,7 @@ export default function MobileHeaderDemo() {
                         <div className="flex items-center gap-3">
                             {/* Notification Bell */}
                             <button aria-label="Notifications" className="relative flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700">
-                                <span className="material-symbols-outlined text-gray-700 dark:text-gray-200" style={{ fontSize: "24px" }}>notifications</span>
+                                <Icon name="Bell" className="text-gray-700 dark:text-gray-200" size="md" />
                                 {/* Red Dot Indicator (#C62828) */}
                                 <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-[#C62828] border border-white dark:border-[#101622] ring-0"></span>
                             </button>
@@ -56,7 +58,7 @@ export default function MobileHeaderDemo() {
                             <p className="text-[#dbeafe] text-xs font-medium mb-1">Welcome back,</p>
                             <h3 className="text-xl font-bold mb-3">Dr. Alexander</h3>
                             <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1.5 text-xs font-medium">
-                                <span className="material-symbols-outlined text-sm mr-1">verified_user</span>
+                                <Icon name="ShieldCheck" className="text-sm mr-1" />
                                 System Active
                             </div>
                         </div>
@@ -72,7 +74,7 @@ export default function MobileHeaderDemo() {
                         <div className="space-y-3">
                             <div className="flex items-start gap-3">
                                 <div className="h-8 w-8 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0">
-                                    <span className="material-symbols-outlined text-lg">warning</span>
+                                    <Icon name="AlertTriangle" className="text-lg" />
                                 </div>
                                 <div>
                                     <p className="text-xs font-medium text-gray-800 dark:text-gray-200">Server Load High</p>
@@ -81,7 +83,7 @@ export default function MobileHeaderDemo() {
                             </div>
                             <div className="flex items-start gap-3">
                                 <div className="h-8 w-8 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center shrink-0">
-                                    <span className="material-symbols-outlined text-lg">check_circle</span>
+                                    <Icon name="CheckCircle" className="text-lg" />
                                 </div>
                                 <div>
                                     <p className="text-xs font-medium text-gray-800 dark:text-gray-200">Backup Completed</p>
@@ -109,15 +111,15 @@ export default function MobileHeaderDemo() {
                 {/* Bottom Nav Bar (Simulated) */}
                 <nav className="bg-white dark:bg-[#151b26] border-t border-gray-100 dark:border-gray-800 h-[70px] flex items-center justify-around px-2 pb-2">
                     <div className="flex flex-col items-center gap-1 p-2 text-[#135bec]">
-                        <span className="material-symbols-outlined text-2xl">home</span>
+                        <Icon name="Home" className="text-2xl" />
                         <span className="text-[10px] font-medium">Home</span>
                     </div>
                     <div className="flex flex-col items-center gap-1 p-2 text-gray-400 dark:text-gray-500">
-                        <span className="material-symbols-outlined text-2xl">analytics</span>
+                        <Icon name="BarChart" className="text-2xl" />
                         <span className="text-[10px] font-medium">Stats</span>
                     </div>
                     <div className="flex flex-col items-center gap-1 p-2 text-gray-400 dark:text-gray-500">
-                        <span className="material-symbols-outlined text-2xl">settings</span>
+                        <Icon name="Settings" className="text-2xl" />
                         <span className="text-[10px] font-medium">Settings</span>
                     </div>
                 </nav>

@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import KnowledgeGrid from '@/components/knowledge/KnowledgeGrid';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Knowledge Hub Keteknikan',
@@ -19,9 +20,7 @@ export default function KnowledgePage() {
                             href="/"
                             className="text-slate-400 hover:text-white transition p-1"
                         >
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
+                            <ArrowLeft className="w-5 h-5" />
                         </Link>
                         <div>
                             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">

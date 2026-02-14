@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Icon } from '@/components/ui/Icon';
 
 import { ITS_FACULTIES } from "@/lib/its_programs";
 
@@ -72,7 +73,7 @@ export default function OnboardingPage() {
                     <div className="absolute inset-0 bg-brand-blue/5"></div>
                     <div className="relative z-10">
                         <div className="w-24 h-24 bg-gradient-to-tr from-brand-blue to-brand-accent rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl shadow-brand-blue/30 animate-scale-up">
-                            <span className="material-symbols-outlined text-5xl text-white">check_circle</span>
+                            <Icon name="CheckCircle" className="w-12 h-12 text-white" />
                         </div>
                         <h2 className="text-3xl font-bold font-heading text-white mb-4">Registration Complete!</h2>
                         <p className="text-slate-400 mb-8 leading-relaxed">
@@ -82,7 +83,7 @@ export default function OnboardingPage() {
                             onClick={() => router.push('/dashboard')}
                             className="w-full py-4 bg-white text-its-dark font-bold rounded-xl hover:bg-brand-accent transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2"
                         >
-                            <span className="material-symbols-outlined">dashboard</span>
+                            <Icon name="LayoutDashboard" className="w-5 h-5" />
                             Enter Dashboard
                         </button>
                     </div>
@@ -97,7 +98,7 @@ export default function OnboardingPage() {
             <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/5 bg-its-dark/80 backdrop-blur-md px-6 py-4 lg:px-12">
                 <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center size-10 rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue shadow-lg shadow-brand-blue/20">
-                        <span className="material-symbols-outlined text-white">school</span>
+                        <Icon name="GraduationCap" className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex flex-col">
                         <span className="text-white text-lg font-bold font-heading leading-tight">PPSDM KMM</span>
@@ -145,7 +146,9 @@ export default function OnboardingPage() {
                                     <div key={step} className="flex flex-col items-center gap-3 z-10">
                                         <div className={`size-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-gradient-to-br from-its-blue to-brand-blue text-white shadow-lg shadow-brand-blue/30 scale-110' : 'bg-its-dark border border-white/10 text-slate-500'}`}>
                                             {isActive ? (
-                                                <span className="material-symbols-outlined text-xl">{step === 1 ? 'badge' : step === 2 ? 'school' : 'route'}</span>
+                                                step === 1 ? <Icon name="IdCard" className="w-5 h-5" /> :
+                                                    step === 2 ? <Icon name="School" className="w-5 h-5" /> :
+                                                        <Icon name="Signpost" className="w-5 h-5" />
                                             ) : (
                                                 <span className="text-sm font-bold">{step}</span>
                                             )}
@@ -166,7 +169,7 @@ export default function OnboardingPage() {
                             <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/5 to-transparent"></div>
                             <div className="relative z-10">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/20 text-brand-accent text-xs font-bold uppercase tracking-wider mb-6">
-                                    <span className="material-symbols-outlined text-sm">lightbulb</span>
+                                    <Icon name="Lightbulb" className="w-4 h-4" />
                                     Insight
                                 </div>
                                 <h3 className="text-white font-bold font-heading text-2xl mb-4 leading-snug">
@@ -233,7 +236,7 @@ export default function OnboardingPage() {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-4 text-slate-500 pointer-events-none">expand_more</span>
+                                                    <Icon name="ChevronDown" className="absolute right-4 top-4 text-slate-500 pointer-events-none w-6 h-6" />
                                                 </div>
                                             </div>
 
@@ -256,7 +259,7 @@ export default function OnboardingPage() {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-4 text-slate-500 pointer-events-none">expand_more</span>
+                                                    <Icon name="ChevronDown" className="absolute right-4 top-4 text-slate-500 pointer-events-none w-6 h-6" />
                                                 </div>
                                             </div>
                                         </div>
@@ -292,7 +295,7 @@ export default function OnboardingPage() {
                                                         <option value="" disabled className="bg-its-dark">Select</option>
                                                         {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <option key={s} value={s} className="bg-its-dark">Sem {s}</option>)}
                                                     </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-4 text-slate-500 pointer-events-none">expand_more</span>
+                                                    <Icon name="ChevronDown" className="absolute right-4 top-4 text-slate-500 pointer-events-none w-6 h-6" />
                                                 </div>
                                             </div>
                                         </div>
@@ -363,14 +366,14 @@ export default function OnboardingPage() {
                                         type="button"
                                     >
                                         <span>{currentStep === 3 ? (isLoading ? 'Finalizing...' : 'Complete Registration') : 'Next Step'}</span>
-                                        {!isLoading && <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>}
+                                        {!isLoading && <Icon name="ArrowRight" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
                                     </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Activity, Brain, User, Shield, Zap, BookOpen, Heart, Smartphone } from "lucide-react";
+import { Activity, Brain, User, Shield, Zap, BookOpen, Heart, Smartphone, ArrowRight } from "lucide-react";
 
 export default function AssessmentHubPage() {
     return (
@@ -51,7 +51,7 @@ export default function AssessmentHubPage() {
                                 Vitality, Sleep, Nutrition & Energy Levels.
                             </p>
                             <div className="flex items-center text-emerald-500 text-xs font-bold uppercase tracking-wider gap-1">
-                                Start Assessment <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                Start Assessment <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
                     </motion.div>
@@ -79,7 +79,7 @@ export default function AssessmentHubPage() {
                                 Emotional Well-being, Resilience & Stress Management.
                             </p>
                             <div className="flex items-center text-rose-500 text-xs font-bold uppercase tracking-wider gap-1">
-                                Start Assessment <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                Start Assessment <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
                     </motion.div>
@@ -107,7 +107,7 @@ export default function AssessmentHubPage() {
                                 Critical Thinking, Problem Solving & Focus.
                             </p>
                             <div className="flex items-center text-blue-500 text-xs font-bold uppercase tracking-wider gap-1">
-                                Start Assessment <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                Start Assessment <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
                     </motion.div>

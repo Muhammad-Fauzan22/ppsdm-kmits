@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { create } from 'zustand';
+import { Bell, Play } from 'lucide-react';
 
 interface IncompleteModalState {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export function IncompleteAssessmentModal({
 }: IncompleteAssessmentModalProps) {
   const { isOpen, closeModal } = useIncompleteModalStore();
   const remainingCount = 9 - completedCount;
-  
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -50,17 +51,17 @@ export function IncompleteAssessmentModal({
           >
             <div className="text-center mb-6">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-its-blue to-brand-accent flex items-center justify-center">
-                <span className="material-symbols-outlined text-3xl text-white">notifications</span>
+                <Bell className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">
                 Assessment Belum Selesai
               </h3>
               <p className="text-slate-400">
-                Anda telah menyelesaikan {completedCount} dari 9 dimensi. 
+                Anda telah menyelesaikan {completedCount} dari 9 dimensi.
                 Selesaikan {remainingCount} dimensi lagi untuk mendapatkan hasil holistik lengkap.
               </p>
             </div>
-            
+
             {/* Progress */}
             <div className="mb-6">
               <div className="flex justify-between text-sm mb-2">
@@ -70,13 +71,13 @@ export function IncompleteAssessmentModal({
                 </span>
               </div>
               <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-its-blue to-brand-accent transition-all duration-500"
                   style={{ width: `${(completedCount / 9) * 100}%` }}
                 />
               </div>
             </div>
-            
+
             {/* Dimensions */}
             <div className="mb-6">
               <p className="text-xs text-slate-500 mb-2">Sisa dimensi:</p>
@@ -86,11 +87,10 @@ export function IncompleteAssessmentModal({
                   return (
                     <span
                       key={num}
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                        isCompleted 
-                          ? 'bg-green-500/20 text-green-400' 
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isCompleted
+                          ? 'bg-green-500/20 text-green-400'
                           : 'bg-white/10 text-slate-400'
-                      }`}
+                        }`}
                     >
                       {num}
                     </span>
@@ -98,7 +98,7 @@ export function IncompleteAssessmentModal({
                 })}
               </div>
             </div>
-            
+
             {/* Actions */}
             <div className="flex flex-col gap-3">
               <button
@@ -108,7 +108,7 @@ export function IncompleteAssessmentModal({
                 }}
                 className="w-full py-4 bg-white text-[#0A0F1A] font-bold rounded-xl hover:bg-brand-accent transition-colors flex items-center justify-center gap-2"
               >
-                <span className="material-symbols-outlined">play_arrow</span>
+                <Play className="w-5 h-5" />
                 Lanjutkan Assessment
               </button>
               {completedCount > 0 && (
@@ -139,7 +139,7 @@ export function IncompleteAssessmentModal({
 // Auto-show modal when user has incomplete assessment
 export function useIncompleteAssessmentReminder(completedCount: number, triggerContinue: () => void) {
   const { showModal } = useIncompleteModalStore();
-  
+
   const showReminder = () => {
     if (completedCount > 0 && completedCount < 9) {
       // Show after 5 seconds of page load
@@ -148,7 +148,7 @@ export function useIncompleteAssessmentReminder(completedCount: number, triggerC
       }, 5000);
     }
   };
-  
+
   return { showReminder };
 }
 

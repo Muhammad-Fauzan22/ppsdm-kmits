@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Smile, Laugh, Meh, Frown, Plus } from 'lucide-react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,11 +46,11 @@ const journalEntries = [
   },
 ];
 
-const moodIcons: Record<string, string> = {
-  happy: 'sentiment_very_satisfied',
-  excited: 'mood',
-  neutral: 'sentiment_neutral',
-  sad: 'sentiment_dissatisfied',
+const moodIcons: Record<string, any> = {
+  happy: Smile,
+  excited: Laugh,
+  neutral: Meh,
+  sad: Frown,
 };
 
 const moodColors: Record<string, string> = {
@@ -69,14 +70,15 @@ function JournalCard({ entry }: { entry: typeof journalEntries[0] }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-2">
             <h3 className="text-white font-semibold">{entry.title}</h3>
-            <span className={`material-symbols-outlined ${moodColors[entry.mood]}`}>
-              {moodIcons[entry.mood]}
-            </span>
+            {(() => {
+              const Icon = moodIcons[entry.mood];
+              return <Icon className={`w-5 h-5 ${moodColors[entry.mood]}`} />;
+            })()}
           </div>
           <p className="text-slate-400 text-sm line-clamp-3">{entry.content}</p>
           <div className="flex items-center gap-2 mt-3">
             {entry.tags.map((tag) => (
-              <span 
+              <span
                 key={tag}
                 className="px-2 py-0.5 bg-[#003366]/30 text-[#1A4D80] text-[10px] rounded-full"
               >
@@ -117,7 +119,7 @@ export default function JournalPage() {
           onClick={() => setShowNewEntry(true)}
           className="px-4 py-2.5 bg-[#FFD700] text-[#0f1923] rounded-lg font-bold hover:bg-[#FFD700]/90 transition-colors flex items-center justify-center gap-2"
         >
-          <span className="material-symbols-outlined">add</span>
+          <Plus className="w-5 h-5" />
           New Entry
         </button>
       </motion.div>

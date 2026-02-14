@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 import Link from "next/link";
 
 export default function AlchemyEnginePage() {
@@ -11,13 +12,13 @@ export default function AlchemyEnginePage() {
             <div className="flex justify-between items-center mb-8 bg-[#1A1D24] p-4 rounded-2xl border border-[#2D303E]">
                 <div className="flex items-center gap-3">
                     <div className="size-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50">
-                        <span className="material-symbols-outlined text-white">science</span>
+                        <Icon name="FlaskConical" className="text-white" />
                     </div>
                     <h1 className="font-bold text-lg">Quantum Content Alchemy Engine</h1>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button className="text-gray-400 hover:text-white"><span className="material-symbols-outlined">notifications</span></button>
-                    <button className="text-gray-400 hover:text-white"><span className="material-symbols-outlined">settings</span></button>
+                    <button className="text-gray-400 hover:text-white"><Icon name="Bell" /></button>
+                    <button className="text-gray-400 hover:text-white"><Icon name="Settings" /></button>
                     <div className="text-right hidden md:block">
                         <p className="text-xs font-bold text-white">Dr. Alara K.</p>
                         <p className="text-[10px] text-gray-500">Lead Archivist</p>
@@ -33,15 +34,15 @@ export default function AlchemyEnginePage() {
                 <div className="bg-[#1A1D24] border border-[#2D303E] p-5 rounded-2xl">
                     <div className="flex justify-between items-start mb-2">
                         <span className="text-xs text-gray-400 font-bold uppercase">Total Materials</span>
-                        <span className="material-symbols-outlined text-gray-500 text-sm">library_books</span>
+                        <Icon name="Library" className="text-gray-500 text-sm" />
                     </div>
                     <p className="text-3xl font-bold text-white mb-2">1,240</p>
                     <p className="text-[10px] text-green-500 flex items-center gap-1 font-bold">
-                        <span className="material-symbols-outlined text-[10px]">trending_up</span> +12% this week
+                        <Icon name="TrendingUp" className="text-[10px]" /> +12% this week
                     </p>
                 </div>
                 <div className="bg-[#1A1D24] border border-yellow-500/20 p-5 rounded-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-2"><span className="material-symbols-outlined text-yellow-500 text-lg">auto_awesome</span></div>
+                    <div className="absolute top-0 right-0 p-2"><Icon name="Sparkles" className="text-yellow-500 text-lg" /></div>
                     <div className="flex justify-between items-start mb-2">
                         <span className="text-xs text-yellow-500 font-bold uppercase">AI Enhanced</span>
                     </div>
@@ -51,7 +52,7 @@ export default function AlchemyEnginePage() {
                 <div className="bg-[#1A1D24] border border-[#2D303E] p-5 rounded-2xl">
                     <div className="flex justify-between items-start mb-2">
                         <span className="text-xs text-gray-400 font-bold uppercase">In Processing</span>
-                        <span className="material-symbols-outlined text-blue-500 text-sm animate-spin">cyclone</span>
+                        <Icon name="Loader2" className="text-blue-500 text-sm animate-spin" />
                     </div>
                     <p className="text-3xl font-bold text-white mb-4">42</p>
                     <div className="w-full h-1 bg-[#2D303E] rounded-full overflow-hidden">
@@ -61,7 +62,7 @@ export default function AlchemyEnginePage() {
                 <div className="bg-[#1A1D24] border border-[#2D303E] p-5 rounded-2xl">
                     <div className="flex justify-between items-start mb-2">
                         <span className="text-xs text-gray-400 font-bold uppercase">Engagement</span>
-                        <span className="material-symbols-outlined text-gray-500 text-sm">groups</span>
+                        <Icon name="Users" className="text-gray-500 text-sm" />
                     </div>
                     <p className="text-3xl font-bold text-white mb-2">High</p>
                     <p className="text-[10px] text-gray-500 font-bold">2.4k daily active</p>
@@ -71,12 +72,12 @@ export default function AlchemyEnginePage() {
             {/* Toolbar */}
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
                 <div className="relative w-full md:max-w-xl">
-                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">search</span>
+                    <Icon name="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                     <input type="text" placeholder="Search quantum materials, authors, ISBN, or topic tags..."
                         className="w-full bg-[#1A1D24] border border-[#2D303E] rounded-xl pl-12 pr-12 py-3 text-sm text-gray-300 focus:outline-none focus:border-blue-500"
                     />
                     <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
-                        <span className="material-symbols-outlined text-sm">tune</span>
+                        <Icon name="SlidersHorizontal" className="text-sm" />
                     </button>
                 </div>
 
@@ -88,15 +89,15 @@ export default function AlchemyEnginePage() {
                 </div>
 
                 <div className="flex gap-2">
-                    <button className="bg-[#1A1D24] border border-[#2D303E] p-2 rounded-lg text-gray-400 hover:text-white"><span className="material-symbols-outlined">grid_view</span></button>
-                    <button className="bg-[#1A1D24] border border-[#2D303E] p-2 rounded-lg text-gray-400 hover:text-white"><span className="material-symbols-outlined">view_list</span></button>
+                    <button className="bg-[#1A1D24] border border-[#2D303E] p-2 rounded-lg text-gray-400 hover:text-white"><Icon name="LayoutGrid" /></button>
+                    <button className="bg-[#1A1D24] border border-[#2D303E] p-2 rounded-lg text-gray-400 hover:text-white"><Icon name="List" /></button>
                 </div>
             </div>
 
             {/* Content Grid */}
             <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                    <span className="material-symbols-outlined text-blue-500 text-sm">grid_on</span>
+                    <Icon name="Grid3X3" className="text-blue-500 text-sm" />
                     <h2 className="font-bold text-white text-sm">Library Resources <span className="text-gray-500 font-normal ml-2">(Showing 12 of 1,240)</span></h2>
                 </div>
 
@@ -106,7 +107,7 @@ export default function AlchemyEnginePage() {
                     <div className="bg-[#1A1D24] border border-[#2D303E] rounded-2xl overflow-hidden group hover:border-blue-500 transition-colors">
                         <div className="h-40 bg-gray-800 relative">
                             <div className="text-yellow-400 absolute top-3 right-3 z-10 bg-black/60 backdrop-blur px-2 py-1 rounded-lg border border-yellow-500/30 flex items-center gap-1 text-[10px] font-bold">
-                                <span className="material-symbols-outlined text-xs">auto_awesome</span> AI Ready
+                                <Icon name="Sparkles" className="text-xs" /> AI Ready
                             </div>
                             {/* Abstract Net Image */}
                             <div className="absolute inset-0 bg-cover bg-center opacity-80" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=600&auto=format&fit=crop)' }}></div>
@@ -122,7 +123,7 @@ export default function AlchemyEnginePage() {
                             <p className="text-xs text-gray-500 mb-6">Dr. Sarah Chen • 2024 Edition</p>
                             <div className="flex justify-between items-center">
                                 <button className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-lg w-full mr-2">Study Now</button>
-                                <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined">bookmark</span></button>
+                                <button className="text-gray-500 hover:text-white"><Icon name="Bookmark" /></button>
                             </div>
                         </div>
                     </div>
@@ -131,7 +132,7 @@ export default function AlchemyEnginePage() {
                     <div className="bg-[#1A1D24] border border-[#2D303E] rounded-2xl overflow-hidden group hover:border-blue-500 transition-colors">
                         <div className="h-40 bg-gray-800 relative">
                             <div className="text-blue-400 absolute top-3 right-3 z-10 bg-black/60 backdrop-blur px-2 py-1 rounded-lg border border-blue-500/30 flex items-center gap-1 text-[10px] font-bold">
-                                <span className="material-symbols-outlined text-xs animate-spin">sync</span> Transforming...
+                                <Icon name="RefreshCw" className="text-xs animate-spin" /> Transforming...
                             </div>
                             <div className="absolute inset-0 bg-cover bg-center opacity-80" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop)' }}></div>
                             <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 w-1/2 animate-shimmer"></div>
@@ -152,7 +153,7 @@ export default function AlchemyEnginePage() {
                     <div className="bg-[#1A1D24] border border-[#2D303E] rounded-2xl overflow-hidden group hover:border-blue-500 transition-colors">
                         <div className="h-40 bg-gray-800 relative">
                             <div className="text-gray-400 absolute top-3 right-3 z-10 bg-black/60 backdrop-blur px-2 py-1 rounded-lg border border-gray-600/30 flex items-center gap-1 text-[10px] font-bold">
-                                <span className="material-symbols-outlined text-xs">picture_as_pdf</span> Standard PDF
+                                <Icon name="FileText" className="text-xs" /> Standard PDF
                             </div>
                             <div className="absolute inset-0 bg-cover bg-center opacity-60 grayscale" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&auto=format&fit=crop)' }}></div>
                         </div>
@@ -166,9 +167,9 @@ export default function AlchemyEnginePage() {
                             <p className="text-xs text-gray-500 mb-6">System Admin • Internal Doc</p>
                             <div className="flex justify-between items-center gap-2">
                                 <button className="bg-[#2D303E] hover:bg-gray-700 text-white text-xs font-bold px-4 py-2 rounded-lg w-full flex items-center justify-center gap-2">
-                                    <span className="material-symbols-outlined text-xs">auto_fix_high</span> Transform
+                                    <Icon name="Wand2" className="text-xs" /> Transform
                                 </button>
-                                <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined">download</span></button>
+                                <button className="text-gray-500 hover:text-white"><Icon name="Download" /></button>
                             </div>
                         </div>
                     </div>
@@ -177,7 +178,7 @@ export default function AlchemyEnginePage() {
                     <div className="bg-[#1A1D24] border border-[#2D303E] rounded-2xl overflow-hidden group hover:border-blue-500 transition-colors">
                         <div className="h-40 bg-gray-800 relative">
                             <div className="text-yellow-400 absolute top-3 right-3 z-10 bg-black/60 backdrop-blur px-2 py-1 rounded-lg border border-yellow-500/30 flex items-center gap-1 text-[10px] font-bold">
-                                <span className="material-symbols-outlined text-xs">auto_awesome</span> AI Ready
+                                <Icon name="Sparkles" className="text-xs" /> AI Ready
                             </div>
                             <div className="absolute inset-0 bg-cover bg-center opacity-80" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop)' }}></div>
                             <div className="absolute bottom-0 left-0 right-0 h-1 bg-yellow-500 w-full"></div>
@@ -192,7 +193,7 @@ export default function AlchemyEnginePage() {
                             <p className="text-xs text-gray-500 mb-6">Robert K. & Team</p>
                             <div className="flex justify-between items-center">
                                 <button className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-lg w-full mr-2">Resume</button>
-                                <button className="text-yellow-500"><span className="material-symbols-outlined">bookmark</span></button>
+                                <button className="text-yellow-500"><Icon name="Bookmark" /></button>
                             </div>
                         </div>
                     </div>
@@ -202,7 +203,7 @@ export default function AlchemyEnginePage() {
 
             <div className="text-center">
                 <button className="bg-[#1A1D24] border border-[#2D303E] text-white px-6 py-3 rounded-xl text-sm font-bold flex items-center gap-2 mx-auto hover:bg-[#252932]">
-                    Load More Materials <span className="material-symbols-outlined text-sm">expand_more</span>
+                    Load More Materials <Icon name="ChevronDown" className="text-sm" />
                 </button>
             </div>
 

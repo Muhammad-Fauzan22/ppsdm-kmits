@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Wifi, ShieldCheck, Calendar, Drama, RefreshCw, Trees, CheckCircle, Trophy, Clock, Fingerprint, GraduationCap, Scan } from 'lucide-react';
 
 export default function VerifierPage() {
     return (
@@ -24,7 +25,7 @@ export default function VerifierPage() {
                     </p>
                 </div>
                 <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                    <span className="material-symbols-outlined text-sm">wifi_tethering</span>
+                    <Wifi className="w-4 h-4" />
                     Blockchain Network: Active
                 </div>
             </motion.header>
@@ -42,7 +43,7 @@ export default function VerifierPage() {
                     >
                         <div className="glass-card bg-card-dark border border-white/10 p-6 rounded-2xl relative overflow-hidden group">
                             <div className="absolute top-4 right-4 text-slate-700 group-hover:text-brand-blue/50 transition-colors">
-                                <span className="material-symbols-outlined text-6xl">verified</span>
+                                <ShieldCheck className="w-16 h-16" />
                             </div>
                             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Skill Impact</p>
                             <div className="flex items-baseline gap-2 mb-4 relative z-10">
@@ -56,7 +57,7 @@ export default function VerifierPage() {
 
                         <div className="glass-card bg-card-dark border border-white/10 p-6 rounded-2xl relative overflow-hidden">
                             <div className="absolute top-4 right-4 text-slate-700">
-                                <span className="material-symbols-outlined text-6xl">event</span>
+                                <Calendar className="w-16 h-16" />
                             </div>
                             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Verified Events</p>
                             <div className="flex items-baseline gap-2 mb-4 relative z-10">
@@ -85,7 +86,7 @@ export default function VerifierPage() {
                                 <div className="flex justify-between items-start mb-2">
                                     <div className="flex gap-4">
                                         <div className="size-10 bg-orange-500/10 text-orange-500 rounded-lg flex items-center justify-center border border-orange-500/20">
-                                            <span className="material-symbols-outlined">theater_comedy</span>
+                                            <Drama className="w-6 h-6" />
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-sm text-white group-hover:text-brand-blue transition-colors">Leadership Seminar 101</h4>
@@ -95,7 +96,7 @@ export default function VerifierPage() {
                                     <span className="text-[10px] text-slate-500 font-mono">Today, 10:30 AM</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-[10px] text-orange-400 font-mono ml-14">
-                                    <span className="material-symbols-outlined text-xs animate-spin">sync</span>
+                                    <RefreshCw className="w-4 h-4 animate-spin" />
                                     Verifying on Blockchain (Confirming Blocks...)
                                 </div>
                                 <p className="text-[8px] text-slate-600 font-mono ml-14 mt-1">TxHash: 0x82...3f9a</p>
@@ -106,7 +107,7 @@ export default function VerifierPage() {
                                 <div className="flex justify-between items-start mb-2">
                                     <div className="flex gap-4">
                                         <div className="size-10 bg-emerald-500/10 text-emerald-500 rounded-lg flex items-center justify-center border border-emerald-500/20">
-                                            <span className="material-symbols-outlined">forest</span>
+                                            <Trees className="w-6 h-6" />
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-sm text-white group-hover:text-emerald-400 transition-colors">Campus Clean-up Drive</h4>
@@ -116,7 +117,7 @@ export default function VerifierPage() {
                                     <span className="text-[10px] text-slate-500 font-mono">Yesterday</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-[10px] text-emerald-400 font-mono ml-14">
-                                    <span className="material-symbols-outlined text-xs">check_circle</span>
+                                    <CheckCircle className="w-4 h-4" />
                                     Verified via Polygon
                                 </div>
                             </div>
@@ -126,7 +127,7 @@ export default function VerifierPage() {
                                 <div className="flex justify-between items-start mb-2">
                                     <div className="flex gap-4">
                                         <div className="size-10 bg-blue-500/10 text-blue-500 rounded-lg flex items-center justify-center border border-blue-500/20">
-                                            <span className="material-symbols-outlined">sports_tennis</span>
+                                            <Trophy className="w-6 h-6" />
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-sm text-white">Badminton Tournament</h4>
@@ -136,7 +137,7 @@ export default function VerifierPage() {
                                     <span className="text-[10px] text-slate-500 font-mono">2 days ago</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono ml-14">
-                                    <span className="material-symbols-outlined text-xs">schedule</span>
+                                    <Clock className="w-4 h-4" />
                                     Waiting for Organizer Approval
                                 </div>
                             </div>
@@ -163,7 +164,7 @@ export default function VerifierPage() {
                             <h3 className="text-xl font-bold text-white">Student Pass</h3>
                         </div>
                         <div className="size-8 rounded-full bg-brand-blue/20 flex items-center justify-center border border-brand-blue/30">
-                            <span className="material-symbols-outlined text-brand-blue text-sm">fingerprint</span>
+                            <Fingerprint className="text-brand-blue w-4 h-4" />
                         </div>
                     </div>
 
@@ -182,7 +183,7 @@ export default function VerifierPage() {
                             <div className="absolute inset-0 bg-[url('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PPSDM-VERIFIER')] opacity-80 mix-blend-screen bg-cover"></div>
                             <div className="size-16 bg-white p-1 rounded relative z-10">
                                 <div className="w-full h-full bg-black flex items-center justify-center">
-                                    <span className="material-symbols-outlined text-white text-3xl">school</span>
+                                    <GraduationCap className="text-white w-8 h-8" />
                                 </div>
                             </div>
                         </div>
@@ -190,7 +191,7 @@ export default function VerifierPage() {
 
                     <div className="text-center mb-12 relative z-10">
                         <div className="flex justify-center items-center gap-2 text-[10px] text-slate-400 font-mono mb-2">
-                            <span className="material-symbols-outlined text-sm animate-spin">refresh</span>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
                             Token refreshes in <span className="text-brand-blue font-bold">00:42</span>
                         </div>
                         <p className="text-xs text-slate-500">Scan at event entrance</p>
@@ -200,7 +201,7 @@ export default function VerifierPage() {
 
                     {/* Action Button */}
                     <button className="w-full bg-brand-blue hover:bg-blue-600 text-white font-bold py-4 rounded-full shadow-lg shadow-brand-blue/30 flex items-center justify-center gap-3 transition-all active:scale-95 relative z-10">
-                        <span className="material-symbols-outlined">qr_code_scanner</span>
+                        <Scan className="w-6 h-6" />
                         Scan Event Code
                     </button>
                     <p className="text-[10px] text-slate-500 text-center mt-4 max-w-xs mx-auto leading-relaxed relative z-10">

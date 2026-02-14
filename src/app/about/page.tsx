@@ -2,11 +2,7 @@
 
 import Link from "next/link";
 
-const team = [
-    { name: "Tim Development", role: "Frontend & Backend", icon: "code" },
-    { name: "Tim Design", role: "UI/UX Research", icon: "palette" },
-    { name: "Tim Program", role: "Content & Program", icon: "event" },
-];
+
 
 const milestones = [
     { year: "2024", title: "Platform Launch", description: "Peluncuran versi 1.0" },
@@ -23,10 +19,20 @@ import {
     DollarSign,
     Dumbbell,
     ShieldCheck,
-    Leaf
+    Leaf,
+    Eye,
+    Flag,
+    Code,
+    Palette,
+    Calendar,
+    ArrowRight
 } from 'lucide-react';
 
-
+const team = [
+    { name: "Tim Development", role: "Frontend & Backend", icon: Code },
+    { name: "Tim Design", role: "UI/UX Research", icon: Palette },
+    { name: "Tim Program", role: "Content & Program", icon: Calendar },
+];
 
 export default function AboutPage() {
     const dimensions = [
@@ -58,7 +64,7 @@ export default function AboutPage() {
                 <section className="grid md:grid-cols-2 gap-6">
                     <div className="bg-white dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark p-8">
                         <div className="size-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                            <span className="material-symbols-outlined text-primary text-3xl">visibility</span>
+                            <Eye className="text-primary w-8 h-8" />
                         </div>
                         <h2 className="text-xl font-bold mb-3">Visi</h2>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -67,7 +73,7 @@ export default function AboutPage() {
                     </div>
                     <div className="bg-white dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark p-8">
                         <div className="size-14 bg-growth-green/10 rounded-xl flex items-center justify-center mb-4">
-                            <span className="material-symbols-outlined text-growth-green text-3xl">flag</span>
+                            <Flag className="text-growth-green w-8 h-8" />
                         </div>
                         <h2 className="text-xl font-bold mb-3">Misi</h2>
                         <ul className="text-gray-600 dark:text-gray-400 space-y-2 list-disc list-inside">
@@ -88,11 +94,7 @@ export default function AboutPage() {
                                 className="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark p-4 text-center hover:shadow-md transition-shadow"
                             >
                                 <div className={`size-12 ${dim.color} rounded-xl flex items-center justify-center text-white mx-auto mb-2`}>
-                                    {typeof dim.icon === 'string' ? (
-                                        <span className="material-symbols-outlined">{dim.icon}</span>
-                                    ) : (
-                                        <dim.icon className="w-6 h-6" />
-                                    )}
+                                    <dim.icon className="w-6 h-6" />
                                 </div>
                                 <span className="text-sm font-medium">{dim.name}</span>
                             </div>
@@ -125,18 +127,21 @@ export default function AboutPage() {
                 <section>
                     <h2 className="text-2xl font-bold mb-6 text-center">Tim Pengembang</h2>
                     <div className="grid md:grid-cols-3 gap-4">
-                        {team.map((member) => (
-                            <div
-                                key={member.name}
-                                className="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark p-6 text-center"
-                            >
-                                <div className="size-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="material-symbols-outlined text-primary text-3xl">{member.icon}</span>
+                        {team.map((member) => {
+                            const Icon = member.icon;
+                            return (
+                                <div
+                                    key={member.name}
+                                    className="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark p-6 text-center"
+                                >
+                                    <div className="size-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <Icon className="text-primary w-8 h-8" />
+                                    </div>
+                                    <h3 className="font-bold">{member.name}</h3>
+                                    <p className="text-sm text-gray-500">{member.role}</p>
                                 </div>
-                                <h3 className="font-bold">{member.name}</h3>
-                                <p className="text-sm text-gray-500">{member.role}</p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </section>
 
@@ -147,7 +152,7 @@ export default function AboutPage() {
                         className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all"
                     >
                         Mulai Sekarang
-                        <span className="material-symbols-outlined">arrow_forward</span>
+                        <ArrowRight className="w-5 h-5" />
                     </Link>
                 </section>
             </main>

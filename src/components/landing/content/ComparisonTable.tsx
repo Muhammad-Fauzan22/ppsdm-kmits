@@ -1,4 +1,5 @@
 "use client";
+import { CheckCircle2 } from "lucide-react";
 
 export function ComparisonTable() {
     return (
@@ -33,7 +34,7 @@ export function ComparisonTable() {
                                     <td className="p-6 text-gray-600">{row.trad}</td>
                                     <td className="p-6 font-bold text-brand-blue bg-brand-blue/5 border-l border-brand-blue/10">
                                         <div className="flex items-center gap-2">
-                                            <span className="material-symbols-outlined text-sm">check_circle</span>
+                                            <CheckCircle2 className="w-4 h-4 text-brand-blue" />
                                             {row.modern}
                                         </div>
                                     </td>

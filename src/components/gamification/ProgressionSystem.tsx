@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ImageOff, Trophy } from 'lucide-react';
 
 /**
  * XPLevelRing - Circular XP progress indicator with level display
@@ -236,7 +237,7 @@ export function Leaderboard({
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
                 <h3 className="font-bold text-white flex items-center gap-2">
-                    <span className="material-symbols-outlined text-ml-gold">leaderboard</span>
+                    <Trophy className="text-ml-gold w-5 h-5" />
                     {title}
                 </h3>
                 <span className="text-xs text-slate-500">{entries.length} peserta</span>

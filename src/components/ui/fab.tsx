@@ -1,4 +1,4 @@
-"use client";
+import { Icon } from "./Icon";
 
 // Floating Action Button
 export function FAB({
@@ -17,7 +17,7 @@ export function FAB({
             style={{ width: label ? "auto" : "56px", height: "56px" }}
         >
             <div className="flex items-center justify-center gap-2 px-4">
-                <span className="material-symbols-outlined text-[24px]">{icon}</span>
+                <Icon name={icon} className="w-6 h-6" />
                 {label && <span className="font-medium pr-1">{label}</span>}
             </div>
         </button>

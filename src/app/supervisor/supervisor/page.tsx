@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
+import { Icon } from "@/components/ui/Icon";
 
 export default function SupervisorRAGPage() {
     return (
@@ -14,14 +15,14 @@ export default function SupervisorRAGPage() {
                             {/* Logo Area */}
                             <div className="flex items-center gap-3">
                                 <div className="size-8 bg-[#135bec]/10 text-[#135bec] rounded-lg flex items-center justify-center">
-                                    <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
+                                    <Icon name="School" size="sm" className="text-[#135bec]" />
                                 </div>
                                 <h1 className="text-slate-900 dark:text-white text-lg font-bold tracking-tight hidden sm:block">PPSDM Supervisor Portal</h1>
                             </div>
                             {/* Search */}
                             <div className="hidden md:flex relative group">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span className="material-symbols-outlined text-slate-400">search</span>
+                                    <Icon name="Search" className="text-slate-400" />
                                 </div>
                                 <input className="block w-64 rounded-lg border-0 py-1.5 pl-10 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-[#135bec] sm:text-sm sm:leading-6 bg-slate-50 dark:bg-slate-800 dark:ring-slate-700 dark:text-white" placeholder="Search students, IDs..." type="text" />
                             </div>
@@ -36,11 +37,11 @@ export default function SupervisorRAGPage() {
                             </nav>
                             <div className="flex items-center gap-3 border-l border-slate-200 dark:border-slate-800 pl-6">
                                 <button className="relative text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
-                                    <span className="material-symbols-outlined">notifications</span>
+                                    <Icon name="Bell" />
                                     <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900"></span>
                                 </button>
                                 <button className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
-                                    <span className="material-symbols-outlined">chat_bubble</span>
+                                    <Icon name="MessageSquare" />
                                 </button>
                                 <div className="h-8 w-8 rounded-full bg-cover bg-center ring-2 ring-white dark:ring-slate-800 ml-2" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDThHedLfRZ2IIBOJfb66j9iR5_e9bzzoli-UOuOlx6qgDuwTUiIzrltH2TeOynBccwn3evWHwPTf_c9cnIuZuco7n7cw5AjSiIsOdwQwg0OK3mLqDQzoKecavFcve9JJDjluUEX1KKS78niYUorG_1_WQDAzcO39ZjkxCb0C0e96o75JZ5ShjVQ6M7qAfIN1tqJ6Pznbof8bbZj7GKLXnTtQHWC8PIEu76fcrPbL--6kTiYvnQMUfdRtbg9A3h3l5hHF3T-vJ4DdY')" }}></div>
                             </div>
@@ -60,11 +61,11 @@ export default function SupervisorRAGPage() {
                         </div>
                         <div className="flex items-center gap-3">
                             <button className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
-                                <span className="material-symbols-outlined text-[18px]">download</span>
+                                <Icon name="Download" className="text-[18px]" />
                                 Export Report
                             </button>
                             <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#135bec] hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-blue-500/30">
-                                <span className="material-symbols-outlined text-[18px]">bolt</span>
+                                <Icon name="Zap" className="text-[18px]" />
                                 Bulk Action
                             </button>
                         </div>
@@ -76,13 +77,13 @@ export default function SupervisorRAGPage() {
                             <div className="flex justify-between items-start mb-2">
                                 <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Students</p>
                                 <span className="p-1.5 bg-slate-100 dark:bg-slate-700 rounded text-slate-600 dark:text-slate-300">
-                                    <span className="material-symbols-outlined text-[20px]">groups</span>
+                                    <Icon name="Users" className="text-[20px]" />
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-2">
                                 <h3 className="text-3xl font-bold text-slate-900 dark:text-white">35</h3>
                                 <span className="text-emerald-600 text-xs font-medium flex items-center bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">
-                                    <span className="material-symbols-outlined text-[14px] mr-0.5">trending_up</span> +2
+                                    <Icon name="TrendingUp" className="text-[14px] mr-0.5" /> +2
                                 </span>
                             </div>
                         </div>
@@ -91,7 +92,7 @@ export default function SupervisorRAGPage() {
                             <div className="flex justify-between items-start mb-2">
                                 <p className="text-[#EF4444] text-sm font-bold">Critical Risk (Red)</p>
                                 <span className="p-1.5 bg-red-50 dark:bg-red-900/20 rounded text-[#EF4444]">
-                                    <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
+                                    <Icon name="AlertTriangle" className="text-[20px]" />
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-2">
@@ -106,7 +107,7 @@ export default function SupervisorRAGPage() {
                             <div className="flex justify-between items-start mb-2">
                                 <p className="text-[#F59E0B] text-sm font-bold">Monitoring (Amber)</p>
                                 <span className="p-1.5 bg-amber-50 dark:bg-amber-900/20 rounded text-[#F59E0B]">
-                                    <span className="material-symbols-outlined text-[20px]">remove_red_eye</span>
+                                    <Icon name="Eye" className="text-[20px]" />
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-2">
@@ -121,7 +122,7 @@ export default function SupervisorRAGPage() {
                             <div className="flex justify-between items-start mb-2">
                                 <p className="text-[#10B981] text-sm font-bold">On Track (Green)</p>
                                 <span className="p-1.5 bg-emerald-50 dark:bg-emerald-900/20 rounded text-[#10B981]">
-                                    <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                                    <Icon name="CheckCircle" className="text-[20px]" />
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-2">
@@ -140,7 +141,7 @@ export default function SupervisorRAGPage() {
                                 {/* Table Header Controls */}
                                 <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-4">
                                     <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-slate-400">table_chart</span>
+                                        <Icon name="Table" className="text-slate-400" />
                                         Student Status Grid
                                     </h3>
                                     <div className="flex items-center gap-2">
@@ -152,11 +153,11 @@ export default function SupervisorRAGPage() {
                                                 <option>Low (Green)</option>
                                             </select>
                                             <span className="absolute right-2 top-1.5 pointer-events-none text-slate-500">
-                                                <span className="material-symbols-outlined text-[18px]">expand_more</span>
+                                                <Icon name="ChevronDown" className="text-[18px]" />
                                             </span>
                                         </div>
                                         <button className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-500 transition-colors" title="Filter">
-                                            <span className="material-symbols-outlined">filter_list</span>
+                                            <Icon name="Filter" />
                                         </button>
                                     </div>
                                 </div>
@@ -200,14 +201,14 @@ export default function SupervisorRAGPage() {
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-3 text-slate-500">7 days ago</td>
-                                                <td className="px-4 py-3 text-red-600 font-medium">65% <span className="material-symbols-outlined text-[14px] align-middle">trending_down</span></td>
+                                                <td className="px-4 py-3 text-red-600 font-medium">65% <Icon name="TrendingDown" className="text-[14px] align-middle inline-block" /></td>
                                                 <td className="px-4 py-3 text-right">
                                                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <button className="p-1.5 rounded bg-[#135bec]/10 text-[#135bec] hover:bg-[#135bec] hover:text-white transition-colors" title="Message">
-                                                            <span className="material-symbols-outlined text-[18px]">mail</span>
+                                                            <Icon name="Mail" className="text-[18px]" />
                                                         </button>
                                                         <button className="p-1.5 rounded bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 transition-colors" title="Schedule">
-                                                            <span className="material-symbols-outlined text-[18px]">calendar_month</span>
+                                                            <Icon name="Calendar" className="text-[18px]" />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -242,10 +243,10 @@ export default function SupervisorRAGPage() {
                                                 <td className="px-4 py-3 text-right">
                                                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <button className="p-1.5 rounded bg-[#135bec]/10 text-[#135bec] hover:bg-[#135bec] hover:text-white transition-colors" title="Message">
-                                                            <span className="material-symbols-outlined text-[18px]">mail</span>
+                                                            <Icon name="Mail" className="text-[18px]" />
                                                         </button>
                                                         <button className="p-1.5 rounded bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 transition-colors" title="Schedule">
-                                                            <span className="material-symbols-outlined text-[18px]">calendar_month</span>
+                                                            <Icon name="Calendar" className="text-[18px]" />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -276,11 +277,11 @@ export default function SupervisorRAGPage() {
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-3 text-slate-500">Today</td>
-                                                <td className="px-4 py-3 text-emerald-600 font-medium">98% <span className="material-symbols-outlined text-[14px] align-middle">trending_up</span></td>
+                                                <td className="px-4 py-3 text-emerald-600 font-medium">98% <Icon name="TrendingUp" className="text-[14px] align-middle inline-block" /></td>
                                                 <td className="px-4 py-3 text-right">
                                                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <button className="p-1.5 rounded bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 transition-colors" title="View Profile">
-                                                            <span className="material-symbols-outlined text-[18px]">visibility</span>
+                                                            <Icon name="Eye" className="text-[18px]" />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -317,10 +318,10 @@ export default function SupervisorRAGPage() {
                                                 <td className="px-4 py-3 text-right">
                                                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <button className="p-1.5 rounded bg-[#135bec]/10 text-[#135bec] hover:bg-[#135bec] hover:text-white transition-colors" title="Message">
-                                                            <span className="material-symbols-outlined text-[18px]">mail</span>
+                                                            <Icon name="Mail" className="text-[18px]" />
                                                         </button>
                                                         <button className="p-1.5 rounded bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 transition-colors" title="Schedule">
-                                                            <span className="material-symbols-outlined text-[18px]">calendar_month</span>
+                                                            <Icon name="Calendar" className="text-[18px]" />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -386,7 +387,7 @@ export default function SupervisorRAGPage() {
                             <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col flex-1">
                                 <div className="p-5 border-b border-slate-200 dark:border-slate-700">
                                     <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-[#F59E0B]" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
+                                        <Icon name="AlertTriangle" className="text-[#F59E0B]" />
                                         Early Warning System
                                     </h3>
                                     <p className="text-xs text-slate-500 mt-1">Automated pattern detection &amp; flags</p>
@@ -396,13 +397,13 @@ export default function SupervisorRAGPage() {
                                     <div className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-lg p-3">
                                         <div className="flex gap-3">
                                             <div className="mt-0.5 text-red-600">
-                                                <span className="material-symbols-outlined text-[20px]">group_remove</span>
+                                                <Icon name="UserMinus" className="text-[20px]" />
                                             </div>
                                             <div>
                                                 <h4 className="text-sm font-bold text-slate-900 dark:text-white">Attendance Drop</h4>
                                                 <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">3 students missed &gt;2 consecutive sessions this week.</p>
                                                 <button className="mt-2 text-xs font-semibold text-red-600 hover:text-red-700 flex items-center">
-                                                    Review List <span className="material-symbols-outlined text-[14px] ml-1">arrow_forward</span>
+                                                    Review List <Icon name="ArrowRight" className="text-[14px] ml-1 inline-block" />
                                                 </button>
                                             </div>
                                         </div>
@@ -411,7 +412,7 @@ export default function SupervisorRAGPage() {
                                     <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 rounded-lg p-3">
                                         <div className="flex gap-3">
                                             <div className="mt-0.5 text-amber-600">
-                                                <span className="material-symbols-outlined text-[20px]">trending_down</span>
+                                                <Icon name="TrendingDown" className="text-[20px]" />
                                             </div>
                                             <div>
                                                 <h4 className="text-sm font-bold text-slate-900 dark:text-white">Grade Decline (Math)</h4>
@@ -427,13 +428,13 @@ export default function SupervisorRAGPage() {
                                     <div className="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-700 rounded-lg p-3">
                                         <div className="flex gap-3">
                                             <div className="mt-0.5 text-slate-500">
-                                                <span className="material-symbols-outlined text-[20px]">schedule</span>
+                                                <Icon name="Clock" className="text-[20px]" />
                                             </div>
                                             <div>
                                                 <h4 className="text-sm font-bold text-slate-900 dark:text-white">Engagement Lag</h4>
                                                 <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">5 students have not logged in for 7+ days.</p>
                                                 <button className="mt-2 text-xs font-semibold text-[#135bec] hover:text-blue-700 flex items-center">
-                                                    Send Reminder <span className="material-symbols-outlined text-[14px] ml-1">send</span>
+                                                    Send Reminder <Icon name="Send" className="text-[14px] ml-1 inline-block" />
                                                 </button>
                                             </div>
                                         </div>
@@ -449,7 +450,6 @@ export default function SupervisorRAGPage() {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
       `}</style>
         </div>
     );

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Server, Users, Globe, ShieldCheck } from "lucide-react";
 
 export function EcosystemIntegration() {
     return (
@@ -19,7 +20,7 @@ export function EcosystemIntegration() {
                     {/* Internal ITS Systems */}
                     <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="material-symbols-outlined text-3xl text-brand-blue">dns</span>
+                            <Server className="w-8 h-8 text-brand-blue" />
                             <h3 className="text-xl font-bold">Internal ITS</h3>
                         </div>
                         <ul className="space-y-4">
@@ -40,7 +41,7 @@ export function EcosystemIntegration() {
                     {/* Student Organizations */}
                     <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="material-symbols-outlined text-3xl text-its-gold">groups</span>
+                            <Users className="w-8 h-8 text-its-gold" />
                             <h3 className="text-xl font-bold">Student Org</h3>
                         </div>
                         <ul className="space-y-4">
@@ -60,7 +61,7 @@ export function EcosystemIntegration() {
                     {/* External Networks */}
                     <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="material-symbols-outlined text-3xl text-green-600">public</span>
+                            <Globe className="w-8 h-8 text-green-600" />
                             <h3 className="text-xl font-bold">External Network</h3>
                         </div>
                         <ul className="space-y-4">
@@ -81,7 +82,7 @@ export function EcosystemIntegration() {
                 {/* Data Flow Hint */}
                 <div className="bg-brand-blue/5 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-brand-blue/10">
                     <div className="flex items-center gap-4">
-                        <span className="material-symbols-outlined text-brand-blue">security</span>
+                        <ShieldCheck className="w-6 h-6 text-brand-blue" />
                         <div>
                             <h4 className="font-bold text-gray-900">Privacy-First Architecture</h4>
                             <p className="text-sm text-gray-600">Data disimpan aman di server ITS dengan enkripsi End-to-End.</p>

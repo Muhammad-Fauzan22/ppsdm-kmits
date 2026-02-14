@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { Icon } from '@/components/ui/Icon';
+import { ArrowLeft, ArrowRight, Clock } from 'lucide-react';
 import { useAssessmentStore } from '@/lib/assessment/store';
-
-// Dimension metadata
 const DIMENSION_METADATA: Record<string, {
   name: string;
   nameEn: string;
@@ -270,10 +270,10 @@ interface DimensionInfoPageProps {
 export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPageProps) {
   const router = useRouter();
   const dim = DIMENSION_METADATA[dimensionId];
-  const progress = useAssessmentStore((state) => 
+  const progress = useAssessmentStore((state) =>
     state.dimensions[dimensionId]?.status === 'completed' ? 100 : 0
   );
-  
+
   if (!dim) {
     return (
       <div className="min-h-screen bg-[#0A0F1A] text-white flex items-center justify-center">
@@ -281,34 +281,34 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-[#0A0F1A] text-white pt-24 pb-12 px-6">
       <div className="max-w-4xl mx-auto">
         {/* Progress Bar */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-4 mb-6"
         >
-          <button 
+          <button
             onClick={() => router.push('/assessment')}
             className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
           >
-            <span className="material-symbols-outlined">arrow_back</span>
+            <ArrowLeft className="w-5 h-5" />
             Kembali
           </button>
           <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full rounded-full bg-gradient-to-r from-[#135bec] to-[#00d4ff]"
               style={{ width: `${progress}%` }}
             />
           </div>
           <span className="text-sm text-slate-400">{progress > 0 ? 'Selesai' : 'Belum Dimulai'}</span>
         </motion.div>
-        
+
         {/* Info Card */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -317,14 +317,14 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${dim.gradient} flex items-center justify-center shadow-lg`}>
-              <span className="material-symbols-outlined text-3xl">{dim.icon}</span>
+              <Icon name={dim.icon} className="text-3xl text-white" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">{dim.name}</h1>
               <p className="text-slate-400">{dim.nameEn}</p>
             </div>
           </div>
-          
+
           {/* Research Badge */}
           <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-white/5 rounded-xl">
             <div className="flex items-center gap-2">
@@ -344,12 +344,12 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
               <span className="text-sm">RMSEA = {dim.validity.rmsea}</span>
             </div>
           </div>
-          
+
           {/* Description */}
           <p className="text-slate-300 leading-relaxed mb-6">
             {dim.description}
           </p>
-          
+
           {/* What is Measured */}
           <div className="mb-6">
             <h3 className="text-sm font-semibold mb-3 text-slate-400">Apa yang akan diukur:</h3>
@@ -362,7 +362,7 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
               ))}
             </ul>
           </div>
-          
+
           {/* Sub-dimensions */}
           <div className="mb-6">
             <h3 className="text-sm font-semibold mb-3 text-slate-400">Sub-dimensi:</h3>
@@ -376,7 +376,7 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
               ))}
             </div>
           </div>
-          
+
           {/* Sources */}
           <div className="mb-8">
             <h3 className="text-sm font-semibold mb-3 text-slate-400">Berdasarkan Penelitian:</h3>
@@ -386,11 +386,11 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
               ))}
             </ul>
           </div>
-          
+
           {/* CTA */}
           <div className="flex items-center justify-between pt-6 border-t border-white/10">
             <span className="text-sm text-slate-400 flex items-center gap-2">
-              <span className="material-symbols-outlined">schedule</span>
+              <Clock className="w-4 h-4" />
               ~2 menit
             </span>
             <button
@@ -398,7 +398,7 @@ export function DimensionInfoPage({ dimensionId, onStart }: DimensionInfoPagePro
               className="px-8 py-4 bg-white text-[#0A0F1A] font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2"
             >
               Mulai Assessment
-              <span className="material-symbols-outlined">arrow_forward</span>
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </motion.div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 export default function NexusDashboard() {
     return (
@@ -11,9 +12,7 @@ export default function NexusDashboard() {
                 <div className="p-6 pb-2">
                     <div className="flex items-center gap-3">
                         <div className="size-10 rounded-full bg-gradient-to-tr from-[#13ec5b] to-emerald-700 flex items-center justify-center shadow-[0_0_15px_rgba(19,236,91,0.3)]">
-                            <span className="material-symbols-outlined text-[#102216]" style={{ fontSize: "24px" }}>
-                                hub
-                            </span>
+                            <Icon name="Network" size="md" className="text-[#102216]" />
                         </div>
                         <div>
                             <h1 className="text-white text-lg font-bold tracking-wide leading-none">PPSDM KMM</h1>
@@ -28,23 +27,21 @@ export default function NexusDashboard() {
                         href="/nexus"
                         className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#13ec5b]/10 border border-[#13ec5b]/20 text-white group transition-all hover:bg-[#13ec5b]/20"
                     >
-                        <span className="material-symbols-outlined text-[#13ec5b] group-hover:scale-110 transition-transform">
-                            dashboard
-                        </span>
+                        <Icon name="LayoutDashboard" className="text-[#13ec5b] group-hover:scale-110 transition-transform" />
                         <span className="font-medium">My Nexus</span>
                     </Link>
                     <Link
                         href="/portfolio"
                         className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition-all"
                     >
-                        <span className="material-symbols-outlined">folder_open</span>
+                        <Icon name="FolderOpen" />
                         <span className="font-medium">Portfolio</span>
                     </Link>
                     <Link
                         href="/mentorship"
                         className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition-all"
                     >
-                        <span className="material-symbols-outlined">groups</span>
+                        <Icon name="Users" />
                         <span className="font-medium">Mentors</span>
                     </Link>
                 </nav>
@@ -109,15 +106,17 @@ export default function NexusDashboard() {
                                     </span>
                                 </div>
                                 <div className="flex justify-between px-2 mb-4 text-gray-400">
-                                    {["sentiment_very_dissatisfied", "sentiment_dissatisfied", "sentiment_neutral", "sentiment_satisfied", "sentiment_very_satisfied"].map(
+                                    {["Frown", "Meh", "Smile", "Laugh", "Trophy"].map(
                                         (icon, idx) => (
-                                            <span
+                                            <div
                                                 key={idx}
-                                                className={`material-symbols-outlined hover:text-[#13ec5b] cursor-pointer transition-colors ${idx === 3 ? "text-[#13ec5b] scale-125 drop-shadow-[0_0_8px_rgba(19,236,91,0.5)]" : ""
+                                                className={`hover:text-[#13ec5b] cursor-pointer transition-colors ${idx === 3 ? "text-[#13ec5b] scale-125 drop-shadow-[0_0_8px_rgba(19,236,91,0.5)]" : ""
                                                     }`}
                                             >
-                                                {icon}
-                                            </span>
+                                                <Icon name={icon as any} />
+                                            </div>
+
+
                                         )
                                     )}
                                 </div>
@@ -159,7 +158,7 @@ export default function NexusDashboard() {
                                 <div className="relative z-10 mt-8 flex items-center gap-4">
                                     <button className="bg-[#13ec5b] hover:bg-green-400 text-[#102216] font-bold text-base px-8 py-3 rounded-lg shadow-[0_0_20px_rgba(19,236,91,0.2)] hover:shadow-[0_0_30px_rgba(19,236,91,0.4)] transition-all flex items-center gap-2">
                                         <span>Start Action</span>
-                                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                        <Icon name="ArrowRight" size="sm" />
                                     </button>
                                     <span className="text-sm text-gray-500 font-medium">~15 mins est.</span>
                                 </div>
@@ -173,10 +172,10 @@ export default function NexusDashboard() {
                             <h3 className="text-xl font-bold text-white">Growth Timeline</h3>
                             <div className="flex gap-2">
                                 <button className="size-8 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-gray-400">
-                                    <span className="material-symbols-outlined text-sm">chevron_left</span>
+                                    <Icon name="ChevronLeft" size="sm" />
                                 </button>
                                 <button className="size-8 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-gray-400">
-                                    <span className="material-symbols-outlined text-sm">chevron_right</span>
+                                    <Icon name="ChevronRight" size="sm" />
                                 </button>
                             </div>
                         </div>
@@ -217,12 +216,12 @@ export default function NexusDashboard() {
                         </div>
                     </div>
                 </div>
-            </main>
+            </main >
 
             {/* Right Panel: Contextual Widgets */}
-            <aside className="w-80 flex flex-col border-l border-[#3b5443]/30 bg-[#141e18]/50 h-screen shrink-0 overflow-y-auto p-6 gap-6">
+            < aside className="w-80 flex flex-col border-l border-[#3b5443]/30 bg-[#141e18]/50 h-screen shrink-0 overflow-y-auto p-6 gap-6" >
                 {/* Mentor Status */}
-                <div className="flex flex-col gap-3">
+                < div className="flex flex-col gap-3" >
                     <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide">Mentor Status</h4>
                     <div className="bg-[#1a2c22] rounded-xl p-4 border border-[#3b5443]/50 flex items-center gap-4 hover:border-[#13ec5b]/40 transition-colors cursor-pointer group">
                         <div className="relative">
@@ -240,13 +239,13 @@ export default function NexusDashboard() {
                             <p className="text-[#13ec5b] text-xs">Online Now</p>
                         </div>
                         <button className="text-gray-400 hover:text-white group-hover:bg-white/10 p-2 rounded-full transition-all">
-                            <span className="material-symbols-outlined text-[20px]">chat_bubble</span>
+                            <Icon name="MessageCircle" size="sm" />
                         </button>
                     </div>
-                </div>
+                </div >
 
                 {/* Deadlines Widget */}
-                <div className="flex flex-col gap-3 flex-1">
+                < div className="flex flex-col gap-3 flex-1" >
                     <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide">Closest Deadlines</h4>
                     <div className="flex flex-col gap-2">
                         {/* Item 1: Urgent */}
@@ -266,20 +265,20 @@ export default function NexusDashboard() {
                             <p className="text-gray-500 text-xs">Personal Track</p>
                         </div>
                     </div>
-                </div>
+                </div >
 
                 {/* Upcoming Event */}
-                <div className="mt-auto bg-gradient-to-br from-[#13ec5b]/20 to-transparent rounded-xl p-4 border border-[#13ec5b]/20">
+                < div className="mt-auto bg-gradient-to-br from-[#13ec5b]/20 to-transparent rounded-xl p-4 border border-[#13ec5b]/20" >
                     <div className="flex items-center gap-2 mb-2">
-                        <span className="material-symbols-outlined text-[#13ec5b]">event_upcoming</span>
+                        <Icon name="Calendar" className="text-[#13ec5b]" />
                         <span className="text-white font-medium text-sm">Upcoming Event</span>
                     </div>
                     <p className="text-white text-xs mb-3">Campus Innovation Hackathon registration closes soon.</p>
                     <button className="w-full py-2 rounded bg-[#1a2c22] hover:bg-white/10 text-white text-xs font-medium transition-colors border border-white/10">
                         View Details
                     </button>
-                </div>
-            </aside>
-        </div>
+                </div >
+            </aside >
+        </div >
     );
 }

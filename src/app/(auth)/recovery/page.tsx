@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { Shield, History, Mail, ShieldCheck, ArrowRight } from "lucide-react";
 
 export default function RecoveryPage() {
     return (
@@ -11,7 +12,7 @@ export default function RecoveryPage() {
             <div className="flex justify-between items-center p-6 bg-[#0E1218]">
                 <div className="flex items-center gap-2 text-white">
                     <div className="size-8 bg-blue-600 rounded flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white text-lg">shield</span>
+                        <Shield className="text-white text-lg w-5 h-5" />
                     </div>
                     <span className="font-bold">PPSDM KMM</span>
                 </div>
@@ -22,7 +23,7 @@ export default function RecoveryPage() {
                 <div className="flex flex-col items-center max-w-lg w-full">
 
                     <div className="size-16 bg-[#161B22] rounded-full flex items-center justify-center mb-6 border border-[#2D303E]">
-                        <span className="material-symbols-outlined text-blue-500 text-3xl">history</span>
+                        <History className="text-blue-500 text-3xl w-8 h-8" />
                     </div>
 
                     <h1 className="text-3xl font-bold text-white mb-2">Account Recovery</h1>
@@ -56,7 +57,7 @@ export default function RecoveryPage() {
 
                         <label className="text-xs font-bold text-gray-300 mb-2 block">Registered Email Address</label>
                         <div className="relative mb-6">
-                            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">mail</span>
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
                             <input type="email" placeholder="name@example.com" className="w-full bg-[#0D1117] border border-[#2D303E] rounded-lg pl-10 pr-4 py-3 text-sm text-gray-300 focus:outline-none focus:border-blue-500" />
                         </div>
                         <p className="text-xs text-gray-500 mb-6">We'll send a verification link or code to this email if it matches our records.</p>
@@ -68,13 +69,13 @@ export default function RecoveryPage() {
                                 <span className="text-sm text-gray-300">I'm not a robot</span>
                             </div>
                             <div className="flex flex-col items-center">
-                                <span className="material-symbols-outlined text-gray-500 text-lg">verified_user</span>
+                                <ShieldCheck className="text-gray-500 text-lg w-6 h-6" />
                                 <span className="text-[8px] text-gray-600">Privacy - Terms</span>
                             </div>
                         </div>
 
                         <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-blue-600/20">
-                            Don&apos;t worry, this happens to all of us. Enter your email below to recover your account. <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                            Don&apos;t worry, this happens to all of us. Enter your email below to recover your account. <ArrowRight className="text-sm w-4 h-4" />
                         </button>
 
                         <div className="mt-6 text-center">

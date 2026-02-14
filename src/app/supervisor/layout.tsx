@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Icon } from "@/components/ui/Icon";
 
 export default function SupervisorLayout({
     children,
@@ -11,11 +12,11 @@ export default function SupervisorLayout({
     const pathname = usePathname();
 
     const navItems = [
-        { id: 'dashboard', label: 'Dashboard', path: '/supervisor/dashboard', icon: 'dashboard' },
-        { id: 'approvals', label: 'Approvals', path: '/supervisor/approvals', icon: 'check_circle' },
-        { id: 'students', label: 'Students', path: '/supervisor/students', icon: 'group' }, // Placeholder
-        { id: 'analytics', label: 'Analytics', path: '/supervisor/analytics', icon: 'analytics' },
-        { id: 'settings', label: 'Settings', path: '/supervisor/settings', icon: 'settings' },
+        { id: 'dashboard', label: 'Dashboard', path: '/supervisor/dashboard', icon: 'LayoutDashboard' },
+        { id: 'approvals', label: 'Approvals', path: '/supervisor/approvals', icon: 'CheckCircle' },
+        { id: 'students', label: 'Students', path: '/supervisor/students', icon: 'Users' }, // Placeholder
+        { id: 'analytics', label: 'Analytics', path: '/supervisor/analytics', icon: 'BarChart3' },
+        { id: 'settings', label: 'Settings', path: '/supervisor/settings', icon: 'Settings' },
     ];
 
     return (
@@ -24,7 +25,7 @@ export default function SupervisorLayout({
             <nav className="h-16 border-b border-[#2D303E] bg-[#161920] flex items-center justify-between px-8 sticky top-0 z-50">
                 <div className="flex items-center gap-4">
                     <div className="size-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white">shield_person</span>
+                        <Icon name="Shield" className="text-white" />
                     </div>
                     <span className="font-bold text-lg">PPSDM Supervisor</span>
 
@@ -45,11 +46,11 @@ export default function SupervisorLayout({
 
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <span className="material-symbols-outlined text-gray-400 absolute left-3 top-2 text-lg">search</span>
+                        <Icon name="Search" className="text-gray-400 absolute left-3 top-2 text-lg" size="sm" />
                         <input type="text" placeholder="Search student..." className="bg-[#0E1015] border border-[#2D303E] rounded-lg pl-10 pr-4 py-1.5 text-sm text-white focus:border-blue-500 outline-none w-64 transition-colors" />
                     </div>
                     <button className="bg-[#2D303E] p-2 rounded-full hover:bg-gray-700 transition-colors relative">
-                        <span className="material-symbols-outlined text-gray-300">notifications</span>
+                        <Icon name="Bell" className="text-gray-300" />
                         <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full"></span>
                     </button>
                     <div className="size-9 rounded-full bg-orange-100 border border-[#2D303E] overflow-hidden">

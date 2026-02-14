@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Icon } from "@/components/ui/Icon";
 
 export default function ArchitecturePage() {
     return (
@@ -10,7 +11,7 @@ export default function ArchitecturePage() {
                 <header className="flex items-center justify-between whitespace-nowrap border-b border-[#27273a] bg-[#050510]/90 backdrop-blur-md sticky top-0 z-50 px-8 py-4">
                     <div className="flex items-center gap-4">
                         <div className="size-8 text-[#FFBD07] flex items-center justify-center rounded bg-[#000066]/20 border border-[#000066]/50">
-                            <span className="material-symbols-outlined text-[20px]">hub</span>
+                            <Icon name="Waypoints" className="text-[20px]" />
                         </div>
                         <div>
                             <h2 className="text-white text-lg font-bold leading-tight tracking-wider uppercase">PPSDM KMM</h2>
@@ -48,7 +49,7 @@ export default function ArchitecturePage() {
                         {/* Stats Panel */}
                         <div className="bg-[#003366]/20 border border-[#000066]/40 rounded-xl p-6 relative overflow-hidden group">
                             <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
-                                <span className="material-symbols-outlined text-4xl text-[#FFBD07]">analytics</span>
+                                <Icon name="Activity" className="text-4xl text-[#FFBD07]" />
                             </div>
                             <h3 className="text-xs font-bold text-[#FFBD07] uppercase tracking-widest mb-6 border-b border-white/10 pb-2">System Scale</h3>
                             <div className="grid grid-cols-2 gap-6">
@@ -56,14 +57,14 @@ export default function ArchitecturePage() {
                                     <span className="text-4xl font-bold text-white tracking-tighter">26<span className="text-[#FFBD07]">+</span></span>
                                     <span className="text-xs text-slate-400 uppercase tracking-wider mt-1">Core Interfaces</span>
                                     <span className="text-[10px] text-green-400 font-mono mt-2 flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[10px]">arrow_upward</span> 12% vs MVP
+                                        <Icon name="ArrowUp" className="text-[10px]" /> 12% vs MVP
                                     </span>
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-4xl font-bold text-white tracking-tighter">150<span className="text-[#FFBD07]">+</span></span>
                                     <span className="text-xs text-slate-400 uppercase tracking-wider mt-1">Features</span>
                                     <span className="text-[10px] text-green-400 font-mono mt-2 flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[10px]">arrow_upward</span> 45% Efficiency
+                                        <Icon name="ArrowUp" className="text-[10px]" /> 45% Efficiency
                                     </span>
                                 </div>
                             </div>
@@ -96,7 +97,7 @@ export default function ArchitecturePage() {
                                 <div className="flex flex-col md:flex-row gap-4 bg-[#003366]/40 backdrop-blur-sm border border-[#000066]/50 hover:border-[#FFBD07]/50 rounded-lg p-5 shadow-lg relative overflow-hidden">
                                     <div className="bg-gradient-to-r from-[#FFBD07]/10 to-transparent absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <div className="flex items-center justify-center bg-[#000066]/30 rounded-lg w-12 h-12 shrink-0 text-[#FFBD07]">
-                                        <span className="material-symbols-outlined">public</span>
+                                        <Icon name="Globe" />
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start">
@@ -117,7 +118,7 @@ export default function ArchitecturePage() {
                                 <div className="absolute -left-[33px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-slate-600 z-10 hidden md:block group-hover:bg-[#FFBD07] transition-colors"></div>
                                 <div className="flex flex-col md:flex-row gap-4 bg-[#003366]/30 backdrop-blur-sm border border-[#000066]/40 hover:border-[#FFBD07]/30 rounded-lg p-5 shadow-lg relative overflow-hidden">
                                     <div className="flex items-center justify-center bg-[#000066]/20 rounded-lg w-12 h-12 shrink-0 text-sky-300">
-                                        <span className="material-symbols-outlined">trophy</span>
+                                        <Icon name="Trophy" />
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start">
@@ -138,7 +139,7 @@ export default function ArchitecturePage() {
                                 <div className="absolute -left-[33px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-slate-600 z-10 hidden md:block group-hover:bg-[#FFBD07] transition-colors"></div>
                                 <div className="flex flex-col md:flex-row gap-4 bg-[#003366]/30 backdrop-blur-sm border border-[#000066]/40 hover:border-[#FFBD07]/30 rounded-lg p-5 shadow-lg relative overflow-hidden">
                                     <div className="flex items-center justify-center bg-[#000066]/20 rounded-lg w-12 h-12 shrink-0 text-sky-300">
-                                        <span className="material-symbols-outlined">group_work</span>
+                                        <Icon name="Users" />
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start">
@@ -159,10 +160,10 @@ export default function ArchitecturePage() {
                                 <div className="absolute -left-[33px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#050510] border-2 border-[#FFBD07] z-10 hidden md:block group-hover:shadow-[0_0_15px_rgba(255,189,7,0.15)] transition-shadow"></div>
                                 <div className="flex flex-col md:flex-row gap-4 bg-gradient-to-r from-[#003366] to-[#000044] border border-[#FFBD07]/40 hover:border-[#FFBD07] rounded-lg p-5 shadow-[0_0_25px_rgba(255,189,7,0.3)] relative overflow-hidden">
                                     <div className="absolute right-0 bottom-0 opacity-10">
-                                        <span className="material-symbols-outlined text-8xl text-[#FFBD07]">memory</span>
+                                        <Icon name="Cpu" className="text-8xl text-[#FFBD07]" />
                                     </div>
                                     <div className="flex items-center justify-center bg-[#FFBD07]/20 rounded-lg w-12 h-12 shrink-0 text-[#FFBD07]">
-                                        <span className="material-symbols-outlined">memory</span>
+                                        <Icon name="Cpu" />
                                     </div>
                                     <div className="flex-1 z-10">
                                         <div className="flex justify-between items-start">
@@ -171,9 +172,9 @@ export default function ArchitecturePage() {
                                         </div>
                                         <p className="text-slate-300 text-sm mt-1">The foundational technology stack powering the ecosystem.</p>
                                         <div className="flex gap-4 mt-3 text-xs text-[#FFBD07]/80 font-mono">
-                                            <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[10px]">auto_awesome</span> AI Alchemy</span>
-                                            <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[10px]">token</span> Blockchain Ledger</span>
-                                            <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[10px]">psychology</span> XAI Module</span>
+                                            <span className="flex items-center gap-1"><Icon name="Sparkles" className="text-[10px]" /> AI Alchemy</span>
+                                            <span className="flex items-center gap-1"><Icon name="Coins" className="text-[10px]" /> Blockchain Ledger</span>
+                                            <span className="flex items-center gap-1"><Icon name="Brain" className="text-[10px]" /> XAI Module</span>
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +186,7 @@ export default function ArchitecturePage() {
                     <aside className="w-full lg:w-1/4 flex flex-col gap-6 z-10">
                         <div className="flex items-center justify-between">
                             <h3 className="text-sm font-bold text-slate-300 uppercase tracking-widest">Key Interfaces</h3>
-                            <span className="material-symbols-outlined text-slate-500 text-sm cursor-pointer hover:text-[#FFBD07]">view_module</span>
+                            <Icon name="LayoutGrid" className="text-slate-500 text-sm cursor-pointer hover:text-[#FFBD07]" />
                         </div>
                         {/* Thumbnail 1 */}
                         <div className="group relative block rounded-xl border border-[#27273a] bg-[#101018] overflow-hidden hover:border-[#FFBD07]/50 transition-colors">
@@ -236,9 +237,7 @@ export default function ArchitecturePage() {
             linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
         }
-         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+
       `}</style>
         </div>
     );

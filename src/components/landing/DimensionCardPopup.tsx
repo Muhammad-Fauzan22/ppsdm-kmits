@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { DimensionData } from "@/data/dimensions";
 import { useMemo } from "react";
+import { Icon } from "@/components/ui/Icon";
+import { BadgeCheck, Users, Zap, ArrowRight } from "lucide-react";
 
 interface DimensionCardPopupProps {
   dimension: DimensionData;
@@ -33,7 +35,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
         >
           {/* Holographic Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F1A] to-[#1A1F2E]" />
-          
+
           {/* Animated Border */}
           <motion.div
             animate={{
@@ -42,16 +44,14 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent bg-[length:200%_100%]"
           />
-          
+
           {/* Content Container */}
           <div className="relative z-10 p-6 h-full flex flex-col">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white text-2xl">
-                    {dimension.icon}
-                  </span>
+                  <Icon name={dimension.icon} className="text-white w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white">{dimension.title}</h3>
@@ -61,12 +61,12 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
                 </div>
               </div>
             </div>
-            
+
             {/* Research Stats */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-white/5 rounded-lg p-3 border border-white/10">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="material-symbols-outlined text-green-400 text-sm">verified</span>
+                  <BadgeCheck className="w-4 h-4 text-green-400" />
                   <span className="text-xs text-slate-400">Reliability</span>
                 </div>
                 <p className="text-lg font-bold text-white">
@@ -75,7 +75,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
               </div>
               <div className="bg-white/5 rounded-lg p-3 border border-white/10">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="material-symbols-outlined text-blue-400 text-sm">groups</span>
+                  <Users className="w-4 h-4 text-blue-400" />
                   <span className="text-xs text-slate-400">Sample</span>
                 </div>
                 <p className="text-lg font-bold text-white">
@@ -83,7 +83,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
                 </p>
               </div>
             </div>
-            
+
             {/* Key Findings */}
             <div className="mb-4">
               <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
@@ -98,7 +98,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
                 ))}
               </ul>
             </div>
-            
+
             {/* Modules Preview */}
             <div className="mb-4">
               <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
@@ -115,7 +115,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
                 ))}
               </div>
             </div>
-            
+
             {/* CTA Buttons */}
             <div className="mt-auto space-y-2">
               <Link
@@ -124,7 +124,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
                 aria-label={`Mulai Assessment untuk ${dimension.title}`}
               >
                 <span>Mulai Assessment</span>
-                <span className="material-symbols-outlined">bolt</span>
+                <Zap className="w-5 h-5" />
               </Link>
               <Link
                 href={dimension.link}
@@ -132,7 +132,7 @@ export function DimensionCardPopup({ dimension, phase, onPhaseChange }: Dimensio
                 aria-label={`Pelajari Selengkapnya tentang ${dimension.title}`}
               >
                 <span>Pelajari Selengkapnya</span>
-                <span className="material-symbols-outlined">arrow_forward</span>
+                <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </div>

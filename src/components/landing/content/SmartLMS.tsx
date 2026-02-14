@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { BookOpen, Podcast, FileQuestion, Presentation, Network } from "lucide-react";
 
 export function SmartLMS() {
     return (
@@ -48,7 +49,7 @@ export function SmartLMS() {
                     <div className="space-y-8">
                         <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
                             <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
-                                <span className="material-symbols-outlined text-brand-accent">auto_stories</span>
+                                <BookOpen className="text-brand-accent w-6 h-6" />
                                 Sample Generated Content
                             </h3>
 
@@ -59,19 +60,19 @@ export function SmartLMS() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="bg-black/40 p-4 rounded-xl text-center hover:bg-brand-blue/20 transition-colors cursor-pointer border border-white/5">
-                                        <span className="material-symbols-outlined text-3xl mb-2 text-slate-300">podcasts</span>
+                                        <Podcast className="w-8 h-8 mb-2 text-slate-300" />
                                         <p className="text-xs text-slate-400">Audio Podcast</p>
                                     </div>
                                     <div className="bg-black/40 p-4 rounded-xl text-center hover:bg-brand-blue/20 transition-colors cursor-pointer border border-white/5">
-                                        <span className="material-symbols-outlined text-3xl mb-2 text-slate-300">quiz</span>
+                                        <FileQuestion className="w-8 h-8 mb-2 text-slate-300" />
                                         <p className="text-xs text-slate-400">Gamified Quiz</p>
                                     </div>
                                     <div className="bg-black/40 p-4 rounded-xl text-center hover:bg-brand-blue/20 transition-colors cursor-pointer border border-white/5">
-                                        <span className="material-symbols-outlined text-3xl mb-2 text-slate-300">slideshow</span>
+                                        <Presentation className="w-8 h-8 mb-2 text-slate-300" />
                                         <p className="text-xs text-slate-400">Slides PDF</p>
                                     </div>
                                     <div className="bg-black/40 p-4 rounded-xl text-center hover:bg-brand-blue/20 transition-colors cursor-pointer border border-white/5">
-                                        <span className="material-symbols-outlined text-3xl mb-2 text-slate-300">account_tree</span>
+                                        <Network className="w-8 h-8 mb-2 text-slate-300" />
                                         <p className="text-xs text-slate-400">Mind Map</p>
                                     </div>
                                 </div>

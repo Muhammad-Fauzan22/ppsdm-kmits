@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { CheckCircle2, Lock } from "lucide-react";
 
 const items = [
     { sem: "Semester 1", focus: "Adaptasi & Self-Discovery", status: "completed" },
@@ -65,8 +66,8 @@ export function RoadmapPreview() {
                                     >
                                         <div className="flex justify-between items-center mb-1">
                                             <span className={`text-xs font-bold uppercase ${item.status === 'completed' ? 'text-brand-blue' : 'text-slate-400'}`}>{item.sem}</span>
-                                            {item.status === 'completed' && <span className="material-symbols-outlined text-brand-blue text-sm">check_circle</span>}
-                                            {item.status === 'locked' && <span className="material-symbols-outlined text-slate-600 text-sm">lock</span>}
+                                            {item.status === 'completed' && <CheckCircle2 className="text-brand-blue w-4 h-4" />}
+                                            {item.status === 'locked' && <Lock className="text-slate-600 w-4 h-4" />}
                                         </div>
                                         <h5 className="text-white font-bold">{item.focus}</h5>
                                     </motion.div>

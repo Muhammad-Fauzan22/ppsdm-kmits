@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { UserSquare, Camera, Edit2, GraduationCap, Lock, Info, Shield, RefreshCw, Download, Trash2, BellRing, Save, AlertTriangle } from 'lucide-react';
 
 export default function ProfileSettings() {
     const [emailAlerts, setEmailAlerts] = useState(true);
@@ -106,7 +107,7 @@ export default function ProfileSettings() {
                 <div className="glass-card border border-white/10 rounded-2xl p-8 hover:border-brand-blue/30 transition-colors bg-card/30 backdrop-blur">
                     <div className="flex justify-between items-center mb-8">
                         <h2 className="text-xl font-bold flex items-center gap-2 text-white">
-                            <span className="material-symbols-outlined text-brand-blue">assignment_ind</span>
+                            <UserSquare className="text-brand-blue w-6 h-6" />
                             Personal Information
                         </h2>
                         <button className="text-sm font-bold text-brand-blue hover:text-white transition-colors">Edit Details</button>
@@ -117,11 +118,11 @@ export default function ProfileSettings() {
                             <div className="size-32 rounded-full bg-card-dark border-4 border-white/10 overflow-hidden relative group cursor-pointer shadow-lg">
                                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" className="w-full h-full" alt="Profile" />
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span className="material-symbols-outlined text-white">photo_camera</span>
+                                    <Camera className="text-white w-8 h-8" />
                                 </div>
                             </div>
                             <button className="bg-brand-blue rounded-full p-1.5 absolute ml-20 mt-24 border-4 border-background-dark hover:scale-110 transition-transform">
-                                <span className="material-symbols-outlined text-white text-sm">edit</span>
+                                <Edit2 className="text-white w-3.5 h-3.5" />
                             </button>
                         </div>
 
@@ -163,14 +164,14 @@ export default function ProfileSettings() {
                 {/* Academic Information */}
                 <div className="glass-card border border-white/10 rounded-2xl p-8 hover:border-brand-blue/30 transition-colors bg-card/30 backdrop-blur">
                     <h2 className="text-xl font-bold flex items-center gap-2 mb-6 text-white">
-                        <span className="material-symbols-outlined text-brand-blue">school</span>
+                        <GraduationCap className="text-brand-blue w-6 h-6" />
                         Academic Information
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-400 uppercase flex items-center gap-1">
-                                NRP / Student ID <span className="material-symbols-outlined text-[12px]">lock</span>
+                                NRP / Student ID <Lock className="w-3 h-3" />
                             </label>
                             <div className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 font-mono text-slate-500 cursor-not-allowed">
                                 5025201042
@@ -178,7 +179,7 @@ export default function ProfileSettings() {
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-400 uppercase flex items-center gap-1">
-                                Department <span className="material-symbols-outlined text-[12px]">lock</span>
+                                Department <Lock className="w-3 h-3" />
                             </label>
                             <div className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-slate-500 cursor-not-allowed">
                                 Informatics Engineering
@@ -186,7 +187,7 @@ export default function ProfileSettings() {
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-400 uppercase flex items-center gap-1">
-                                Current GPA <span className="material-symbols-outlined text-[12px]">lock</span>
+                                Current GPA <Lock className="w-3 h-3" />
                             </label>
                             <div className="bg-brand-blue/10 border border-brand-blue/30 rounded-lg px-4 py-3 flex justify-between items-center cursor-not-allowed">
                                 <span className="text-white font-bold text-lg">3.85</span>
@@ -196,7 +197,7 @@ export default function ProfileSettings() {
                     </div>
 
                     <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 flex gap-3">
-                        <span className="material-symbols-outlined text-brand-blue">info</span>
+                        <Info className="text-brand-blue w-5 h-5" />
                         <p className="text-sm text-slate-300">
                             Academic data is synchronized directly from the central university database. If you notice any discrepancies, please contact the Academic Administration Bureau.
                         </p>
@@ -206,7 +207,7 @@ export default function ProfileSettings() {
                 {/* Data Privacy (UU PDP Compliance) */}
                 <div className="glass-card border border-red-500/30 rounded-2xl p-8 hover:border-red-500/50 transition-colors bg-red-950/10 backdrop-blur">
                     <h2 className="text-xl font-bold flex items-center gap-2 mb-6 text-white">
-                        <span className="material-symbols-outlined text-red-500">security</span>
+                        <Shield className="text-red-500 w-6 h-6" />
                         Data Privacy & Control
                     </h2>
 
@@ -222,9 +223,9 @@ export default function ProfileSettings() {
                                 className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-bold text-white flex items-center gap-2 transition-all disabled:opacity-50"
                             >
                                 {isExporting ? (
-                                    <span className="material-symbols-outlined animate-spin">refresh</span>
+                                    <RefreshCw className="animate-spin w-4 h-4" />
                                 ) : (
-                                    <span className="material-symbols-outlined">download</span>
+                                    <Download className="w-4 h-4" />
                                 )}
                                 {isExporting ? 'Exporting...' : 'Export Data'}
                             </button>
@@ -241,7 +242,7 @@ export default function ProfileSettings() {
                                 onClick={() => setShowDeleteModal(true)}
                                 className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-sm font-bold text-red-400 flex items-center gap-2 transition-all"
                             >
-                                <span className="material-symbols-outlined">delete_forever</span>
+                                <Trash2 className="w-4 h-4" />
                                 Delete Account
                             </button>
                         </div>
@@ -253,7 +254,7 @@ export default function ProfileSettings() {
                     {/* Privacy */}
                     <div className="glass-card border border-white/10 rounded-2xl p-8 hover:border-brand-blue/30 transition-colors bg-card/30 backdrop-blur">
                         <h2 className="text-lg font-bold flex items-center gap-2 mb-6 text-white">
-                            <span className="material-symbols-outlined text-brand-blue">lock</span>
+                            <Lock className="text-brand-blue w-5 h-5" />
                             Privacy
                         </h2>
 
@@ -281,7 +282,7 @@ export default function ProfileSettings() {
                     {/* Notifications */}
                     <div className="glass-card border border-white/10 rounded-2xl p-8 hover:border-brand-blue/30 transition-colors bg-card/30 backdrop-blur">
                         <h2 className="text-lg font-bold flex items-center gap-2 mb-6 text-white">
-                            <span className="material-symbols-outlined text-brand-blue">notifications_active</span>
+                            <BellRing className="text-brand-blue w-5 h-5" />
                             Notifications
                         </h2>
 
@@ -311,7 +312,7 @@ export default function ProfileSettings() {
                 <div className="flex justify-end gap-4 pb-8">
                     <button className="px-6 py-3 rounded-xl font-bold text-slate-400 hover:text-white transition-colors">Cancel</button>
                     <button className="bg-brand-blue hover:bg-blue-600 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-brand-blue/30 flex items-center gap-2 transition-all active:scale-95">
-                        <span className="material-symbols-outlined">save</span>
+                        <Save className="w-5 h-5" />
                         Save Changes
                     </button>
                 </div>
@@ -335,7 +336,7 @@ export default function ProfileSettings() {
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-orange-600"></div>
 
                             <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-red-500">warning</span>
+                                <AlertTriangle className="text-red-500 w-8 h-8" />
                                 Delete Account?
                             </h3>
 

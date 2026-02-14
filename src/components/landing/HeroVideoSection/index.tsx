@@ -3,6 +3,7 @@
 import { useState, useEffect, memo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Zap, PlayCircle } from "lucide-react";
 import { ImageSequencePlayer } from "./ImageSequencePlayer";
 import { useBoomerangLoop } from "./useBoomerangLoop";
 import { useImagePreloader } from "./useImagePreloader";
@@ -208,14 +209,10 @@ export function HeroVideoSection({ className }: HeroVideoSectionProps) {
               className="w-full sm:w-auto px-8 py-4 bg-white text-[#070B14] font-bold rounded-2xl hover:bg-cyan-400 transition-all hover:scale-105 shadow-2xl shadow-cyan-500/20 flex items-center justify-center gap-2 text-lg group"
             >
               Mulai Assessment Gratis
-              <span className="material-symbols-outlined group-hover:rotate-12 transition-transform">
-                bolt
-              </span>
+              <Zap className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             </Link>
             <button className="w-full sm:w-auto px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-lg hover:border-cyan-500/50 group">
-              <span className="material-symbols-outlined group-hover:text-cyan-400 transition-colors">
-                play_circle
-              </span>
+              <PlayCircle className="w-6 h-6 group-hover:text-cyan-400 transition-colors" />
               Tonton Demo
             </button>
           </motion.div>

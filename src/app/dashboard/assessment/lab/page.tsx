@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FlaskConical, BookOpen, Library, NotebookPen, Info, Timer, Eye, Activity, Database, Terminal, TrendingUp, Bold, Italic, Underline, List, ListOrdered, Sigma, Cloud, Thermometer, Droplets, Wind } from 'lucide-react';
 
 export default function AssessmentLabPage() {
     return (
@@ -14,7 +15,7 @@ export default function AssessmentLabPage() {
             >
                 <div className="flex items-center gap-4">
                     <div className="size-8 rounded-lg bg-brand-blue/20 flex items-center justify-center text-brand-blue ring-1 ring-brand-blue/30">
-                        <span className="material-symbols-outlined fill text-lg">science</span>
+                        <FlaskConical className="w-5 h-5" />
                     </div>
                     <div>
                         <h2 className="text-sm font-bold leading-tight tracking-wide text-white uppercase font-grotesk">Scientific Lab</h2>
@@ -55,25 +56,25 @@ export default function AssessmentLabPage() {
                         <div className="flex flex-col gap-2">
                             <p className="px-3 text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Resources</p>
                             <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white group hover:border-brand-blue/50 hover:bg-white/10 transition-all">
-                                <span className="material-symbols-outlined text-brand-blue group-hover:scale-110 transition-transform text-[20px]">menu_book</span>
+                                <BookOpen className="text-brand-blue group-hover:scale-110 transition-transform w-5 h-5" />
                                 <p className="text-sm font-medium">Instructions</p>
                             </button>
                             <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
-                                <span className="material-symbols-outlined text-[20px]">library_books</span>
+                                <Library className="w-5 h-5" />
                                 <p className="text-sm font-medium">Reference Material</p>
                             </button>
                             <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
-                                <span className="material-symbols-outlined text-[20px]">science</span>
+                                <FlaskConical className="w-5 h-5" />
                                 <p className="text-sm font-medium">Methodology Guide</p>
                             </button>
                             <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
-                                <span className="material-symbols-outlined text-[20px]">edit_note</span>
+                                <NotebookPen className="w-5 h-5" />
                                 <p className="text-sm font-medium">Research Notes</p>
                             </button>
                         </div>
                         <div className="mt-4 p-4 rounded-lg bg-brand-blue/10 border border-brand-blue/20">
                             <h4 className="text-brand-blue text-sm font-bold mb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[18px]">info</span>
+                                <Info className="w-4 h-4" />
                                 Tip
                             </h4>
                             <p className="text-blue-200/80 text-xs leading-relaxed">
@@ -84,7 +85,7 @@ export default function AssessmentLabPage() {
                     <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
                         <div className="flex items-center justify-between px-1">
                             <div className="flex items-center gap-2 text-slate-400">
-                                <span className="material-symbols-outlined text-[20px]">timer</span>
+                                <Timer className="w-5 h-5" />
                                 <span className="text-xs font-bold uppercase tracking-wider">Time Remaining</span>
                             </div>
                         </div>
@@ -116,7 +117,7 @@ export default function AssessmentLabPage() {
                                 <p className="text-slate-400 text-sm max-w-2xl">Analyze the provided dataset regarding localized climate anomalies in sector 7 and propose a hypothesis for the variance observed in the last 24 hours.</p>
                             </div>
                             <button className="flex items-center gap-2 px-4 py-2 bg-card-dark border border-white/10 rounded-lg text-sm font-medium text-white hover:bg-white/5 transition-colors shadow-sm glass-card">
-                                <span className="material-symbols-outlined text-[18px]">visibility</span>
+                                <Eye className="w-4 h-4" />
                                 View Full Prompt
                             </button>
                         </div>
@@ -127,15 +128,15 @@ export default function AssessmentLabPage() {
                             <div className="border-b border-white/10 bg-black/20 px-6">
                                 <div className="flex gap-8">
                                     <button className="group flex items-center gap-2 border-b-2 border-brand-blue py-4 px-1 text-brand-blue">
-                                        <span className="material-symbols-outlined text-[20px]">monitoring</span>
+                                        <Activity className="w-5 h-5" />
                                         <p className="text-sm font-bold tracking-[0.015em]">Data Visualization</p>
                                     </button>
                                     <button className="group flex items-center gap-2 border-b-2 border-transparent py-4 px-1 text-slate-500 hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[20px]">dataset</span>
+                                        <Database className="w-5 h-5" />
                                         <p className="text-sm font-bold tracking-[0.015em]">Raw Data Set</p>
                                     </button>
                                     <button className="group flex items-center gap-2 border-b-2 border-transparent py-4 px-1 text-slate-500 hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[20px]">terminal</span>
+                                        <Terminal className="w-5 h-5" />
                                         <p className="text-sm font-bold tracking-[0.015em]">Simulation Log</p>
                                     </button>
                                 </div>
@@ -153,7 +154,7 @@ export default function AssessmentLabPage() {
                                             <span className="text-sm text-slate-400 font-medium">Variance</span>
                                             <span className="text-2xl font-bold text-white">12.4%</span>
                                             <span className="flex items-center text-sm font-medium text-emerald-400">
-                                                <span className="material-symbols-outlined text-[16px]">trending_up</span>
+                                                <TrendingUp className="w-4 h-4 ml-1" />
                                                 +2.1%
                                             </span>
                                         </div>
@@ -196,11 +197,11 @@ export default function AssessmentLabPage() {
                             <div className="lg:col-span-2 bg-card-dark rounded-xl border border-white/10 p-6 flex flex-col gap-4 shadow-lg glass-card">
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-lg font-medium text-white flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-brand-blue text-[20px]">edit_note</span>
+                                        <NotebookPen className="text-brand-blue w-5 h-5" />
                                         Hypothesis Formulation
                                     </h3>
                                     <span className="text-xs text-slate-400 flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[14px]">cloud_done</span>
+                                        <Cloud className="w-3.5 h-3.5" />
                                         Draft saved 30s ago
                                     </span>
                                 </div>
@@ -208,24 +209,24 @@ export default function AssessmentLabPage() {
                                     {/* Editor Toolbar */}
                                     <div className="flex items-center gap-1 p-2 border-b border-white/10 bg-white/5">
                                         <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
-                                            <span className="material-symbols-outlined text-[18px]">format_bold</span>
+                                            <Bold className="w-4 h-4" />
                                         </button>
                                         <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
-                                            <span className="material-symbols-outlined text-[18px]">format_italic</span>
+                                            <Italic className="w-4 h-4" />
                                         </button>
                                         <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
-                                            <span className="material-symbols-outlined text-[18px]">format_underlined</span>
-                                        </button>
-                                        <div className="w-px h-4 bg-white/10 mx-1"></div>
-                                        <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
-                                            <span className="material-symbols-outlined text-[18px]">format_list_bulleted</span>
-                                        </button>
-                                        <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
-                                            <span className="material-symbols-outlined text-[18px]">format_list_numbered</span>
+                                            <Underline className="w-4 h-4" />
                                         </button>
                                         <div className="w-px h-4 bg-white/10 mx-1"></div>
                                         <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
-                                            <span className="material-symbols-outlined text-[18px]">functions</span>
+                                            <List className="w-4 h-4" />
+                                        </button>
+                                        <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
+                                            <ListOrdered className="w-4 h-4" />
+                                        </button>
+                                        <div className="w-px h-4 bg-white/10 mx-1"></div>
+                                        <button className="p-1.5 rounded hover:bg-white/10 text-slate-400">
+                                            <Sigma className="w-4 h-4" />
                                         </button>
                                     </div>
                                     <textarea className="w-full h-48 bg-transparent p-4 text-sm text-slate-200 border-none outline-none resize-none font-sans leading-relaxed placeholder-slate-600" placeholder="State your null hypothesis and describe the statistical methodology you will employ to validate it..."></textarea>
@@ -243,7 +244,7 @@ export default function AssessmentLabPage() {
                                     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5">
                                         <div className="flex items-center gap-3">
                                             <span className="p-1.5 rounded bg-blue-500/10 text-brand-blue">
-                                                <span className="material-symbols-outlined text-[18px]">thermostat</span>
+                                                <Thermometer className="w-5 h-5" />
                                             </span>
                                             <div className="flex flex-col">
                                                 <span className="text-xs text-slate-400">Mean Temp</span>
@@ -255,7 +256,7 @@ export default function AssessmentLabPage() {
                                     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5">
                                         <div className="flex items-center gap-3">
                                             <span className="p-1.5 rounded bg-purple-500/10 text-purple-400">
-                                                <span className="material-symbols-outlined text-[18px]">water_drop</span>
+                                                <Droplets className="w-5 h-5" />
                                             </span>
                                             <div className="flex flex-col">
                                                 <span className="text-xs text-slate-400">Humidity</span>
@@ -267,7 +268,7 @@ export default function AssessmentLabPage() {
                                     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5">
                                         <div className="flex items-center gap-3">
                                             <span className="p-1.5 rounded bg-orange-500/10 text-orange-400">
-                                                <span className="material-symbols-outlined text-[18px]">air</span>
+                                                <Wind className="w-5 h-5" />
                                             </span>
                                             <div className="flex flex-col">
                                                 <span className="text-xs text-slate-400">Pressure</span>

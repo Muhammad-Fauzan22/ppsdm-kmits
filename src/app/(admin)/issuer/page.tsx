@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Icon } from "@/components/ui/Icon";
 
 export default function IssuerPage() {
     return (
@@ -9,7 +10,7 @@ export default function IssuerPage() {
             <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#3b3b54] bg-white/95 dark:bg-[#101022]/95 backdrop-blur px-6 py-3 lg:px-10">
                 <div className="flex items-center gap-4 text-slate-900 dark:text-white">
                     <div className="flex size-8 items-center justify-center rounded-lg bg-[#1313ec]/20 text-[#1313ec]">
-                        <span className="material-symbols-outlined text-2xl">deployed_code</span>
+                        <Icon name="Box" className="text-2xl" />
                     </div>
                     <h2 className="dark:text-white text-slate-900 text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
                 </div>
@@ -26,10 +27,10 @@ export default function IssuerPage() {
                             <span className="text-xs opacity-70 font-mono">0x4a...9f2</span>
                         </button>
                         <button className="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-[#1c1c27] border border-slate-200 dark:border-[#3b3b54] text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-[#2a2a35] transition-colors">
-                            <span className="material-symbols-outlined text-[20px]">notifications</span>
+                            <Icon name="Bell" className="text-[20px]" />
                         </button>
                         <button className="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-[#1c1c27] border border-slate-200 dark:border-[#3b3b54] text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-[#2a2a35] transition-colors">
-                            <span className="material-symbols-outlined text-[20px]">help</span>
+                            <Icon name="HelpCircle" className="text-[20px]" />
                         </button>
                     </div>
                 </div>
@@ -49,11 +50,11 @@ export default function IssuerPage() {
                         </div>
                         <div className="flex gap-3">
                             <button className="flex h-10 px-4 items-center justify-center rounded-lg border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1c1c27] hover:bg-slate-100 dark:hover:bg-[#2a2a35] text-slate-900 dark:text-white text-sm font-bold transition-colors">
-                                <span className="material-symbols-outlined mr-2 text-lg">data_object</span>
+                                <Icon name="FileJson" className="mr-2 text-lg" />
                                 View Smart Contract
                             </button>
                             <button className="flex h-10 px-4 items-center justify-center rounded-lg border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1c1c27] hover:bg-slate-100 dark:hover:bg-[#2a2a35] text-slate-900 dark:text-white text-sm font-bold transition-colors">
-                                <span className="material-symbols-outlined mr-2 text-lg">upload_file</span>
+                                <Icon name="Upload" className="mr-2 text-lg" />
                                 Batch Upload (CSV)
                             </button>
                         </div>
@@ -65,7 +66,7 @@ export default function IssuerPage() {
                         <div className="lg:col-span-5 flex flex-col gap-6">
                             <div className="p-6 rounded-xl bg-white dark:bg-[#1c1c27] border border-slate-200 dark:border-[#3b3b54]">
                                 <h3 className="dark:text-white text-slate-900 text-xl font-bold mb-6 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[#1313ec]">edit_document</span>
+                                    <Icon name="FileEdit" className="text-[#1313ec]" />
                                     Credential Details
                                 </h3>
                                 <div className="flex flex-col gap-5">
@@ -90,7 +91,7 @@ export default function IssuerPage() {
                                                 <option value="defi-arch">DeFi Architecture</option>
                                             </select>
                                             <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-[#9d9db9]">
-                                                <span className="material-symbols-outlined">expand_more</span>
+                                                <Icon name="ChevronDown" />
                                             </div>
                                         </div>
                                     </label>
@@ -112,7 +113,7 @@ export default function IssuerPage() {
                                     </div>
                                     <button className="group relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-[#1313ec] text-white text-base font-bold leading-normal tracking-wide hover:bg-blue-600 transition-all shadow-lg shadow-[#1313ec]/20">
                                         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                                        <span className="material-symbols-outlined mr-2">verified</span>
+                                        <Icon name="BadgeCheck" className="mr-2" />
                                         Sign & Issue Credential
                                     </button>
                                 </div>
@@ -123,7 +124,7 @@ export default function IssuerPage() {
                         <div className="lg:col-span-7 flex flex-col gap-4">
                             <div className="flex justify-between items-center px-1">
                                 <h3 className="dark:text-white text-slate-900 text-xl font-bold flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-purple-400">visibility</span>
+                                    <Icon name="Eye" className="text-purple-400" />
                                     Live Preview
                                 </h3>
                                 <span className="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border border-yellow-500/20 text-xs font-bold uppercase tracking-wide flex items-center gap-1">
@@ -143,7 +144,7 @@ export default function IssuerPage() {
                                 <div className="relative z-10 flex justify-between items-start">
                                     <div className="flex items-center gap-3">
                                         <div className="size-10 bg-white text-[#101022] rounded flex items-center justify-center font-bold text-xl">
-                                            <span className="material-symbols-outlined">school</span>
+                                            <Icon name="GraduationCap" />
                                         </div>
                                         <div>
                                             <h4 className="text-white font-bold uppercase tracking-widest text-sm">PPSDM KMM</h4>
@@ -182,7 +183,7 @@ export default function IssuerPage() {
                             {/* JSON Data Preview (Collapsed) */}
                             <div className="bg-black/40 rounded-lg p-4 font-mono text-xs text-[#9d9db9] border border-[#3b3b54] overflow-hidden">
                                 <div className="flex items-center gap-2 mb-2 text-white/60">
-                                    <span className="material-symbols-outlined text-sm">code</span>
+                                    <Icon name="Code" className="text-sm" />
                                     <span>Metadata Preview</span>
                                 </div>
                                 <p className="break-all opacity-70">
@@ -225,7 +226,7 @@ export default function IssuerPage() {
                                             <td className="px-6 py-4">Oct 26, 2023</td>
                                             <td className="px-6 py-4 text-right">
                                                 <button className="text-slate-400 dark:text-[#9d9db9] hover:text-[#1313ec] dark:hover:text-white p-1">
-                                                    <span className="material-symbols-outlined text-lg">open_in_new</span>
+                                                    <Icon name="ExternalLink" className="text-lg" />
                                                 </button>
                                             </td>
                                         </tr>
@@ -245,7 +246,7 @@ export default function IssuerPage() {
                                             <td className="px-6 py-4">Oct 26, 2023</td>
                                             <td className="px-6 py-4 text-right">
                                                 <button className="text-slate-400 dark:text-[#9d9db9] hover:text-[#1313ec] dark:hover:text-white p-1">
-                                                    <span className="material-symbols-outlined text-lg">open_in_new</span>
+                                                    <Icon name="ExternalLink" className="text-lg" />
                                                 </button>
                                             </td>
                                         </tr>
@@ -265,7 +266,7 @@ export default function IssuerPage() {
                                             <td className="px-6 py-4">Oct 25, 2023</td>
                                             <td className="px-6 py-4 text-right">
                                                 <button className="text-slate-400 dark:text-[#9d9db9] hover:text-[#1313ec] dark:hover:text-white p-1">
-                                                    <span className="material-symbols-outlined text-lg">open_in_new</span>
+                                                    <Icon name="ExternalLink" className="text-lg" />
                                                 </button>
                                             </td>
                                         </tr>
@@ -299,9 +300,7 @@ export default function IssuerPage() {
         ::-webkit-scrollbar-thumb:hover {
             background: #4f4f6e; 
         }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+
       `}</style>
         </div>
     );

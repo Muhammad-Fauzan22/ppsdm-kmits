@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 export default function SchemaVisualizer() {
     return (
@@ -10,7 +12,7 @@ export default function SchemaVisualizer() {
             {/* Toolbar */}
             <div className="h-14 border-b border-[#21262D] flex items-center px-4 bg-[#090C10] relative z-20">
                 <div className="flex items-center gap-3 border-r border-[#21262D] pr-4 mr-4">
-                    <span className="material-symbols-outlined text-blue-500">schema</span>
+                    <Icon name="Database" className="text-blue-500" />
                     <span className="font-bold text-sm text-white">PPSDM_KMM_DB_ARCH</span>
                     <div className="size-2 rounded-full bg-green-500"></div>
                     <span className="text-[10px] text-green-500 font-bold uppercase">Live Connection: production-pg-01</span>
@@ -18,7 +20,7 @@ export default function SchemaVisualizer() {
 
                 <div className="flex-1 flex max-w-sm">
                     <div className="flex items-center bg-[#161B22] border border-[#30363D] rounded px-3 py-1 w-full hover:border-[#8B949E] transition-colors">
-                        <span className="material-symbols-outlined text-gray-500 text-sm mr-2">search</span>
+                        <Icon name="Search" className="text-gray-500 text-sm mr-2" />
                         <input type="text" placeholder="Search tables..." className="bg-transparent text-xs w-full focus:outline-none" />
                     </div>
                 </div>
@@ -29,7 +31,7 @@ export default function SchemaVisualizer() {
                         <span className="px-3 py-1 text-xs text-gray-400">Version: <b className="text-white">v2.4.1</b></span>
                     </div>
                     <button className="bg-[#1F6FEB] hover:bg-[#1F6FEB]/90 text-white text-xs font-bold px-4 py-1.5 rounded flex items-center gap-2">
-                        <span className="material-symbols-outlined text-sm">download</span> Export SQL
+                        <Icon name="Download" className="text-sm" /> Export SQL
                     </button>
                 </div>
             </div>
@@ -64,12 +66,12 @@ export default function SchemaVisualizer() {
                     <div className="absolute top-20 left-48 w-64 bg-[#161B22] border border-[#30363D] rounded shadow-2xl z-10">
                         <div className="bg-[#24292F] px-3 py-2 border-b border-[#30363D] flex justify-between items-center rounded-t">
                             <div className="flex items-center gap-2 font-bold text-sm text-[#FFD700]">
-                                <span className="material-symbols-outlined text-sm">table_chart</span> users
+                                <Icon name="Table2" className="text-sm" /> users
                             </div>
                             <span className="text-[10px] text-blue-400 font-mono">PK: uuid</span>
                         </div>
                         <div className="text-[10px] font-mono p-2 space-y-2">
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><span className="material-symbols-outlined text-[10px]">key</span> id</span> <span className="text-gray-500">uuid</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><Icon name="Key" className="text-[10px]" /> id</span> <span className="text-gray-500">uuid</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>email</span> <span className="text-gray-500">varchar(255)</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>password_hash</span> <span className="text-gray-500">varchar</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>metadata</span> <span className="text-gray-500">jsonb</span></div>
@@ -82,13 +84,13 @@ export default function SchemaVisualizer() {
                     <div className="absolute top-20 left-[600px] w-64 bg-[#161B22] border border-[#30363D] rounded shadow-2xl z-10">
                         <div className="bg-[#24292F] px-3 py-2 border-b border-[#30363D] flex justify-between items-center rounded-t">
                             <div className="flex items-center gap-2 font-bold text-sm text-[#A5D6FF]">
-                                <span className="material-symbols-outlined text-sm">table_chart</span> assessments
+                                <Icon name="Table2" className="text-sm" /> assessments
                             </div>
                             <span className="text-[10px] text-blue-400 font-mono">PK: bigserial</span>
                         </div>
                         <div className="text-[10px] font-mono p-2 space-y-2">
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><span className="material-symbols-outlined text-[10px]">key</span> id</span> <span className="text-gray-500">bigserial</span></div>
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><span className="material-symbols-outlined text-[10px]">vpn_key</span> author_id</span> <span className="text-gray-500">uuid (FK)</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><Icon name="Key" className="text-[10px]" /> id</span> <span className="text-gray-500">bigserial</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><Icon name="KeyRound" className="text-[10px]" /> author_id</span> <span className="text-gray-500">uuid (FK)</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>title</span> <span className="text-gray-500">varchar(150)</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>passing_score</span> <span className="text-gray-500">integer</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>config</span> <span className="text-gray-500">jsonb</span></div>
@@ -99,13 +101,13 @@ export default function SchemaVisualizer() {
                     <div className="absolute top-[500px] left-36 w-64 bg-[#161B22] border border-[#30363D] rounded shadow-2xl z-10">
                         <div className="bg-[#24292F] px-3 py-2 border-b border-[#30363D] flex justify-between items-center rounded-t">
                             <div className="flex items-center gap-2 font-bold text-sm text-[#A5D6FF]">
-                                <span className="material-symbols-outlined text-sm">table_chart</span> portfolio_claims
+                                <Icon name="Table2" className="text-sm" /> portfolio_claims
                             </div>
                             <span className="text-[10px] text-blue-400 font-mono">PK: uuid</span>
                         </div>
                         <div className="text-[10px] font-mono p-2 space-y-2">
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><span className="material-symbols-outlined text-[10px]">key</span> id</span> <span className="text-gray-500">uuid</span></div>
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><span className="material-symbols-outlined text-[10px]">vpn_key</span> claimant_id</span> <span className="text-gray-500">uuid (FK)</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><Icon name="Key" className="text-[10px]" /> id</span> <span className="text-gray-500">uuid</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><Icon name="KeyRound" className="text-[10px]" /> claimant_id</span> <span className="text-gray-500">uuid (FK)</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>skill_code</span> <span className="text-gray-500">varchar</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>evidence</span> <span className="text-gray-500">text</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>verified_at</span> <span className="text-gray-500">timestamp</span></div>
@@ -116,14 +118,14 @@ export default function SchemaVisualizer() {
                     <div className="absolute top-[300px] left-[600px] w-64 bg-[#161B22] border border-[#30363D] rounded shadow-2xl z-10">
                         <div className="bg-[#24292F] px-3 py-2 border-b border-[#30363D] flex justify-between items-center rounded-t">
                             <div className="flex items-center gap-2 font-bold text-sm text-[#A5D6FF]">
-                                <span className="material-symbols-outlined text-sm">table_chart</span> rpi_items
+                                <Icon name="Table2" className="text-sm" /> rpi_items
                             </div>
                             <span className="text-[10px] text-blue-400 font-mono">PK: bigserial</span>
                         </div>
                         <div className="text-[10px] font-mono p-2 space-y-2">
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><span className="material-symbols-outlined text-[10px]">key</span> id</span> <span className="text-gray-500">bigserial</span></div>
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><span className="material-symbols-outlined text-[10px]">vpn_key</span> user_id</span> <span className="text-gray-500">uuid (FK)</span></div>
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><span className="material-symbols-outlined text-[10px]">vpn_key</span> resource_id</span> <span className="text-gray-500">uuid (FK)</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><Icon name="Key" className="text-[10px]" /> id</span> <span className="text-gray-500">bigserial</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><Icon name="KeyRound" className="text-[10px]" /> user_id</span> <span className="text-gray-500">uuid (FK)</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><Icon name="KeyRound" className="text-[10px]" /> resource_id</span> <span className="text-gray-500">uuid (FK)</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>status</span> <span className="text-gray-500">enum</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>progress</span> <span className="text-gray-500">float</span></div>
                         </div>
@@ -133,14 +135,14 @@ export default function SchemaVisualizer() {
                     <div className="absolute top-[500px] left-[600px] w-64 bg-[#161B22] border border-[#30363D] rounded shadow-2xl z-10">
                         <div className="bg-[#24292F] px-3 py-2 border-b border-[#30363D] flex justify-between items-center rounded-t">
                             <div className="flex items-center gap-2 font-bold text-sm text-[#A5D6FF]">
-                                <span className="material-symbols-outlined text-sm">table_chart</span> mentor_sessions
+                                <Icon name="Table2" className="text-sm" /> mentor_sessions
                             </div>
                             <span className="text-[10px] text-blue-400 font-mono">PK: bigserial</span>
                         </div>
                         <div className="text-[10px] font-mono p-2 space-y-2">
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><span className="material-symbols-outlined text-[10px]">key</span> id</span> <span className="text-gray-500">bigserial</span></div>
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><span className="material-symbols-outlined text-[10px]">vpn_key</span> mentor_id</span> <span className="text-gray-500">uuid (FK)</span></div>
-                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><span className="material-symbols-outlined text-[10px]">vpn_key</span> mentee_id</span> <span className="text-gray-500">uuid (FK)</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-[#FFD700]"><Icon name="Key" className="text-[10px]" /> id</span> <span className="text-gray-500">bigserial</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><Icon name="KeyRound" className="text-[10px]" /> mentor_id</span> <span className="text-gray-500">uuid (FK)</span></div>
+                            <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span className="flex gap-1 text-blue-400"><Icon name="KeyRound" className="text-[10px]" /> mentee_id</span> <span className="text-gray-500">uuid (FK)</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>scheduled_at</span> <span className="text-gray-500">timestamp</span></div>
                             <div className="flex justify-between hover:bg-[#21262D] px-1 rounded"><span>notes</span> <span className="text-gray-500">text</span></div>
                         </div>

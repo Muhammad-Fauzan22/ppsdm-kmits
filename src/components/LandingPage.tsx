@@ -57,7 +57,7 @@ export default function LandingPage() {
                                         <button className="bg-white text-primary font-bold px-8 py-3 rounded-xl hover:bg-white/90 transition-all whitespace-nowrap shadow-lg shadow-black/10">Dapatkan Info</button>
                                     </div>
                                     <button className="mt-8 text-white text-sm font-bold flex items-center justify-center gap-2 mx-auto hover:underline">
-                                        <span className="material-symbols-outlined">download</span>
+                                        <Download className="w-5 h-5" />
                                         Download Full Brochure (PDF 4.2 MB)
                                     </button>
                                 </div>

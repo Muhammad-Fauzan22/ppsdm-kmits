@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // ==========================================
@@ -47,9 +48,9 @@ const aspectStyles: Record<string, string> = {
  * Card Component - Contained card with consistent styling
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ 
-    className, 
-    variant = 'default', 
+  ({
+    className,
+    variant = 'default',
     size = 'md',
     hover = false,
     clickable = false,
@@ -58,7 +59,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     contain = true,
     children,
     onClick,
-    ...props 
+    ...props
   }, ref) => {
     return (
       <div
@@ -68,32 +69,32 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           // Base styles
           'relative overflow-hidden',
           'transition-all duration-300 ease-out',
-          
+
           // Variant styles
           variantStyles[variant],
           sizeStyles[size],
-          
+
           // Aspect ratio
           aspectStyles[aspectRatio],
-          
+
           // CSS containment to prevent layout shifts
           contain && 'contain-layout contain-style contain-paint',
-          
+
           // Hover effects
           hover && 'hover:shadow-xl hover:-translate-y-1',
-          
+
           // Clickable styles
           clickable && 'cursor-pointer hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]',
-          
+
           // Loading state
           loading && 'animate-pulse bg-slate-100',
-          
+
           className
         )}
         {...props}
       >
         {children}
-        
+
         {/* Loading overlay */}
         {loading && (
           <div className="absolute inset-0 bg-slate-100/50 backdrop-blur-sm flex items-center justify-center">
@@ -258,7 +259,7 @@ export const CardImage = React.forwardRef<HTMLDivElement, CardImageProps>(
     };
 
     return (
-      <div 
+      <div
         ref={ref}
         className={cn(
           'relative overflow-hidden',
@@ -354,9 +355,9 @@ export function DimensionCard({
   const currentStatus = statusConfig[status];
 
   return (
-    <Card 
-      hover 
-      clickable={!!onAction} 
+    <Card
+      hover
+      clickable={!!onAction}
       onClick={onAction}
       {...cardProps}
     >
@@ -365,7 +366,7 @@ export function DimensionCard({
         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
           {icon}
         </div>
-        
+
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -375,7 +376,7 @@ export function DimensionCard({
             </span>
           </div>
           <p className="text-sm text-slate-600 line-clamp-2">{description}</p>
-          
+
           {/* Score indicator */}
           {score !== undefined && (
             <div className="mt-3">
@@ -384,19 +385,19 @@ export function DimensionCard({
                 <span className="font-medium text-slate-900">{score}/{maxScore}</span>
               </div>
               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-blue-600 rounded-full transition-all duration-500"
                   style={{ width: `${(score / maxScore) * 100}%` }}
                 />
               </div>
             </div>
           )}
-          
+
           {/* Action button */}
           {onAction && (
             <button className="mt-4 text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1">
               {actionLabel}
-              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
             </button>
           )}
         </div>

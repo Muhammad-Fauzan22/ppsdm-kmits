@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
+import { AlertCircle, ShieldCheck, Sparkles, Play, Bookmark, ChevronRight } from 'lucide-react';
 import { createClient } from "@/lib/supabase/client";
 import { Course, Module, Lesson } from "@/lib/database.types";
 
@@ -110,7 +111,7 @@ export default function LibraryDetailPage() {
     if (error) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
-                <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">error</span>
+                <AlertCircle className="w-16 h-16 text-slate-300 mb-4" />
                 <h2 className="text-xl font-bold text-slate-700 dark:text-slate-200">Content Not Found</h2>
                 <p className="text-slate-500 mb-6">{error}</p>
                 <Link href="/dashboard/library" className="text-brand-blue hover:underline">Return to Library</Link>
@@ -168,7 +169,7 @@ export default function LibraryDetailPage() {
                     {/* Content Info */}
                     <div className="flex-1 relative z-10 flex flex-col">
                         <div className="flex items-center gap-2 mb-4">
-                            <span className="material-symbols-outlined text-brand-blue text-sm">verified</span>
+                            <ShieldCheck className="text-brand-blue w-4 h-4" />
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Official Certification Material</span>
                         </div>
 
@@ -178,7 +179,7 @@ export default function LibraryDetailPage() {
                         {/* AI Summary Card */}
                         <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10 mb-8 max-w-2xl glass-card">
                             <div className="flex items-center gap-2 mb-3">
-                                <span className="material-symbols-outlined text-purple-400 text-sm">auto_awesome</span>
+                                <Sparkles className="text-purple-400 w-4 h-4" />
                                 <span className="text-[10px] font-bold text-purple-400 uppercase">Quantum AI Summary</span>
                             </div>
                             <p className="text-xs text-slate-300 leading-relaxed">
@@ -188,10 +189,10 @@ export default function LibraryDetailPage() {
 
                         <div className="flex flex-wrap items-center gap-4 mt-auto">
                             <button className="bg-white hover:bg-slate-100 text-slate-900 font-bold py-3 px-8 rounded-xl flex items-center gap-2 transition-colors shadow-lg shadow-white/10">
-                                <span className="material-symbols-outlined text-xl">play_arrow</span> Start Learning
+                                <Play className="w-5 h-5 fill-slate-900" /> Start Learning
                             </button>
                             <button className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-colors">
-                                <span className="material-symbols-outlined text-sm">bookmark</span> Bookmark
+                                <Bookmark className="w-4 h-4" /> Bookmark
                             </button>
                         </div>
                     </div>
@@ -224,7 +225,7 @@ export default function LibraryDetailPage() {
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-[10px] uppercase font-bold text-slate-400 bg-white/5 px-2 py-0.5 rounded border border-white/5">{lesson.content_type}</span>
-                                                    <span className="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+                                                    <ChevronRight className="text-slate-400 w-4 h-4" />
                                                 </div>
                                             </div>
                                         ))}

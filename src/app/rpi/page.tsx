@@ -1,6 +1,8 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 export default function RpiPlanner() {
     return (
@@ -12,7 +14,7 @@ export default function RpiPlanner() {
                         {/* Logo & Branding */}
                         <div className="flex items-center gap-4">
                             <div className="size-8 rounded bg-[#c72929]/10 flex items-center justify-center text-[#c72929]">
-                                <span className="material-symbols-outlined">school</span>
+                                <Icon name="School" size="sm" />
                             </div>
                             <h2 className="text-[#171212] dark:text-white text-lg font-bold tracking-tight">PPSDM KMM</h2>
                         </div>
@@ -33,7 +35,7 @@ export default function RpiPlanner() {
                                 </div>
                             </div>
                             <button className="flex items-center justify-center rounded-lg h-9 px-4 bg-[#c72929]/10 hover:bg-[#c72929]/20 text-[#c72929] text-sm font-bold transition-colors">
-                                <span className="material-symbols-outlined text-[18px] mr-2">logout</span>
+                                <Icon name="LogOut" className="text-[18px] mr-2" />
                                 <span>Log Out</span>
                             </button>
                         </div>
@@ -57,7 +59,7 @@ export default function RpiPlanner() {
                                 Status: Draft
                             </div>
                             <button className="flex items-center justify-center rounded-lg h-11 px-6 bg-[#c72929] hover:bg-red-700 text-white text-sm font-bold shadow-md transition-all active:scale-95">
-                                <span className="material-symbols-outlined mr-2">send</span>
+                                <Icon name="Send" className="mr-2" />
                                 Submit to Supervisor
                             </button>
                         </div>
@@ -70,7 +72,7 @@ export default function RpiPlanner() {
                                 <p className="text-2xl font-bold text-[#171212] dark:text-white">112 <span className="text-[#856666] text-lg font-normal">/ 144</span></p>
                             </div>
                             <div className="size-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                                <span className="material-symbols-outlined">pie_chart</span>
+                                <Icon name="PieChart" />
                             </div>
                         </div>
                         <div className="bg-white dark:bg-zinc-900 p-5 rounded-lg border border-[#e4dcdc] shadow-sm flex items-center justify-between">
@@ -79,7 +81,7 @@ export default function RpiPlanner() {
                                 <p className="text-2xl font-bold text-[#171212] dark:text-white">3 <span className="text-[#856666] text-lg font-normal">Milestones</span></p>
                             </div>
                             <div className="size-10 rounded-full bg-yellow-50 text-yellow-600 flex items-center justify-center">
-                                <span className="material-symbols-outlined">pending_actions</span>
+                                <Icon name="FileClock" />
                             </div>
                         </div>
                         <div className="bg-white dark:bg-zinc-900 p-5 rounded-lg border border-[#e4dcdc] shadow-sm flex items-center justify-between">
@@ -88,7 +90,7 @@ export default function RpiPlanner() {
                                 <p className="text-2xl font-bold text-[#171212] dark:text-white">July 2025</p>
                             </div>
                             <div className="size-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
-                                <span className="material-symbols-outlined">school</span>
+                                <Icon name="School" />
                             </div>
                         </div>
                     </div>
@@ -105,7 +107,7 @@ export default function RpiPlanner() {
                             <div className="relative pl-16 group">
                                 {/* Node Circle */}
                                 <div className="absolute left-0 top-0 size-12 bg-white border-2 border-[#c72929] rounded-full flex items-center justify-center z-10 shadow-sm">
-                                    <span className="material-symbols-outlined text-[#c72929]">play_arrow</span>
+                                    <Icon name="Play" className="text-[#c72929]" />
                                 </div>
                                 {/* Header */}
                                 <div className="flex items-center justify-between mb-4 pt-2">
@@ -120,13 +122,13 @@ export default function RpiPlanner() {
                                     {/* Approved Card */}
                                     <div className="bg-white dark:bg-zinc-900 border border-[#e4dcdc] hover:border-[#c72929]/50 transition-colors p-4 rounded-lg shadow-sm flex gap-4 cursor-move group/card relative">
                                         <div className="text-[#856666]/30 group-hover/card:text-[#856666] pt-1">
-                                            <span className="material-symbols-outlined">drag_indicator</span>
+                                            <Icon name="GripVertical" />
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <h4 className="font-bold text-[#171212] dark:text-white">Research Methodology</h4>
                                                 <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-0.5 rounded text-xs font-medium">
-                                                    <span className="material-symbols-outlined text-[14px]">check_circle</span>
+                                                    <Icon name="CheckCircle" className="text-[14px]" />
                                                     Approved
                                                 </div>
                                             </div>
@@ -136,13 +138,13 @@ export default function RpiPlanner() {
                                     {/* Pending Card */}
                                     <div className="bg-white dark:bg-zinc-900 border border-[#e4dcdc] hover:border-[#c72929]/50 transition-colors p-4 rounded-lg shadow-sm flex gap-4 cursor-move group/card relative">
                                         <div className="text-[#856666]/30 group-hover/card:text-[#856666] pt-1">
-                                            <span className="material-symbols-outlined">drag_indicator</span>
+                                            <Icon name="GripVertical" />
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <h4 className="font-bold text-[#171212] dark:text-white">Student Council Leadership</h4>
                                                 <div className="flex items-center gap-1 text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded text-xs font-medium">
-                                                    <span className="material-symbols-outlined text-[14px]">pending</span>
+                                                    <Icon name="Hourglass" className="text-[14px]" />
                                                     Pending
                                                 </div>
                                             </div>
@@ -155,7 +157,7 @@ export default function RpiPlanner() {
                             <div className="relative pl-16 group">
                                 {/* Node Circle */}
                                 <div className="absolute left-0 top-0 size-12 bg-white border-2 border-[#e4dcdc] group-hover:border-[#c72929] transition-colors rounded-full flex items-center justify-center z-10">
-                                    <span className="material-symbols-outlined text-[#856666] group-hover:text-[#c72929] transition-colors">calendar_month</span>
+                                    <Icon name="Calendar" className="text-[#856666] group-hover:text-[#c72929] transition-colors" />
                                 </div>
                                 {/* Header */}
                                 <div className="flex items-center justify-between mb-4 pt-2">
@@ -169,13 +171,13 @@ export default function RpiPlanner() {
                                     {/* Pending Card */}
                                     <div className="bg-white dark:bg-zinc-900 border border-[#e4dcdc] hover:border-[#c72929]/50 transition-colors p-4 rounded-lg shadow-sm flex gap-4 cursor-move group/card relative">
                                         <div className="text-[#856666]/30 group-hover/card:text-[#856666] pt-1">
-                                            <span className="material-symbols-outlined">drag_indicator</span>
+                                            <Icon name="GripVertical" />
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <h4 className="font-bold text-[#171212] dark:text-white">Internship Application (KP)</h4>
                                                 <div className="flex items-center gap-1 text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded text-xs font-medium">
-                                                    <span className="material-symbols-outlined text-[14px]">pending</span>
+                                                    <Icon name="Hourglass" className="text-[14px]" />
                                                     Pending Review
                                                 </div>
                                             </div>
@@ -206,13 +208,13 @@ export default function RpiPlanner() {
                                     {/* Pending Card */}
                                     <div className="bg-white dark:bg-zinc-900 border border-[#e4dcdc] hover:border-[#c72929]/50 transition-colors p-4 rounded-lg shadow-sm flex gap-4 cursor-move group/card relative opacity-80 hover:opacity-100">
                                         <div className="text-[#856666]/30 group-hover/card:text-[#856666] pt-1">
-                                            <span className="material-symbols-outlined">drag_indicator</span>
+                                            <Icon name="GripVertical" />
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <h4 className="font-bold text-[#171212] dark:text-white">Community Service (KKN)</h4>
                                                 <div className="flex items-center gap-1 text-zinc-500 bg-zinc-100 px-2 py-0.5 rounded text-xs font-medium">
-                                                    <span className="material-symbols-outlined text-[14px]">schedule</span>
+                                                    <Icon name="Clock" className="text-[14px]" />
                                                     Draft
                                                 </div>
                                             </div>
@@ -228,7 +230,7 @@ export default function RpiPlanner() {
                             {/* Graduation Goal */}
                             <div className="relative pl-16 pt-4">
                                 <div className="absolute left-0 top-4 size-12 bg-[#c72929] text-white border-4 border-white shadow-md rounded-full flex items-center justify-center z-10">
-                                    <span className="material-symbols-outlined">flag</span>
+                                    <Icon name="Flag" />
                                 </div>
                                 <div className="border-t-2 border-[#e4dcdc] border-dashed mt-6 pt-6">
                                     <div className="flex items-center gap-3">
@@ -246,7 +248,7 @@ export default function RpiPlanner() {
                             {/* Toolbox Header */}
                             <div className="flex items-center justify-between">
                                 <h3 className="text-lg font-bold text-[#171212] dark:text-white">Planning Toolbox</h3>
-                                <span className="material-symbols-outlined text-[#856666]" title="Help">help</span>
+                                <Icon name="HelpCircle" className="text-[#856666]" />
                             </div>
                             {/* Draggable Categories */}
                             <div className="bg-white dark:bg-zinc-900 rounded-xl border border-[#e4dcdc] shadow-lg p-4 space-y-6">
@@ -255,20 +257,20 @@ export default function RpiPlanner() {
                                     <h4 className="text-xs font-bold text-[#856666] uppercase tracking-wider mb-3">Academics</h4>
                                     <div className="space-y-2">
                                         <div className="bg-[#f8f6f6] dark:bg-zinc-800 p-3 rounded-lg border border-[#e4dcdc] hover:border-[#c72929] hover:shadow-md cursor-grab active:cursor-grabbing transition-all flex items-center gap-3 group">
-                                            <span className="material-symbols-outlined text-blue-600 bg-blue-50 p-1.5 rounded-md text-[20px]">menu_book</span>
+                                            <Icon name="BookOpen" className="text-blue-600 bg-blue-50 p-1.5 rounded-md text-[20px]" />
                                             <div className="flex-1">
                                                 <p className="font-bold text-sm text-[#171212] dark:text-white group-hover:text-[#c72929]">Major Course</p>
                                                 <p className="text-xs text-[#856666]">Core / Elective</p>
                                             </div>
-                                            <span className="material-symbols-outlined text-[#856666]/50 text-[18px]">drag_pan</span>
+                                            <Icon name="Hand" className="text-[#856666]/50 text-[18px]" />
                                         </div>
                                         <div className="bg-[#f8f6f6] dark:bg-zinc-800 p-3 rounded-lg border border-[#e4dcdc] hover:border-[#c72929] hover:shadow-md cursor-grab active:cursor-grabbing transition-all flex items-center gap-3 group">
-                                            <span className="material-symbols-outlined text-purple-600 bg-purple-50 p-1.5 rounded-md text-[20px]">science</span>
+                                            <Icon name="FlaskConical" className="text-purple-600 bg-purple-50 p-1.5 rounded-md text-[20px]" />
                                             <div className="flex-1">
                                                 <p className="font-bold text-sm text-[#171212] dark:text-white group-hover:text-[#c72929]">Lab Work</p>
                                                 <p className="text-xs text-[#856666]">Practical Session</p>
                                             </div>
-                                            <span className="material-symbols-outlined text-[#856666]/50 text-[18px]">drag_pan</span>
+                                            <Icon name="Hand" className="text-[#856666]/50 text-[18px]" />
                                         </div>
                                     </div>
                                 </div>
@@ -277,35 +279,35 @@ export default function RpiPlanner() {
                                     <h4 className="text-xs font-bold text-[#856666] uppercase tracking-wider mb-3">Enrichment</h4>
                                     <div className="space-y-2">
                                         <div className="bg-[#f8f6f6] dark:bg-zinc-800 p-3 rounded-lg border border-[#e4dcdc] hover:border-[#c72929] hover:shadow-md cursor-grab active:cursor-grabbing transition-all flex items-center gap-3 group">
-                                            <span className="material-symbols-outlined text-orange-600 bg-orange-50 p-1.5 rounded-md text-[20px]">groups</span>
+                                            <Icon name="Users" className="text-orange-600 bg-orange-50 p-1.5 rounded-md text-[20px]" />
                                             <div className="flex-1">
                                                 <p className="font-bold text-sm text-[#171212] dark:text-white group-hover:text-[#c72929]">Organization</p>
                                                 <p className="text-xs text-[#856666]">Club / Committee</p>
                                             </div>
-                                            <span className="material-symbols-outlined text-[#856666]/50 text-[18px]">drag_pan</span>
+                                            <Icon name="Hand" className="text-[#856666]/50 text-[18px]" />
                                         </div>
                                         <div className="bg-[#f8f6f6] dark:bg-zinc-800 p-3 rounded-lg border border-[#e4dcdc] hover:border-[#c72929] hover:shadow-md cursor-grab active:cursor-grabbing transition-all flex items-center gap-3 group">
-                                            <span className="material-symbols-outlined text-teal-600 bg-teal-50 p-1.5 rounded-md text-[20px]">workspace_premium</span>
+                                            <Icon name="Award" className="text-teal-600 bg-teal-50 p-1.5 rounded-md text-[20px]" />
                                             <div className="flex-1">
                                                 <p className="font-bold text-sm text-[#171212] dark:text-white group-hover:text-[#c72929]">Certification</p>
                                                 <p className="text-xs text-[#856666]">Skill / Language</p>
                                             </div>
-                                            <span className="material-symbols-outlined text-[#856666]/50 text-[18px]">drag_pan</span>
+                                            <Icon name="Hand" className="text-[#856666]/50 text-[18px]" />
                                         </div>
                                         <div className="bg-[#f8f6f6] dark:bg-zinc-800 p-3 rounded-lg border border-[#e4dcdc] hover:border-[#c72929] hover:shadow-md cursor-grab active:cursor-grabbing transition-all flex items-center gap-3 group">
-                                            <span className="material-symbols-outlined text-pink-600 bg-pink-50 p-1.5 rounded-md text-[20px]">work</span>
+                                            <Icon name="Briefcase" className="text-pink-600 bg-pink-50 p-1.5 rounded-md text-[20px]" />
                                             <div className="flex-1">
                                                 <p className="font-bold text-sm text-[#171212] dark:text-white group-hover:text-[#c72929]">Internship</p>
                                                 <p className="text-xs text-[#856666]">Professional Exp</p>
                                             </div>
-                                            <span className="material-symbols-outlined text-[#856666]/50 text-[18px]">drag_pan</span>
+                                            <Icon name="Hand" className="text-[#856666]/50 text-[18px]" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             {/* Quick Info */}
                             <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex gap-3 items-start">
-                                <span className="material-symbols-outlined text-blue-600 text-lg mt-0.5">info</span>
+                                <Icon name="Info" className="text-blue-600 text-lg mt-0.5" />
                                 <p className="text-sm text-blue-800">
                                     Approved plans (Green) cannot be moved without supervisor permission.
                                 </p>

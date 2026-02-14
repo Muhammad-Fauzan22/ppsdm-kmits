@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Icon } from "@/components/ui/Icon";
 
 export default function MobileHelpCenterDemo() {
     return (
@@ -14,12 +15,12 @@ export default function MobileHelpCenterDemo() {
                     <div className="flex items-center justify-between mb-6 relative z-10">
                         <div className="flex items-center gap-3 text-white">
                             <div className="size-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                                <span className="material-symbols-outlined text-xl">security</span>
+                                <Icon name="Shield" className="text-xl" />
                             </div>
                             <h1 className="text-lg font-bold tracking-tight">PPSDM Help Center</h1>
                         </div>
                         <button className="text-white hover:bg-white/20 p-2 rounded-full transition-colors">
-                            <span className="material-symbols-outlined">notifications</span>
+                            <Icon name="Bell" />
                         </button>
                     </div>
                     {/* Greeting */}
@@ -30,7 +31,7 @@ export default function MobileHelpCenterDemo() {
                     {/* Search Bar */}
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#135bec]">
-                            <span className="material-symbols-outlined">search</span>
+                            <Icon name="Search" />
                         </div>
                         <input className="block w-full pl-10 pr-3 py-3.5 border-none rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white shadow-lg shadow-[#135bec]/10 sm:text-sm font-medium" placeholder="Cari topik bantuan..." type="text" />
                     </div>
@@ -47,28 +48,28 @@ export default function MobileHelpCenterDemo() {
                                 {/* Card 1 */}
                                 <button className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
                                     <div className="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-[#135bec] group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined">person</span>
+                                        <Icon name="User" />
                                     </div>
                                     <span className="text-slate-800 dark:text-white text-sm font-bold">Akun & Profil</span>
                                 </button>
                                 {/* Card 2 */}
                                 <button className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
                                     <div className="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-[#135bec] group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined">assignment</span>
+                                        <Icon name="ClipboardList" />
                                     </div>
                                     <span className="text-slate-800 dark:text-white text-sm font-bold">Asesmen</span>
                                 </button>
                                 {/* Card 3 */}
                                 <button className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
                                     <div className="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-[#135bec] group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined">verified</span>
+                                        <Icon name="BadgeCheck" />
                                     </div>
                                     <span className="text-slate-800 dark:text-white text-sm font-bold">Sertifikasi</span>
                                 </button>
                                 {/* Card 4 */}
                                 <button className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow text-left group border border-slate-100 dark:border-slate-700">
                                     <div className="size-10 rounded-full bg-blue-50 dark:bg-slate-700 flex items-center justify-center text-[#135bec] group-hover:bg-[#135bec] group-hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined">build</span>
+                                        <Icon name="Wrench" />
                                     </div>
                                     <span className="text-slate-800 dark:text-white text-sm font-bold">Kendala Teknis</span>
                                 </button>
@@ -85,7 +86,7 @@ export default function MobileHelpCenterDemo() {
                                 <details className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
                                     <summary className="flex items-center justify-between p-4 cursor-pointer select-none list-none">
                                         <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Bagaimana cara reset password?</span>
-                                        <span className="material-symbols-outlined text-slate-400 rotate-icon group-open:rotate-180 transition-transform">expand_more</span>
+                                        <Icon name="ChevronDown" className="text-slate-400 rotate-icon group-open:rotate-180 transition-transform" />
                                     </summary>
                                     <div className="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                                         Anda dapat mereset password melalui halaman login dengan menekan tombol "Lupa Password", kemudian ikuti instruksi yang dikirimkan ke email Anda.
@@ -95,7 +96,7 @@ export default function MobileHelpCenterDemo() {
                                 <details className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
                                     <summary className="flex items-center justify-between p-4 cursor-pointer select-none list-none">
                                         <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Cara mengunduh sertifikat?</span>
-                                        <span className="material-symbols-outlined text-slate-400 rotate-icon group-open:rotate-180 transition-transform">expand_more</span>
+                                        <Icon name="ChevronDown" className="text-slate-400 rotate-icon group-open:rotate-180 transition-transform" />
                                     </summary>
                                     <div className="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                                         Sertifikat dapat diunduh setelah Anda menyelesaikan seluruh modul pelatihan dan lulus ujian akhir. Cek menu "Sertifikasi" di profil Anda.
@@ -105,7 +106,7 @@ export default function MobileHelpCenterDemo() {
                                 <details className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
                                     <summary className="flex items-center justify-between p-4 cursor-pointer select-none list-none">
                                         <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Apakah aplikasi ini gratis?</span>
-                                        <span className="material-symbols-outlined text-slate-400 rotate-icon group-open:rotate-180 transition-transform">expand_more</span>
+                                        <Icon name="ChevronDown" className="text-slate-400 rotate-icon group-open:rotate-180 transition-transform" />
                                     </summary>
                                     <div className="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                                         Ya, aplikasi PPSDM KMM dapat diakses secara gratis oleh seluruh karyawan terdaftar.
@@ -115,7 +116,7 @@ export default function MobileHelpCenterDemo() {
                                 <details className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
                                     <summary className="flex items-center justify-between p-4 cursor-pointer select-none list-none">
                                         <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Jadwal maintenance sistem?</span>
-                                        <span className="material-symbols-outlined text-slate-400 rotate-icon group-open:rotate-180 transition-transform">expand_more</span>
+                                        <Icon name="ChevronDown" className="text-slate-400 rotate-icon group-open:rotate-180 transition-transform" />
                                     </summary>
                                     <div className="px-4 pb-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                                         Maintenance rutin dilakukan setiap hari Sabtu pukul 00:00 - 04:00 WIB untuk memastikan performa sistem tetap optimal.
@@ -140,7 +141,7 @@ export default function MobileHelpCenterDemo() {
                 <div className="absolute bottom-6 right-6 z-50">
                     <button className="group flex items-center justify-center size-14 rounded-full bg-[#25D366] text-white shadow-xl shadow-green-500/30 hover:scale-105 hover:bg-[#20bd5a] transition-all duration-300">
                         {/* Using generic chat icon as Material Symbols doesn't have brand logos */}
-                        <span className="material-symbols-outlined text-3xl">chat_bubble</span>
+                        <Icon name="MessageCircle" className="text-3xl" />
                         <span className="absolute right-0 top-0 flex h-3 w-3 -mt-1 -mr-1">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>

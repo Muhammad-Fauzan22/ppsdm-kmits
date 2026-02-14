@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Icon, IconName } from "@/components/ui/Icon";
 
 interface Notification {
     id: string;
@@ -60,11 +61,11 @@ export default function NotificationsPage() {
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
-    const typeStyles = {
-        achievement: { icon: "emoji_events", color: "text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30" },
-        reminder: { icon: "schedule", color: "text-blue-500 bg-blue-100 dark:bg-blue-900/30" },
-        feedback: { icon: "rate_review", color: "text-purple-500 bg-purple-100 dark:bg-purple-900/30" },
-        system: { icon: "campaign", color: "text-gray-500 bg-gray-100 dark:bg-gray-800" },
+    const typeStyles: Record<string, { icon: IconName; color: string }> = {
+        achievement: { icon: "Trophy", color: "text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30" },
+        reminder: { icon: "Clock", color: "text-blue-500 bg-blue-100 dark:bg-blue-900/30" },
+        feedback: { icon: "MessageSquare", color: "text-purple-500 bg-purple-100 dark:bg-purple-900/30" },
+        system: { icon: "Megaphone", color: "text-gray-500 bg-gray-100 dark:bg-gray-800" },
     };
 
     return (
@@ -74,7 +75,7 @@ export default function NotificationsPage() {
                 <div className="flex items-center gap-4">
                     <Link href="/dashboard" className="flex items-center gap-3">
                         <div className="size-10 bg-primary rounded-xl flex items-center justify-center text-white relative">
-                            <span className="material-symbols-outlined">notifications</span>
+                            <Icon name="Bell" />
                             {unreadCount > 0 && (
                                 <span className="absolute -top-1 -right-1 size-5 bg-red-500 text-white text-xs font-bold flex items-center justify-center rounded-full">
                                     {unreadCount}
@@ -100,7 +101,9 @@ export default function NotificationsPage() {
             <main className="p-6 md:p-8 max-w-3xl mx-auto space-y-4">
                 {notifications.length === 0 ? (
                     <div className="text-center py-16">
-                        <span className="material-symbols-outlined text-6xl text-gray-300 mb-4">notifications_off</span>
+                        <div className="flex justify-center mb-4">
+                            <Icon name="BellOff" size="xl" className="text-gray-300" />
+                        </div>
                         <p className="text-gray-500">No notifications yet.</p>
                     </div>
                 ) : (
@@ -113,7 +116,7 @@ export default function NotificationsPage() {
                         >
                             {/* Icon */}
                             <div className={`size-12 rounded-xl flex items-center justify-center shrink-0 ${typeStyles[notification.type].color}`}>
-                                <span className="material-symbols-outlined">{typeStyles[notification.type].icon}</span>
+                                <Icon name={typeStyles[notification.type].icon} />
                             </div>
 
                             {/* Content */}

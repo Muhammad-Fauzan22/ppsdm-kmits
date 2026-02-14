@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 
 /**
  * ContentCarousel - Netflix-style horizontal scrolling carousel
@@ -95,7 +97,7 @@ export function ContentCarousel({
                                 )}
                                 aria-label="Scroll left"
                             >
-                                <span className="material-symbols-outlined">chevron_left</span>
+                                <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button
                                 onClick={() => scroll('right')}
@@ -110,7 +112,7 @@ export function ContentCarousel({
                                 )}
                                 aria-label="Scroll right"
                             >
-                                <span className="material-symbols-outlined">chevron_right</span>
+                                <ChevronRight className="w-6 h-6" />
                             </button>
                         </div>
                     )}
@@ -170,7 +172,7 @@ export function ContentCarousel({
                             )}
                             aria-label="Scroll left"
                         >
-                            <span className="material-symbols-outlined text-white">chevron_left</span>
+                            <ChevronLeft className="w-6 h-6 text-white" />
                         </button>
                         <button
                             onClick={() => scroll('right')}
@@ -186,7 +188,7 @@ export function ContentCarousel({
                             )}
                             aria-label="Scroll right"
                         >
-                            <span className="material-symbols-outlined text-white">chevron_right</span>
+                            <ChevronRight className="w-6 h-6 text-white" />
                         </button>
                     </>
                 )}
@@ -271,7 +273,7 @@ export function CarouselCard({
             {/* Play Button (Netflix-style) */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
-                    <span className="material-symbols-outlined text-[#0A0A0A] text-2xl ml-1">play_arrow</span>
+                    <Play className="w-6 h-6 text-[#0A0A0A] ml-1 fill-current" />
                 </div>
             </div>
         </motion.div>

@@ -1,6 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import {
+  Inbox,
+  SearchX,
+  Flag,
+  History,
+  BellOff,
+  Trophy,
+  WifiOff,
+  AlertCircle,
+  CheckCircle,
+  Plus
+} from 'lucide-react';
 
 export interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -14,7 +26,7 @@ export interface EmptyStateProps {
   className?: string;
 }
 
-export default function EmptyState({ 
+export default function EmptyState({
   icon,
   title,
   description,
@@ -84,7 +96,7 @@ export default function EmptyState({
             onClick={action.onClick}
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            <span className="material-symbols-outlined text-lg">add</span>
+            <Plus className="w-5 h-5" />
             {action.label}
           </button>
         )}
@@ -96,50 +108,50 @@ export default function EmptyState({
 // Pre-configured empty states for common use cases
 export const EmptyStates = {
   noData: {
-    icon: <span className="material-symbols-outlined">inbox</span>,
+    icon: <Inbox className="w-8 h-8" />,
     title: 'No Data Available',
     description: 'There are no items to display at this time.',
   },
   noResults: {
-    icon: <span className="material-symbols-outlined">search_off</span>,
+    icon: <SearchX className="w-8 h-8" />,
     title: 'No Results Found',
     description: 'We couldn\'t find any results matching your search criteria.',
     variant: 'search' as const,
   },
   noGoals: {
-    icon: <span className="material-symbols-outlined">flag</span>,
+    icon: <Flag className="w-8 h-8" />,
     title: 'No Goals Set',
     description: 'Start by setting your first goal to track your progress.',
   },
   noActivities: {
-    icon: <span className="material-symbols-outlined">history</span>,
+    icon: <History className="w-8 h-8" />,
     title: 'No Recent Activities',
     description: 'Your activity feed is empty. Start logging your activities!',
   },
   noNotifications: {
-    icon: <span className="material-symbols-outlined">notifications_off</span>,
+    icon: <BellOff className="w-8 h-8" />,
     title: 'No Notifications',
     description: 'You\'re all caught up! No new notifications.',
   },
   noAchievements: {
-    icon: <span className="material-symbols-outlined">emoji_events</span>,
+    icon: <Trophy className="w-8 h-8" />,
     title: 'No Achievements Yet',
     description: 'Complete your first goal to earn your first achievement badge!',
   },
   connectionError: {
-    icon: <span className="material-symbols-outlined">wifi_off</span>,
+    icon: <WifiOff className="w-8 h-8" />,
     title: 'Connection Error',
     description: 'Unable to connect to the server. Please check your internet connection.',
     variant: 'error' as const,
   },
   serverError: {
-    icon: <span className="material-symbols-outlined">error</span>,
+    icon: <AlertCircle className="w-8 h-8" />,
     title: 'Something Went Wrong',
     description: 'An unexpected error occurred. Please try again later.',
     variant: 'error' as const,
   },
   success: {
-    icon: <span className="material-symbols-outlined">check_circle</span>,
+    icon: <CheckCircle className="w-8 h-8" />,
     title: 'All Caught Up!',
     description: 'You\'ve completed all your tasks. Great job!',
     variant: 'success' as const,

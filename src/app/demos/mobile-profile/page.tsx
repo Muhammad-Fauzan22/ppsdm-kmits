@@ -1,5 +1,7 @@
 "use client";
 
+import { Icon } from "@/components/ui/Icon";
+
 export default function MobileProfilePopoverDemo() {
     return (
         <div className="font-[family-name:var(--font-inter)] bg-[#f6f6f8] dark:bg-[#101622] min-h-screen flex items-center justify-center p-4">
@@ -9,7 +11,7 @@ export default function MobileProfilePopoverDemo() {
             <div className="relative w-full max-w-[375px] bg-white dark:bg-[#1e2736] rounded-2xl shadow-2xl z-10 overflow-hidden transform transition-all duration-300">
                 {/* Close Button */}
                 <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors z-20">
-                    <span className="material-symbols-outlined text-2xl">close</span>
+                    <Icon name="X" className="text-2xl" />
                 </button>
                 {/* Profile Header Section */}
                 <div className="flex flex-col items-center pt-10 pb-6 px-6 relative">
@@ -31,31 +33,31 @@ export default function MobileProfilePopoverDemo() {
                     {/* Item 1: Lihat Profil Lengkap */}
                     <button className="group flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors w-full text-left">
                         <div className="flex items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-gray-700 text-[#111318] dark:text-white group-hover:text-[#135bec] group-hover:bg-[#135bec]/10 transition-colors shrink-0 size-10">
-                            <span className="material-symbols-outlined text-[24px]">person</span>
+                            <Icon name="User" className="text-[24px]" />
                         </div>
                         <div className="flex flex-1 items-center justify-between overflow-hidden">
                             <p className="text-[#111318] dark:text-gray-100 text-sm font-medium leading-normal truncate">Lihat Profil Lengkap</p>
-                            <span className="material-symbols-outlined text-gray-400 dark:text-gray-500 text-[20px]">chevron_right</span>
+                            <Icon name="ChevronRight" className="text-gray-400 dark:text-gray-500 text-[20px]" />
                         </div>
                     </button>
                     {/* Item 2: Pengaturan Akun */}
                     <button className="group flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors w-full text-left">
                         <div className="flex items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-gray-700 text-[#111318] dark:text-white group-hover:text-[#135bec] group-hover:bg-[#135bec]/10 transition-colors shrink-0 size-10">
-                            <span className="material-symbols-outlined text-[24px]">settings</span>
+                            <Icon name="Settings" className="text-[24px]" />
                         </div>
                         <div className="flex flex-1 items-center justify-between overflow-hidden">
                             <p className="text-[#111318] dark:text-gray-100 text-sm font-medium leading-normal truncate">Pengaturan Akun</p>
-                            <span className="material-symbols-outlined text-gray-400 dark:text-gray-500 text-[20px]">chevron_right</span>
+                            <Icon name="ChevronRight" className="text-gray-400 dark:text-gray-500 text-[20px]" />
                         </div>
                     </button>
                     {/* Item 3: Pusat Bantuan */}
                     <button className="group flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors w-full text-left">
                         <div className="flex items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-gray-700 text-[#111318] dark:text-white group-hover:text-[#135bec] group-hover:bg-[#135bec]/10 transition-colors shrink-0 size-10">
-                            <span className="material-symbols-outlined text-[24px]">help_center</span>
+                            <Icon name="HelpCircle" className="text-[24px]" />
                         </div>
                         <div className="flex flex-1 items-center justify-between overflow-hidden">
                             <p className="text-[#111318] dark:text-gray-100 text-sm font-medium leading-normal truncate">Pusat Bantuan</p>
-                            <span className="material-symbols-outlined text-gray-400 dark:text-gray-500 text-[20px]">chevron_right</span>
+                            <Icon name="ChevronRight" className="text-gray-400 dark:text-gray-500 text-[20px]" />
                         </div>
                     </button>
                 </div>
@@ -64,7 +66,7 @@ export default function MobileProfilePopoverDemo() {
                 {/* Logout Button Section */}
                 <div className="px-6 pb-6">
                     <button className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 px-4 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 text-[#C62828] dark:text-red-400 gap-2 transition-colors">
-                        <span className="material-symbols-outlined text-[20px]">logout</span>
+                        <Icon name="LogOut" className="text-[20px]" />
                         <span className="text-sm font-bold leading-normal tracking-[0.015em] truncate">Keluar</span>
                     </button>
                 </div>

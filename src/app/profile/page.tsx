@@ -1,6 +1,28 @@
 "use client";
 
 import Link from "next/link";
+import {
+    GraduationCap,
+    Bell,
+    BadgeCheck,
+    IdCard,
+    Trophy,
+    Medal,
+    Star,
+    Download,
+    Share2,
+    Award,
+    Lightbulb,
+    Mic,
+    Terminal,
+    Users,
+    Beaker,
+    Lock,
+    Heart,
+    Gamepad2,
+    Languages,
+    Brain
+} from 'lucide-react';
 
 export default function StudentPortfolio() {
     return (
@@ -9,7 +31,7 @@ export default function StudentPortfolio() {
             <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-[#282e39] bg-[#f6f6f8]/80 dark:bg-[#101622]/80 backdrop-blur-md px-10 py-4">
                 <div className="flex items-center gap-4 text-[#135bec] dark:text-white">
                     <div className="size-8 flex items-center justify-center bg-[#135bec] rounded-lg text-white">
-                        <span className="material-symbols-outlined text-xl">school</span>
+                        <GraduationCap className="w-5 h-5" />
                     </div>
                     <h2 className="text-xl font-bold leading-tight tracking-[-0.015em]">PPSDM KMM</h2>
                 </div>
@@ -22,7 +44,7 @@ export default function StudentPortfolio() {
                     </nav>
                     <div className="flex items-center gap-4">
                         <button className="bg-[#135bec]/10 hover:bg-[#135bec]/20 text-[#135bec] dark:text-white rounded-full p-2 transition-colors">
-                            <span className="material-symbols-outlined text-xl">notifications</span>
+                            <Bell className="w-5 h-5" />
                         </button>
                         <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-[#135bec]/50" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCiwwE8ILEyNLubRgizFrw3xeat8Cqr4pzFxXduaU8KxaUeUBiKh-TNPotvxfO4SKyvnI11nysMD0F6DqthMY5P-y1jRtEdSMqLx9cBEUijLj9XUww2EOyz4iCl6DRYehgI8P4k1ecwH1FmkgcLxVWhHSRVUnqrGcTw4BmdekGPJ4bhl54HVfcFWVmlF9OeEQ84S1zWtHP3nS4lB39Ejh69vJdcAPA6nRhiZB9PFO_NjXXoahesS4-Tph-JZERZoE3ty-tIMNdlk0')" }}></div>
                     </div>
@@ -45,7 +67,7 @@ export default function StudentPortfolio() {
                                         <div className="bg-center bg-no-repeat bg-cover rounded-lg h-40 w-40 md:h-48 md:w-48 shadow-inner" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAO_rUftQwIJTe-iNwDT59fmq0yeDKOFSK_5RCPB9KIX_VqgwGov4f3DfqswHJQXsBYNQKM8pV83g-Wtoo4l-kQCUmOpC3YQCC7g9zcxSEaykDXuwfybYATkvK5NvrJitvP5OaLKdWsEZOSwTNmaN5ybpo4_GYQJNQmKt_yyKZ6JRUslPr20wv1XW7oeN2fEE9rer3kpG7GAKR60qxi0FEc-d50MjcoCxY-CEAZaUquvFgBNWD5TmLf09QvcOejfQZLJ9ELHWpql0w')" }}></div>
                                     </div>
                                     <div className="absolute -bottom-3 -right-3 bg-[#135bec] text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-2 border-[#ffffff] dark:border-[#101622] flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-sm">verified</span>
+                                        <BadgeCheck className="w-4 h-4" />
                                         VERIFIED
                                     </div>
                                 </div>
@@ -58,7 +80,7 @@ export default function StudentPortfolio() {
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="bg-[#ffffff] dark:bg-[#282e39] border border-gray-200 dark:border-[#3b4354] px-4 py-2 rounded-lg flex items-center gap-2">
-                                                <span className="material-symbols-outlined text-[#135bec]">id_card</span>
+                                                <IdCard className="text-[#135bec] w-5 h-5" />
                                                 <span className="text-sm font-mono text-slate-500 dark:text-gray-400">ID: 884-291-KMM</span>
                                             </div>
                                         </div>
@@ -82,15 +104,15 @@ export default function StudentPortfolio() {
                                         {/* Quick Stats Row */}
                                         <div className="flex flex-wrap gap-4 mt-2 justify-center md:justify-start">
                                             <div className="flex items-center gap-2 bg-[#ffffff] dark:bg-[#1a1d24] px-3 py-1.5 rounded-md border border-gray-200 dark:border-[#282e39]">
-                                                <span className="material-symbols-outlined text-yellow-500 text-sm">trophy</span>
+                                                <Trophy className="text-yellow-500 w-4 h-4" />
                                                 <span className="text-sm font-bold">12 Badges</span>
                                             </div>
                                             <div className="flex items-center gap-2 bg-[#ffffff] dark:bg-[#1a1d24] px-3 py-1.5 rounded-md border border-gray-200 dark:border-[#282e39]">
-                                                <span className="material-symbols-outlined text-green-500 text-sm">workspace_premium</span>
+                                                <Medal className="text-green-500 w-4 h-4" />
                                                 <span className="text-sm font-bold">Top 5%</span>
                                             </div>
                                             <div className="flex items-center gap-2 bg-[#ffffff] dark:bg-[#1a1d24] px-3 py-1.5 rounded-md border border-gray-200 dark:border-[#282e39]">
-                                                <span className="material-symbols-outlined text-purple-500 text-sm">stars</span>
+                                                <Star className="text-purple-500 w-4 h-4" />
                                                 <span className="text-sm font-bold">Project Lead</span>
                                             </div>
                                         </div>
@@ -99,11 +121,11 @@ export default function StudentPortfolio() {
                                 {/* FAB for Desktop (Inside Card Area for Layout) */}
                                 <div className="flex flex-col gap-3 w-full md:w-auto mt-4 md:mt-0">
                                     <button className="bg-[#135bec] hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-transform transform hover:-translate-y-1 active:translate-y-0 w-full md:w-auto whitespace-nowrap">
-                                        <span className="material-symbols-outlined">download</span>
+                                        <Download className="w-5 h-5" />
                                         Download CV
                                     </button>
                                     <button className="bg-[#ffffff] dark:bg-[#282e39] hover:bg-gray-100 dark:hover:bg-[#3b4354] text-slate-900 dark:text-white font-medium py-3 px-6 rounded-lg border border-gray-200 dark:border-[#3b4354] flex items-center justify-center gap-2 transition-colors w-full md:w-auto whitespace-nowrap">
-                                        <span className="material-symbols-outlined">share</span>
+                                        <Share2 className="w-5 h-5" />
                                         Share Profile
                                     </button>
                                 </div>
@@ -117,7 +139,7 @@ export default function StudentPortfolio() {
                         <div className="lg:col-span-8 flex flex-col gap-6">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[#135bec]">military_tech</span>
+                                    <Award className="text-[#135bec] w-8 h-8" />
                                     Trophy Case
                                 </h2>
                                 <div className="flex bg-[#ffffff] dark:bg-[#1a1d24] rounded-lg p-1 border border-gray-200 dark:border-[#282e39]">
@@ -133,7 +155,7 @@ export default function StudentPortfolio() {
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
                                         <div className="absolute inset-0 bg-gradient-to-br from-[#135bec] to-blue-600 hexagon shadow-[0_0_15px_rgba(19,91,236,0.5)]"></div>
                                         <div className="absolute inset-[2px] bg-[#ffffff] dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-[#135bec]">lightbulb</span>
+                                            <Lightbulb className="text-[#135bec] w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-[#135bec]">Innovator</span>
                                         </div>
                                         {/* Tooltip */}
@@ -147,7 +169,7 @@ export default function StudentPortfolio() {
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
                                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 hexagon shadow-[0_0_15px_rgba(168,85,247,0.5)]"></div>
                                         <div className="absolute inset-[2px] bg-[#ffffff] dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-purple-500">record_voice_over</span>
+                                            <Mic className="text-purple-500 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-purple-500">Orator</span>
                                         </div>
                                     </div>
@@ -155,7 +177,7 @@ export default function StudentPortfolio() {
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
                                         <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 hexagon shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
                                         <div className="absolute inset-[2px] bg-[#ffffff] dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-green-500">terminal</span>
+                                            <Terminal className="text-green-500 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-green-500">Coder</span>
                                         </div>
                                     </div>
@@ -163,7 +185,7 @@ export default function StudentPortfolio() {
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 z-10">
                                         <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 hexagon shadow-[0_0_15px_rgba(249,115,22,0.5)]"></div>
                                         <div className="absolute inset-[2px] bg-[#ffffff] dark:bg-[#1e2330] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-orange-500">groups</span>
+                                            <Users className="text-orange-500 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-orange-500">Leader</span>
                                         </div>
                                     </div>
@@ -171,9 +193,9 @@ export default function StudentPortfolio() {
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
                                         <div className="absolute inset-0 bg-gray-600 hexagon"></div>
                                         <div className="absolute inset-[1px] bg-[#ffffff] dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-gray-400">science</span>
+                                            <Beaker className="text-gray-400 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Research</span>
-                                            <span className="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+                                            <Lock className="text-gray-600 w-4 h-4 absolute bottom-6" />
                                         </div>
                                         <div className="absolute bottom-full mb-2 hidden group-hover:block w-40 bg-gray-800 text-gray-300 text-xs rounded p-2 z-50 text-center border border-gray-600">
                                             Locked: Publish 1 Research Paper
@@ -183,27 +205,27 @@ export default function StudentPortfolio() {
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
                                         <div className="absolute inset-0 bg-gray-600 hexagon"></div>
                                         <div className="absolute inset-[1px] bg-[#ffffff] dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-gray-400">volunteer_activism</span>
+                                            <Heart className="text-gray-400 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Charity</span>
-                                            <span className="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+                                            <Lock className="text-gray-600 w-4 h-4 absolute bottom-6" />
                                         </div>
                                     </div>
                                     {/* Locked Badge 3 */}
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
                                         <div className="absolute inset-0 bg-gray-600 hexagon"></div>
                                         <div className="absolute inset-[1px] bg-[#ffffff] dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-gray-400">sports_esports</span>
+                                            <Gamepad2 className="text-gray-400 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Gamer</span>
-                                            <span className="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+                                            <Lock className="text-gray-600 w-4 h-4 absolute bottom-6" />
                                         </div>
                                     </div>
                                     {/* Locked Badge 4 */}
                                     <div className="group relative w-24 h-28 md:w-32 md:h-36 flex items-center justify-center cursor-not-allowed opacity-50 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
                                         <div className="absolute inset-0 bg-gray-600 hexagon"></div>
                                         <div className="absolute inset-[1px] bg-[#ffffff] dark:bg-[#151921] hexagon flex flex-col items-center justify-center gap-1 z-10">
-                                            <span className="material-symbols-outlined text-3xl md:text-4xl text-gray-400">translate</span>
+                                            <Languages className="text-gray-400 w-8 h-8 md:w-10 md:h-10" />
                                             <span className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Polyglot</span>
-                                            <span className="material-symbols-outlined text-sm text-gray-600 absolute bottom-6">lock</span>
+                                            <Lock className="text-gray-600 w-4 h-4 absolute bottom-6" />
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +236,7 @@ export default function StudentPortfolio() {
                             {/* Skills Matrix */}
                             <div className="flex flex-col gap-4">
                                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[#135bec]">psychology</span>
+                                    <Brain className="text-[#135bec] w-8 h-8" />
                                     Skills Matrix
                                 </h2>
                                 <div className="bg-[#ffffff] dark:bg-[#1a1d24] rounded-xl p-6 border border-gray-200 dark:border-[#282e39]">

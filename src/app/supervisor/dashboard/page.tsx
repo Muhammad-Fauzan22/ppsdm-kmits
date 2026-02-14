@@ -3,24 +3,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-    LayoutDashboard,
-    Users,
-    History,
-    MessageSquare,
-    Search,
-    Filter,
-    Download,
-    ChevronDown,
-    MoreHorizontal,
-    AlertCircle,
-    CheckCircle,
-    Clock,
-    UserX,
-    School
-} from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { ASSETS } from "@/config/assets";
+import { Icon } from "@/components/ui/Icon";
 
 // --- MOCK DATA ---
 const MENTEES = [
@@ -40,7 +26,7 @@ export default function SupervisorDashboard() {
             <header className="flex-none flex items-center justify-between whitespace-nowrap border-b border-[#dbdfe6] dark:border-gray-800 bg-white dark:bg-[#1a202c] px-6 lg:px-10 py-3 z-10 shadow-sm">
                 <div className="flex items-center gap-4">
                     <div className="size-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-                        <School className="w-5 h-5" />
+                        <Icon name="School" className="w-5 h-5" />
                     </div>
                     <h2 className="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">PPSDM KMM Portal</h2>
                 </div>
@@ -70,14 +56,14 @@ export default function SupervisorDashboard() {
                         <div className="flex min-w-72 flex-col gap-1">
                             <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-gray-400 mb-1">
                                 <span>Home</span>
-                                <span className="material-symbols-outlined text-[10px] scale-75">arrow_forward_ios</span>
+                                <Icon name="ChevronRight" size="xs" className="scale-75" />
                                 <span className="text-primary font-medium">Dashboard</span>
                             </div>
                             <h1 className="text-slate-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Supervisor Dashboard</h1>
                             <p className="text-slate-500 dark:text-gray-400 text-sm font-normal">Monitor student performance and manage approvals.</p>
                         </div>
                         <button className="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary hover:bg-blue-700 text-white text-sm font-semibold leading-normal transition-all shadow-md active:scale-95">
-                            <MessageSquare className="w-5 h-5" />
+                            <Icon name="MessageSquare" className="w-5 h-5" />
                             <span>Message All</span>
                         </button>
                     </div>
@@ -89,7 +75,7 @@ export default function SupervisorDashboard() {
                             <div className="flex items-center justify-between">
                                 <p className="text-slate-500 dark:text-gray-400 text-sm font-medium">Total Mentees</p>
                                 <div className="bg-gray-100 dark:bg-gray-800 p-1.5 rounded-lg text-slate-500 dark:text-gray-500">
-                                    <Users className="w-5 h-5" />
+                                    <Icon name="Users" className="w-5 h-5" />
                                 </div>
                             </div>
                             <p className="text-slate-900 dark:text-white text-3xl font-bold">42</p>
@@ -102,7 +88,7 @@ export default function SupervisorDashboard() {
                             <div className="flex items-center justify-between">
                                 <p className="text-slate-900 dark:text-white text-sm font-semibold">Need Attention</p>
                                 <div className="bg-red-50 dark:bg-red-500/10 p-1.5 rounded-lg text-red-500">
-                                    <AlertCircle className="w-5 h-5" />
+                                    <Icon name="AlertCircle" className="w-5 h-5" />
                                 </div>
                             </div>
                             <div className="flex items-end gap-2">
@@ -117,7 +103,7 @@ export default function SupervisorDashboard() {
                             <div className="flex items-center justify-between">
                                 <p className="text-slate-500 dark:text-gray-400 text-sm font-medium">Pending Approvals</p>
                                 <div className="bg-amber-50 dark:bg-amber-500/10 p-1.5 rounded-lg text-amber-500">
-                                    <History className="w-5 h-5" />
+                                    <Icon name="History" className="w-5 h-5" />
                                 </div>
                             </div>
                             <div className="flex items-end gap-2">
@@ -132,7 +118,7 @@ export default function SupervisorDashboard() {
                     <div className="flex flex-col sm:flex-row gap-4 items-end sm:items-center justify-between bg-white dark:bg-[#1a202c] p-4 rounded-xl border border-[#dbdfe6] dark:border-gray-700 shadow-sm">
                         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                             <div className="relative min-w-[200px]">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                <Icon name="Search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                                 <input
                                     className="block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm pl-10 h-10 focus:border-primary focus:ring-primary dark:text-white"
                                     placeholder="Search by Name or NRP..."
@@ -146,7 +132,7 @@ export default function SupervisorDashboard() {
                                         <option>Batch 2022</option>
                                         <option>Batch 2021</option>
                                     </select>
-                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                                    <Icon name="ChevronDown" className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
                                 </div>
                                 <div className="relative">
                                     <select className="appearance-none block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-lg bg-white dark:bg-gray-800 dark:text-white h-10 min-w-[160px]">
@@ -154,16 +140,16 @@ export default function SupervisorDashboard() {
                                         <option>Informatics</option>
                                         <option>Information Systems</option>
                                     </select>
-                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                                    <Icon name="ChevronDown" className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
                                 </div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
                             <button className="p-2 text-gray-500 hover:text-primary transition-colors">
-                                <Filter className="w-5 h-5" />
+                                <Icon name="Filter" className="w-5 h-5" />
                             </button>
                             <button className="p-2 text-gray-500 hover:text-primary transition-colors">
-                                <Download className="w-5 h-5" />
+                                <Icon name="Download" className="w-5 h-5" />
                             </button>
                         </div>
                     </div>
@@ -205,7 +191,7 @@ export default function SupervisorDashboard() {
                                                     <button className="text-primary hover:text-blue-700 transition-colors text-xs font-bold mr-3 uppercase tracking-wide">Review</button>
                                                 )}
                                                 <button className="text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 inline-block align-middle">
-                                                    <MoreHorizontal className="w-5 h-5" />
+                                                    <Icon name="MoreHorizontal" className="w-5 h-5" />
                                                 </button>
                                             </td>
                                         </tr>

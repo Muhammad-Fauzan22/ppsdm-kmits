@@ -3,19 +3,23 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import {
+  Brain, Clock, Wallet, Heart, Smile, Sparkles, Shield, Flower, Leaf,
+  BarChart3, PartyPopper, ArrowRight, CheckCircle, Timer
+} from 'lucide-react';
 import { useAssessmentStore } from '@/lib/assessment/store';
 import { IncompleteAssessmentModal, useIncompleteAssessmentReminder } from '@/components/assessment/IncompleteAssessmentModal';
 
 const dimensions = [
-  { id: 'cognitive', name: 'Kognitif', icon: 'psychology', color: 'blue', desc: 'Kemampuan berpikir kritis, kreativitas, dan metakognisi' },
-  { id: 'self-management', name: 'Manajemen Diri', icon: 'schedule', color: 'emerald', desc: 'Pengelolaan waktu, produktivitas, dan pengendalian diri' },
-  { id: 'financial', name: 'Finansial', icon: 'account_balance_wallet', color: 'teal', desc: 'Literasi keuangan dan perilaku finansial' },
-  { id: 'physical', name: 'Kesehatan Fisik', icon: 'favorite', color: 'red', desc: 'Aktivitas fisik, tidur, dan vitalitas' },
-  { id: 'emotional', name: 'Emosional', icon: 'sentiment_satisfied', color: 'pink', desc: 'Kecerdasan emosional dan regulasi emosi' },
-  { id: 'mental-health', name: 'Kesehatan Mental', icon: 'self_improvement', color: 'violet', desc: 'Well-being, resiliensi, dan manajemen stres' },
-  { id: 'character', name: 'Karakter', icon: 'security', color: 'amber', desc: 'Integritas, etika, dan tanggung jawab sosial' },
-  { id: 'spiritual', name: 'Spiritual', icon: 'spa', color: 'purple', desc: 'Makna hidup, gratitude, dan koneksi spiritual' },
-  { id: 'environmental', name: 'Lingkungan', icon: 'eco', color: 'green', desc: 'Kesadaran lingkungan dan gaya hidup berkelanjutan' },
+  { id: 'cognitive', name: 'Kognitif', icon: Brain, color: 'blue', desc: 'Kemampuan berpikir kritis, kreativitas, dan metakognisi' },
+  { id: 'self-management', name: 'Manajemen Diri', icon: Clock, color: 'emerald', desc: 'Pengelolaan waktu, produktivitas, dan pengendalian diri' },
+  { id: 'financial', name: 'Finansial', icon: Wallet, color: 'teal', desc: 'Literasi keuangan dan perilaku finansial' },
+  { id: 'physical', name: 'Kesehatan Fisik', icon: Heart, color: 'red', desc: 'Aktivitas fisik, tidur, dan vitalitas' },
+  { id: 'emotional', name: 'Emosional', icon: Smile, color: 'pink', desc: 'Kecerdasan emosional dan regulasi emosi' },
+  { id: 'mental-health', name: 'Kesehatan Mental', icon: Sparkles, color: 'violet', desc: 'Well-being, resiliensi, dan manajemen stres' },
+  { id: 'character', name: 'Karakter', icon: Shield, color: 'amber', desc: 'Integritas, etika, dan tanggung jawab sosial' },
+  { id: 'spiritual', name: 'Spiritual', icon: Flower, color: 'purple', desc: 'Makna hidup, gratitude, dan koneksi spiritual' },
+  { id: 'environmental', name: 'Lingkungan', icon: Leaf, color: 'green', desc: 'Kesadaran lingkungan dan gaya hidup berkelanjutan' },
 ];
 
 const colorClasses: Record<string, { bg: string; border: string; text: string }> = {
@@ -36,7 +40,7 @@ function Header() {
       <div className="flex h-16 items-center justify-between px-6 max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue flex items-center justify-center">
-            <span className="material-symbols-outlined text-white">analytics</span>
+            <BarChart3 className="text-white w-6 h-6" />
           </div>
           <span className="text-xl font-bold text-white">PPSDM KMM</span>
         </Link>
@@ -52,30 +56,30 @@ function Header() {
 
 export default function AssessmentPage() {
   const { startSession, completedDimensions, dimensions: progress } = useAssessmentStore();
-  
+
   // Initialize session on first load
   useEffect(() => {
     startSession();
   }, [startSession]);
-  
+
   // Show reminder for incomplete assessment
   const { showReminder } = useIncompleteAssessmentReminder(completedDimensions.length, () => {
     // Navigate to next incomplete dimension
   });
-  
+
   useEffect(() => {
     showReminder();
   }, [completedDimensions.length, showReminder]);
-  
+
   const completedCount = completedDimensions.length;
-  
+
   return (
     <div className="min-h-screen bg-[#0A0F1A] text-white pt-20 pb-12 px-6">
       <Header />
-      
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -84,15 +88,15 @@ export default function AssessmentPage() {
               Assessment 9 Dimensi
             </h1>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Temukan kekuatan dan area pengembangan Anda melalui assessment holistik 
+              Temukan kekuatan dan area pengembangan Anda melalui assessment holistik
               berbasis riset psikometrik dengan 72 pertanyaan teruji.
             </p>
           </div>
         </motion.div>
 
-        
+
         {/* Progress Overview */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -100,13 +104,13 @@ export default function AssessmentPage() {
           <div className="mb-12 glass-card rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
 
-            <h2 className="text-lg font-semibold">Progress Assessment Anda</h2>
-            <span className="text-2xl font-bold text-brand-accent">
-              {completedCount}/9
-            </span>
-          </div>
+              <h2 className="text-lg font-semibold">Progress Assessment Anda</h2>
+              <span className="text-2xl font-bold text-brand-accent">
+                {completedCount}/9
+              </span>
+            </div>
             <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-              <motion.div 
+              <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${(completedCount / 9) * 100}%` }}
                 transition={{ duration: 0.5 }}
@@ -115,21 +119,21 @@ export default function AssessmentPage() {
               </motion.div>
             </div>
             <p className="text-sm text-slate-500 mt-2">
-              {completedCount === 9 
-                ? 'Selamat! Anda telah menyelesaikan semua dimensi.' 
+              {completedCount === 9
+                ? 'Selamat! Anda telah menyelesaikan semua dimensi.'
                 : `${9 - completedCount} dimensi lagi untuk menyelesaikan assessment.`}
             </p>
           </div>
         </motion.div>
 
-        
+
         {/* Dimensions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {dimensions.map((dim, index) => {
             const isCompleted = completedDimensions.includes(dim.id);
             const inProgress = progress[dim.id]?.status === 'in_progress';
             const colors = colorClasses[dim.color];
-            
+
             return (
               <motion.div
                 key={dim.id}
@@ -142,7 +146,7 @@ export default function AssessmentPage() {
                     {/* Status Badge */}
                     <div className="flex justify-between items-start mb-4">
                       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
-                        <span className="material-symbols-outlined text-2xl">{dim.icon}</span>
+                        <dim.icon className="w-6 h-6" />
                       </div>
                       {isCompleted && (
                         <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded-full">
@@ -155,18 +159,18 @@ export default function AssessmentPage() {
                         </span>
                       )}
                     </div>
-                    
+
                     <h3 className="text-xl font-bold mb-2">{dim.name}</h3>
                     <p className="text-sm text-slate-400 mb-4">{dim.desc}</p>
-                    
+
                     <div className="flex items-center justify-between text-xs text-slate-500">
                       <span>8 pertanyaan</span>
                       <span>~2 menit</span>
                     </div>
-                    
+
                     <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
-                      <span className="text-xs text-slate-500">α = 0.84-0.87</span>
-                      <span className={`material-symbols-outlined ${colors.text}`}>arrow_forward</span>
+                      <span className={`text-xs ${colors.text}`}>α = 0.84-0.87</span>
+                      <ArrowRight className={`w-5 h-5 ${colors.text}`} />
                     </div>
                   </div>
                 </Link>
@@ -174,30 +178,30 @@ export default function AssessmentPage() {
             );
           })}
         </div>
-        
+
         {/* Completion Message */}
         {completedCount === 9 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="mt-12 text-center">
               <div className="glass-card rounded-3xl p-8 max-w-2xl mx-auto bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/30">
 
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-                <span className="material-symbols-outlined text-4xl text-green-400">celebration</span>
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Selamat!</h2>
-              <p className="text-slate-300 mb-6">
-                Anda telah menyelesaikan seluruh 9 dimensi assessment. 
-                Lihat hasil holistik lengkap Anda sekarang.
-              </p>
-                <Link 
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+                  <PartyPopper className="text-green-400 w-10 h-10" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Selamat!</h2>
+                <p className="text-slate-300 mb-6">
+                  Anda telah menyelesaikan seluruh 9 dimensi assessment.
+                  Lihat hasil holistik lengkap Anda sekarang.
+                </p>
+                <Link
                   href="/assessment/results"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#0A0F1A] font-bold rounded-xl hover:scale-105 transition-transform"
                 >
                   Lihat Hasil Lengkap
-                  <span className="material-symbols-outlined">arrow_forward</span>
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
@@ -205,7 +209,7 @@ export default function AssessmentPage() {
         )}
 
       </div>
-      
+
       {/* Incomplete Assessment Modal */}
       <IncompleteAssessmentModal
         completedCount={completedCount}

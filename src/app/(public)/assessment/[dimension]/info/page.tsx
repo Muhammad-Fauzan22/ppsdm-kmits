@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAssessmentStore } from '@/lib/assessment/store';
+import { Icon } from "@/components/ui/Icon";
 
 // Comprehensive dimension information based on ASSESSMENT BROU research
 const dimensionInfo: Record<string, {
@@ -26,10 +27,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Critical Thinking, Growth Mindset, Creativity & Metacognition',
     description: 'Dimensi ini mengukur kemampuan berpikir kritis, kreativitas, metakognisi, dan growth mindset Anda. Berdasarkan riset dari 450 mahasiswa Indonesia dengan validitas tinggi (CFI = 0.92, α = 0.87).',
     subDimensions: [
-      { name: 'Critical Thinking', description: 'Kemampuan menganalisis informasi dan mengidentifikasi bias', icon: 'psychology' },
-      { name: 'Growth Mindset', description: 'Keyakinan bahwa kemampuan dapat dikembangkan melalui usaha', icon: 'trending_up' },
-      { name: 'Creativity', description: 'Kemampuan menghasilkan ide-ide baru dan berbeda', icon: 'lightbulb' },
-      { name: 'Metacognition', description: 'Kesadaran dan pengelolaan proses berpikir sendiri', icon: 'self_improvement' }
+      { name: 'Critical Thinking', description: 'Kemampuan menganalisis informasi dan mengidentifikasi bias', icon: 'Brain' },
+      { name: 'Growth Mindset', description: 'Keyakinan bahwa kemampuan dapat dikembangkan melalui usaha', icon: 'TrendingUp' },
+      { name: 'Creativity', description: 'Kemampuan menghasilkan ide-ide baru dan berbeda', icon: 'Lightbulb' },
+      { name: 'Metacognition', description: 'Kesadaran dan pengelolaan proses berpikir sendiri', icon: 'Sparkles' }
     ],
     researchBase: 'Critical Thinking Disposition Scale (Sosu, 2013), Growth Mindset Scale (Dweck, 2006), Creative Self-Efficacy Scale (Tierney & Farmer, 2002), Metacognitive Awareness Inventory (Schraw & Dennison, 1994)',
     reliability: 'α = 0.87 (sangat baik)',
@@ -55,10 +56,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Time Management, Self-Control, Deep Work & Energy Management',
     description: 'Dimensi ini mengukur kemampuan mengelola waktu, mengendalikan diri, dan mempertahankan fokus. Berdasarkan Time Management Behavior Scale dan validasi pada 312 mahasiswa ITS (α = 0.86).',
     subDimensions: [
-      { name: 'Time Management', description: 'Perencanaan dan pengelolaan waktu secara efektif', icon: 'schedule' },
-      { name: 'Self-Control', description: 'Kemampuan mengendalikan impuls dan distraksi', icon: 'gavel' },
-      { name: 'Deep Work', description: 'Kemampuan fokus dalam waktu lama pada tugas kompleks', icon: 'center_focus_strong' },
-      { name: 'Energy Management', description: 'Pengaturan energi sepanjang hari untuk produktivitas optimal', icon: 'battery_full' }
+      { name: 'Time Management', description: 'Perencanaan dan pengelolaan waktu secara efektif', icon: 'Clock' },
+      { name: 'Self-Control', description: 'Kemampuan mengendalikan impuls dan distraksi', icon: 'Gavel' },
+      { name: 'Deep Work', description: 'Kemampuan fokus dalam waktu lama pada tugas kompleks', icon: 'Target' },
+      { name: 'Energy Management', description: 'Pengaturan energi sepanjang hari untuk produktivitas optimal', icon: 'BatteryFull' }
     ],
     researchBase: 'Time Management Behavior Scale (Macan et al., 1990), Tuckman Procrastination Scale (Tuckman, 1991), Self-Control Scale (Tangney et al., 2004)',
     reliability: 'α = 0.86-0.87',
@@ -84,10 +85,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Financial Knowledge, Behavior, Self-Efficacy & Planning',
     description: 'Dimensi ini mengukur literasi keuangan, perilaku finansial, dan kepercayaan diri dalam mengelola uang. Berdasarkan OECD/INFE Framework dengan adaptasi untuk konteks Indonesia (α = 0.85).',
     subDimensions: [
-      { name: 'Financial Knowledge', description: 'Pemahaman konsep keuangan dasar dan investasi', icon: 'school' },
-      { name: 'Financial Behavior', description: 'Praktik pengelolaan keuangan sehari-hari', icon: 'account_balance_wallet' },
-      { name: 'Financial Self-Efficacy', description: 'Kepercayaan diri dalam membuat keputusan keuangan', icon: 'confidence' },
-      { name: 'Financial Planning', description: 'Perencanaan keuangan jangka pendek dan panjang', icon: 'savings' }
+      { name: 'Financial Knowledge', description: 'Pemahaman konsep keuangan dasar dan investasi', icon: 'GraduationCap' },
+      { name: 'Financial Behavior', description: 'Praktik pengelolaan keuangan sehari-hari', icon: 'Wallet' },
+      { name: 'Financial Self-Efficacy', description: 'Kepercayaan diri dalam membuat keputusan keuangan', icon: 'ShieldCheck' },
+      { name: 'Financial Planning', description: 'Perencanaan keuangan jangka pendek dan panjang', icon: 'PiggyBank' }
     ],
     researchBase: 'OECD/INFE Core Competencies Framework (2020), Financial Management Behavior Scale (Dew & Xiao, 2011), Financial Self-Efficacy Scale (Lown, 2011)',
     reliability: 'α = 0.85',
@@ -113,10 +114,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Physical Activity, Sleep Quality, Nutrition & Vitality',
     description: 'Dimensi ini mengukur aktivitas fisik, kualitas tidur, nutrisi, dan vitalitas. Berdasarkan IPAQ Short Version dan Pittsburgh Sleep Quality Index dengan validasi pada 300 mahasiswa Indonesia (α = 0.84).',
     subDimensions: [
-      { name: 'Physical Activity', description: 'Frekuensi dan intensitas aktivitas fisik', icon: 'directions_run' },
-      { name: 'Sleep Quality', description: 'Kualitas dan durasi tidur yang cukup', icon: 'bedtime' },
-      { name: 'Nutrition', description: 'Kebiasaan makan seimbang dan bergizi', icon: 'restaurant' },
-      { name: 'Vitality', description: 'Tingkat energi dan kesehatan subjektif', icon: 'bolt' }
+      { name: 'Physical Activity', description: 'Frekuensi dan intensitas aktivitas fisik', icon: 'Activity' },
+      { name: 'Sleep Quality', description: 'Kualitas dan durasi tidur yang cukup', icon: 'Moon' },
+      { name: 'Nutrition', description: 'Kebiasaan makan seimbang dan bergizi', icon: 'Utensils' },
+      { name: 'Vitality', description: 'Tingkat energi dan kesehatan subjektif', icon: 'Zap' }
     ],
     researchBase: 'International Physical Activity Questionnaire (Craig et al., 2003), Pittsburgh Sleep Quality Index (Buysse et al., 1989), Subjective Vitality Scale (Ryan & Frederick, 1997)',
     reliability: 'α = 0.84',
@@ -142,10 +143,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Self-Awareness, Empathy, Emotion Regulation & Social Skills',
     description: 'Dimensi ini mengukur kesadaran emosional, empati, regulasi emosi, dan keterampilan sosial. Berdasarkan TEIQue-SF dan Interpersonal Reactivity Index dengan adaptasi budaya Indonesia (α = 0.84).',
     subDimensions: [
-      { name: 'Self-Awareness', description: 'Kemampuan mengenali dan memahami emosi sendiri', icon: 'person_search' },
-      { name: 'Empathy', description: 'Kemampuan merasakan dan memahami emosi orang lain', icon: 'volunteer_activism' },
-      { name: 'Emotion Regulation', description: 'Kemampuan mengelola dan mengendalikan emosi', icon: 'balance' },
-      { name: 'Social Skills', description: 'Kemampuan membangun dan memelihara hubungan', icon: 'groups' }
+      { name: 'Self-Awareness', description: 'Kemampuan mengenali dan memahami emosi sendiri', icon: 'UserSearch' },
+      { name: 'Empathy', description: 'Kemampuan merasakan dan memahami emosi orang lain', icon: 'HeartHandshake' },
+      { name: 'Emotion Regulation', description: 'Kemampuan mengelola dan mengendalikan emosi', icon: 'Scale' },
+      { name: 'Social Skills', description: 'Kemampuan membangun dan memelihara hubungan', icon: 'Users' }
     ],
     researchBase: 'Trait Emotional Intelligence Questionnaire-Short Form (Petrides, 2009), Interpersonal Reactivity Index (Davis, 1980), dengan adaptasi budaya kolektivistik Indonesia',
     reliability: 'α = 0.84',
@@ -171,10 +172,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Well-being, Resilience, Stress Management & Mindfulness',
     description: 'Dimensi ini mengukur kesejahteraan psikologis, resiliensi, manajemen stres, dan mindfulness. Berdasarkan Mental Health Continuum-Short Form dan Connor-Davidson Resilience Scale (α = 0.86).',
     subDimensions: [
-      { name: 'Emotional Wellbeing', description: 'Tingkat kebahagiaan dan kepuasan hidup', icon: 'sentiment_very_satisfied' },
-      { name: 'Psychological Wellbeing', description: 'Rasa makna, tujuan, dan pertumbuhan', icon: 'spa' },
-      { name: 'Resilience', description: 'Kemampuan bangkit dari kesulitan', icon: 'fitness_center' },
-      { name: 'Mindfulness', description: 'Kesadaran dan kehadiran di saat ini', icon: 'self_improvement' }
+      { name: 'Emotional Wellbeing', description: 'Tingkat kebahagiaan dan kepuasan hidup', icon: 'Smile' },
+      { name: 'Psychological Wellbeing', description: 'Rasa makna, tujuan, dan pertumbuhan', icon: 'Flower' },
+      { name: 'Resilience', description: 'Kemampuan bangkit dari kesulitan', icon: 'Dumbbell' },
+      { name: 'Mindfulness', description: 'Kesadaran dan kehadiran di saat ini', icon: 'Sparkles' }
     ],
     researchBase: 'Mental Health Continuum-Short Form (Keyes, 2009), Connor-Davidson Resilience Scale (Connor & Davidson, 2003), Perceived Stress Scale (Cohen et al., 1983)',
     reliability: 'α = 0.86',
@@ -200,10 +201,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Integrity, Courage, Fairness, Responsibility & Compassion',
     description: 'Dimensi ini mengukur integritas, keberanian, keadilan, tanggung jawab, dan empati. Berdasarkan Values in Action Inventory dan validasi pada 450 mahasiswa Indonesia (α = 0.84).',
     subDimensions: [
-      { name: 'Integrity', description: 'Konsistensi antara nilai, kata, dan tindakan', icon: 'verified' },
-      { name: 'Courage', description: 'Keberanian mempertahankan prinsip meski sulit', icon: 'shield' },
-      { name: 'Fairness', description: 'Perlakuan adil tanpa memandang latar belakang', icon: 'balance' },
-      { name: 'Responsibility', description: 'Tanggung jawab atas keputusan dan tindakan', icon: 'assignment_ind' }
+      { name: 'Integrity', description: 'Konsistensi antara nilai, kata, dan tindakan', icon: 'BadgeCheck' },
+      { name: 'Courage', description: 'Keberanian mempertahankan prinsip meski sulit', icon: 'Shield' },
+      { name: 'Fairness', description: 'Perlakuan adil tanpa memandang latar belakang', icon: 'Scale' },
+      { name: 'Responsibility', description: 'Tanggung jawab atas keputusan dan tindakan', icon: 'ClipboardList' }
     ],
     researchBase: 'Values in Action Inventory (VIA-IS; Peterson & Seligman, 2004), Moral Character Questionnaire, dengan adaptasi untuk nilai-nilai gotong royong dan kebersamaan Indonesia',
     reliability: 'α = 0.84',
@@ -229,10 +230,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Purpose, Gratitude, Connection & Contribution',
     description: 'Dimensi ini mengukur tujuan hidup, gratitude, koneksi dengan yang lebih besar, dan kontribusi sosial. Berdasarkan Purpose in Life Test dan Gratitude Questionnaire dengan adaptasi multikultural (α = 0.85).',
     subDimensions: [
-      { name: 'Purpose & Meaning', description: 'Kejelasan tujuan dan makna hidup', icon: 'explore' },
-      { name: 'Gratitude', description: 'Rasa syukur dan apresiasi terhadap kehidupan', icon: 'favorite' },
-      { name: 'Connection', description: 'Rasa terhubung dengan alam dan komunitas', icon: 'public' },
-      { name: 'Contribution', description: 'Kontribusi bermakna pada社会', icon: 'handshake' }
+      { name: 'Purpose & Meaning', description: 'Kejelasan tujuan dan makna hidup', icon: 'Compass' },
+      { name: 'Gratitude', description: 'Rasa syukur dan apresiasi terhadap kehidupan', icon: 'Heart' },
+      { name: 'Connection', description: 'Rasa terhubung dengan alam dan komunitas', icon: 'Globe' },
+      { name: 'Contribution', description: 'Kontribusi bermakna pada masyarakat', icon: 'Handshake' }
     ],
     researchBase: 'Purpose in Life Test (Crumbaugh & Maholick, 1964), Gratitude Questionnaire (McCullough et al., 2002), dengan adaptasi untuk spiritualitas Indonesia yang pluralistik',
     reliability: 'α = 0.85',
@@ -258,10 +259,10 @@ const dimensionInfo: Record<string, {
     subtitle: 'Environmental Awareness, Sustainable Behavior, Work-Life Balance & Digital Wellbeing',
     description: 'Dimensi ini mengukur kesadaran lingkungan, perilaku berkelanjutan, keseimbangan kerja-hidup, dan kesehatan digital. Berdasarkan New Ecological Paradigm dan validasi pada 450 mahasiswa Indonesia (α = 0.83).',
     subDimensions: [
-      { name: 'Environmental Awareness', description: 'Kesadaran dampak lingkungan dari tindakan', icon: 'eco' },
-      { name: 'Sustainable Behavior', description: 'Praktik ramah lingkungan sehari-hari', icon: 'recycling' },
-      { name: 'Work-Life Balance', description: 'Keseimbangan antara studi, kerja, dan kehidupan', icon: 'balance' },
-      { name: 'Digital Wellbeing', description: 'Pengelolaan penggunaan teknologi dan media sosial', icon: 'smartphone' }
+      { name: 'Environmental Awareness', description: 'Kesadaran dampak lingkungan dari tindakan', icon: 'Leaf' },
+      { name: 'Sustainable Behavior', description: 'Praktik ramah lingkungan sehari-hari', icon: 'Recycle' },
+      { name: 'Work-Life Balance', description: 'Keseimbangan antara studi, kerja, dan kehidupan', icon: 'Scale' },
+      { name: 'Digital Wellbeing', description: 'Pengelolaan penggunaan teknologi dan media sosial', icon: 'Smartphone' }
     ],
     researchBase: 'New Ecological Paradigm (Dunlap et al., 2000), Sustainable Behavior Scale, Digital Wellbeing Scale, dengan adaptasi untuk konteks urban Indonesia',
     reliability: 'α = 0.83',
@@ -282,6 +283,19 @@ const dimensionInfo: Record<string, {
     color: 'green',
     gradient: 'from-green-500/20 to-green-600/10'
   }
+};
+
+const dimensionIcons: Record<string, string> = {
+  cognitive: "Brain",
+  "self-management": "Sparkles",
+  financial: "Wallet",
+  physical: "BatteryFull",
+  emotional: "Heart",
+  social: "Users",
+  "mental-health": "Flower",
+  character: "Shield",
+  spiritual: "Compass",
+  environmental: "Leaf"
 };
 
 export default function DimensionInfoPage() {
@@ -305,6 +319,8 @@ export default function DimensionInfoPage() {
     window.location.href = `/assessment/${dimension}/test`;
   };
 
+  const mainIcon = dimensionIcons[dimension] || "Brain";
+
   return (
     <div className="min-h-screen bg-[#0A0F1A] text-white pt-20 pb-12 px-6">
       {/* Header */}
@@ -312,7 +328,7 @@ export default function DimensionInfoPage() {
         <div className="flex h-16 items-center justify-between px-6 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-its-blue to-brand-blue flex items-center justify-center">
-              <span className="material-symbols-outlined text-white">analytics</span>
+              <Icon name="BarChart" className="text-white" />
             </div>
             <span className="text-xl font-bold text-white">PPSDM KMM</span>
           </Link>
@@ -331,11 +347,11 @@ export default function DimensionInfoPage() {
           animate={{ opacity: 1, x: 0 }}
         >
           <div className="mb-6">
-            <Link 
+            <Link
               href="/assessment"
               className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
             >
-              <span className="material-symbols-outlined">arrow_back</span>
+              <Icon name="ArrowLeft" />
               Kembali ke Assessment
             </Link>
           </div>
@@ -349,160 +365,158 @@ export default function DimensionInfoPage() {
         >
           <div className={`glass-card rounded-3xl p-8 md:p-12 bg-gradient-to-br ${info.gradient} border border-${info.color}-500/30`}>
 
-          {/* Title Section */}
-          <div className="text-center mb-10">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${info.gradient} flex items-center justify-center border border-${info.color}-500/30`}>
-
-              <span className="material-symbols-outlined text-4xl text-${info.color}-400">
-                psychology
-              </span>
-              </div>
-            </motion.div>
-
-            <h1 className="text-3xl md:text-4xl font-bold font-heading mb-3">
-              {info.title}
-            </h1>
-            <p className="text-lg text-slate-400">{info.subtitle}</p>
-          </div>
-
-          {/* Description */}
-          <div className="mb-10">
-            <p className="text-slate-300 leading-relaxed text-lg">
-              {info.description}
-            </p>
-          </div>
-
-          {/* Sub-dimensions */}
-          <div className="mb-10">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-${info.color}-400">category</span>
-              Sub-Dimensi yang Dinilai
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {info.subDimensions.map((sub, index) => (
-                <motion.div
-                  key={sub.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                >
-                  <div className="glass-card rounded-xl p-4 border border-white/5">
-
-                  <div className="flex items-start gap-3">
-                    <div className={`w-10 h-10 rounded-lg bg-${info.color}-500/20 flex items-center justify-center flex-shrink-0`}>
-                      <span className="material-symbols-outlined text-${info.color}-400">{sub.icon}</span>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{sub.name}</h3>
-                      <p className="text-sm text-slate-400">{sub.description}</p>
-                    </div>
-                  </div>
-                  </div>
-                </motion.div>
-              ))}
-
-            </div>
-          </div>
-
-          {/* Research Info */}
-          <div className="mb-10 p-6 rounded-2xl bg-white/5 border border-white/10">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-${info.color}-400">science</span>
-              Basis Riset & Validasi
-            </h2>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-4">
-                <span className="text-slate-400 w-24">Instrumen:</span>
-                <span className="text-slate-300">{info.researchBase}</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="text-slate-400 w-24">Reliabilitas:</span>
-                <span className="text-${info.color}-400 font-semibold">{info.reliability}</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="text-slate-400 w-24">Validitas:</span>
-                <span className="text-${info.color}-400 font-semibold">{info.validity}</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="text-slate-400 w-24">Waktu:</span>
-                <span className="text-slate-300">{info.completionTime}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefits */}
-          <div className="mb-10">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-${info.color}-400">stars</span>
-              Manfaat Assessment
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {info.benefits.map((benefit, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className={`material-symbols-outlined text-${info.color}-400 flex-shrink-0`}>check_circle</span>
-                    <span className="text-slate-300 text-sm">{benefit}</span>
-                  </div>
-                </motion.div>
-              ))}
-
-            </div>
-          </div>
-
-          {/* Tips */}
-          <div className="mb-10 p-6 rounded-2xl bg-${info.color}-500/10 border border-${info.color}-500/20">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-${info.color}-400">
-              <span className="material-symbols-outlined">tips_and_updates</span>
-              Tips Mengisi Assessment
-            </h2>
-            <ul className="space-y-2">
-              {info.tips.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-slate-300">
-                  <span className="text-${info.color}-400 flex-shrink-0">•</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Start Button */}
-          <div className="text-center">
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <button
-                onClick={handleStartAssessment}
-                disabled={isLoading}
-                className={`inline-flex items-center gap-3 px-10 py-5 bg-${info.color}-500 hover:bg-${info.color}-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-${info.color}-500/25 disabled:opacity-50`}
+            {/* Title Section */}
+            <div className="text-center mb-10">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2 }}
               >
-                {isLoading ? (
-                  <>
-                    <span className="material-symbols-outlined animate-spin">refresh</span>
-                    Memulai...
-                  </>
-                ) : (
-                  <>
-                    Mulai Assessment
-                    <span className="material-symbols-outlined">arrow_forward</span>
-                  </>
-                )}
-              </button>
-            </motion.div>
-            <p className="mt-4 text-sm text-slate-500">
-              8 pertanyaan • Skala Likert 1-5 • ~2 menit
-            </p>
-          </div>
+                <div className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${info.gradient} flex items-center justify-center border border-${info.color}-500/30`}>
+
+                  <Icon name={mainIcon} className={`text-4xl text-${info.color}-400`} />
+                </div>
+              </motion.div>
+
+              <h1 className="text-3xl md:text-4xl font-bold font-heading mb-3">
+                {info.title}
+              </h1>
+              <p className="text-lg text-slate-400">{info.subtitle}</p>
+            </div>
+
+            {/* Description */}
+            <div className="mb-10">
+              <p className="text-slate-300 leading-relaxed text-lg">
+                {info.description}
+              </p>
+            </div>
+
+            {/* Sub-dimensions */}
+            <div className="mb-10">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Icon name="LayoutGrid" className={`text-${info.color}-400`} />
+                Sub-Dimensi yang Dinilai
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {info.subDimensions.map((sub, index) => (
+                  <motion.div
+                    key={sub.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                  >
+                    <div className="glass-card rounded-xl p-4 border border-white/5">
+
+                      <div className="flex items-start gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-${info.color}-500/20 flex items-center justify-center flex-shrink-0`}>
+                          <Icon name={sub.icon} className={`text-${info.color}-400`} />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-1">{sub.name}</h3>
+                          <p className="text-sm text-slate-400">{sub.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+
+              </div>
+            </div>
+
+            {/* Research Info */}
+            <div className="mb-10 p-6 rounded-2xl bg-white/5 border border-white/10">
+              <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <Icon name="FlaskConical" className={`text-${info.color}-400`} />
+                Basis Riset & Validasi
+              </h2>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-4">
+                  <span className="text-slate-400 w-24">Instrumen:</span>
+                  <span className="text-slate-300">{info.researchBase}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-slate-400 w-24">Reliabilitas:</span>
+                  <span className={`text-${info.color}-400 font-semibold`}>{info.reliability}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-slate-400 w-24">Validitas:</span>
+                  <span className={`text-${info.color}-400 font-semibold`}>{info.validity}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-slate-400 w-24">Waktu:</span>
+                  <span className="text-slate-300">{info.completionTime}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="mb-10">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Icon name="Sparkles" className={`text-${info.color}-400`} />
+                Manfaat Assessment
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {info.benefits.map((benefit, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <Icon name="CheckCircle" className={`text-${info.color}-400 flex-shrink-0`} />
+                      <span className="text-slate-300 text-sm">{benefit}</span>
+                    </div>
+                  </motion.div>
+                ))}
+
+              </div>
+            </div>
+
+            {/* Tips */}
+            <div className="mb-10 p-6 rounded-2xl bg-${info.color}-500/10 border border-${info.color}-500/20">
+              <h2 className={`text-lg font-bold mb-4 flex items-center gap-2 text-${info.color}-400`}>
+                <Icon name="Lightbulb" />
+                Tips Mengisi Assessment
+              </h2>
+              <ul className="space-y-2">
+                {info.tips.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm text-slate-300">
+                    <span className={`text-${info.color}-400 flex-shrink-0`}>•</span>
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Start Button */}
+            <div className="text-center">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <button
+                  onClick={handleStartAssessment}
+                  disabled={isLoading}
+                  className={`inline-flex items-center gap-3 px-10 py-5 bg-${info.color}-500 hover:bg-${info.color}-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-${info.color}-500/25 disabled:opacity-50`}
+                >
+                  {isLoading ? (
+                    <>
+                      <Icon name="Loader2" className="animate-spin" />
+                      Memulai...
+                    </>
+                  ) : (
+                    <>
+                      Mulai Assessment
+                      <Icon name="ArrowRight" />
+                    </>
+                  )}
+                </button>
+              </motion.div>
+              <p className="mt-4 text-sm text-slate-500">
+                8 pertanyaan • Skala Likert 1-5 • ~2 menit
+              </p>
+            </div>
           </div>
         </motion.div>
 

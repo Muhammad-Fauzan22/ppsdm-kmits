@@ -2,6 +2,7 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
+import { AlertTriangle } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -44,7 +45,7 @@ class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen flex items-center justify-center bg-background-dark p-4">
           <div className="max-w-md w-full bg-red-500/10 border border-red-500/20 rounded-lg p-6 text-center">
             <div className="w-16 h-16 mx-auto mb-4 bg-red-500/20 rounded-full flex items-center justify-center">
-              <span className="material-symbols-outlined text-red-400 text-3xl">error</span>
+              <AlertTriangle className="text-red-400 w-8 h-8" />
             </div>
 
             <h2 className="text-xl font-bold text-white mb-2">

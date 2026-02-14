@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { DimensionResearch } from "@/data/dimensions";
+import { BadgeCheck, ClipboardCheck, Users, FileQuestion } from "lucide-react";
 
 interface ResearchOverviewProps {
   research: DimensionResearch;
@@ -25,16 +26,14 @@ export function ResearchOverview({ research }: ResearchOverviewProps) {
             dengan validasi pada {research.sampleSize} responden Indonesia.
           </p>
         </motion.div>
-        
+
         {/* Psychometric Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Reliability */}
           <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
-                <span className="material-symbols-outlined text-green-400 text-2xl">
-                  verified
-                </span>
+                <BadgeCheck className="w-8 h-8 text-green-400" />
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-400">Reliability</h3>
@@ -47,14 +46,12 @@ export function ResearchOverview({ research }: ResearchOverviewProps) {
               Cronbach's Alpha menunjukkan konsistensi internal yang {research.reliability >= 0.8 ? "sangat baik" : "baik"}
             </p>
           </div>
-          
+
           {/* Validity */}
           <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                <span className="material-symbols-outlined text-blue-400 text-2xl">
-                  assessment
-                </span>
+                <ClipboardCheck className="w-8 h-8 text-blue-400" />
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-400">Validity</h3>
@@ -67,14 +64,12 @@ export function ResearchOverview({ research }: ResearchOverviewProps) {
               Construct validity melalui Confirmatory Factor Analysis
             </p>
           </div>
-          
+
           {/* Sample Size */}
           <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                <span className="material-symbols-outlined text-purple-400 text-2xl">
-                  groups
-                </span>
+                <Users className="w-8 h-8 text-purple-400" />
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-400">Sample Size</h3>
@@ -87,14 +82,12 @@ export function ResearchOverview({ research }: ResearchOverviewProps) {
               Validasi pada populasi mahasiswa Indonesia
             </p>
           </div>
-          
+
           {/* Item Count */}
           <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                <span className="material-symbols-outlined text-amber-400 text-2xl">
-                  quiz
-                </span>
+                <FileQuestion className="w-8 h-8 text-amber-400" />
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-400">Items</h3>
@@ -108,7 +101,7 @@ export function ResearchOverview({ research }: ResearchOverviewProps) {
             </p>
           </div>
         </div>
-        
+
         {/* Normative Data */}
         <div className="mt-8 glass-card rounded-2xl p-8">
           <h3 className="text-xl font-bold text-white mb-6">Data Normatif</h3>

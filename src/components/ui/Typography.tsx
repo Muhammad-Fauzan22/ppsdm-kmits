@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from '@/components/ui/Icon';
 
 import { ReactNode } from 'react';
 
@@ -100,7 +101,7 @@ export interface TextProps {
   truncate?: boolean;
 }
 
-export function Text({ 
+export function Text({
   variant = 'primary',
   size = 'base',
   weight = 'normal',
@@ -199,9 +200,7 @@ export function LinkText({ href, children, className = '', external = false }: L
     >
       {children}
       {external && (
-        <span className="material-symbols-outlined text-xs align-middle ml-1">
-          open_in_new
-        </span>
+        <Icon name="ExternalLink" size="xs" className="inline-block ml-1 align-middle" />
       )}
     </a>
   );

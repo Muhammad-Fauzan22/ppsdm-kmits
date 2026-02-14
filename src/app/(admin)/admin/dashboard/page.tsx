@@ -18,7 +18,10 @@ import {
     Brain,
     Bug,
     Activity,
-    RefreshCw
+    RefreshCw,
+    LogOut,
+    LogIn,
+    AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ASSETS } from "@/config/assets";
@@ -43,7 +46,7 @@ export default function AdminDashboardPage() {
         e.preventDefault();
         if (searchQuery.trim()) {
             // Navigate to search results or filter dashboard
-            }
+        }
     };
 
     const handleRefresh = useCallback(async () => {
@@ -92,7 +95,7 @@ export default function AdminDashboardPage() {
                         onClick={handleLogout}
                         className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full text-left"
                     >
-                        <span className="material-symbols-outlined">logout</span>
+                        <LogOut className="w-5 h-5" />
                         <p className="text-sm font-medium">Logout</p>
                     </button>
                 </div>
@@ -398,9 +401,9 @@ function LogItem({ time, type, msg, color }: any) {
                     color === 'blue' ? "text-blue-500" :
                         color === 'orange' ? "text-orange-500" : "text-purple-500"
             )}>
-                {type === 'login' && <span className="material-symbols-outlined text-sm">login</span>}
+                {type === 'login' && <LogIn className="w-4 h-4" />}
                 {type === 'sync' && <RefreshCw className="w-3.5 h-3.5" />}
-                {type === 'warning' && <span className="material-symbols-outlined text-sm">warning</span>}
+                {type === 'warning' && <AlertTriangle className="w-4 h-4" />}
                 {type === 'shield' && <Shield className="w-3.5 h-3.5" />}
                 {type === 'check' && <CheckCircle className="w-3.5 h-3.5" />}
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 export default function SupervisorApprovals() {
     const [selectedRequest, setSelectedRequest] = useState<string | null>("REQ-001");
@@ -24,7 +25,7 @@ export default function SupervisorApprovals() {
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl font-bold">Pending Requests</h2>
                         <button className="bg-blue-600/10 text-blue-500 text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 hover:bg-blue-600/20 transition-colors">
-                            <span className="material-symbols-outlined text-sm">done_all</span> Approve All
+                            <Icon name="CheckCheck" size="sm" /> Approve All
                         </button>
                     </div>
                     <p className="text-xs text-gray-500 font-medium">12 items waiting for review</p>
@@ -67,8 +68,8 @@ export default function SupervisorApprovals() {
                         <span className="text-gray-500 text-xs font-mono">ID: #{currentRequest.id}</span>
                     </div>
                     <div className="flex gap-2">
-                        <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined">print</span></button>
-                        <button className="text-gray-500 hover:text-white"><span className="material-symbols-outlined">more_vert</span></button>
+                        <button className="text-gray-500 hover:text-white"><Icon name="Printer" /></button>
+                        <button className="text-gray-500 hover:text-white"><Icon name="MoreVertical" /></button>
                     </div>
                 </div>
 
@@ -108,7 +109,7 @@ export default function SupervisorApprovals() {
                             {/* Preview Placeholder */}
                             <div className="h-48 bg-[#252A36] flex items-center justify-center relative">
                                 <div className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
-                                    <span className="material-symbols-outlined text-3xl text-white">picture_as_pdf</span>
+                                    <Icon name="FileText" className="text-3xl text-white" />
                                 </div>
                                 <div className="absolute inset-x-8 top-8 bottom-8 flex flex-col gap-2 opacity-50">
                                     <div className="h-2 bg-gray-500 rounded w-full"></div>
@@ -120,7 +121,7 @@ export default function SupervisorApprovals() {
                             <div className="p-4 flex items-center justify-between bg-[#151921] border-t border-[#2D303E]">
                                 <div className="flex items-center gap-3">
                                     <div className="bg-red-900/20 p-2 rounded text-red-500">
-                                        <span className="material-symbols-outlined">description</span>
+                                        <Icon name="FileText" />
                                     </div>
                                     <div>
                                         <p className="text-sm font-bold text-white truncate w-48">certificate_sjenkins_datascience.pdf</p>
@@ -128,7 +129,7 @@ export default function SupervisorApprovals() {
                                     </div>
                                 </div>
                                 <button className="text-gray-500 hover:text-white">
-                                    <span className="material-symbols-outlined">download</span>
+                                    <Icon name="Download" />
                                 </button>
                             </div>
                         </div>
@@ -171,10 +172,10 @@ export default function SupervisorApprovals() {
                     </div>
                     <div className="flex gap-4">
                         <button className="flex items-center gap-2 px-6 py-3 rounded-lg border border-[#2D303E] text-white hover:bg-[#1C2028] transition-colors font-bold text-sm">
-                            <span className="material-symbols-outlined text-lg">close</span> Reject Request
+                            <Icon name="X" className="text-lg" /> Reject Request
                         </button>
                         <button className="flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors font-bold text-sm shadow-lg shadow-blue-900/40">
-                            <span className="material-symbols-outlined text-lg">check</span> Approve Request
+                            <Icon name="Check" className="text-lg" /> Approve Request
                         </button>
                     </div>
                 </div>

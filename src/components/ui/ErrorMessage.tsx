@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { AlertCircle, AlertTriangle, Info, CheckCircle, X } from 'lucide-react';
 
 export interface ErrorMessageProps {
   title: string;
@@ -15,7 +16,7 @@ export interface ErrorMessageProps {
   className?: string;
 }
 
-export default function ErrorMessage({ 
+export default function ErrorMessage({
   title,
   message,
   variant = 'error',
@@ -49,10 +50,10 @@ export default function ErrorMessage({
 
   const styles = variantStyles[variant];
   const icons = {
-    error: 'error',
-    warning: 'warning',
-    info: 'info',
-    success: 'check_circle',
+    error: <AlertCircle className={`text-xl ${styles.icon}`} />,
+    warning: <AlertTriangle className={`text-xl ${styles.icon}`} />,
+    info: <Info className={`text-xl ${styles.icon}`} />,
+    success: <CheckCircle className={`text-xl ${styles.icon}`} />,
   };
 
   return (
@@ -75,7 +76,7 @@ export default function ErrorMessage({
               className="absolute top-4 right-4 p-1 hover:bg-black/5 rounded-full transition-colors"
               aria-label="Dismiss message"
             >
-              <span className="material-symbols-outlined text-slate-400 hover:text-slate-600">close</span>
+              <X className="w-5 h-5 text-slate-400 hover:text-slate-600" />
             </button>
           )}
 
@@ -83,9 +84,7 @@ export default function ErrorMessage({
           <div className="flex items-start gap-4">
             {/* Icon */}
             <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${styles.iconBg}`}>
-              <span className={`material-symbols-outlined text-xl ${styles.icon}`}>
-                {icons[variant]}
-              </span>
+              {icons[variant]}
             </div>
 
             {/* Text Content */}
@@ -123,8 +122,8 @@ export interface InlineErrorProps {
   className?: string;
 }
 
-export function InlineError({ 
-  message, 
+export function InlineError({
+  message,
   variant = 'error',
   className = ''
 }: InlineErrorProps) {
@@ -144,14 +143,16 @@ export function InlineError({
   const styles = variantStyles[variant];
 
   return (
-    <div 
+    <div
       className={`flex items-center gap-2 text-sm ${styles.bg} ${styles.border} rounded-lg px-3 py-2 ${className}`}
       role="alert"
       aria-live="polite"
     >
-      <span className={`material-symbols-outlined ${styles.text}`}>
-        {variant === 'error' ? 'error' : 'warning'}
-      </span>
+      {variant === 'error' ? (
+        <AlertCircle className={`w-5 h-5 ${styles.text}`} />
+      ) : (
+        <AlertTriangle className={`w-5 h-5 ${styles.text}`} />
+      )}
       <span className={styles.text}>{message}</span>
     </div>
   );
@@ -165,8 +166,8 @@ export interface ToastProps {
   onClose?: () => void;
 }
 
-export function Toast({ 
-  message, 
+export function Toast({
+  message,
   variant = 'info',
   duration = 3000,
   onClose
@@ -203,9 +204,12 @@ export function Toast({
       aria-live="assertive"
       aria-atomic="true"
     >
-      <span className="material-symbols-outlined text-xl">
-        {styles.icon}
-      </span>
+      {/* Toast Component Implementation */}
+      {variantStyles[variant].icon === 'error' && <AlertCircle className="w-5 h-5" />}
+      {variantStyles[variant].icon === 'warning' && <AlertTriangle className="w-5 h-5" />}
+      {variantStyles[variant].icon === 'check_circle' && <CheckCircle className="w-5 h-5" />}
+      {variantStyles[variant].icon === 'info' && <Info className="w-5 h-5" />}
+
       <span className="font-medium">{message}</span>
       {onClose && (
         <button
@@ -213,7 +217,9 @@ export function Toast({
           className="ml-4 p-1 hover:bg-white/20 rounded-full transition-colors"
           aria-label="Dismiss notification"
         >
-          <span className="material-symbols-outlined">close</span>
+          <span className="ml-4 p-1 hover:bg-white/20 rounded-full transition-colors">
+            <X className="w-4 h-4" />
+          </span>
         </button>
       )}
     </motion.div>

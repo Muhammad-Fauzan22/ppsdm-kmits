@@ -3,6 +3,31 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { DimensionData } from "@/data/dimensions";
+import {
+  Brain,
+  Target,
+  Coins,
+  Dumbbell,
+  Handshake,
+  Sparkles,
+  Shield,
+  HeartHandshake,
+  Leaf,
+  ShieldCheck,
+  HelpCircle
+} from "lucide-react";
+
+const IconMap: Record<string, any> = {
+  psychology: Brain,
+  target: Target,
+  monetization_on: Coins,
+  fitness_center: Dumbbell,
+  handshake: Handshake,
+  self_improvement: Sparkles,
+  shield: Shield,
+  volunteer_activism: HeartHandshake,
+  eco: Leaf
+};
 
 interface DimensionCardProps {
   dimension: DimensionData;
@@ -11,6 +36,7 @@ interface DimensionCardProps {
 
 export function DimensionCard({ dimension, index }: DimensionCardProps) {
   const isSoft = dimension.type === "soft";
+  const IconComponent = IconMap[dimension.icon] || HelpCircle;
 
   return (
     <motion.div
@@ -25,7 +51,7 @@ export function DimensionCard({ dimension, index }: DimensionCardProps) {
       <div>
         <div className="flex justify-between items-start mb-4">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isSoft ? "bg-its-gold/10 text-its-gold" : "bg-brand-blue/10 text-brand-blue"}`}>
-            <span className="material-symbols-outlined text-2xl">{dimension.icon}</span>
+            <IconComponent className="w-6 h-6" />
           </div>
           <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${isSoft ? "bg-its-gold/10 text-its-gold" : "bg-brand-blue/10 text-brand-blue"}`}>
             {dimension.type} Skill
@@ -41,7 +67,7 @@ export function DimensionCard({ dimension, index }: DimensionCardProps) {
 
         {/* Validation Stat */}
         <div className="flex items-center gap-2 mb-6">
-          <span className="material-symbols-outlined text-green-500 text-sm">verified_user</span>
+          <ShieldCheck className="w-4 h-4 text-green-500" />
           <span className="text-xs font-semibold text-slate-300 bg-white/5 py-1 px-2 rounded">
             {dimension.stat}
           </span>

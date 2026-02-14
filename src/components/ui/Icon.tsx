@@ -11,7 +11,7 @@ import * as LucideIcons from 'lucide-react';
 // ==========================================
 
 export type IconType = 'material' | 'lucide' | 'svg';
-export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
 export interface IconProps {
   name: string;
@@ -32,61 +32,11 @@ const sizeMap: Record<IconSize, string> = {
   lg: 'text-lg w-6 h-6',
   xl: 'text-xl w-8 h-8',
   '2xl': 'text-2xl w-10 h-10',
+  '3xl': 'text-3xl w-12 h-12',
+  '4xl': 'text-4xl w-16 h-16',
 };
 
-// Material Icons mapping for common icons
-const materialIconMap: Record<string, string> = {
-  home: 'home',
-  dashboard: 'dashboard',
-  menu: 'menu',
-  close: 'close',
-  arrow_back: 'arrow_back',
-  arrow_forward: 'arrow_forward',
-  arrow_up: 'arrow_upward',
-  arrow_down: 'arrow_downward',
-  chevron_left: 'chevron_left',
-  chevron_right: 'chevron_right',
-  chevron_up: 'expand_less',
-  chevron_down: 'expand_more',
-  search: 'search',
-  add: 'add',
-  edit: 'edit',
-  delete: 'delete',
-  save: 'save',
-  download: 'download',
-  upload: 'upload',
-  share: 'share',
-  print: 'print',
-  refresh: 'refresh',
-  settings: 'settings',
-  check: 'check',
-  check_circle: 'check_circle',
-  error: 'error',
-  warning: 'warning',
-  info: 'info',
-  help: 'help',
-  notifications: 'notifications',
-  person: 'person',
-  group: 'group',
-  school: 'school',
-  book: 'book',
-  article: 'article',
-  assessment: 'assessment',
-  analytics: 'analytics',
-  calendar: 'calendar',
-  mail: 'mail',
-  phone: 'phone',
-  favorite: 'favorite',
-  star: 'star',
-  visibility: 'visibility',
-  visibility_off: 'visibility_off',
-  lock: 'lock',
-  unlock: 'lock_open',
-  more_vert: 'more_vert',
-  more_horiz: 'more_horiz',
-  filter: 'filter_list',
-  sort: 'sort',
-};
+
 
 // Lucide icon mapping for fallback
 const lucideIconMap: Record<string, keyof typeof LucideIcons> = {
@@ -140,6 +90,142 @@ const lucideIconMap: Record<string, keyof typeof LucideIcons> = {
   more_horiz: 'MoreHorizontal',
   filter: 'Filter',
   sort: 'ArrowUpDown',
+  // Additional explicit mappings
+  bolt: 'Zap',
+  play_circle: 'PlayCircle',
+  emoji_events: 'Trophy',
+  psychology: 'BrainCircuit',
+  verified: 'BadgeCheck',
+  map: 'Map',
+  groups_3: 'Users',
+  quiz: 'FileQuestion',
+  badge: 'IdCard',
+  route: 'Signpost',
+  lightbulb: 'Lightbulb',
+  expand_more: 'ChevronDown',
+  expand_less: 'ChevronUp',
+  verified_user: 'ShieldCheck',
+  location_on: 'MapPin',
+  account_circle: 'UserCircle',
+  logout: 'LogOut',
+  login: 'LogIn',
+  history: 'History',
+  tune: 'SlidersHorizontal',
+  auto_awesome: 'Sparkles',
+  play_arrow: 'Play',
+  bookmark: 'Bookmark',
+  bookmark_border: 'Bookmark',
+  sentiment_very_satisfied: 'Smile',
+  mood: 'Laugh',
+  sentiment_neutral: 'Meh',
+  sentiment_dissatisfied: 'Frown',
+  assignment_ind: 'UserSquare',
+  photo_camera: 'Camera',
+  lock_open: 'Unlock',
+  delete_forever: 'Trash2',
+  notifications_active: 'BellRing',
+  trending_up: 'TrendingUp',
+  widgets: 'LayoutGrid',
+  description: 'FileText',
+  campaign: 'Megaphone',
+  group_add: 'UserPlus',
+  add_circle: 'PlusCircle',
+  remove_circle: 'MinusCircle',
+  cancel: 'XCircle',
+  more_time: 'Clock',
+  timer: 'Timer',
+  speed: 'Gauge',
+  language: 'Globe',
+  public: 'Globe',
+  science: 'FlaskConical',
+  biotech: 'FlaskConical',
+  computer: 'Monitor',
+  smartphone: 'Smartphone',
+  tablet: 'Tablet',
+  laptop: 'Laptop',
+  desktop_windows: 'Monitor',
+  keyboard_arrow_down: 'ChevronDown',
+  keyboard_arrow_up: 'ChevronUp',
+  keyboard_arrow_left: 'ChevronLeft',
+  keyboard_arrow_right: 'ChevronRight',
+  arrow_back_ios: 'ChevronLeft',
+  arrow_forward_ios: 'ChevronRight',
+  drag_indicator: 'GripVertical',
+  drag_handle: 'GripHorizontal',
+  menu_book: 'Book',
+  library_books: 'Library',
+  local_library: 'Library',
+  import_contacts: 'BookOpen',
+  auto_stories: 'BookOpen',
+  wysiwyg: 'AppWindow',
+  web: 'Layout',
+  grid_view: 'LayoutGrid',
+  list: 'List',
+  view_list: 'List',
+  view_module: 'LayoutGrid',
+  view_quilt: 'LayoutDashboard',
+  view_stream: 'Rows',
+  table_rows: 'Rows',
+  table_chart: 'Table',
+  pie_chart: 'PieChart',
+  bar_chart: 'BarChart',
+  show_chart: 'LineChart',
+  query_stats: 'Activity',
+  timeline: 'History',
+  update: 'RefreshCcw',
+  pending: 'Clock',
+  check_box: 'CheckSquare',
+  check_box_outline_blank: 'Square',
+  radio_button_checked: 'Disc',
+  radio_button_unchecked: 'Circle',
+  indeterminate_check_box: 'MinusSquare',
+  toggle_on: 'ToggleRight',
+  toggle_off: 'ToggleLeft',
+  key: 'Key',
+  vpn_key: 'Key',
+  password: 'Asterisk',
+  fingerprint: 'Fingerprint',
+  face: 'Smile',
+  redeem: 'Gift',
+  card_giftcard: 'Gift',
+  shopping_cart: 'ShoppingCart',
+  shopping_bag: 'ShoppingBag',
+  credit_card: 'CreditCard',
+  payments: 'Banknote',
+  account_balance: 'Landmark',
+  account_balance_wallet: 'Wallet',
+  receipt: 'Receipt',
+  receipt_long: 'Receipt',
+  attach_money: 'DollarSign',
+  monetization_on: 'Coins',
+  category: 'Shapes',
+  layers: 'Layers',
+  content_copy: 'Copy',
+  content_paste: 'ClipboardPaste',
+  content_cut: 'Scissors',
+  format_bold: 'Bold',
+  format_italic: 'Italic',
+  format_underlined: 'Underline',
+  format_strikethrough: 'Strikethrough',
+  format_align_left: 'AlignLeft',
+  format_align_center: 'AlignCenter',
+  format_align_right: 'AlignRight',
+  format_align_justify: 'AlignJustify',
+  format_list_bulleted: 'List',
+  format_list_numbered: 'ListOrdered',
+  format_quote: 'Quote',
+  link: 'Link',
+  image: 'Image',
+  movie: 'Film',
+  videocam: 'Video',
+  mic: 'Mic',
+  volume_up: 'Volume2',
+  volume_off: 'VolumeX',
+  music_note: 'Music',
+  palette: 'Palette',
+  brush: 'Brush',
+  color_lens: 'Palette',
+  cleaning_services: 'Sparkles',
 };
 
 /**
@@ -155,22 +241,7 @@ export function Icon({
   fallback,
   onClick,
 }: IconProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    if (type === 'material') {
-      document.fonts.ready
-        .then(() => setIsLoaded(true))
-        .catch(() => setHasError(true));
-
-      const timer = setTimeout(() => {
-        if (!isLoaded) setHasError(true);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [type, isLoaded]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (onClick && (e.key === 'Enter' || e.key === ' ')) {
@@ -180,33 +251,74 @@ export function Icon({
   };
 
   // Render Material Icon
-  if (type === 'material' && !hasError) {
-    const iconName = materialIconMap[name] || name;
+  // CHANGED: Check if we have a Lucide mapping first, even for 'material' type
+  // This effectively migrates known material icons to Lucide without changing call sites
+  const lucideName = lucideIconMap[name];
+  const LucideIcon = lucideName ? LucideIcons[lucideName] as React.ComponentType<{ className?: string }> : null;
+
+  if (LucideIcon) {
     return (
       <span
         className={cn(
-          'material-symbols-outlined',
           'inline-flex items-center justify-center',
-          'select-none',
           'transition-transform duration-200',
           sizeMap[size],
           onClick && 'cursor-pointer hover:scale-110 active:scale-95',
           className
         )}
-        style={{
-          color,
-          fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-        }}
+        style={{ color }}
         aria-label={ariaLabel || name}
         role={onClick ? 'button' : 'img'}
         tabIndex={onClick ? 0 : undefined}
         onClick={onClick}
         onKeyDown={handleKeyDown}
       >
-        {iconName}
+        <LucideIcon className="w-full h-full" />
       </span>
     );
   }
+
+  if (type === 'material') {
+    // Force Lucide fallback if mapping exists
+
+    // Check if the name matches a Lucide icon directly (case-insensitive try) or PascalCase
+    let FinalLucideIcon: React.ComponentType<{ className?: string }> | null = LucideIcon;
+
+    if (!FinalLucideIcon) {
+      // Try PascalCase conversion (e.g. arrow_forward -> ArrowForward)
+      const pascalName = name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+      // @ts-ignore
+      const PotentialIcon = LucideIcons[pascalName];
+      if (PotentialIcon) {
+        FinalLucideIcon = PotentialIcon as React.ComponentType<{ className?: string }>;
+      }
+    }
+
+    if (FinalLucideIcon) {
+      const IconComponent = FinalLucideIcon;
+      return (
+        <span
+          className={cn(
+            'inline-flex items-center justify-center',
+            'transition-transform duration-200',
+            sizeMap[size],
+            onClick && 'cursor-pointer hover:scale-110 active:scale-95',
+            className
+          )}
+          style={{ color }}
+          aria-label={ariaLabel || name}
+          role={onClick ? 'button' : 'img'}
+          tabIndex={onClick ? 0 : undefined}
+          onClick={onClick}
+          onKeyDown={handleKeyDown}
+        >
+          <IconComponent className="w-full h-full" />
+        </span>
+      );
+    }
+  }
+
+
 
   // Render Lucide Icon (fallback or explicit)
   if (type === 'lucide' || (type === 'material' && hasError)) {
@@ -245,6 +357,32 @@ export function Icon({
         <LucideIcon className="w-full h-full" />
       </span>
     );
+  }
+
+  if (type === 'lucide') {
+    const LucideComponent = (LucideIcons[name as keyof typeof LucideIcons] || LucideIcons[lucideIconMap[name]]) as React.ComponentType<{ className?: string }>;
+
+    if (LucideComponent) {
+      return (
+        <span
+          className={cn(
+            'inline-flex items-center justify-center',
+            'transition-transform duration-200',
+            sizeMap[size],
+            onClick && 'cursor-pointer hover:scale-110 active:scale-95',
+            className
+          )}
+          style={{ color }}
+          aria-label={ariaLabel || name}
+          role={onClick ? 'button' : 'img'}
+          tabIndex={onClick ? 0 : undefined}
+          onClick={onClick}
+          onKeyDown={handleKeyDown}
+        >
+          <LucideComponent className="w-full h-full" />
+        </span>
+      );
+    }
   }
 
   // SVG type - render as-is

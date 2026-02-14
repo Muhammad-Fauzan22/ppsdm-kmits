@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { Icon } from "@/components/ui/Icon";
 
 export default function ResearchFindingsPage() {
     const chartData = [
@@ -21,7 +22,7 @@ export default function ResearchFindingsPage() {
             <nav className="border-b border-[#2D303E] px-8 py-4 flex justify-between items-center bg-[#0E1218]/90 backdrop-blur sticky top-0 z-50">
                 <div className="flex items-center gap-8">
                     <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-blue-500">school</span>
+                        <Icon name="GraduationCap" className="text-blue-500" />
                         <span className="font-bold text-lg">PPSDM Research</span>
                     </div>
                     <div className="hidden md:flex gap-6 text-sm font-medium text-gray-400">
@@ -33,10 +34,10 @@ export default function ResearchFindingsPage() {
 
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</span>
+                        <Icon name="Search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
                         <input type="text" placeholder="Search findings..." className="bg-[#1C2028] border border-[#2D303E] rounded-full pl-10 pr-4 py-1.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500" />
                     </div>
-                    <button className="text-gray-400 hover:text-white"><span className="material-symbols-outlined">notifications</span></button>
+                    <button className="text-gray-400 hover:text-white"><Icon name="Bell" /></button>
                     <div className="size-8 rounded-full bg-orange-200 overflow-hidden border border-[#2D303E]">
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof" alt="Researcher profile picture" className="w-full h-full" />
                     </div>
@@ -49,7 +50,7 @@ export default function ResearchFindingsPage() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
                     <div>
                         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                            <span>Home</span> <span className="material-symbols-outlined text-[10px]">chevron_right</span> <span className="text-white">Research</span>
+                            <span>Home</span> <Icon name="ChevronRight" className="text-[10px]" /> <span className="text-white">Research</span>
                         </div>
                         <h1 className="text-4xl font-bold mb-4 leading-tight">Institutional Research & Developmental <br /> Findings</h1>
                         <p className="text-gray-400 max-w-2xl text-lg leading-relaxed">
@@ -58,10 +59,10 @@ export default function ResearchFindingsPage() {
                     </div>
                     <div className="flex gap-4">
                         <button className="bg-[#1C2028] border border-[#2D303E] text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-[#252932] transition-colors">
-                            <span className="material-symbols-outlined text-sm">share</span> Share
+                            <Icon name="Share" className="text-sm" /> Share
                         </button>
                         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/20">
-                            <span className="material-symbols-outlined text-sm">download</span> Export Report
+                            <Icon name="Download" className="text-sm" /> Export Report
                         </button>
                     </div>
                 </div>
@@ -115,10 +116,10 @@ export default function ResearchFindingsPage() {
                             </div>
                             <div className="flex gap-2">
                                 <button className="bg-[#21262D] text-gray-300 text-xs px-3 py-2 rounded flex items-center gap-2">
-                                    All Cohorts <span className="material-symbols-outlined text-[10px]">expand_more</span>
+                                    All Cohorts <Icon name="ChevronDown" className="text-[10px]" />
                                 </button>
                                 <button className="bg-[#21262D] text-gray-300 text-xs px-3 py-2 rounded flex items-center gap-2">
-                                    By Year <span className="material-symbols-outlined text-[10px]">expand_more</span>
+                                    By Year <Icon name="ChevronDown" className="text-[10px]" />
                                 </button>
                             </div>
                         </div>
@@ -175,7 +176,7 @@ export default function ResearchFindingsPage() {
                                     <span className="text-xs text-gray-500">Dr. Sarah Lin, et al.</span>
                                 </div>
                                 <span className="text-blue-500 text-xs font-bold flex items-center gap-1">
-                                    Download PDF <span className="material-symbols-outlined text-sm">download</span>
+                                    Download PDF <Icon name="Download" className="text-sm" />
                                 </span>
                             </div>
                         </div>
@@ -196,7 +197,7 @@ export default function ResearchFindingsPage() {
                                     <span className="text-xs text-gray-500">Prof. James Chen</span>
                                 </div>
                                 <span className="text-blue-500 text-xs font-bold flex items-center gap-1">
-                                    Download PDF <span className="material-symbols-outlined text-sm">download</span>
+                                    Download PDF <Icon name="Download" className="text-sm" />
                                 </span>
                             </div>
                         </div>
@@ -204,7 +205,7 @@ export default function ResearchFindingsPage() {
                     </div>
                     <div className="text-center mt-6">
                         <button className="text-gray-400 hover:text-white text-sm font-medium flex items-center justify-center gap-2 mx-auto">
-                            View all 45 publications <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                            View all 45 publications <Icon name="ArrowRight" className="text-sm" />
                         </button>
                     </div>
                 </div>
@@ -219,7 +220,7 @@ export default function ResearchFindingsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-[#0D1117] border border-[#2D303E] p-6 rounded-2xl flex gap-4">
                             <div className="size-10 bg-blue-900/30 text-blue-500 rounded-lg flex items-center justify-center shrink-0">
-                                <span className="material-symbols-outlined">dataset</span>
+                                <Icon name="Database" />
                             </div>
                             <div>
                                 <h4 className="font-bold text-white mb-2">Data Collection</h4>
@@ -230,7 +231,7 @@ export default function ResearchFindingsPage() {
                         </div>
                         <div className="bg-[#0D1117] border border-[#2D303E] p-6 rounded-2xl flex gap-4">
                             <div className="size-10 bg-blue-900/30 text-blue-500 rounded-lg flex items-center justify-center shrink-0">
-                                <span className="material-symbols-outlined">security</span>
+                                <Icon name="Shield" />
                             </div>
                             <div>
                                 <h4 className="font-bold text-white mb-2">Privacy & Ethics</h4>
@@ -243,14 +244,14 @@ export default function ResearchFindingsPage() {
 
                     <div className="mt-8 pt-8 border-t border-[#2D303E]">
                         <Link href="#" className="text-blue-500 font-bold text-sm flex items-center gap-1 hover:underline">
-                            Read full documentation <span className="material-symbols-outlined text-sm">open_in_new</span>
+                            Read full documentation <Icon name="ExternalLink" className="text-sm" />
                         </Link>
                     </div>
                 </div>
 
                 <footer className="mt-16 border-t border-[#2D303E] pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                     <div className="flex items-center gap-2 mb-4 md:mb-0">
-                        <span className="material-symbols-outlined">school</span>
+                        <Icon name="GraduationCap" />
                         <span className="font-bold text-gray-400">PPSDM Research Division</span>
                     </div>
                     <div className="flex gap-8">

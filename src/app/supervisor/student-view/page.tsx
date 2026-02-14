@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, AreaChart, Area, Tooltip } from "recharts";
+import { Icon } from "@/components/ui/Icon";
 
 export default function SupervisorStudentView() {
     const competenceData = [
@@ -45,7 +46,7 @@ export default function SupervisorStudentView() {
                 <div className="flex items-center gap-4">
                     <span className="text-sm text-gray-400">Semester:</span>
                     <div className="bg-[#1C2028] border border-[#2D303E] px-3 py-1.5 rounded text-sm text-white font-bold flex items-center gap-2 cursor-pointer">
-                        Fall 2024 (Current) <span className="material-symbols-outlined text-sm">expand_more</span>
+                        Fall 2024 (Current) <Icon name="ChevronDown" size="sm" />
                     </div>
                 </div>
             </header>
@@ -64,7 +65,7 @@ export default function SupervisorStudentView() {
                         <h2 className="text-xl font-bold text-white">Alexandria Rahel</h2>
                         <p className="text-xs text-gray-500 mb-4 font-mono">ID: 2024001</p>
                         <div className="inline-flex items-center gap-2 bg-[#252932] px-3 py-1 rounded-full text-[10px] font-bold text-gray-300">
-                            <span className="material-symbols-outlined text-sm">school</span> Computer Science
+                            <Icon name="GraduationCap" size="sm" /> Computer Science
                         </div>
                     </div>
 
@@ -98,13 +99,13 @@ export default function SupervisorStudentView() {
                     {/* Actions */}
                     <div className="space-y-3">
                         <button className="w-full bg-[#1C2028] hover:bg-[#252932] border border-[#2D303E] text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors">
-                            <span className="material-symbols-outlined text-sm">mail</span> Email Student
+                            <Icon name="Mail" size="sm" /> Email Student
                         </button>
                         <button className="w-full bg-[#1C2028] hover:bg-[#252932] border border-[#2D303E] text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors">
-                            <span className="material-symbols-outlined text-sm">chat</span> WhatsApp
+                            <Icon name="MessageSquare" size="sm" /> WhatsApp
                         </button>
                         <button className="w-full bg-[#1C2028] hover:bg-[#252932] border border-[#2D303E] text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors">
-                            <span className="material-symbols-outlined text-sm">calendar_month</span> Schedule Meeting
+                            <Icon name="Calendar" size="sm" /> Schedule Meeting
                         </button>
                     </div>
 
@@ -130,7 +131,7 @@ export default function SupervisorStudentView() {
                         <div className="bg-[#161B22] border border-[#2D303E] rounded-2xl p-4 flex flex-col relative">
                             <div className="flex justify-between items-center mb-2">
                                 <h3 className="font-bold text-sm text-white">Competency Map</h3>
-                                <span className="material-symbols-outlined text-gray-600 text-sm">more_horiz</span>
+                                <Icon name="MoreHorizontal" className="text-gray-600 text-sm" size="sm" />
                             </div>
                             <div className="flex-1 -ml-4" style={{ height: '200px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
@@ -234,7 +235,7 @@ export default function SupervisorStudentView() {
                 <aside className="">
                     <div className="bg-[#161B22] border border-[#2D303E] rounded-2xl p-6 h-full flex flex-col">
                         <div className="flex items-center gap-2 mb-6">
-                            <span className="material-symbols-outlined text-blue-500 text-lg">warning</span>
+                            <Icon name="AlertTriangle" className="text-blue-500 text-lg" />
                             <h3 className="font-bold text-white text-xs uppercase tracking-wider">Supervisor Actions</h3>
                         </div>
 
@@ -242,7 +243,7 @@ export default function SupervisorStudentView() {
                             <div>
                                 <label className="text-[10px] text-gray-400 uppercase font-bold mb-1 block">Action Type</label>
                                 <div className="bg-[#252932] border border-[#30363D] text-white text-sm px-3 py-2 rounded-lg flex justify-between items-center cursor-pointer">
-                                    Academic Warning <span className="material-symbols-outlined text-sm">expand_more</span>
+                                    Academic Warning <Icon name="ChevronDown" size="sm" />
                                 </div>
                             </div>
                             <div>
@@ -260,7 +261,7 @@ export default function SupervisorStudentView() {
                         </div>
 
                         <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 mt-auto transition-colors">
-                            <span className="material-symbols-outlined text-sm">send</span> Send Intervention
+                            <Icon name="Send" size="sm" /> Send Intervention
                         </button>
                     </div>
                 </aside>

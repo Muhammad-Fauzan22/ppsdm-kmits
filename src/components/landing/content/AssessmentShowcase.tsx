@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Brain, Calculator, LineChart, CheckCircle2, FileText } from "lucide-react";
 
 const features = [
     {
@@ -10,7 +11,7 @@ const features = [
             "Norma 2,000+ Mahasiswa Indonesia",
             "Cross-cultural Adaptation"
         ],
-        icon: "psychology"
+        icon: <Brain className="w-6 h-6 text-white" />
     },
     {
         title: "Intelligent Scoring",
@@ -19,7 +20,7 @@ const features = [
             "Personalized Weighting sesuai jurusan",
             "Confidence Intervals (±3.2 poin)"
         ],
-        icon: "calculate"
+        icon: <Calculator className="w-6 h-6 text-white" />
     },
     {
         title: "Actionable Insights",
@@ -28,7 +29,7 @@ const features = [
             "Gap Analysis (Current vs Ideal)",
             "Development Priority Matrix"
         ],
-        icon: "insights"
+        icon: <LineChart className="w-6 h-6 text-white" />
     }
 ];
 
@@ -64,14 +65,14 @@ export function AssessmentShowcase() {
                         <div key={idx} className="glass-card p-8 rounded-3xl border border-white/10 hover:bg-white/5 transition-colors">
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="p-3 rounded-xl bg-gradient-to-br from-brand-blue to-indigo-600 shadow-lg shadow-brand-blue/20">
-                                    <span className="material-symbols-outlined text-2xl text-white">{feature.icon}</span>
+                                    {feature.icon}
                                 </div>
                                 <h3 className="text-xl font-bold">{feature.title}</h3>
                             </div>
                             <ul className="space-y-3">
                                 {feature.items.map((item, i) => (
                                     <li key={i} className="flex items-center gap-3 text-slate-300 text-sm">
-                                        <span className="material-symbols-outlined text-brand-accent text-sm">check_circle</span>
+                                        <CheckCircle2 className="text-brand-accent w-4 h-4" />
                                         {item}
                                     </li>
                                 ))}
@@ -101,7 +102,7 @@ export function AssessmentShowcase() {
                 {/* Sample Output Preview - Visual Representation */}
                 <div className="mt-24 text-center">
                     <button className="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-white font-medium transition-all hover:scale-105 flex items-center gap-3 mx-auto">
-                        <span className="material-symbols-outlined">picture_as_pdf</span>
+                        <FileText className="w-5 h-5" />
                         Lihat Contoh Laporan Lengkap (PDF)
                     </button>
                 </div>

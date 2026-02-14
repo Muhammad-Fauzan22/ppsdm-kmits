@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { LayoutDashboard, Library, RefreshCw, CheckCircle, AlertCircle, RotateCw, FileText, Inbox } from 'lucide-react';
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -58,7 +59,7 @@ export default function RealDashboard() {
         <div className="p-8 w-full min-h-screen bg-background-dark text-white">
             <div className="flex items-center gap-3 mb-8">
                 <div className="p-2 bg-brand-blue/20 rounded-lg">
-                    <span className="material-symbols-outlined text-brand-blue text-2xl">dashboard</span>
+                    <LayoutDashboard className="text-brand-blue w-6 h-6" />
                 </div>
                 <h1 className="text-3xl font-bold font-heading">LMS Processing Center</h1>
             </div>
@@ -71,7 +72,7 @@ export default function RealDashboard() {
                         <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">{stats.total}</div>
                     </div>
                     <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <span className="material-symbols-outlined text-6xl">library_books</span>
+                        <Library className="w-16 h-16" />
                     </div>
                 </div>
                 <div className="glass-card p-6 rounded-2xl relative overflow-hidden group border-brand-blue/20">
@@ -80,7 +81,7 @@ export default function RealDashboard() {
                         <div className="text-3xl font-bold text-brand-blue">{stats.processing}</div>
                     </div>
                     <div className="absolute right-0 top-0 p-4 opacity-10 text-brand-blue group-hover:opacity-20 transition-opacity">
-                        <span className="material-symbols-outlined text-6xl">sync</span>
+                        <RefreshCw className="w-16 h-16" />
                     </div>
                 </div>
                 <div className="glass-card p-6 rounded-2xl relative overflow-hidden group border-green-500/20">
@@ -89,7 +90,7 @@ export default function RealDashboard() {
                         <div className="text-3xl font-bold text-green-400">{stats.completed}</div>
                     </div>
                     <div className="absolute right-0 top-0 p-4 opacity-10 text-green-400 group-hover:opacity-20 transition-opacity">
-                        <span className="material-symbols-outlined text-6xl">check_circle</span>
+                        <CheckCircle className="w-16 h-16" />
                     </div>
                 </div>
                 <div className="glass-card p-6 rounded-2xl relative overflow-hidden group border-red-500/20">
@@ -98,7 +99,7 @@ export default function RealDashboard() {
                         <div className="text-3xl font-bold text-red-400">{stats.failed}</div>
                     </div>
                     <div className="absolute right-0 top-0 p-4 opacity-10 text-red-400 group-hover:opacity-20 transition-opacity">
-                        <span className="material-symbols-outlined text-6xl">error</span>
+                        <AlertCircle className="w-16 h-16" />
                     </div>
                 </div>
             </div>
@@ -109,7 +110,7 @@ export default function RealDashboard() {
                     <h3 className="text-lg font-bold">Recent Uploads</h3>
                     <div className="flex gap-2">
                         <button className="p-2 hover:bg-white/5 rounded-lg transition-colors text-slate-400 hover:text-white" onClick={fetchBooks}>
-                            <span className="material-symbols-outlined text-xl">refresh</span>
+                            <RotateCw className="w-5 h-5" />
                         </button>
                     </div>
                 </div>
@@ -129,7 +130,7 @@ export default function RealDashboard() {
                                 <tr key={book.id} className="hover:bg-white/5 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center gap-3">
-                                            <span className="material-symbols-outlined text-slate-500">description</span>
+                                            <FileText className="text-slate-500 w-5 h-5" />
                                             <div className="font-medium text-slate-200">{book.file_name}</div>
                                         </div>
                                     </td>
@@ -145,7 +146,7 @@ export default function RealDashboard() {
                                         <div className="w-full bg-white/10 rounded-full h-1.5 mb-2">
                                             <div
                                                 className={`h-1.5 rounded-full transition-all duration-500 ${book.processing_status === 'completed' ? 'bg-green-500' :
-                                                        book.processing_status === 'error' ? 'bg-red-500' : 'bg-brand-blue'
+                                                    book.processing_status === 'error' ? 'bg-red-500' : 'bg-brand-blue'
                                                     }`}
                                                 style={{ width: `${book.processing_progress}%` }}
                                             ></div>
@@ -174,7 +175,7 @@ export default function RealDashboard() {
                 </div>
                 {books.length === 0 && (
                     <div className="p-12 text-center text-slate-500">
-                        <span className="material-symbols-outlined text-4xl mb-2 opacity-50">inbox</span>
+                        <Inbox className="w-10 h-10 mb-2 opacity-50 mx-auto" />
                         <p>No books processed yet</p>
                     </div>
                 )}

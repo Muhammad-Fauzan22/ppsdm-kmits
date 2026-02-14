@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Icon } from "@/components/ui/Icon";
 
 export default function ImpactDashboardPage() {
     return (
@@ -11,7 +12,7 @@ export default function ImpactDashboardPage() {
                     {/* Branding */}
                     <div className="flex flex-col px-2">
                         <h1 className="text-[#1313ec] dark:text-white text-xl font-bold leading-normal flex items-center gap-2">
-                            <span className="material-symbols-outlined text-[#1313ec]">school</span>
+                            <Icon name="GraduationCap" className="text-[#1313ec]" />
                             PPSDM Admin
                         </h1>
                         <p className="text-slate-500 dark:text-[#9d9db9] text-xs font-normal leading-normal mt-1">Executive View</p>
@@ -19,23 +20,23 @@ export default function ImpactDashboardPage() {
                     {/* Navigation */}
                     <nav className="flex flex-col gap-2">
                         <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#1313ec]/10 dark:bg-[#282839] group transition-all" href="#">
-                            <span className="material-symbols-outlined text-[#1313ec] dark:text-white">dashboard</span>
+                            <Icon name="LayoutDashboard" className="text-[#1313ec] dark:text-white" />
                             <p className="text-[#1313ec] dark:text-white text-sm font-medium leading-normal">Overview</p>
                         </a>
                         <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1e1e2d] transition-all text-slate-600 dark:text-[#9d9db9]" href="#">
-                            <span className="material-symbols-outlined">domain</span>
+                            <Icon name="Building2" />
                             <p className="text-sm font-medium leading-normal">Departments</p>
                         </a>
                         <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1e1e2d] transition-all text-slate-600 dark:text-[#9d9db9]" href="#">
-                            <span className="material-symbols-outlined">bar_chart</span>
+                            <Icon name="BarChart3" />
                             <p className="text-sm font-medium leading-normal">IKU Metrics</p>
                         </a>
                         <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1e1e2d] transition-all text-slate-600 dark:text-[#9d9db9]" href="#">
-                            <span className="material-symbols-outlined">description</span>
+                            <Icon name="FileText" />
                             <p className="text-sm font-medium leading-normal">Reports</p>
                         </a>
                         <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1e1e2d] transition-all text-slate-600 dark:text-[#9d9db9]" href="#">
-                            <span className="material-symbols-outlined">settings</span>
+                            <Icon name="Settings" />
                             <p className="text-sm font-medium leading-normal">Settings</p>
                         </a>
                     </nav>
@@ -58,18 +59,18 @@ export default function ImpactDashboardPage() {
                     <div className="flex flex-col">
                         <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#9d9db9] mb-1">
                             <span>Admin</span>
-                            <span className="material-symbols-outlined text-[10px]">chevron_right</span>
+                            <Icon name="ChevronRight" className="text-[10px]" />
                             <span className="font-semibold text-[#1313ec] dark:text-white">Impact Dashboard</span>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-[#282839] rounded-lg border border-slate-200 dark:border-[#3b3b54]">
-                            <span className="material-symbols-outlined text-slate-500 dark:text-[#9d9db9] text-sm">calendar_month</span>
+                            <Icon name="Calendar" className="text-slate-500 dark:text-[#9d9db9] text-sm" />
                             <span className="text-sm font-medium text-slate-700 dark:text-white">Fiscal Year 2024</span>
-                            <span className="material-symbols-outlined text-slate-500 dark:text-[#9d9db9] text-sm">arrow_drop_down</span>
+                            <Icon name="ChevronDown" className="text-slate-500 dark:text-[#9d9db9] text-sm" />
                         </div>
                         <button className="relative p-2 text-slate-500 dark:text-[#9d9db9] hover:bg-slate-100 dark:hover:bg-[#282839] rounded-lg">
-                            <span className="material-symbols-outlined">notifications</span>
+                            <Icon name="Bell" />
                             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-[#111118]"></span>
                         </button>
                     </div>
@@ -82,7 +83,7 @@ export default function ImpactDashboardPage() {
                             <p className="text-slate-500 dark:text-[#9d9db9] text-base">Key Performance Indicators & Strategic Outcomes</p>
                         </div>
                         <button className="flex items-center gap-2 px-5 py-2.5 bg-[#1313ec] hover:bg-blue-700 text-white text-sm font-bold rounded-lg shadow-lg shadow-[#1313ec]/20 transition-all">
-                            <span className="material-symbols-outlined text-lg">download</span>
+                            <Icon name="Download" className="text-lg" />
                             Export Report
                         </button>
                     </div>
@@ -92,11 +93,11 @@ export default function ImpactDashboardPage() {
                         <div className="flex flex-col gap-4 p-6 rounded-xl bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
                             <div className="flex justify-between items-start">
                                 <div className="flex items-center gap-2 text-slate-600 dark:text-[#9d9db9]">
-                                    <span className="material-symbols-outlined text-[#1313ec]">school</span>
+                                    <Icon name="GraduationCap" className="text-[#1313ec]" />
                                     <p className="text-sm font-semibold uppercase tracking-wider">Employability Readiness</p>
                                 </div>
                                 <span className="flex items-center gap-1 text-[#0bda68] bg-[#0bda68]/10 px-2 py-0.5 rounded text-xs font-bold">
-                                    <span className="material-symbols-outlined text-sm">trending_up</span> +4.2% YoY
+                                    <Icon name="TrendingUp" className="text-sm" /> +4.2% YoY
                                 </span>
                             </div>
                             <div>
@@ -112,11 +113,11 @@ export default function ImpactDashboardPage() {
                         <div className="flex flex-col gap-4 p-6 rounded-xl bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
                             <div className="flex justify-between items-start">
                                 <div className="flex items-center gap-2 text-slate-600 dark:text-[#9d9db9]">
-                                    <span className="material-symbols-outlined text-[#1313ec]">analytics</span>
+                                    <Icon name="LineChart" className="text-[#1313ec]" />
                                     <p className="text-sm font-semibold uppercase tracking-wider">IKU Achievement</p>
                                 </div>
                                 <span className="flex items-center gap-1 text-[#0bda68] bg-[#0bda68]/10 px-2 py-0.5 rounded text-xs font-bold">
-                                    <span className="material-symbols-outlined text-sm">arrow_upward</span> +12% Target
+                                    <Icon name="ArrowUp" className="text-sm" /> +12% Target
                                 </span>
                             </div>
                             <div>
@@ -132,11 +133,11 @@ export default function ImpactDashboardPage() {
                         <div className="flex flex-col gap-4 p-6 rounded-xl bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
                             <div className="flex justify-between items-start">
                                 <div className="flex items-center gap-2 text-slate-600 dark:text-[#9d9db9]">
-                                    <span className="material-symbols-outlined text-[#1313ec]">domain</span>
+                                    <Icon name="Building2" className="text-[#1313ec]" />
                                     <p className="text-sm font-semibold uppercase tracking-wider">Active Departments</p>
                                 </div>
                                 <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded text-xs font-bold">
-                                    <span className="material-symbols-outlined text-sm">remove</span> Stable
+                                    <Icon name="Minus" className="text-sm" /> Stable
                                 </span>
                             </div>
                             <div>
@@ -208,7 +209,7 @@ export default function ImpactDashboardPage() {
                                     <p className="text-slate-500 dark:text-slate-400 text-sm">By Strategic Category</p>
                                 </div>
                                 <button className="p-2 hover:bg-slate-100 dark:hover:bg-[#282839] rounded-lg">
-                                    <span className="material-symbols-outlined text-slate-400 text-lg">more_horiz</span>
+                                    <Icon name="MoreHorizontal" className="text-slate-400 text-lg" />
                                 </button>
                             </div>
                             <div className="flex flex-col gap-6 justify-center flex-1">
@@ -312,7 +313,7 @@ export default function ImpactDashboardPage() {
                             {/* AI Insight Card */}
                             <div className="p-6 rounded-xl bg-gradient-to-br from-[#1313ec]/10 to-transparent dark:from-[#282839] dark:to-[#1e1e2d] border border-[#1313ec]/20 dark:border-[#3b3b54]">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <span className="material-symbols-outlined text-[#1313ec]">auto_awesome</span>
+                                    <Icon name="Sparkles" className="text-[#1313ec]" />
                                     <h3 className="text-slate-900 dark:text-white text-base font-bold">Strategic Insight</h3>
                                 </div>
                                 <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -361,11 +362,6 @@ export default function ImpactDashboardPage() {
                         </div>
                     </div>
                 </div>
-                <style jsx global>{`
-            .material-symbols-outlined {
-                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            }
-        `}</style>
             </main>
         </div>
     );

@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { Calendar, CalendarRange, Star, CheckSquare, CheckCircle2, Flame, Check, SmilePlus } from 'lucide-react';
 
 /**
  * DailyQuests - Daily mission tracker with rewards
@@ -36,7 +37,7 @@ export function DailyQuests({ quests, onClaimReward, className }: DailyQuestsPro
             {dailyQuests.length > 0 && (
                 <QuestSection
                     title="Misi Harian"
-                    icon="today"
+                    icon={<Calendar className="w-5 h-5 md:w-6 md:h-6" />}
                     quests={dailyQuests}
                     onClaimReward={onClaimReward}
                     accentColor="ml-cyan"
@@ -47,7 +48,7 @@ export function DailyQuests({ quests, onClaimReward, className }: DailyQuestsPro
             {weeklyQuests.length > 0 && (
                 <QuestSection
                     title="Misi Mingguan"
-                    icon="date_range"
+                    icon={<CalendarRange className="w-5 h-5 md:w-6 md:h-6" />}
                     quests={weeklyQuests}
                     onClaimReward={onClaimReward}
                     accentColor="ml-gold"
@@ -58,7 +59,7 @@ export function DailyQuests({ quests, onClaimReward, className }: DailyQuestsPro
             {specialQuests.length > 0 && (
                 <QuestSection
                     title="Misi Spesial"
-                    icon="stars"
+                    icon={<Star className="w-5 h-5 md:w-6 md:h-6" />}
                     quests={specialQuests}
                     onClaimReward={onClaimReward}
                     accentColor="ml-pink"
@@ -70,7 +71,7 @@ export function DailyQuests({ quests, onClaimReward, className }: DailyQuestsPro
 
 interface QuestSectionProps {
     title: string;
-    icon: string;
+    icon: React.ReactNode;
     quests: Quest[];
     onClaimReward?: (questId: string) => void;
     accentColor: string;
@@ -84,7 +85,7 @@ function QuestSection({ title, icon, quests, onClaimReward, accentColor }: Quest
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
                 <div className="flex items-center gap-2">
-                    <span className={cn('material-symbols-outlined', `text-${accentColor}`)}>{icon}</span>
+                    <div className={cn('text-' + accentColor)}>{icon}</div>
                     <h3 className="font-bold text-white">{title}</h3>
                 </div>
                 <span className="text-xs text-slate-500">{completedCount}/{quests.length} selesai</span>
@@ -131,7 +132,7 @@ function QuestItem({ quest, index, onClaimReward }: QuestItemProps) {
                     'flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center',
                     quest.completed ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-slate-400'
                 )}>
-                    {quest.icon || <span className="material-symbols-outlined">task_alt</span>}
+                    {quest.icon || <CheckSquare className="w-5 h-5" />}
                 </div>
 
                 {/* Content */}
@@ -144,7 +145,7 @@ function QuestItem({ quest, index, onClaimReward }: QuestItemProps) {
                             {quest.title}
                         </h4>
                         {quest.completed && (
-                            <span className="material-symbols-outlined text-green-400 text-lg">check_circle</span>
+                            <CheckCircle2 className="text-green-400 w-5 h-5" />
                         )}
                     </div>
                     <p className="text-xs text-slate-500 truncate">{quest.description}</p>
@@ -217,7 +218,7 @@ export function StreakIndicator({ currentStreak, maxStreak, rewards, className }
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-ml-orange">local_fire_department</span>
+                    <Flame className="text-ml-orange w-5 h-5" />
                     <h3 className="font-bold text-white">Login Streak</h3>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-ml-orange/20">
@@ -248,7 +249,7 @@ export function StreakIndicator({ currentStreak, maxStreak, rewards, className }
                                 isCurrent && 'ring-2 ring-ml-gold ring-offset-2 ring-offset-[#121212]'
                             )}>
                                 {reward.claimed ? (
-                                    <span className="material-symbols-outlined text-base">check</span>
+                                    <Check className="w-4 h-4" />
                                 ) : (
                                     reward.day
                                 )}
@@ -311,7 +312,7 @@ export function LiveReactions({ reactions, onReact, className }: LiveReactionsPr
 
             {/* Add Reaction Button */}
             <button className="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 transition-colors">
-                <span className="material-symbols-outlined text-sm">add_reaction</span>
+                <SmilePlus className="w-4 h-4" />
             </button>
         </div>
     );

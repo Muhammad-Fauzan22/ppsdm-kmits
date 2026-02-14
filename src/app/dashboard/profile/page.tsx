@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Fingerprint, Download, Share2, Trophy, Medal, Star, Award, Lightbulb, Mic, Terminal, Users, Brain, MapPin } from 'lucide-react';
 
 export default function ScholarProfilePage() {
     return (
@@ -29,7 +30,7 @@ export default function ScholarProfilePage() {
                             <h1 className="text-3xl font-bold mb-1 text-white">Scholar Alex Smith</h1>
                             <p className="text-slate-400 mb-4">Computer Science Department • Class of 2025</p>
                             <div className="bg-white/5 border border-white/10 rounded px-3 py-1 inline-flex items-center gap-2 text-xs font-mono text-slate-400">
-                                <span className="material-symbols-outlined text-sm">fingerprint</span> ID: 884-291-KMM
+                                <Fingerprint className="w-4 h-4" /> ID: 884-291-KMM
                             </div>
                         </div>
                     </div>
@@ -37,10 +38,10 @@ export default function ScholarProfilePage() {
                     <div className="flex flex-col items-end gap-4 min-w-[300px]">
                         <div className="flex gap-2">
                             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-600/20 hover:bg-blue-700 transition-all active:scale-95">
-                                <span className="material-symbols-outlined text-sm">download</span> Download CV
+                                <Download className="w-4 h-4" /> Download CV
                             </button>
                             <button className="bg-white/5 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 border border-white/10 hover:bg-white/10 transition-all active:scale-95">
-                                <span className="material-symbols-outlined text-sm">share</span> Share Profile
+                                <Share2 className="w-4 h-4" /> Share Profile
                             </button>
                         </div>
 
@@ -58,9 +59,9 @@ export default function ScholarProfilePage() {
                         <div className="flex gap-2">
                             {['12 Badges', 'Top 5%', 'Project Lead'].map((badge, i) => (
                                 <div key={badge} className="bg-white/5 border border-white/10 rounded px-2 py-1 flex items-center gap-2">
-                                    <span className={`material-symbols-outlined text-xs ${i === 0 ? 'text-yellow-500' : i === 1 ? 'text-green-500' : 'text-purple-500'}`}>
-                                        {i === 0 ? 'emoji_events' : i === 1 ? 'leaderboard' : 'stars'}
-                                    </span>
+                                    {i === 0 && <Trophy className="w-4 h-4 text-yellow-500" />}
+                                    {i === 1 && <Medal className="w-4 h-4 text-green-500" />}
+                                    {i === 2 && <Star className="w-4 h-4 text-purple-500" />}
                                     <span className="text-[10px] font-bold text-slate-300">{badge}</span>
                                 </div>
                             ))}
@@ -79,7 +80,7 @@ export default function ScholarProfilePage() {
                 >
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
-                            <span className="material-symbols-outlined text-blue-500">military_tech</span>
+                            <Award className="text-blue-500 w-6 h-6" />
                             <h2 className="font-bold text-lg text-white">Trophy Case</h2>
                         </div>
                         <div className="bg-white/5 rounded p-1 flex text-[10px] font-bold border border-white/10">
@@ -102,7 +103,7 @@ export default function ScholarProfilePage() {
                                         <path d="M50 0 L93.3 25 V75 L50 100 L6.7 75 V25 Z" stroke="#3B82F6" strokeWidth="2" />
                                     </svg>
                                     <div className="relative z-10 text-center flex flex-col items-center transform group-hover:scale-110 transition-transform">
-                                        <span className="material-symbols-outlined text-blue-500 text-2xl mb-1">lightbulb</span>
+                                        <Lightbulb className="text-blue-500 w-8 h-8 mb-1" />
                                         <span className="text-[8px] font-bold text-blue-500 uppercase tracking-widest">Innovator</span>
                                     </div>
                                 </div>
@@ -112,7 +113,7 @@ export default function ScholarProfilePage() {
                                         <path d="M50 0 L93.3 25 V75 L50 100 L6.7 75 V25 Z" stroke="#A855F7" strokeWidth="2" />
                                     </svg>
                                     <div className="relative z-10 text-center flex flex-col items-center transform group-hover:scale-110 transition-transform">
-                                        <span className="material-symbols-outlined text-purple-500 text-2xl mb-1">record_voice_over</span>
+                                        <Mic className="text-purple-500 w-8 h-8 mb-1" />
                                         <span className="text-[8px] font-bold text-purple-500 uppercase tracking-widest">Orator</span>
                                     </div>
                                 </div>
@@ -122,7 +123,7 @@ export default function ScholarProfilePage() {
                                         <path d="M50 0 L93.3 25 V75 L50 100 L6.7 75 V25 Z" stroke="#22C55E" strokeWidth="2" />
                                     </svg>
                                     <div className="relative z-10 text-center flex flex-col items-center transform group-hover:scale-110 transition-transform">
-                                        <span className="material-symbols-outlined text-green-500 text-2xl mb-1">terminal</span>
+                                        <Terminal className="text-green-500 w-8 h-8 mb-1" />
                                         <span className="text-[8px] font-bold text-green-500 uppercase tracking-widest">Coder</span>
                                     </div>
                                 </div>
@@ -132,7 +133,7 @@ export default function ScholarProfilePage() {
                                         <path d="M50 0 L93.3 25 V75 L50 100 L6.7 75 V25 Z" stroke="#F97316" strokeWidth="2" />
                                     </svg>
                                     <div className="relative z-10 text-center flex flex-col items-center transform group-hover:scale-110 transition-transform">
-                                        <span className="material-symbols-outlined text-orange-500 text-2xl mb-1">groups</span>
+                                        <Users className="text-orange-500 w-8 h-8 mb-1" />
                                         <span className="text-[8px] font-bold text-orange-500 uppercase tracking-widest">Leader</span>
                                     </div>
                                 </div>
@@ -153,7 +154,7 @@ export default function ScholarProfilePage() {
                     {/* Skills Matrix */}
                     <div className="glass-card border border-white/10 rounded-[32px] p-8 hover:border-blue-600/30 transition-colors bg-slate-800/30">
                         <div className="flex items-center gap-2 mb-6">
-                            <span className="material-symbols-outlined text-blue-500">psychology</span>
+                            <Brain className="text-blue-500 w-6 h-6" />
                             <h2 className="font-bold text-lg text-white">Skills Matrix</h2>
                         </div>
 
@@ -171,7 +172,7 @@ export default function ScholarProfilePage() {
                     {/* Map Placeholder */}
                     <div className="flex-1 glass-card border border-white/10 rounded-[32px] overflow-hidden relative min-h-[200px] group bg-slate-800/30">
                         <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-xl border border-white/10 px-2 py-1 rounded text-[10px] font-bold text-white z-10 flex items-center gap-2">
-                            <span className="material-symbols-outlined text-[14px] text-red-500 animate-pulse">my_location</span>
+                            <MapPin className="text-[14px] text-red-500 animate-pulse w-4 h-4" />
                             Campus Location
                         </div>
 
