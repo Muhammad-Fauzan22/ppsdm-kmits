@@ -278,56 +278,16 @@ export function Icon({
     );
   }
 
-  if (type === 'material') {
-    // Force Lucide fallback if mapping exists
+  // Render Lucide Icon (native or mapped from material)
+  if (type === 'lucide' || type === 'material') {
+    // try to get from map, or use name directly if it matches a Lucide icon
+    // (handle both snake_case from material and PascalCase from Lucide)
+    const lucideName = lucideIconMap[name] || name;
 
-    // Check if the name matches a Lucide icon directly (case-insensitive try) or PascalCase
-    let FinalLucideIcon: React.ComponentType<{ className?: string }> | null = LucideIcon;
+    // @ts-ignore - Dynamic access to Lucide icons
+    const LucideIconResult = (LucideIcons[lucideName] || LucideIcons[name]) as React.ComponentType<{ className?: string }>;
 
-    if (!FinalLucideIcon) {
-      // Try PascalCase conversion (e.g. arrow_forward -> ArrowForward)
-      const pascalName = name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-      // @ts-ignore
-      const PotentialIcon = LucideIcons[pascalName];
-      if (PotentialIcon) {
-        FinalLucideIcon = PotentialIcon as React.ComponentType<{ className?: string }>;
-      }
-    }
-
-    if (FinalLucideIcon) {
-      const IconComponent = FinalLucideIcon;
-      return (
-        <span
-          className={cn(
-            'inline-flex items-center justify-center',
-            'transition-transform duration-200',
-            sizeMap[size],
-            onClick && 'cursor-pointer hover:scale-110 active:scale-95',
-            className
-          )}
-          style={{ color }}
-          aria-label={ariaLabel || name}
-          role={onClick ? 'button' : 'img'}
-          tabIndex={onClick ? 0 : undefined}
-          onClick={onClick}
-          onKeyDown={handleKeyDown}
-        >
-          <IconComponent className="w-full h-full" />
-        </span>
-      );
-    }
-  }
-
-
-
-  // Render Lucide Icon (fallback or explicit)
-  if (type === 'lucide' || (type === 'material' && hasError)) {
-    const lucideName = lucideIconMap[name] || 'Circle';
-    const LucideIcon = LucideIcons[lucideName] as React.ComponentType<{
-      className?: string;
-    }>;
-
-    if (!LucideIcon) {
+    if (!LucideIconResult) {
       return (
         fallback || (
           <span
@@ -354,35 +314,9 @@ export function Icon({
         onClick={onClick}
         onKeyDown={handleKeyDown}
       >
-        <LucideIcon className="w-full h-full" />
+        <LucideIconResult className="w-full h-full" />
       </span>
     );
-  }
-
-  if (type === 'lucide') {
-    const LucideComponent = (LucideIcons[name as keyof typeof LucideIcons] || LucideIcons[lucideIconMap[name]]) as React.ComponentType<{ className?: string }>;
-
-    if (LucideComponent) {
-      return (
-        <span
-          className={cn(
-            'inline-flex items-center justify-center',
-            'transition-transform duration-200',
-            sizeMap[size],
-            onClick && 'cursor-pointer hover:scale-110 active:scale-95',
-            className
-          )}
-          style={{ color }}
-          aria-label={ariaLabel || name}
-          role={onClick ? 'button' : 'img'}
-          tabIndex={onClick ? 0 : undefined}
-          onClick={onClick}
-          onKeyDown={handleKeyDown}
-        >
-          <LucideComponent className="w-full h-full" />
-        </span>
-      );
-    }
   }
 
   // SVG type - render as-is
