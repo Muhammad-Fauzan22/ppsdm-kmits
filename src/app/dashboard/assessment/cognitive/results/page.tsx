@@ -22,6 +22,7 @@ import {
     CheckCircle, AlertCircle, BookOpen, Users, Trophy, ChevronRight,
     BarChart3, Sparkles, Shield, FileText
 } from "lucide-react";
+import { CertificateDownloadButton } from "@/components/certificate/CertificateDownloadButton";
 
 const DIMENSION_ICONS: Record<string, any> = {
     critical_thinking: Target,
@@ -162,17 +163,22 @@ function CognitiveResultsContent() {
                         <span>Kembali</span>
                     </Link>
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="gap-2">
-                            <Download className="w-4 h-4" />
-                            Export PDF
-                        </Button>
+                        {result && (
+                            <CertificateDownloadButton
+                                studentName={userData?.name || "Mahasiswa ITS"}
+                                dimension="Cognitive Development"
+                                score={Math.round(result.cognitive_index)}
+                                date={new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                id={searchParams.get('id') || `temp-${Date.now()}`}
+                            />
+                        )}
                         <Button variant="outline" size="sm" className="gap-2">
                             <Share2 className="w-4 h-4" />
                             Bagikan
                         </Button>
                     </div>
                 </div>
-            </header>
+            </header >
 
             <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
                 {/* Hero Result */}
@@ -392,7 +398,7 @@ function CognitiveResultsContent() {
                 <p>© 2024 PPSDM KMM ITS. Assessment berbasis riset ilmiah.</p>
                 <p className="mt-1">Ethical Approval: ITS-REC/2023/PSY-045</p>
             </footer>
-        </div>
+        </div >
     );
 }
 

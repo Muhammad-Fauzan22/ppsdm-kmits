@@ -1,44 +1,68 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, TrendingUp, Users, Award, Bell } from "lucide-react";
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { AnalyticsService, AnalyticsSummary, DepartmentStat } from '@/lib/analytics/service';
+import { AnalyticsSummaryCards } from '@/components/analytics/AnalyticsSummaryCards';
+import { DepartmentParticipationChart } from '@/components/analytics/DepartmentParticipationChart';
+import { Button } from '@/components/ui/button';
+import { RefreshCw } from 'lucide-react';
+import { ReportDownloadButton } from '@/components/analytics/ReportDownloadButton';
 
 export default function AnalyticsPage() {
+    const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
+    const [deptStats, setDeptStats] = useState<DepartmentStat[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const [summaryData, deptData] = await Promise.all([
+                AnalyticsService.getSummary(),
+                AnalyticsService.getDepartmentStats()
+            ]);
+            setSummary(summaryData);
+            setDeptStats(deptData);
+        } catch (error) {
+            console.error('Failed to load analytics', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Analytics</h1>
-                <p className="text-slate-400">Deep dive into your learning performance and growth metrics.</p>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {[
-                    { title: "Total Learning Time", value: "45h 20m", icon: Activity, color: "text-blue-400", sub: "+2.5h this week" },
-                    { title: "Growth Rate", value: "+15%", icon: TrendingUp, color: "text-green-400", sub: "Above average" },
-                    { title: "Peer Comparison", value: "Top 10%", icon: Users, color: "text-purple-400", sub: "Among engineering students" },
-                    { title: "Achievements", value: "12", icon: Award, color: "text-yellow-400", sub: "3 new unlocked" },
-                ].map((item, i) => (
-                    <Card key={i} className="bg-card/50 border-white/5 backdrop-blur hover:bg-card/80 transition-all duration-300">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">
-                                {item.title}
-                            </CardTitle>
-                            <item.icon className={`h-4 w-4 ${item.color}`} />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-white">{item.value}</div>
-                            <p className="text-xs text-muted-foreground">{item.sub}</p>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-white/5 p-8 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mb-4">
-                    <Activity className="w-8 h-8 text-blue-500" />
+        <div className="space-y-6 p-6 pb-20">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                        Enterprise Analytics
+                    </h1>
+                    <p className="text-slate-400">
+                        Real-time insights into student development and engagement.
+                    </p>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Detailed Analytics Coming Soon</h3>
-                <p className="text-slate-400 max-w-md">
-                    We are currently processing your historical data to provide deeper insights. Check back later for detailed charts and recommendations.
-                </p>
+                <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={fetchData} className="gap-2 border-slate-700 hover:bg-slate-800">
+                        <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                        Refresh
+                    </Button>
+                    <ReportDownloadButton summary={summary} deptStats={deptStats} />
+                </div>
+            </div>
+
+            <AnalyticsSummaryCards data={summary} loading={loading} />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <DepartmentParticipationChart data={deptStats} />
+
+                {/* Placeholder for Dimension Radar Chart (Future) */}
+                <div className="lg:col-span-1 bg-slate-900/50 border border-slate-800 rounded-lg p-6 flex flex-col items-center justify-center text-center backdrop-blur-sm">
+                    <div className="text-slate-500 mb-2">Dimension Analysis</div>
+                    <div className="text-xs text-slate-600">Complete assessments to unlock this view</div>
+                </div>
             </div>
         </div>
     );

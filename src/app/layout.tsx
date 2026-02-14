@@ -6,6 +6,8 @@ import { NudgeNotification } from "@/components/features/NudgeNotification";
 import FloatingKnowledgeWidget from "@/components/knowledge/FloatingKnowledgeWidget";
 import StressCheckWidget from "@/components/widgets/StressCheckWidget";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+import { PushNotificationManager } from "@/components/pwa/PushNotificationManager";
 
 // OPTIMIZED: Reduced from 8 fonts to 2 fonts for better performance
 // Primary font for body text
@@ -45,7 +47,6 @@ export const metadata: Metadata = {
   description: "Platform Pengembangan Sumber Daya Manusia - Keluarga Mahasiswa ITS. Asesmen holistik 9 dimensi pengembangan mahasiswa.",
   keywords: ["ITS", "PPSDM", "Mahasiswa", "Kaderisasi", "Surabaya", "KM ITS", "Pengembangan Diri"],
   authors: [{ name: "Tim IT PPSDM KM ITS" }],
-
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -208,6 +209,8 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
         </ThemeProvider>
+        <InstallPrompt />
+        <PushNotificationManager />
         <NudgeNotification />
         <FloatingKnowledgeWidget />
         <StressCheckWidget />

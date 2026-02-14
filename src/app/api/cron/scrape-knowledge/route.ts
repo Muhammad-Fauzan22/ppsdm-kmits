@@ -19,7 +19,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const results = {
+        const results: Record<string, any> = {
             scraped: 0,
             seeded: 0,
             errors: [] as string[],
@@ -76,7 +76,19 @@ export async function POST(request: Request) {
             .from('knowledge_items')
             .update({ is_current: false })
             .lt('published_at', thirtyDaysAgo.toISOString())
+            .lt('published_at', thirtyDaysAgo.toISOString())
             .eq('category', 'news');
+
+        // Step 4: Generate Daily Wisdom (AI)
+        try {
+            // Dynamic import to avoid build issues if ai sdk is missing in some envs
+            const { generateDailyWisdom } = await import('@/lib/knowledge/ai-generator');
+            await generateDailyWisdom();
+            results['wisdom_generated'] = true;
+        } catch (aiError) {
+            console.error('Failed to generate daily wisdom:', aiError);
+            results['wisdom_error'] = aiError instanceof Error ? aiError.message : 'Unknown';
+        }
 
         return NextResponse.json({
             success: true,

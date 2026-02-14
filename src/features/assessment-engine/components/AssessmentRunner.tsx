@@ -255,6 +255,18 @@ export function AssessmentRunner({
       };
 
       onComplete(assessmentResult);
+
+      // GAMIFICATION INTEGRATION
+      if (userId) {
+        try {
+          // Dynamic import to avoid circular deps if any, or just direct use
+          const { GamificationService } = await import('@/lib/gamification/service');
+          await GamificationService.addXP(userId, 200); // Award 200 XP
+          await GamificationService.updateQuestProgress(userId, 'assessment_complete', 1);
+        } catch (err) {
+          console.error('Failed to award XP:', err);
+        }
+      }
     } catch (err) {
       setError('Gagal menyelesaikan assessment. Silakan coba lagi.');
     } finally {

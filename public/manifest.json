@@ -1,14 +1,36 @@
 {
-  "name": "PPSDM KMITS",
-  "short_name": "PPSDM",
-  "description": "Pengembangan Potensi Sumber Daya Mahasiswa - KMITS",
-  "start_url": "/",
+  "name": "PPSDM KMITS - Holistic Development",
+  "short_name": "PPSDM KMITS",
+  "description": "Platform Pengembangan Sumber Daya Mahasiswa KM ITS",
+  "start_url": "/dashboard/home",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#6366f1",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
   "icons": [
-    { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ],
-  "lang": "id-ID"
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/dashboard-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
 }

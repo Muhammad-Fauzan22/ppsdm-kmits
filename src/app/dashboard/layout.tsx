@@ -7,9 +7,12 @@ export const metadata: Metadata = {
   description: 'Holistic Student Development Platform',
 };
 
+import { GamificationManager } from "@/components/gamification/GamificationManager";
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-[#070B14] text-slate-800 dark:text-slate-200 font-sans selection:bg-cyan-500/30 transition-colors duration-300">
+      <GamificationManager />
       <Sidebar />
       <div className="lg:pl-72 flex flex-col min-h-screen transition-all duration-300 ease-in-out">
         <Header />

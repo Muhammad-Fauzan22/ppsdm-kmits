@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { StudyGroupFinder } from "@/components/peer/StudyGroupFinder";
 import { RecommendationEngine } from "@/lib/adaptive/engine";
 import { InterventionCard } from "@/components/adaptive/InterventionCard";
+import { DailyWisdomWidget } from "@/components/knowledge/DailyWisdomWidget";
+import { QuestBoard } from "@/components/gamification/QuestBoard";
+import { LeaderboardWidget } from "@/components/gamification/LeaderboardWidget";
 
 async function getStats() {
   const supabase = await createClient();
@@ -82,79 +85,82 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        {/* Recent Activity */}
-        <Card className="col-span-4 bg-card/50 border-white/5 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Activity className="w-5 h-5 text-blue-500" /> Activity Feed
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-muted-foreground bg-white/5 rounded-lg p-8 text-center flex flex-col items-center justify-center gap-2 border border-dashed border-white/10">
-              <Clock className="w-8 h-8 opacity-50" />
-              <p>System Initialized. Awaiting learning interactions.</p>
-              <Link href="/courses" className="text-xs text-blue-400 hover:text-blue-300">Browse Courses &rarr;</Link>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-7">
 
-        {/* Recommended */}
-        <Card className="col-span-3 bg-gradient-to-b from-slate-800 to-slate-900 border-white/5">
-          <CardHeader>
-            <CardTitle className="text-white">Recommended for You</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/5">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold">
-                    TD
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium leading-none text-white group-hover:text-blue-400 transition-colors">Thermodynamics II</p>
-                    <p className="text-xs text-muted-foreground">Module 3 • 45m remaining</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-white transition-colors opacity-0 group-hover:opacity-100" />
+        {/* Main Content Area (Left) */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Recent Activity */}
+          <Card className="bg-card/50 border-white/5 backdrop-blur">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Activity className="w-5 h-5 text-blue-500" /> Activity Feed
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-muted-foreground bg-white/5 rounded-lg p-8 text-center flex flex-col items-center justify-center gap-2 border border-dashed border-white/10">
+                <Clock className="w-8 h-8 opacity-50" />
+                <p>System Initialized. Awaiting learning interactions.</p>
+                <Link href="/courses" className="text-xs text-blue-400 hover:text-blue-300">Browse Courses &rarr;</Link>
               </div>
-              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/5">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold">
-                    AI
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium leading-none text-white group-hover:text-purple-400 transition-colors">Applied AI Systems</p>
-                    <p className="text-xs text-muted-foreground">New Course • Trending</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-white transition-colors opacity-0 group-hover:opacity-100" />
-              </div>
+            </CardContent>
+          </Card>
+
+          {/* Peer Learning Section */}
+          <StudyGroupFinder />
+
+          {/* Adaptive Intervention Section */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <Zap className="w-5 h-5 text-yellow-500" /> Personalized Growth Path
+            </h2>
+            <div className="grid gap-4">
+              {RecommendationEngine.getRecommendations({
+                'financial': 40,
+                'cognitive': 80,
+                'emotional': 65,
+                'physical': 55
+              }).slice(0, 2).map(intervention => (
+                <InterventionCard key={intervention.id} intervention={intervention} />
+              ))}
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
 
-      {/* Peer Learning Section */}
-      <div className="grid gap-6">
-        <StudyGroupFinder />
-      </div>
+        {/* Sidebar Widgets (Right) */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Daily Wisdom */}
+          <div className="h-auto">
+            <DailyWisdomWidget />
+          </div>
 
-      {/* Adaptive Intervention Section (Phase 2) */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Zap className="w-6 h-6 text-yellow-500" /> Personalized Growth Path
-        </h2>
+          {/* Quests */}
+          <QuestBoard />
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {RecommendationEngine.getRecommendations({
-            'financial': 40, // Mock weak score
-            'cognitive': 80,
-            'emotional': 65,
-            'physical': 55
-          }).map(intervention => (
-            <InterventionCard key={intervention.id} intervention={intervention} />
-          ))}
+          {/* Leaderboard */}
+          <LeaderboardWidget />
+
+          {/* Recommended Courses */}
+          <Card className="bg-gradient-to-b from-slate-800 to-slate-900 border-white/5">
+            <CardHeader>
+              <CardTitle className="text-white">Recommended for You</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-white/5">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold">
+                      TD
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none text-white group-hover:text-blue-400 transition-colors">Thermodynamics II</p>
+                      <p className="text-xs text-muted-foreground">Module 3 • 45m remaining</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-white transition-colors opacity-0 group-hover:opacity-100" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

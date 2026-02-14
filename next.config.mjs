@@ -12,6 +12,8 @@ const nextConfig = {
   // Use standalone output for SSR support
   output: 'standalone',
 
+  transpilePackages: ['@react-pdf/renderer'],
+
   // Disable font optimization to prevent manifest issues
   optimizeFonts: false,
   // Webpack configuration to handle Node.js modules and optimize bundle
@@ -128,6 +130,7 @@ const nextConfig = {
     ],
     // Disable features that cause build issues
     typedRoutes: false,
+    serverComponentsExternalPackages: ['web-push'],
   },
 
 
@@ -228,4 +231,20 @@ const nextConfig = {
   poweredByHeader: false,
 };
 
-export default nextConfig;
+import withPWAInit from "@ducanh2912/next-pwa";
+
+const withPWA = withPWAInit({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+  register: true,
+  skipWaiting: true,
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true,
+  swcMinify: true,
+  workboxOptions: {
+    disableDevLogs: true,
+  },
+});
+
+export default withPWA(nextConfig);

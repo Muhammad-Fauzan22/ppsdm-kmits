@@ -4,6 +4,27 @@
 
 A holistic 9-dimension student development platform for Teknik Mesin ITS, built with Next.js 14, TypeScript, Tailwind CSS, and Supabase.
 
+## New Features (v2.0)
+
+### 🎮 Gamification Engine
+- **XP & Levels**: Dynamic progression system based on engagement.
+- **Quests**: Daily challenges to boost student activity.
+- **Badges**: Achievement system for milestones.
+- **Leaderboard**: Competitive rankings to foster excellence.
+
+### 🤖 AI Integration
+- **Daily Wisdom**: AI-curated inspirational content.
+- **Certificate Generation**: Automated PDF certificates for completed dimensions.
+
+### 📱 Mobile Experience
+- **PWA Support**: Installable on iOS/Android.
+- **Offline Mode**: Core features available without internet.
+- **Push Notifications**: Real-time updates for quests and announcements.
+
+### 📊 Enterprise Analytics
+- **Faculty Dashboard**: Real-time insights into student performance.
+- **PDF Reporting**: One-click executive summary generation.
+
 ---
 
 ## Quick Start
@@ -84,6 +105,9 @@ ppsdm-kmits/
 | Testing | Vitest |
 | Error Tracking | Sentry |
 | Deployment | Vercel / Netlify |
+| Mobile | PWA (next-pwa) + Web Push |
+| Analytics | Recharts + RPC Aggregation |
+| PDF Engine | @react-pdf/renderer |
 
 ---
 

@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
-import { Download, Trash2, AlertTriangle, CheckCircle, XCircle, FileText } from 'lucide-react';
+import { Download, Trash2, AlertTriangle, CheckCircle, XCircle, FileText, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Switch } from '@/components/ui/switch';
+import { createClient } from '@/lib/supabase/client';
 
 /**
  * UU PDP Compliance - Data Management Section
@@ -21,6 +23,57 @@ export function DataManagementSection() {
     daysRemaining?: number;
   } | null>(null);
   const { toast } = useToast();
+
+  const [isPrivacyLoading, setIsPrivacyLoading] = useState(false);
+  const [isPublicProfile, setIsPublicProfile] = useState(true);
+
+  // Load initial privacy setting
+  React.useEffect(() => {
+    async function loadPrivacy() {
+      const { GamificationService } = await import('@/lib/gamification/service');
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const progress = await GamificationService.getUserProgress(user.id);
+        if (progress) {
+          setIsPublicProfile(progress.is_public ?? true);
+        }
+      }
+    }
+    loadPrivacy();
+  }, []);
+
+  const handleTogglePrivacy = async () => {
+    setIsPrivacyLoading(true);
+    try {
+      const { GamificationService } = await import('@/lib/gamification/service');
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) throw new Error("No user");
+
+      const newStatus = !isPublicProfile;
+      const success = await GamificationService.togglePrivacy(user.id, newStatus);
+
+      if (success) {
+        setIsPublicProfile(newStatus);
+        toast({
+          title: 'Pengaturan Privasi Diperbarui',
+          description: `Profil Anda sekarang ${newStatus ? 'terlihat oleh publik' : 'disembunyikan dari leaderboard'}.`,
+        });
+      } else {
+        throw new Error("Failed update");
+      }
+    } catch (e) {
+      toast({
+        title: 'Gagal Memperbarui Privasi',
+        description: 'Terjadi kesalahan.',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsPrivacyLoading(false);
+    }
+  };
 
   // Check deletion status on mount
   React.useEffect(() => {
@@ -43,7 +96,7 @@ export function DataManagementSection() {
         });
       }
     } catch (error) {
-      }
+    }
   };
 
   const handleExportData = async () => {
@@ -218,6 +271,34 @@ export function DataManagementSection() {
                 </>
               )}
             </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Privacy Settings Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="h-5 w-5" />
+            Pengaturan Privasi
+          </CardTitle>
+          <CardDescription>
+            Kontrol visibilitas profil Anda di leaderboard dan fitur sosial lainnya.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex flex-col space-y-1">
+              <span className="font-medium">Tampilkan Profil di Leaderboard</span>
+              <span className="text-sm text-muted-foreground">
+                Jika dimatikan, nama Anda akan muncul sebagai "Pengguna Anonim".
+              </span>
+            </div>
+            <Switch
+              checked={isPublicProfile}
+              onCheckedChange={handleTogglePrivacy}
+              disabled={isPrivacyLoading}
+            />
           </div>
         </CardContent>
       </Card>
