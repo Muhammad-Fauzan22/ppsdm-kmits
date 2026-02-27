@@ -15,6 +15,22 @@ import { createClient } from '@supabase/supabase-js';
 import { Database } from '../types/database.types';
 
 // ============================================================================
+// SERVER-SIDE VALIDATION (must come FIRST before any env access)
+// ============================================================================
+
+/**
+ * Ensure this file is only used on server side.
+ * This MUST be checked before accessing environment variables to prevent
+ * accidental client-side exposure of the service role key.
+ */
+if (typeof window !== 'undefined') {
+  throw new Error(
+    '[SECURITY] supabaseAdmin can only be used on the server side. ' +
+    'This is a critical security violation - service role key must never reach the browser.'
+  );
+}
+
+// ============================================================================
 // ENVIRONMENT VALIDATION
 // ============================================================================
 
@@ -25,22 +41,11 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_URL is not configured');
+  throw new Error('[CONFIG] NEXT_PUBLIC_SUPABASE_URL is not configured');
 }
 
 if (!supabaseServiceRoleKey) {
-  throw new Error('SUPABASE_SERVICE_ROLE_KEY is not configured');
-}
-
-// ============================================================================
-// SERVER-SIDE VALIDATION
-// ============================================================================
-
-/**
- * Ensure this file is only used on server side
- */
-if (typeof window !== 'undefined') {
-  throw new Error('supabaseAdmin can only be used on server side. This is a security violation.');
+  throw new Error('[CONFIG] SUPABASE_SERVICE_ROLE_KEY is not configured');
 }
 
 // ============================================================================

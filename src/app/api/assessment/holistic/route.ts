@@ -13,11 +13,29 @@ import {
 } from '@/lib/assessment/scoring-engine';
 import { z } from 'zod';
 
+// Strict schema for holistic assessment input
+const assessmentResponseSchema = z.union([
+  z.record(z.string(), z.union([z.number().min(1).max(10), z.string().max(1000)])),
+  z.array(z.object({
+    questionId: z.string().min(1).max(100),
+    answer: z.union([z.number().min(1).max(10), z.string().max(1000)]),
+    timestamp: z.string().datetime().optional(),
+  }).strict()).min(1).max(200),
+]);
+
+const userContextSchema = z.object({
+  age: z.number().int().min(13).max(100).optional(),
+  gender: z.enum(['male', 'female', 'other', 'prefer_not_to_say']).optional(),
+  department: z.string().max(100).optional(),
+  year: z.number().int().min(1).max(7).optional(),
+  faculty: z.string().max(100).optional(),
+}).strict().optional();
+
 const holisticAssessmentSchema = z.object({
   dimensionId: z.number().int().min(1).max(9, 'Dimension ID must be between 1 and 9'),
-  responses: z.any().refine((val) => val !== null && val !== undefined, 'Responses is required'),
-  userContext: z.any().optional(),
-});
+  responses: assessmentResponseSchema,
+  userContext: userContextSchema,
+}).strict();
 
 // ============================================================================
 // POST /api/assessment/holistic/submit

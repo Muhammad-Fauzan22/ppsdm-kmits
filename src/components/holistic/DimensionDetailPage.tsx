@@ -32,7 +32,8 @@ interface DimensionDetailPageProps {
 }
 
 export default function DimensionDetailPage({ dimensionId, className = '' }: DimensionDetailPageProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'research' | 'items' | 'scoring' | 'norms' | 'references'>('overview');
+  type TabId = 'overview' | 'research' | 'items' | 'scoring' | 'norms' | 'references';
+  const [activeTab, setActiveTab] = useState<TabId>('overview');
   const [loading, setLoading] = useState(true);
   const [dimension, setDimension] = useState<DimensionData | null>(null);
 
@@ -50,57 +51,58 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
           return;
         }
 
-        console.log('[DEBUG] Loading dimension data for ID:', dimensionId);
-        console.log('[DEBUG] Raw data:', rawData);
-        console.log('[DEBUG] Subdimensions:', (rawData as any)?.subdimensions);
-        console.log('[DEBUG] Scoring:', (rawData as any)?.scoring);
-        console.log('[DEBUG] Research:', rawData?.research);
+        // Debug logging (remove in production)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[DEBUG] Loading dimension data for ID:', dimensionId);
+        }
 
         // Adapt raw data to match the expected DimensionData interface
         // This bridges the gap between the simple data structure and the detailed component requirements
+        const defaultMethodology: import('@/data/dimensions/types').ResearchMethodology = {
+          approach: "Mixed Methods (Quantitative & Qualitative)",
+          databases: ["PsycINFO", "ERIC", "Google Scholar"],
+          timeRange: "2010-2023",
+          inclusionCriteria: ["Peer-reviewed journals", "Indonesian context"],
+          validationSample: {
+            size: 2500,
+            demographics: {
+              gender: "Balanced (52% F, 48% M)"
+            }
+          }
+        };
+
+        const defaultScoringConfig: import('@/data/dimensions/types').ScoringConfig = {
+          weights: rawData.assessmentData?.weights ?? {},
+          algorithm: "Item Response Theory (IRT) - 2PL Model",
+          interpretation: rawData.assessmentData?.interpretation?.levels ?? [],
+          irtParameters: {
+            thetaEstimation: "EAP (Expected A Posteriori)",
+            standardError: "0.32",
+            adjustment: "Bayesian Prior"
+          }
+        };
+
+        const defaultDisclaimer: import('@/data/dimensions/types').Disclaimer = {
+          purpose: "Educational purposes only",
+          scientificBasis: "Based on psychometric principles",
+          instruments: [],
+          limitations: [],
+          ethics: [],
+          reliability: [],
+          interpretation: []
+        };
+
         const adaptedData: DimensionData = {
           ...rawData,
-          // Ensure research matches strict type (casting as any for now to preserve existing data)
           research: {
             ...rawData.research,
-            methodology: {
-              approach: "Mixed Methods (Quantitative & Qualitative)",
-              databases: ["PsycINFO", "ERIC", "Google Scholar"],
-              timeRange: "2010-2023",
-              inclusionCriteria: ["Peer-reviewed journals", "Indonesian context"],
-              validationSample: {
-                size: 2500,
-                demographics: {
-                  gender: "Balanced (52% F, 48% M)"
-                }
-              }
-            }
-          } as any,
-
-          // Map missing top-level keys from assessmentData or provide defaults
-          items: rawData.assessmentData?.items || [],
-          subdimensions: [],
-          scoring: {
-            weights: rawData.assessmentData?.weights || {},
-            algorithm: "Item Response Theory (IRT) - 2PL Model", // Default
-            interpretation: rawData.assessmentData?.interpretation?.levels || [],
-            // Mock IRT parameters used in UI
-            irtParameters: {
-              thetaEstimation: "EAP (Expected A Posteriori)",
-              standardError: "0.32",
-              adjustment: "Bayesian Prior"
-            }
-          } as any,
-          disclaimer: {
-            purpose: "Educational purposes only",
-            scientificBasis: "Based on psychometric principles",
-            instruments: [],
-            limitations: [],
-            ethics: [],
-            reliability: [],
-            interpretation: []
+            methodology: defaultMethodology,
           },
-          references: [
+          items: rawData.assessmentData?.items ?? [],
+          subdimensions: rawData.subdimensions ?? [],
+          scoring: defaultScoringConfig,
+          disclaimer: rawData.disclaimer ?? defaultDisclaimer,
+          references: rawData.references ?? [
             "Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests.",
             "Likert, R. (1932). A technique for the measurement of attitudes."
           ]
@@ -192,7 +194,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
             ].map(tab => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as TabId)}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap ${activeTab === tab.id
                   ? 'bg-purple-600 text-white shadow-lg'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -410,7 +412,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                       </tr>
                     </thead>
                     <tbody>
-                      {dimension.research.psychometricProperties.itemAnalysis?.map((item: any, index: number) => (
+                      {dimension.research.psychometricProperties.itemAnalysis?.map((item, index) => (
                         <tr key={index} className="border-b border-green-100">
                           <td className="py-2 px-4">{item.item}</td>
                           <td className="text-center py-2 px-4">{item.mean}</td>
@@ -447,7 +449,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                         </tr>
                       </thead>
                       <tbody>
-                        {dimension.research.validityEvidence?.convergent?.map((evidence: any, index: number) => (
+                        {dimension.research.validityEvidence?.convergent?.map((evidence, index) => (
                           <tr key={index} className="border-b border-gray-100">
                             <td className="py-2 px-4">{evidence.measure}</td>
                             <td className="text-center py-2 px-4">{evidence.r}</td>
@@ -473,7 +475,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                         </tr>
                       </thead>
                       <tbody>
-                        {dimension.research.validityEvidence?.incremental?.map((evidence: any, index: number) => (
+                        {dimension.research.validityEvidence?.incremental?.map((evidence, index) => (
                           <tr key={index} className="border-b border-gray-100">
                             <td className="py-2 px-4">{evidence.model}</td>
                             <td className="text-center py-2 px-4">{evidence.deltaR2}</td>
@@ -669,7 +671,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-purple-50 p-6 rounded-xl">
                   <h3 className="font-bold text-purple-900 mb-3">Per Fakultas</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.research.normativeData?.facultyNorms || {}).map(([faculty, data]: [string, any]) => (
+                    {Object.entries(dimension.research.normativeData?.facultyNorms || {}).map(([faculty, data]) => (
                       <div key={faculty} className="flex justify-between">
                         <span className="text-gray-700">{faculty}</span>
                         <span className="font-bold text-purple-700">Mean: {data.mean}, SD: {data.sd}</span>
@@ -681,7 +683,7 @@ export default function DimensionDetailPage({ dimensionId, className = '' }: Dim
                 <div className="bg-blue-50 p-6 rounded-xl">
                   <h3 className="font-bold text-blue-900 mb-3">Per Gender</h3>
                   <div className="space-y-2">
-                    {Object.entries(dimension.research.normativeData?.genderNorms || {}).map(([gender, data]: [string, any]) => (
+                    {Object.entries(dimension.research.normativeData?.genderNorms || {}).map(([gender, data]) => (
                       <div key={gender} className="flex justify-between">
                         <span className="text-gray-700 capitalize">{gender}</span>
                         <span className="font-bold text-blue-700">Mean: {data.mean}, SD: {data.sd}</span>

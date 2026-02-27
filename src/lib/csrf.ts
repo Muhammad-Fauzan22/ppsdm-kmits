@@ -1,5 +1,28 @@
-import { randomBytes } from 'crypto';
+import { randomBytes, createHmac, timingSafeEqual } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
+
+// ============================================================================
+// CSRF SECRET VALIDATION - Fail fast if not configured
+// ============================================================================
+const CSRF_SECRET = process.env.CSRF_SECRET;
+
+if (!CSRF_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error(
+    '[SECURITY] CSRF_SECRET environment variable is required in production. ' +
+    'Generate one with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"'
+  );
+}
+
+// Use a warning in development if not set
+if (!CSRF_SECRET && process.env.NODE_ENV !== 'production') {
+  console.warn(
+    '[SECURITY WARNING] CSRF_SECRET is not set. Using a random secret for this session. ' +
+    'Set CSRF_SECRET in your .env.local file for consistent behavior.'
+  );
+}
+
+// Use configured secret or generate a random one for dev (NOT for production)
+const EFFECTIVE_CSRF_SECRET = CSRF_SECRET || randomBytes(32).toString('hex');
 
 // CSRF token configuration
 const CSRF_TOKEN_LENGTH = 32;
@@ -7,9 +30,48 @@ const CSRF_TOKEN_NAME = 'csrf-token';
 const CSRF_COOKIE_NAME = 'csrf-token';
 const CSRF_HEADER_NAME = 'x-csrf-token';
 
-// Generate a secure random CSRF token
-export function generateCSRFToken(): string {
-  return randomBytes(CSRF_TOKEN_LENGTH).toString('hex');
+// Generate a secure CSRF token using HMAC for integrity
+export function generateCSRFToken(sessionId?: string): string {
+  const randomPart = randomBytes(CSRF_TOKEN_LENGTH).toString('hex');
+  const timestamp = Date.now().toString();
+
+  if (sessionId) {
+    // HMAC-based token for session binding
+    const hmac = createHmac('sha256', EFFECTIVE_CSRF_SECRET);
+    hmac.update(`${sessionId}:${timestamp}:${randomPart}`);
+    const signature = hmac.digest('hex');
+    return `${timestamp}.${randomPart}.${signature}`;
+  }
+
+  return randomPart;
+}
+
+// Validate HMAC-based CSRF token
+export function validateCSRFTokenHMAC(token: string, sessionId: string): boolean {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+
+    const [timestamp, randomPart, signature] = parts;
+
+    // Check token age (max 1 hour)
+    const tokenAge = Date.now() - parseInt(timestamp, 10);
+    if (tokenAge > 3600000 || tokenAge < 0) return false;
+
+    // Recompute HMAC
+    const hmac = createHmac('sha256', EFFECTIVE_CSRF_SECRET);
+    hmac.update(`${sessionId}:${timestamp}:${randomPart}`);
+    const expectedSignature = hmac.digest('hex');
+
+    // Timing-safe comparison
+    const sigBuffer = Buffer.from(signature, 'hex');
+    const expectedBuffer = Buffer.from(expectedSignature, 'hex');
+
+    if (sigBuffer.length !== expectedBuffer.length) return false;
+    return timingSafeEqual(sigBuffer, expectedBuffer);
+  } catch {
+    return false;
+  }
 }
 
 // CSRF middleware for API routes

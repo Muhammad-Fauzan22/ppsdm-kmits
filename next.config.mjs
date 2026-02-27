@@ -3,90 +3,49 @@ const nextConfig = {
   // Enable compression
   compress: true,
 
-  // Security headers
+  // Security headers (also set in middleware, but belt-and-suspenders for static routes)
   async headers() {
     return [
       {
-        // Apply to all routes
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'geolocation=(), camera=(), microphone=()'
-          },
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self';"
-          }
-        ]
-      },
-      {
         // Static assets - cache for 1 year
-        source: '/(.*).(jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff|woff2|ttf|eot)$',
+        source: '/(.*)\\.(jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff|woff2|ttf|eot)$',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
-        ]
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
       {
-        // API routes - additional security
+        // API routes - no caching
         source: '/api/(.*)',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate'
-          },
-          {
-            key: 'Pragma',
-            value: 'no-cache'
-          },
-          {
-            key: 'Expires',
-            value: '0'
-          }
-        ]
-      }
+          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' },
+        ],
+      },
     ];
   },
 
   // Image optimization
   images: {
-    domains: ['lh3.googleusercontent.com', 'integrate.api.nvidia.com'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 'integrate.api.nvidia.com' },
+      { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'https', hostname: 'books.google.com' },
+      { protocol: 'https', hostname: 'covers.openlibrary.org' },
+    ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
+    dangerouslyAllowSVG: false,
   },
 
   // Bundle analyzer (conditionally enabled)
   ...(process.env.ANALYZE === 'true' && {
-    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-      // Add bundle analyzer
-      if (!dev && !isServer) {
+    webpack: (config, { isServer }) => {
+      if (!isServer) {
         const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
         config.plugins.push(
           new BundleAnalyzerPlugin({
@@ -96,7 +55,6 @@ const nextConfig = {
           })
         );
       }
-
       return config;
     },
   }),
@@ -105,12 +63,27 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    // Enable code splitting for better performance
-    // optimizePackageImports: ['lucide-react'], // Must be an array, commenting out to avoid errors if empty
+    // Tree-shake large icon/component libraries
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-label',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slider',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-tooltip',
+      'framer-motion',
+      'recharts',
+    ],
   },
-
-  // Build optimization
-  // swcMinify: true, // Deprecated in Next.js 15+ (default is true)
 
   // Enable React strict mode
   reactStrictMode: true,
@@ -121,14 +94,22 @@ const nextConfig = {
   // Output mode
   output: 'standalone',
 
-  // TypeScript configuration
+  // TypeScript configuration - NEVER ignore errors
   typescript: {
     ignoreBuildErrors: false,
   },
 
-  // ESLint configuration
+  // ESLint configuration - NEVER ignore during builds
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
+    dirs: ['src'],
+  },
+
+  // Logging
+  logging: {
+    fetches: {
+      fullUrl: process.env.NODE_ENV === 'development',
+    },
   },
 };
 
