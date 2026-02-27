@@ -1,5 +1,6 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { StudyBuddyChat } from "@/components/dashboard/StudyBuddyChat";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -20,6 +21,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
         </main>
       </div>
+
+      {/* Floating Study Buddy AI - available across all dashboard pages */}
+      <StudyBuddyChat />
     </div>
   );
 }
