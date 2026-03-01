@@ -20,19 +20,33 @@ import { createHash, randomBytes } from 'crypto';
  */
 const CSRF_SECRET = process.env.CSRF_SECRET;
 
-if (!CSRF_SECRET) {
-  throw new Error(
-    'CSRF_SECRET environment variable is required. ' +
-    'Please set it in your .env.local file or deployment environment. ' +
-    'Generate a secure secret using: openssl rand -base64 32'
-  );
-}
+/**
+ * Get CSRF secret with validation
+ * Lazy evaluation to prevent build-time errors
+ */
+function getCSRFSecret(): string {
+  if (!CSRF_SECRET) {
+    // Generate a temporary secret for build time only
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.warn('[CSRF] Using temporary secret for build time only');
+      return 'build-time-temporary-secret-do-not-use-in-production-32chars';
+    }
+    
+    throw new Error(
+      'CSRF_SECRET environment variable is required. ' +
+      'Please set it in your .env.local file or deployment environment. ' +
+      'Generate a secure secret using: openssl rand -base64 32'
+    );
+  }
 
-if (CSRF_SECRET.length < 32) {
-  throw new Error(
-    'CSRF_SECRET must be at least 32 characters long for security. ' +
-    'Generate a secure secret using: openssl rand -base64 32'
-  );
+  if (CSRF_SECRET.length < 32) {
+    throw new Error(
+      'CSRF_SECRET must be at least 32 characters long for security. ' +
+      'Generate a secure secret using: openssl rand -base64 32'
+    );
+  }
+  
+  return CSRF_SECRET;
 }
 
 /**
@@ -58,7 +72,7 @@ export function generateCSRFToken(sessionId: string): string {
     .update(sessionId)
     .update(timestamp.toString())
     .update(random)
-    .update(CSRF_SECRET as string)
+    .update(getCSRFSecret())
     .digest('hex');
   
   // Format: timestamp:random:signature
@@ -95,7 +109,7 @@ export function validateCSRFToken(sessionId: string, token: string): boolean {
       .update(sessionId)
       .update(timestamp)
       .update(random)
-      .update(CSRF_SECRET as string)
+      .update(getCSRFSecret())
       .digest('hex');
     
     return signature === expectedSignature;
