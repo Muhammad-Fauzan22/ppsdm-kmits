@@ -1,3 +1,9 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Enable compression
@@ -42,22 +48,28 @@ const nextConfig = {
     dangerouslyAllowSVG: false,
   },
 
-  // Bundle analyzer (conditionally enabled)
-  ...(process.env.ANALYZE === 'true' && {
-    webpack: (config, { isServer }) => {
-      if (!isServer) {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            reportFilename: './analyze/client.html',
-            openAnalyzer: false,
-          })
-        );
-      }
-      return config;
-    },
-  }),
+  // Webpack configuration for path aliases and bundle analyzer
+  webpack: (config, { isServer }) => {
+    // Fix path aliases for Next.js 15.5+ using absolute paths
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, './src'),
+    };
+    
+    // Bundle analyzer (conditionally enabled)
+    if (process.env.ANALYZE === 'true' && !isServer) {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          reportFilename: './analyze/client.html',
+          openAnalyzer: false,
+        })
+      );
+    }
+    
+    return config;
+  },
 
   // Experimental features for performance
   experimental: {
